@@ -220,6 +220,30 @@ def callout(title, body):
 LEVEL_COLORS = {'Basic': ICON, 'Moderate': ACCENT, 'Difficult': SEM_WARNING,
                 'High': ACCENT_2, 'HOTS': ACCENT_2, 'Challenge': ACCENT_2}
 
+# ---------------- XML safety ----------------
+import re as _re
+_ALLOWED_TAG = _re.compile(r'<(/?)(?:super|sub|b|i|u|br|a\b|font\b|para\b)', _re.I)
+def sanitize_text(t):
+    """Escape stray '<' that do not open a legitimate ReportLab tag."""
+    return _ALLOWED_TAG.sub(lambda m: m.group(0), t).replace('<', '&lt;') \
+        if False else _re.sub(r'<(?!/?(?:super|sub|b|i|u|br|a|font)\b)', '&lt;', t)
+
+def sanitize_blocks(blocks):
+    out = []
+    for blk in blocks:
+        if isinstance(blk, tuple) and blk and isinstance(blk[-1], (dict, list)):
+            payload = blk[-1]
+            if isinstance(payload, dict):
+                clean = {k: sanitize_text(v) if isinstance(v, str) else v for k, v in payload.items()}
+                out.append(blk[:-1] + (clean,))
+            else:  # list of strings (bullets/nums/steps/why)
+                out.append(blk[:-1] + ([sanitize_text(x) if isinstance(x, str) else x for x in payload],))
+        elif isinstance(blk, tuple):
+            out.append(tuple(sanitize_text(x) if isinstance(x, str) else x for x in blk))
+        else:
+            out.append(blk)
+    return out
+
 # ---------------- Block renderer ----------------
 def render_blocks(blocks, story):
     for blk in blocks:
@@ -319,6 +343,6 @@ def build_pdf(blocks, out_path, toc=True):
         toc.levelStyles = [S['toc0'], S['toc1']]
         story.append(toc)
         story.append(PageBreak())
-    render_blocks(blocks, story)
+    render_blocks(sanitize_blocks(blocks), story)
     doc.multiBuild(story, onFirstPage=_footer, onLaterPages=_footer)
     return out_path

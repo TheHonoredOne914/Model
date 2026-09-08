@@ -16,7 +16,7 @@ CH2_Q1 = [
  ],
  "why": ["Subtraction creates negative terms: -9 is a term, and combining like terms changes coefficients. Students who call the coefficient '6' after simplification have ignored the invisible -1."],
  "hinglish": "Terms ko minus ke saath padho - (-9) bhi ek term hai. Coefficient matlab 'kitne variable'. Aur dhyan do: simplified expression mein m ka coefficient 5 ban gaya kyunki -m ka coefficient -1 tha aur 6 - 1 = 5. Invisible coefficient dekhna hi asli skill hai.",
- "answer": "Terms: 6m, 4n, -9; variables: m, n; coefficients 6 and 4; constant -9. After simplification the coefficient of m is 5."},
+ "answer": "Terms: 6m, 4n, -9; variables: m, n; coefficients 6 and 4; constant -9. After simplification the coefficient of m is 5."}),
 
 ("q", {"n": 2, "level": "Basic", "concept": "Degree (T2)",
  "stem": "Find the degree of each polynomial: (i) 3x\u00b2 + 7x - 2  (ii) y\u00b3 - y + 5  (iii) -13  (iv) 6z + 1  (v) 8 - t\u2074 + t\u00b2.",
@@ -29,7 +29,7 @@ CH2_Q1 = [
   "(v) powers 0, 4, 2: the highest is 4, so degree 4 (a quartic - just report the number 4).",
  ],
  "hinglish": "Degree nikalne ka ek hi kaam: powers scan karo, sabse badi utha lo. Constant ka degree 0 hota hai - ye MCQ favourite hai. (v) mein dhyan do, powers beech mein ghumte hain (8, t\u2074, t\u00b2) - order koi baat nahi, max chahiye.",
- "answer": "(i) 2  (ii) 3  (iii) 0  (iv) 1  (v) 4."},
+ "answer": "(i) 2  (ii) 3  (iii) 0  (iv) 1  (v) 4."}),
 
 ("q", {"n": 3, "level": "Basic", "concept": "Classification (T2)",
  "stem": "Classify each as linear, quadratic, cubic or constant: 5 - 2x,  x\u00b2 + 3x,  4t\u00b3 - t,  7,  0.5y + 3.",
@@ -42,7 +42,7 @@ CH2_Q1 = [
   "0.5y + 3 has degree 1: linear (decimals in coefficients are perfectly fine).",
  ],
  "hinglish": "Naam yaad rakho: 1-linear, 2-quadratic, 3-cubic, 0-constant. Decimal coefficient wala bhi normal polynomial hi hai - 0.5y + 3 linear hi hai.",
- "answer": "Linear: 5 - 2x and 0.5y + 3. Quadratic: x\u00b2 + 3x. Cubic: 4t\u00b3 - t. Constant: 7."},
+ "answer": "Linear: 5 - 2x and 0.5y + 3. Quadratic: x\u00b2 + 3x. Cubic: 4t\u00b3 - t. Constant: 7."}),
 
 ("q", {"n": 4, "level": "Basic", "concept": "Coefficients at high powers (T1)",
  "stem": "In the polynomial 2x\u2074 - 5x\u00b3 + x\u00b2 - 9x + 1, state the coefficients of x\u2074, x\u00b3, x\u00b2, x and the constant term.",
@@ -54,7 +54,7 @@ CH2_Q1 = [
   "Coefficient of x is -9; the constant term is 1.",
  ],
  "hinglish": "Sign term ke saath chalta hai - (-5) hi coefficient hai. Aur x\u00b2 ka coefficient 1 hai, zero nahi! Ye do hi cheezein is question mein marks katati hain.",
- "answer": "2, -5, 1, -9 and constant 1."},
+ "answer": "2, -5, 1, -9 and constant 1."}),
 
 ("q", {"n": 5, "level": "Basic", "concept": "Evaluation (T3)",
  "stem": "Find the value of the linear polynomial 7x - 4 at (i) x = 0, (ii) x = 2, (iii) x = -3.",
@@ -66,7 +66,7 @@ CH2_Q1 = [
   "Note how the outputs drop by exactly 7 each time x drops by 1 going 2, 0, -3: (10, -4, -25) - the constant difference at work.",
  ],
  "hinglish": "Bracket lagana mandatory hai: 7(-3) = -21. Bina bracket ke log 7 - 3 - 4 = 0 likh dete hain - jabardast galti. Aur observation: x ek kadam gira toh output 7 gira - linear ka dhadakta hua constant difference.",
- "answer": "-4, 10, -25."},
+ "answer": "-4, 10, -25."}),
 
 ("q", {"n": 6, "level": "Basic", "concept": "Evaluation of a quadratic (T3)",
  "stem": "Find the value of the quadratic polynomial 2s\u00b2 + 3s - 5 at (i) s = 0, (ii) s = 2, (iii) s = -2.",
@@ -77,7 +77,7 @@ CH2_Q1 = [
   "Watch step (iii): (-2)\u00b2 = +4 but 3(-2) = -6. The square forgives the sign; the plain term does not.",
  ],
  "hinglish": "Do alag jagah sign ka risk hai: square wala term minus ko kha jaata hai (+4), par 3s wala term sign ko POORA follow karta hai (-6). Isi liye bracket - har value apne bracket mein.",
- "answer": "-5, 9, -3."},
+ "answer": "-5, 9, -3."}),
 
 ("q", {"n": 7, "level": "Basic", "concept": "Function machine (T3)",
  "stem": "A machine computes y = 3x - 1 for every input x. Find the outputs for x = 5 and x = -2. Then find the input that produces the output 20.",
@@ -89,7 +89,7 @@ CH2_Q1 = [
   "Verify: 3(7) - 1 = 20. Correct.",
  ],
  "hinglish": "Machine aage bhi chalti hai peeche bhi! Aage = substitute karo (14, -7). Peeche = equation solve karo: 3x - 1 = 20 se x = 7. Function ka yahi asli matlab hai - input-output ka judgementa rishta.",
- "answer": "Outputs 14 and -7; the input producing 20 is x = 7."},
+ "answer": "Outputs 14 and -7; the input producing 20 is x = 7."}),
 
 ("q", {"n": 8, "level": "Basic", "concept": "Word problem: sum and difference (T5)",
  "stem": "The sum of two numbers is 50, and one of them is 8 more than the other. Find the numbers.",
@@ -101,7 +101,7 @@ CH2_Q1 = [
   "Check in words: 21 + 29 = 50 and 29 - 21 = 8. Both conditions hold.",
  ],
  "hinglish": "Chota number x maan lo, bada apne aap x + 8 ban jaata hai. Sum equation se x = 21. Aur LAST STEP yaad rakho: dono numbers report karo - sirf 'x = 21' likha toh aadha answer hai. Words mein wapas check karo, equation mein hi nahi.",
- "answer": "The numbers are 21 and 29."},
+ "answer": "The numbers are 21 and 29."}),
 
 ("q", {"n": 9, "level": "Basic", "concept": "Perimeter polynomial (T3/T5)",
  "stem": "The perimeter of a square of side s is the linear polynomial 4s. Find the perimeter for s = 1, 2.5 and 7.5. If the side grows by 0.5 cm, by how much does the perimeter grow? Why?",
@@ -112,7 +112,7 @@ CH2_Q1 = [
   "Why constant: 4 times a fixed growth is a fixed growth; this is the constant-difference signature of a linear pattern.",
  ],
  "hinglish": "PDF wala hi idea: side 0.5 badhe toh perimeter 2 badhta hai - hamesha, kisibhi square ke liye. Kyunki 4 x 0.5 = 2, aur multiplication by constant fixed growth ko fixed hi rakhta hai. Yehi 'linear pattern' ka matlab hai.",
- "answer": "Perimeters 4, 10, 30; growth per 0.5 cm of side is exactly 2 units (constant, because the rule is linear)."},
+ "answer": "Perimeters 4, 10, 30; growth per 0.5 cm of side is exactly 2 units (constant, because the rule is linear)."}),
 
 ("q", {"n": 10, "level": "Basic", "concept": "Fee structure modelling (T5/T8)",
  "stem": "A badminton academy charges a joining fee of Rs 300 plus Rs 60 for every session attended. (i) Write the total cost for n sessions. (ii) Find the cost for 12 sessions. (iii) A player paid Rs 780 in total. How many sessions did she attend?",
@@ -124,7 +124,7 @@ CH2_Q1 = [
   "Check: 300 + 60(8) = 300 + 480 = 780. Correct - she attended 8 sessions.",
  ],
  "hinglish": "Fixed + rate x count - yahi har bill ka formula hai. Aage jaane ke liye substitute, peeche aane ke liye solve. 780 mein se 300 hataya toh sessions ka khel bacha: 480/60 = 8.",
- "answer": "(i) 300 + 60n  (ii) Rs 1020  (iii) 8 sessions."},
+ "answer": "(i) 300 + 60n  (ii) Rs 1020  (iii) 8 sessions."}),
 
 ("q", {"n": 11, "level": "Moderate", "concept": "Pattern rule (T6/T7)",
  "stem": "A pattern of square tiles starts with 5 tiles in stage 1, and each new stage adds 3 tiles. (i) Write the number of tiles in stage n. (ii) How many tiles in stage 12? (iii) Which stage has exactly 65 tiles?",
@@ -136,7 +136,7 @@ CH2_Q1 = [
   "n = 21 is a whole number, so stage 21 has exactly 65 tiles.",
  ],
  "hinglish": "Constant difference pehle pakdo (3), phir ek known term se c nikaalo (yahan 2). Aage ke liye substitute, peeche ke liye solve - aur n WHOLE NUMBER aana chahiye, warna stage exist nahi karti. Yahan 21 nikla, perfect.",
- "answer": "(i) 3n + 2  (ii) 38 tiles  (iii) stage 21."},
+ "answer": "(i) 3n + 2  (ii) 38 tiles  (iii) stage 21."}),
 
 ("q", {"n": 12, "level": "Moderate", "concept": "Linear decay money (T8)",
  "stem": "Bela has Rs 500 and spends Rs 30 every day. (i) Write the amount left after n days. (ii) After how many days will she be left with Rs 200? (iii) What is the amount left after 15 days, and why does the model stay valid only up to 10 days of reaching zero? Actually find the exact day her money runs out.",
@@ -149,7 +149,7 @@ CH2_Q1 = [
  ],
  "why": ["Real decay models hit a floor. Reporting WHEN the floor is reached (and that the model stops there) is the mark of a careful modeller."],
  "hinglish": "Decay question mein teen sawaal hote hain: kitna bacha (substitute), kab itna bacha (solve), kab khatam (zero set karo). Yahan 16.67 din - matlab 17ve din ke beech mein khatam. Model ki limit batana bhi answer ka hissa hai - paisa negative nahi ho sakta!",
- "answer": "(i) 500 - 30n  (ii) after 10 days  (iii) Rs 50 after 15 days; money hits zero during the 17th day (n = 500/30 = 16.67), where the model ends."},
+ "answer": "(i) 500 - 30n  (ii) after 10 days  (iii) Rs 50 after 15 days; money hits zero during the 17th day (n = 500/30 = 16.67), where the model ends."}),
 
 ("q", {"n": 13, "level": "Moderate", "concept": "Piecewise-style fare (T8)",
  "stem": "A taxi charges Rs 40 for the first 3 km (and any part of it), then Rs 18 for every additional km. (i) Find the fare for a 12 km trip. (ii) Write the fare for a trip of n km where n is at least 3. (iii) For what distance is the fare Rs 148?",
@@ -161,7 +161,7 @@ CH2_Q1 = [
   "Check with the original description: 40 for the first 3 km plus 18 x 6 = 108 for the next 6 km: total 148. Correct.",
  ],
  "hinglish": "PDF ke auto-fare jaisa hi question, bas numbers naye. Formula banane ke liye (n - 3) ka idea zaroori hai - pehle 3 km ka paisa already fixed 40 mein hai. Simplify karke 18n - 14 milta hai aur reverse solve se 9 km. Hamesha original description se verify karo.",
- "answer": "(i) Rs 202  (ii) F(n) = 18n - 14 for n at least 3  (iii) 9 km."},
+ "answer": "(i) Rs 202  (ii) F(n) = 18n - 14 for n at least 3  (iii) 9 km."}),
 
 ("q", {"n": 14, "level": "Moderate", "concept": "Age problem (T5)",
  "stem": "A mother is 4 times as old as her daughter. After 6 years, the sum of their ages will be 82 years. Find their present ages.",
@@ -174,7 +174,7 @@ CH2_Q1 = [
   "Check: after 6 years they are 20 and 62, sum 82. Correct.",
  ],
  "hinglish": "Age questions mein 'after' ka matlab dono ke age mein addition. 5x + 12 = 82 se x = 14. Check zaroori: 20 + 62 = 82. Mother 4x isliye 56 - equation se nahi, definition se.",
- "answer": "Daughter 14 years, mother 56 years."},
+ "answer": "Daughter 14 years, mother 56 years."}),
 
 ("q", {"n": 15, "level": "Moderate", "concept": "Ratio and difference (T5)",
  "stem": "Two positive integers are in the ratio 4 : 7 and their difference is 45. Find the numbers.",
@@ -185,7 +185,7 @@ CH2_Q1 = [
   "Check: 105 - 60 = 45 and 60 : 105 simplifies to 4 : 7. Correct.",
  ],
  "hinglish": "Ratio diya hai toh numbers ko 4x, 7x maano - ye shortcut hi asli technique hai. Difference equation ekdum linear ban jaata hai: 3x = 45. Ratio wapas check karo - 60:105, dono ko 15 se divide karo, 4:7. Sahi.",
- "answer": "60 and 105."},
+ "answer": "60 and 105."}),
 
 ("q", {"n": 16, "level": "Moderate", "concept": "Coin problem (T5)",
  "stem": "Rohit has five-rupee and ten-rupee coins. He has twice as many five-rupee coins as ten-rupee coins, and the total money is Rs 100. How many coins of each type does he have?",
@@ -197,7 +197,7 @@ CH2_Q1 = [
   "Check: 50 + 50 = 100 and 10 is twice 5. Correct.",
  ],
  "hinglish": "'Twice as many' ka matlab: jo KAM hai wo x, jo zyada hai wo 2x. Yahan 5-rupee zyada hain isliye 2x. Money equation mein VALUE se jodo - coin count nahi: 10x + 10x = 100. Sweet cancellation mili kyunki 5 x 2 = 10.",
- "answer": "5 ten-rupee coins and 10 five-rupee coins."},
+ "answer": "5 ten-rupee coins and 10 five-rupee coins."}),
 
 ("q", {"n": 17, "level": "Moderate", "concept": "Cutting a length (T5)",
  "stem": "A 240 cm rope is cut into two pieces so that the longer piece is three times the shorter piece. Find the length of each piece.",
@@ -208,7 +208,7 @@ CH2_Q1 = [
   "Check: 60 + 180 = 240 and 180 = 3 x 60. Correct.",
  ],
  "hinglish": "4x = 240 - chaar hisse jaise. Ek hissa 60, teen hisse 180. Simple, par 'both pieces report karo' wala discipline yaad rakho.",
- "answer": "60 cm and 180 cm."},
+ "answer": "60 cm and 180 cm."}),
 
 ("q", {"n": 18, "level": "Moderate", "concept": "Rectangle dimensions (T5)",
  "stem": "The length of a rectangle is 3 more than twice its width, and its perimeter is 36 cm. Find the dimensions.",
@@ -220,7 +220,7 @@ CH2_Q1 = [
   "Check: 2(5 + 13) = 36 and 13 is indeed 3 more than twice 5. Correct.",
  ],
  "hinglish": "Perimeter formula ke andar hi expression daal do, phir dheere-dheere simplify: pehle 2 se divide, phir 3 se. '3 more than twice' ka translation (2w + 3) hi question ka dil hai.",
- "answer": "Width 5 cm, length 13 cm."},
+ "answer": "Width 5 cm, length 13 cm."}),
 
 ("q", {"n": 19, "level": "Moderate", "concept": "Linear growth (T8)",
  "stem": "A sapling is 1.75 feet tall and grows 0.5 feet each month. (i) Write its height after t months. (ii) Height after 7 months? (iii) After how many months will it be 6.75 feet tall?",
@@ -231,7 +231,7 @@ CH2_Q1 = [
   "Check: 1.75 + 0.5(10) = 1.75 + 5 = 6.75. Correct.",
  ],
  "hinglish": "Growth = start + rate x time. Decimals se ghabrana nahi - 1.75 + 3.5 = 5.25 seedha hai. Reverse mein 5/0.5 = 10 - decimal divide karte waqt dono ko 100 se multiply karna comfortable ho jaata hai practice se.",
- "answer": "(i) h(t) = 1.75 + 0.5t  (ii) 5.25 feet  (iii) 10 months."},
+ "answer": "(i) h(t) = 1.75 + 0.5t  (ii) 5.25 feet  (iii) 10 months."}),
 
 ("q", {"n": 20, "level": "Moderate", "concept": "Linear decay depreciation (T8)",
  "stem": "A phone bought for Rs 10,000 loses Rs 800 in value every year. (i) Value after t years? (ii) Value after 3 years? (iii) After how many years will the value be Rs 3,600?",
@@ -242,7 +242,7 @@ CH2_Q1 = [
   "Check: 10000 - 800(8) = 10000 - 6400 = 3600. Correct.",
  ],
  "hinglish": "Depreciation = linear decay ka business avatar. 6400/800 = 8 - tables ka kaam. Model tab tak valid jab tak value non-negative: 10000/800 = 12.5 saal ke baad phone 'zero value' ka zone mein.",
- "answer": "(i) v(t) = 10000 - 800t  (ii) Rs 7,600  (iii) 8 years."},
+ "answer": "(i) v(t) = 10000 - 800t  (ii) Rs 7,600  (iii) 8 years."}),
 
 ("q", {"n": 21, "level": "Difficult", "concept": "Fit y = ax + b (T9)",
  "stem": "A learning platform charges a fixed monthly fee plus a per-module charge. A student observed that accessing 10 modules cost Rs 400 and accessing 14 modules cost Rs 500. Assuming the bill is y = ax + b, find a and b, and interpret both numbers.",
@@ -256,7 +256,7 @@ CH2_Q1 = [
  ],
  "why": ["Subtracting the equations kills b instantly - the entire technique rests on b being identical in both lines."],
  "hinglish": "Do observation, do equation, ek SUBTRACTION - b khatam, a seedha mil gaya (25). Phir wapas jao, b nikaalo (150). Interpretation zaroor likho: 25 = per-module charge, 150 = fixed fee. Ye interpretation wali line hi examiner ko dikhati hai ki tumne samjha hai, sirf calculation nahi kiya.",
- "answer": "a = 25 (per-module rate), b = 150 (fixed fee); y = 25x + 150."},
+ "answer": "a = 25 (per-module rate), b = 150 (fixed fee); y = 25x + 150."}),
 
 ("q", {"n": 22, "level": "Difficult", "concept": "Fit y = ax + b gym version (T9)",
  "stem": "A gym charges a fixed monthly fee plus an hourly rate for the badminton court. Using the court for 10 hours cost Rs 800; using it for 15 hours cost Rs 1100. Find the linear relationship y = ax + b and state what each number represents.",
@@ -269,7 +269,7 @@ CH2_Q1 = [
   "Verification: 60(15) + 200 = 900 + 200 = 1100. Correct.",
  ],
  "hinglish": "Same machine, naye numbers: subtract (300 = 5a), a = 60, wapas jao, b = 200. Practise se ye 30-second ka kaam ban jaata hai. Interpretation sentence banao hi - marks wahan hai.",
- "answer": "a = 60 (per hour), b = 200 (fixed fee); y = 60x + 200."},
+ "answer": "a = 60 (per hour), b = 200 (fixed fee); y = 60x + 200."}),
 
 ("q", {"n": 23, "level": "Difficult", "concept": "Temperature scales (T9)",
  "stem": "The relation between Celsius C and Fahrenheit F has the linear form F = aC + b. Water melts at 0 degrees Celsius and 32 degrees Fahrenheit, and boils at 100 degrees Celsius and 212 degrees Fahrenheit. Find a and b.",
@@ -281,7 +281,7 @@ CH2_Q1 = [
   "Verification: C = 100 gives 180 + 32 = 212. Correct.",
  ],
  "hinglish": "Yahan data ki kripa se b PEHLE mil gaya (zero input pe output hi b hai!). Phir sirf ek equation bachi, a = 1.8. Ye formula tum pehle se jaante ho - ab tumne use DERIVE kiya hai. Fitting ka asli maza yahi hai.",
- "answer": "a = 1.8 (= 9/5), b = 32; F = 1.8C + 32."},
+ "answer": "a = 1.8 (= 9/5), b = 32; F = 1.8C + 32."}),
 
 ("q", {"n": 24, "level": "Difficult", "concept": "Kelvin-Fahrenheit relation (T9/T10)",
  "stem": "The relation between Kelvin x and Fahrenheit y is y = (9/5)(x - 273) + 32. (i) Find y when x = 313. (ii) Find x when y = 158. (iii) Rewrite the relation in the form y = ax + b and state a and b.",
@@ -294,7 +294,7 @@ CH2_Q1 = [
   "Both checks agree with the formula's internal logic (313 - 273 = 40 is a clean number; 158 maps back to 343 K exactly).",
  ],
  "hinglish": "Bracket PEHLE kholo mental math mein: 313 - 273 = 40, phir 9/5 x 40 = 72. (ii) mein ulta chale: minus 32, multiply 5/9, plus 273 - teen saaf kadam. (iii) expand karne par b = -459.4 - bura lagta hai par bilkul theek hai, Kyunki Kelvin zero hi itna neeche Fahrenheit mein hota hai.",
- "answer": "(i) 104 degrees F  (ii) 343 K  (iii) y = 1.8x - 459.4, so a = 1.8 and b = -459.4."},
+ "answer": "(i) 104 degrees F  (ii) 343 K  (iii) y = 1.8x - 459.4, so a = 1.8 and b = -459.4."}),
 
 ("q", {"n": 25, "level": "Difficult", "concept": "Matchstick pattern (T6/T7)",
  "stem": "Squares are made with matchsticks placed in a row, each new square sharing one side with the previous one. The counts are 4, 7, 10, ... (i) How many matchsticks for n squares? (ii) For 22 squares? (iii) Can exactly 100 matchsticks form such a row of squares? Justify.",
@@ -306,5 +306,5 @@ CH2_Q1 = [
   "The justification is the integrality of n: patterns exist only at whole-number stages.",
  ],
  "hinglish": "3n + 1 wala rule - ek square 4, har naya square sirf 3 extra le raha hai kyunki ek side share hoti hai. 'Can 100 form a stage?' ka matlab: solve karo aur INTEGRITY check karo. Yahan n = 33 whole number - YES. Agar 33.33 aata toh answer 'No, kabhi nahi' hota - aur wahi asli answer hota.",
- "answer": "(i) 3n + 1  (ii) 67  (iii) Yes - stage n = 33 uses exactly 100 matchsticks."},
+ "answer": "(i) 3n + 1  (ii) 67  (iii) Yes - stage n = 33 uses exactly 100 matchsticks."}),
 ]

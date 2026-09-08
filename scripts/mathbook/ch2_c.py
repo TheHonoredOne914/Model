@@ -12,7 +12,7 @@ CH2_Q2 = [
   "Nearest stages: 39 hexagons use 196; 40 hexagons use 201. The value 200 falls in the gap.",
  ],
  "hinglish": "Q25 ka mirror image! Wahan integer mila tha (YES), yahan 39.8 aaya (NO). Ye 'No with justification' answer full-mark answer hai - bolo ki 39 aur 40 ke beech gap mein hai 200. Fractional stage pattern mein exist nahi karti.",
- "answer": "(i) 5n + 1  (ii) 76  (iii) No: n = 39.8 is not a whole number (39 gives 196, 40 gives 201)."},
+ "answer": "(i) 5n + 1  (ii) 76  (iii) No: n = 39.8 is not a whole number (39 gives 196, 40 gives 201)."}),
 
 ("q", {"n": 27, "level": "Difficult", "concept": "Rally decay (T8)",
  "stem": "A rally starts with 120 members. Every hour, exactly 9 members drop out. (i) Members after n hours? (ii) After how many hours will 39 members remain? (iii) Will the rally reach exactly 12 members at the end of some hour? Justify.",
@@ -24,7 +24,7 @@ CH2_Q2 = [
   "For completeness: the count would hit zero when 120 - 9n = 0, n = 13.33, so the 12-member moment is real and comfortably inside the model's range.",
  ],
  "hinglish": "Do reverse questions ek saath - 39 aur 12. Dono ke n whole numbers nikle, dono possible. Yahan n = 12 bilkul clean aaya. Kabhi-kabhi dono mein se ek fraction dega - tab wala 'No, kyunki n whole nahi' answer bhi likhna aana chahiye.",
- "answer": "(i) 120 - 9n  (ii) 9 hours  (iii) Yes - exactly at n = 12 hours."},
+ "answer": "(i) 120 - 9n  (ii) 9 hours  (iii) Yes - exactly at n = 12 hours."}),
 
 ("q", {"n": 28, "level": "Difficult", "concept": "Savings growth (T8)",
  "stem": "Meera has Rs 1,200 in her savings jar and adds Rs 250 every month. (i) Amount after n months? (ii) When will she have Rs 3,200? (iii) Interpret the slope and intercept of this linear model.",
@@ -36,7 +36,7 @@ CH2_Q2 = [
   "Check: 1200 + 250(8) = 1200 + 2000 = 3200. Correct.",
  ],
  "hinglish": "Simple growth, par (iii) mein asli test: slope = monthly rate (250), intercept = starting balance (1200). Yehi language future ke graph chapters mein repeat hogi - abhi se pakad lo.",
- "answer": "(i) A(n) = 1200 + 250n  (ii) 8 months  (iii) slope 250 = monthly saving; intercept 1200 = starting amount."},
+ "answer": "(i) A(n) = 1200 + 250n  (ii) 8 months  (iii) slope 250 = monthly saving; intercept 1200 = starting amount."}),
 
 ("q", {"n": 29, "level": "Difficult", "concept": "Tank decay (T8)",
  "stem": "A tank holds 900 litres and drains at 45 litres per hour. (i) Volume after t hours? (ii) When will 495 litres remain? (iii) When does the tank empty exactly?",
@@ -48,7 +48,7 @@ CH2_Q2 = [
   "Check: 900 - 45(20) = 0. Correct.",
  ],
  "hinglish": "Draining = decay with a definite end. 495 pe 9 hours, empty pe 20 hours - dono clean. 900/45 mental math trick: dono ko 5 se divide karo, 180/9 = 20.",
- "answer": "(i) V(t) = 900 - 45t  (ii) 9 hours  (iii) exactly 20 hours."},
+ "answer": "(i) V(t) = 900 - 45t  (ii) 9 hours  (iii) exactly 20 hours."}),
 
 ("q", {"n": 30, "level": "Difficult", "concept": "Two linear polynomials from conditions (T14)",
  "stem": "Let p(x) = ax + b and q(x) = cx + d. Given: (i) p(0) = 5, (ii) the polynomial p(x) - q(x) cuts the x-axis at (3, 0), and (iii) p(x) + q(x) = 6x + 4 for all x. Find p(x) and q(x).",
@@ -62,7 +62,7 @@ CH2_Q2 = [
  ],
  "why": ["Matching coefficients of identical linear polynomials converts each 'for all x' statement into one neat equation. Three conditions, three unknowns, linear system - no guessing needed."],
  "hinglish": "Ye Chapter 2 ka chaabi-wala question hai. 'For all x' ka matlab: coefficients ko MATCH karo - do equations mil gayi (a + c = 6, b + d = 4). Teesri condition ne (a - c = -2) di. Ab do-do equations ka system: add karo, a = 2; c = 4; d = -1. Verification teeno conditions pe - full proof. Ye question Olympiad-lite band ka entry gate hai.",
- "answer": "p(x) = 2x + 5 and q(x) = 4x - 1."},
+ "answer": "p(x) = 2x + 5 and q(x) = 4x - 1."}),
 
 ("q", {"n": 31, "level": "High", "concept": "Line through two points (T9/T13)",
  "stem": "The graph of a linear polynomial p(x) passes through (2, 3) and (6, 11). (i) Find p(x). (ii) Find the coordinates where the graph cuts the x-axis and the y-axis. (iii) State the slope and interpret it.",
@@ -75,7 +75,7 @@ CH2_Q2 = [
   "Slope 2 means every extra unit of x raises the output by 2 - the line climbs two steps for one step across.",
  ],
  "hinglish": "Do points se line - wahi subtract-trick (4a = 8). Intercept nikaalne ka rule: x-axis cut = y ko 0 rakho; y-axis cut = x ko 0 rakho. (1/2, 0) fraction mein aata hai toh fraction mein chhod do. Slope ka meaning bolo: '1 right, 2 up'.",
- "answer": "(i) p(x) = 2x - 1  (ii) cuts x-axis at (1/2, 0), y-axis at (0, -1)  (iii) slope 2 - rises 2 units per 1 unit of x."},
+ "answer": "(i) p(x) = 2x - 1  (ii) cuts x-axis at (1/2, 0), y-axis at (0, -1)  (iii) slope 2 - rises 2 units per 1 unit of x."}),
 
 ("q", {"n": 32, "level": "High", "concept": "Parallel lines through data (T12)",
  "stem": "The graph of p(x) passes through (1, 4) and (5, 8). The graph of q(x) passes through (2, -2) and is parallel to the graph of p(x). Find both polynomials and the x-axis intercepts of each.",
@@ -88,7 +88,7 @@ CH2_Q2 = [
   "Slopes both equal 1 - the lines rise together, forever 7 units apart vertically.",
  ],
  "hinglish": "Parallel ka matlab sirf: slope SAME (a = 1), intercept alag. Q ka intercept ek point se mil gaya (d = -4). Intercepts nikaalne ka rule wahi - y = 0 rakho. Notice: parallel lines kabhi nahi milte, isliye unke x-axis cuts alag-alag hain (x = -3 vs x = 4).",
- "answer": "p(x) = x + 3 with x-intercept (-3, 0); q(x) = x - 4 with x-intercept (4, 0); both have slope 1."},
+ "answer": "p(x) = x + 3 with x-intercept (-3, 0); q(x) = x - 4 with x-intercept (4, 0); both have slope 1."}),
 
 ("q", {"n": 33, "level": "High", "concept": "Family property (T14)",
  "stem": "Consider all linear polynomials of the form f(x) = ax - a where a is a positive real number. Prove that the graph of every such polynomial passes through one fixed point, and find that point.",
@@ -101,7 +101,7 @@ CH2_Q2 = [
  ],
  "why": ["A fact true for all a must survive arbitrary substitution of a; factoring out a exposes the point where a becomes irrelevant."],
  "hinglish": "Family question ka funda: 'har a ke liye sahi' tabhi ho sakta hai jab a ki asar ZERO ho jaye. y = a(x - 1) likhte hi dikhta hai - x = 1 rakh do toh a khatam, y = 0. Toh (1, 0) wo nail hai jis par saari lines latki hain. Ye idea (PDF ka starred question) aage 'pencil of lines' ke naam se famous hai.",
- "answer": "Every line y = ax - a passes through the fixed point (1, 0), since y = a(x - 1) vanishes there for all a."},
+ "answer": "Every line y = ax - a passes through the fixed point (1, 0), since y = a(x - 1) vanishes there for all a."}),
 
 ("q", {"n": 34, "level": "High", "concept": "Compare two lines (T11/T12)",
  "stem": "Draw-free reasoning: compare the graphs of y = 3x + 1 and y = -3x + 1. State their common features, their differences, and the geometric relationship between the two lines.",
@@ -113,7 +113,7 @@ CH2_Q2 = [
   "They are NOT parallel (slopes differ), so they cross - exactly at the shared point (0, 1).",
  ],
  "hinglish": "Same intercept, opposite slopes: dono lines (0, 1) mein milti hain aur wahan se ek upar, ek neeche jaati hain - y-axis ke aaine mein twin. 'Replace x by -x' wala reflection argument coordinate geometry ka classic move hai - Chapter 1 ke reflections se seedha connection.",
- "answer": "Both pass through (0, 1); slopes +3 and -3 make them mirror images in the y-axis, crossing at (0, 1) - not parallel."},
+ "answer": "Both pass through (0, 1); slopes +3 and -3 make them mirror images in the y-axis, crossing at (0, 1) - not parallel."}),
 
 ("q", {"n": 35, "level": "High", "concept": "Disguised slope/intercept (T11)",
  "stem": "Find the slope and y-intercept of each line, and say which is steeper: (i) 2y = 4x + 7, (ii) 5y = 6x - 10.",
@@ -125,7 +125,7 @@ CH2_Q2 = [
   "Interpretation: line (i) rises 2 units per unit of x; line (ii) rises 1.2 units per unit.",
  ],
  "hinglish": "Golden rule: pehle y = ... banao. 2y = 4x + 7 ko dekh ke log slope 4 likh dete hain - GALAT, 4 toh 2y ka hai! Divide karne ke baad hi a = 2 aur b = 3.5. Steepness = slope comparison: 2 vs 1.2.",
- "answer": "(i) slope 2, intercept 3.5  (ii) slope 1.2, intercept -2  (i) is steeper."},
+ "answer": "(i) slope 2, intercept 3.5  (ii) slope 1.2, intercept -2  (i) is steeper."}),
 
 ("q", {"n": 36, "level": "High", "concept": "Parallel detection (T12)",
  "stem": "Are any two of these three lines parallel? (i) y = 2x + 3.5  (ii) y = 1.2x - 2  (iii) 3y = 6x - 11. Justify using slopes.",
@@ -137,7 +137,7 @@ CH2_Q2 = [
   "(ii) meets both of the others (different slopes). Parallel lines never meet - (i) and (iii) will never cross each other.",
  ],
  "hinglish": "Parallel ka ek hi test: slopes barabar? (iii) ko 3 se divide karo: slope 2. (i) bhi slope 2 - MATCH! Intercepts alag (3.5 vs -3.67), isliye distinct parallel lines. (ii) akela slope 1.2 - wo dono ko kaat-ta hai.",
- "answer": "Lines (i) and (iii) are parallel (both slope 2, different intercepts); (ii) is parallel to neither."},
+ "answer": "Lines (i) and (iii) are parallel (both slope 2, different intercepts); (ii) is parallel to neither."}),
 
 ("q", {"n": 37, "level": "High", "concept": "Work as linear model (T8/T13)",
  "stem": "Work done by a constant force equals force times distance travelled. Taking the constant force as 3 units, (i) write work w as a linear function of distance d, (ii) find the work done over a distance of 2 units, (iii) explain what kind of line this draws and where it passes.",
@@ -149,7 +149,7 @@ CH2_Q2 = [
   "The line passes through (0, 0) and, for instance, (2, 6); plotting these two points determines it completely.",
  ],
  "hinglish": "w = F x d bina fixed part ke - b = 0 - isliye line origin se guzarti hai. Ye PDF ki Fig 2.8 family (y = ax) ka physics version hai. 'Force = slope of the work-distance line' - ek line, ek physical meaning.",
- "answer": "(i) w(d) = 3d  (ii) 6 units  (iii) a straight line through the origin with slope 3."},
+ "answer": "(i) w(d) = 3d  (ii) 6 units  (iii) a straight line through the origin with slope 3."}),
 
 ("q", {"n": 38, "level": "High", "concept": "Reverse data bill (T9/T10)",
  "stem": "A telecom bill follows y = 20x + 150 (Rs 20 per GB plus Rs 150 fixed). (i) What will the bill be for 30 GB? (ii) A student received a bill of Rs 750. How much data did she use? (iii) What does the 150 mean for a month in which she used no data at all?",
@@ -160,7 +160,7 @@ CH2_Q2 = [
   "Notice (i) and (ii) are inverses of each other - forward and backward through the same machine.",
  ],
  "hinglish": "Yehi bill equation aage-peeche do baar: substitute aur solve. Mazedaar baat: (i) aur (ii) ka jawab same pair (30, 750) hai - kyunki ek hi line ke do raaste hain. (iii) zero usage par bhi 150 - fixed fee ka matlab hi yahi hai.",
- "answer": "(i) Rs 750  (ii) 30 GB  (iii) the Rs 150 fixed fee is charged even for zero usage."},
+ "answer": "(i) Rs 750  (ii) 30 GB  (iii) the Rs 150 fixed fee is charged even for zero usage."}),
 
 ("q", {"n": 39, "level": "High", "concept": "Point-on-line test (T13)",
  "stem": "Three of these four lines pass through the point (4, -2). Identify the one that does NOT, showing the substitution for each: (A) y = -x + 2  (B) y = x - 6  (C) y = -2x + 6  (D) y = 2x - 6.",
@@ -173,7 +173,7 @@ CH2_Q2 = [
   "So the answer is (D). (Fun fact: three different-looking lines can share one point - lines through a common point form a 'pencil'.)",
  ],
  "hinglish": "Point-on-line ka test: substitute karo, dono side match? A, B, C teeno ne -2 diya. D ne 2 diya - miss. Ye question 'verification' ki taakat dikhata hai: ek chhota substitution poori geometry bata deta hai.",
- "answer": "(D) y = 2x - 6 does not pass through (4, -2); it gives y = 2 there."},
+ "answer": "(D) y = 2x - 6 does not pass through (4, -2); it gives y = 2 there."}),
 
 ("q", {"n": 40, "level": "High", "concept": "Pattern reachability (T6/T7)",
  "stem": "A sequence follows the rule T(n) = 3n - 1. (i) List the first four terms. (ii) Which term equals 50? (iii) Is 100 a term of this sequence? Justify.",
@@ -185,7 +185,7 @@ CH2_Q2 = [
   "The justification is integrality: sequence positions must be whole numbers.",
  ],
  "hinglish": "3n - 1 family: terms 2, 5, 8, 11 - har baar +3. 50 aata hai n = 17 par. 100 ke liye n = 33.67 aaya - whole number nahi, toh 100 sequence ka term NAHI. Neighbour check: 98 aur 101 - 100 beech mein chhoot gaya. Yahi 'gap' wala justification full marks deta hai.",
- "answer": "(i) 2, 5, 8, 11  (ii) the 17th term  (iii) No: n = 101/3 is not a whole number (the terms jump from 98 to 101)."},
+ "answer": "(i) 2, 5, 8, 11  (ii) the 17th term  (iii) No: n = 101/3 is not a whole number (the terms jump from 98 to 101)."}),
 
 ("q", {"n": 41, "level": "HOTS", "concept": "Two-condition number problem (T5/T14)",
  "stem": "Two numbers differ by 7. Three times the smaller number plus twice the larger number equals 74. Find both numbers.",
@@ -197,7 +197,7 @@ CH2_Q2 = [
   "Check: difference 19 - 12 = 7. Weighted sum: 3(12) + 2(19) = 36 + 38 = 74. Both hold.",
  ],
  "hinglish": "Do conditions ka combo: difference ne x aur x + 7 diye, weighted sum ne equation di. 5x = 60 - clean. Verification dono conditions pe karo, sirf ek pe nahi.",
- "answer": "12 and 19."},
+ "answer": "12 and 19."}),
 
 ("q", {"n": 42, "level": "HOTS", "concept": "Two-digit reversal (T5/T14)",
  "stem": "The digits of a two-digit number differ by 4. When the digits are interchanged and the resulting number is added to the original, the sum is 110. Find all two-digit numbers satisfying this.",
@@ -210,7 +210,7 @@ CH2_Q2 = [
   "Note the beautiful structure: the reversal sum only depends on a + b, so the difference condition picks the exact digit pair.",
  ],
  "hinglish": "Reversal-sum ka secret: 10a + b + 10b + a = 11(a + b). Hamesha 11 ka multiple! 110/11 = 10 = digit sum. Phir 'differ by 4' do cases kholta hai - (7,3) ya (3,7). Dono valid, dono report karo. Ye question classic hai aur har exam mein kisi na kisi roop mein aata hai.",
- "answer": "73 and 37 (both satisfy the conditions)."},
+ "answer": "73 and 37 (both satisfy the conditions)."}),
 
 ("q", {"n": 43, "level": "HOTS", "concept": "Wire rectangle area function (T14)",
  "stem": "A wire of length 36 cm is bent into a rectangle. Let the length be x cm. (i) Write the area as a function of x. (ii) Find ALL lengths x that give an area of 77 sq cm. (iii) Which single length gives the largest area, and what is that area?",
@@ -223,7 +223,7 @@ CH2_Q2 = [
   "Structure noticed: areas rise toward x = 9 and fall after it - symmetric about the square.",
  ],
  "hinglish": "Ye PDF ke wire example ka bada bhai. Area quadratic nikla (18x - x\u00b2) - chapter linear hai par evaluation quadratic ki bhi practice hai (Ex 2.2 mein tha). 77 ke liye do answers (7 aur 11) ek hi rectangle ke do naam hain - symmetry! Aur square (9 x 9 = 81) max deta hai - ye observation Grade 10 mein formally aayega, aaj ke liye table-test kaafi hai.",
- "answer": "(i) A(x) = 18x - x\u00b2  (ii) x = 7 or 11 (the same rectangle, two descriptions)  (iii) x = 9 gives the maximum area 81 sq cm."},
+ "answer": "(i) A(x) = 18x - x\u00b2  (ii) x = 7 or 11 (the same rectangle, two descriptions)  (iii) x = 9 gives the maximum area 81 sq cm."}),
 
 ("q", {"n": 44, "level": "HOTS", "concept": "Salary structure (T9/T10)",
  "stem": "A salesperson earns a fixed monthly amount plus a commission per sale. With 20 sales the pay is Rs 30,000; with 35 sales it is Rs 45,000. (i) Find the linear pay formula. (ii) How many sales are needed to earn Rs 52,000? (iii) What is the fixed amount?",
@@ -236,7 +236,7 @@ CH2_Q2 = [
   "The fixed amount b = 10000: even with zero sales, Rs 10,000 is paid.",
  ],
  "hinglish": "Salary = bill jaisi hi structure: fixed + rate x count. 15 sales ka difference 15000 deta hai: per-sale 1000. 42 sales for 52k. Interpretation: zero sales par bhi 10k milta hai - base pay.",
- "answer": "(i) y = 1000x + 10000  (ii) 42 sales  (iii) Rs 10,000."},
+ "answer": "(i) y = 1000x + 10000  (ii) 42 sales  (iii) Rs 10,000."}),
 
 ("q", {"n": 45, "level": "HOTS", "concept": "Where C equals F (T14)",
  "stem": "Using the conversion relation F = 1.8C + 32, find the temperature at which the Celsius and Fahrenheit readings are EQUAL. Show the full working.",
@@ -248,7 +248,7 @@ CH2_Q2 = [
   "So -40 degrees is the unique temperature where both scales agree - a famous meeting point of the two lines F = 1.8C + 32 and F = C.",
  ],
  "hinglish": "Dono reading barabar matlab dono lines ka INTERSECTION: F = C aur F = 1.8C + 32. Solve karo: -40. Negative temperature mein sign ka dhyan - 1.8(-40) = -72. Verify: -72 + 32 = -40. Dono scale -40 par milti hain - ek hi baar.",
- "answer": "At -40 degrees, where C = F = -40."},
+ "answer": "At -40 degrees, where C = F = -40."}),
 
 ("q", {"n": 46, "level": "HOTS", "concept": "Plan comparison (T14)",
  "stem": "Mobile Plan A costs Rs 200 per month plus Rs 2 per GB. Plan B costs Rs 350 per month plus Rs 0.50 per GB. (i) Write both cost formulas. (ii) For what data usage do the plans cost the same? (iii) Which plan is cheaper for a user consuming 60 GB? (iv) For 150 GB?",
@@ -261,7 +261,7 @@ CH2_Q2 = [
   "Structure: below 100 GB choose the small-fixed-high-rate plan (A); above 100 GB the high-fixed-low-rate plan (B) wins. The crossing point 100 GB is the decision boundary.",
  ],
  "hinglish": "Do plans ka muqabla = do lines ka intersection. 100 GB par dono 400 - crossing point. Usse kam data toh A sasta (fixed fee kam), zyada data toh B (rate kam). Ye 'decision boundary' thinking real life mein har jagah hai - OTT plans, taxi vs auto, sab yahi maths hai.",
- "answer": "(i) A: 200 + 2x; B: 350 + 0.5x  (ii) equal at 100 GB (both Rs 400)  (iii) A cheaper at 60 GB (320 vs 380)  (iv) B cheaper at 150 GB (425 vs 500)."},
+ "answer": "(i) A: 200 + 2x; B: 350 + 0.5x  (ii) equal at 100 GB (both Rs 400)  (iii) A cheaper at 60 GB (320 vs 380)  (iv) B cheaper at 150 GB (425 vs 500)."}),
 
 ("q", {"n": 47, "level": "HOTS", "concept": "Function composition lite (T14)",
  "stem": "Let p(x) = 3x + 1. Given p(2) = 7 and p(5) = 16. (i) Find x such that p(x) = 100. (ii) Compute p(p(1)). (iii) Compute p(p(p(0))).",
@@ -273,7 +273,7 @@ CH2_Q2 = [
   "General check for (iii): p(p(p(0))) = p(p(1)) = p(4) = 13. Verified.",
  ],
  "hinglish": "Machine ke andar machine - andar wala PEHLE chalao. p(p(1)): pehle p(1) = 4, phir p(4) = 13. (iii) mein teen layer: 0, 1, 4, 13. Interesting: (ii) aur (iii) ka jawab same kyun? Kyunki dono chains 1 se guzri. Deterministic machine = same input, same output.",
- "answer": "(i) x = 33  (ii) 13  (iii) 13."},
+ "answer": "(i) x = 33  (ii) 13  (iii) 13."}),
 
 ("q", {"n": 48, "level": "HOTS", "concept": "Iterated machine (T14)",
  "stem": "The machine f(x) = 2x + 3 is applied again and again, starting from x\u2080 = 1: x\u2081 = f(1), x\u2082 = f(x\u2081), and so on. (i) Compute x\u2081, x\u2082, x\u2083. (ii) Compute x\u2084. (iii) Describe in words what each application does to the current value.",
@@ -286,7 +286,7 @@ CH2_Q2 = [
   "The outputs 1, 5, 13, 29, 61 grow fast because doubling compounds - a taste of exponential behaviour hiding inside repeated linear steps.",
  ],
  "hinglish": "Repeat machine: double karo, 3 jodo, phir se. 1, 5, 13, 29, 61. Har step pe 'double + 3' - baar-baar same recipe. Jab linear machine ko baar-baar chalate hain toh growth tez ho jaati hai (double ki wajah se) - ye seedhi line se exponential behaviour ka darwaza hai.",
- "answer": "(i) 5, 13, 29  (ii) 61  (iii) each step doubles the value and adds 3."},
+ "answer": "(i) 5, 13, 29  (ii) 61  (iii) each step doubles the value and adds 3."}),
 
 ("q", {"n": 49, "level": "HOTS", "concept": "Axis intercepts and triangle (T13/T14)",
  "stem": "Consider the line y = 2x + 8. (i) Find its y-intercept. (ii) Find its x-intercept. (iii) The line and the two axes form a triangle. Find its area.",
@@ -298,7 +298,7 @@ CH2_Q2 = [
   "Distances use absolute values: the horizontal leg has length |-4 - 0| = 4 even though the point sits left of the origin.",
  ],
  "hinglish": "Intercepts nikaalo (0, 8) aur (-4, 0). Origin ke saath milke right triangle bana - legs 8 aur 4. Area 16. Left-side hone se area nahi badalta - length toh absolute hai. Ye question Chapter 2 ke graphing ko Chapter 1 ke area se jodta hai - mixed-concept preview.",
- "answer": "(i) (0, 8)  (ii) (-4, 0)  (iii) area = 16 square units."},
+ "answer": "(i) (0, 8)  (ii) (-4, 0)  (iii) area = 16 square units."}),
 
 ("q", {"n": 50, "level": "HOTS", "concept": "Concurrent lines (T14)",
  "stem": "Three lines are given: L1: y = x + 1, L2: y = -x + 5 and L3: y = 3. Find the pairwise intersections of L1 with L2, L1 with L3, and L2 with L3. What do you conclude about the three lines?",
@@ -310,5 +310,5 @@ CH2_Q2 = [
   "Conclusion: the three lines are CONCURRENT - they all pass through one common point. Verification: (2, 3) satisfies all three equations: 2 + 1 = 3, -2 + 5 = 3, and 3 = 3.",
  ],
  "hinglish": "Teen lines, teen intersections - aur teeno ka jawab SAME (2, 3)! Matlab teeno lines ek hi point par cross ho rahi hain - concurrency. Two-line intersection nikaalna = equations barabar rakhna. Ye HOTS finale tumhe Class 11 ki 'solution of system' ki taraf punch maar raha hai.",
- "answer": "All three intersections equal (2, 3); the lines are concurrent."},
+ "answer": "All three intersections equal (2, 3); the lines are concurrent."}),
 ]
