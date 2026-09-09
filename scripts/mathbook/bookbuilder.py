@@ -115,6 +115,19 @@ _st('thead', fontName='FreeSerif-Bold', fontSize=9.6, leading=12.6, textColor=co
     alignment=TA_LEFT)
 _st('tcell', fontName='FreeSerif', fontSize=9.5, leading=13.2, textColor=TEXT_PRIMARY,
     alignment=TA_LEFT)
+# Boxed question / solution styles
+_st('qboxhead', fontName='FreeSerif-Bold', fontSize=9.3, leading=12.5, textColor=colors.white,
+    alignment=TA_LEFT)
+_st('qboxstem', fontName='FreeSerif', fontSize=10.6, leading=15.8, alignment=TA_LEFT,
+    textColor=TEXT_PRIMARY)
+_st('solstep', fontName='FreeSerif', fontSize=10.3, leading=15.2, alignment=TA_LEFT,
+    textColor=TEXT_PRIMARY)
+_st('solwhy', fontName='FreeSerif', fontSize=9.7, leading=14.0, alignment=TA_LEFT,
+    textColor=TEXT_PRIMARY)
+_st('solans', fontName='FreeSerif-Bold', fontSize=10.7, leading=15.2, alignment=TA_LEFT,
+    textColor=HEADER_FILL)
+_st('solhing', fontName='FreeSerif-Italic', fontSize=9.9, leading=14.4, alignment=TA_LEFT,
+    textColor=TEXT_PRIMARY)
 _st('toc0', fontName='FreeSerif-Bold', fontSize=11.5, leading=17, textColor=HEADER_FILL, leftIndent=6)
 _st('toc1', fontName='FreeSerif', fontSize=9.8, leading=14.5, textColor=TEXT_PRIMARY, leftIndent=26)
 _st('tocTitle', fontName='FreeSerif-Bold', fontSize=19, leading=24, textColor=HEADER_FILL, spaceAfter=14)
@@ -284,7 +297,7 @@ def render_blocks(blocks, story):
             story.extend(safe_keep_together([img, cap]))
             story.append(Spacer(1, 6))
         elif kind == 'q':
-            story.extend(render_question(blk[1]))
+            story.extend(render_question_boxed(blk[1]))
         elif kind == 'mcq':
             story.extend(render_mcq(blk[1]))
         elif kind == 'pagebreak':
@@ -297,6 +310,61 @@ def render_blocks(blocks, story):
                                     spaceBefore=2, spaceAfter=6))
         else:
             raise ValueError('unknown block: %s' % kind)
+
+QBOX_W = AVAIL_W * 0.97
+
+def render_question_boxed(q):
+    """Boxed question + boxed step-by-step solution (slim workbook format)."""
+    out = []
+    out.append(Spacer(1, 9))
+    out.append(CondPageBreak(150))
+    lv = q.get('level', 'Moderate')
+    concept = q.get('concept', '-')
+    # ---- Question box: dark header strip + white stem cell ----
+    hdr = Paragraph('QUESTION %d &nbsp;&nbsp;|&nbsp;&nbsp; %s &nbsp;&nbsp;|&nbsp;&nbsp; %s'
+                    % (q['n'], lv, concept), S['qboxhead'])
+    stem = Paragraph('<b>Q%d.</b> %s' % (q['n'], q['stem']), S['qboxstem'])
+    qt = Table([[hdr], [stem]], colWidths=[QBOX_W], hAlign='CENTER')
+    qt.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (0, 0), HEADER_FILL),
+        ('BACKGROUND', (0, 1), (0, 1), colors.white),
+        ('BOX', (0, 0), (-1, -1), 1.0, HEADER_FILL),
+        ('LEFTPADDING', (0, 0), (-1, -1), 9),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 9),
+        ('TOPPADDING', (0, 0), (0, 0), 4.5), ('BOTTOMPADDING', (0, 0), (0, 0), 4.5),
+        ('TOPPADDING', (0, 1), (0, 1), 7), ('BOTTOMPADDING', (0, 1), (0, 1), 8),
+    ]))
+    out.append(KeepTogether(qt))
+    # ---- Solution box: one row per element -> splits cleanly across pages ----
+    rows = []
+    sh = Paragraph('SOLUTION &nbsp;&mdash;&nbsp; step by step', S['qboxhead'])
+    rows.append([sh])
+    for i, stp in enumerate(q['steps'], 1):
+        rows.append([Paragraph('<b>Step %d.</b> %s' % (i, stp), S['solstep'])])
+    for wn in q.get('why', []):
+        rows.append([Paragraph('<font color="#3681a6"><b>\u00bb Why this step?</b></font> %s' % wn,
+                               S['solwhy'])])
+    rows.append([Paragraph('Answer: %s' % q['answer'], S['solans'])])
+    rows.append([Paragraph('<b>Hinglish:</b> %s' % q['hinglish'], S['solhing'])])
+    n_ans = len(rows) - 2
+    st = Table(rows, colWidths=[QBOX_W], hAlign='CENTER')
+    st.setStyle(TableStyle([
+        ('BOX', (0, 0), (-1, -1), 0.9, BORDER),
+        ('BACKGROUND', (0, 0), (0, 0), ACCENT),
+        ('LEFTPADDING', (0, 0), (-1, -1), 9),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 9),
+        ('TOPPADDING', (0, 0), (-1, -1), 3.5),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 3.5),
+        ('BACKGROUND', (0, n_ans), (0, n_ans), CARD_BG),
+        ('TOPPADDING', (0, n_ans), (0, n_ans), 5),
+        ('BOTTOMPADDING', (0, n_ans), (0, n_ans), 5),
+        ('LINEBEFORE', (0, n_ans + 1), (0, n_ans + 1), 2.5, ACCENT),
+        ('TOPPADDING', (0, n_ans + 1), (0, n_ans + 1), 5),
+        ('BOTTOMPADDING', (0, n_ans + 1), (0, n_ans + 1), 6),
+    ]))
+    out.append(st)
+    out.append(Spacer(1, 12))
+    return out
 
 def render_question(q):
     out = []
