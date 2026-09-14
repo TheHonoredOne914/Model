@@ -125,9 +125,11 @@ _st('solstep', fontName='FreeSerif', fontSize=10.3, leading=15.2, alignment=TA_L
 _st('solwhy', fontName='FreeSerif', fontSize=9.7, leading=14.0, alignment=TA_LEFT,
     textColor=TEXT_PRIMARY)
 _st('solans', fontName='FreeSerif-Bold', fontSize=10.7, leading=15.2, alignment=TA_LEFT,
-    textColor=HEADER_FILL)
+    textColor=colors.white)
 _st('solhing', fontName='FreeSerif-Italic', fontSize=9.9, leading=14.4, alignment=TA_LEFT,
     textColor=TEXT_PRIMARY)
+_st('opt2', fontName='FreeSerif', fontSize=10.2, leading=14.4, alignment=TA_LEFT,
+    leftIndent=14, textColor=TEXT_PRIMARY)
 _st('toc0', fontName='FreeSerif-Bold', fontSize=11.5, leading=17, textColor=HEADER_FILL, leftIndent=6)
 _st('toc1', fontName='FreeSerif', fontSize=9.8, leading=14.5, textColor=TEXT_PRIMARY, leftIndent=26)
 _st('tocTitle', fontName='FreeSerif-Bold', fontSize=19, leading=24, textColor=HEADER_FILL, spaceAfter=14)
@@ -299,7 +301,7 @@ def render_blocks(blocks, story):
         elif kind == 'q':
             story.extend(render_question_boxed(blk[1]))
         elif kind == 'mcq':
-            story.extend(render_mcq(blk[1]))
+            story.extend(render_mcq_boxed(blk[1]))
         elif kind == 'pagebreak':
             story.append(PageBreak())
         elif kind == 'spacer':
@@ -324,15 +326,22 @@ def render_question_boxed(q):
     hdr = Paragraph('QUESTION %d &nbsp;&nbsp;|&nbsp;&nbsp; %s &nbsp;&nbsp;|&nbsp;&nbsp; %s'
                     % (q['n'], lv, concept), S['qboxhead'])
     stem = Paragraph('<b>Q%d.</b> %s' % (q['n'], q['stem']), S['qboxstem'])
-    qt = Table([[hdr], [stem]], colWidths=[QBOX_W], hAlign='CENTER')
+    qrows = [[hdr], [stem]]
+    if q.get('fig'):
+        fpath = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'figs', q['fig'])
+        img = embed_image(fpath, max_width=AVAIL_W * 0.60, max_height=PAGE_H * 0.26)
+        qrows.append([img])
+    qt = Table(qrows, colWidths=[QBOX_W], hAlign='CENTER')
     qt.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (0, 0), HEADER_FILL),
-        ('BACKGROUND', (0, 1), (0, 1), colors.white),
+        ('BACKGROUND', (0, 1), (0, -1), colors.white),
         ('BOX', (0, 0), (-1, -1), 1.0, HEADER_FILL),
+        ('ALIGN', (0, 2), (0, 2), 'CENTER'),
         ('LEFTPADDING', (0, 0), (-1, -1), 9),
         ('RIGHTPADDING', (0, 0), (-1, -1), 9),
         ('TOPPADDING', (0, 0), (0, 0), 4.5), ('BOTTOMPADDING', (0, 0), (0, 0), 4.5),
         ('TOPPADDING', (0, 1), (0, 1), 7), ('BOTTOMPADDING', (0, 1), (0, 1), 8),
+        ('TOPPADDING', (0, 2), (0, 2), 2), ('BOTTOMPADDING', (0, 2), (0, 2), 8),
     ]))
     out.append(KeepTogether(qt))
     # ---- Solution box: one row per element -> splits cleanly across pages ----
@@ -355,7 +364,7 @@ def render_question_boxed(q):
         ('RIGHTPADDING', (0, 0), (-1, -1), 9),
         ('TOPPADDING', (0, 0), (-1, -1), 3.5),
         ('BOTTOMPADDING', (0, 0), (-1, -1), 3.5),
-        ('BACKGROUND', (0, n_ans), (0, n_ans), CARD_BG),
+        ('BACKGROUND', (0, n_ans), (0, n_ans), ACCENT),
         ('TOPPADDING', (0, n_ans), (0, n_ans), 5),
         ('BOTTOMPADDING', (0, n_ans), (0, n_ans), 5),
         ('LINEBEFORE', (0, n_ans + 1), (0, n_ans + 1), 2.5, ACCENT),
@@ -364,6 +373,48 @@ def render_question_boxed(q):
     ]))
     out.append(st)
     out.append(Spacer(1, 12))
+    return out
+
+def render_mcq_boxed(m):
+    """Compact boxed MCQ: stem + options + colored answer strip + traps + Hinglish."""
+    out = []
+    out.append(Spacer(1, 7))
+    out.append(CondPageBreak(120))
+    lv = m.get('level', 'Normal')
+    concept = m.get('concept', '-')
+    hdr = Paragraph('MCQ %d &nbsp;&nbsp;|&nbsp;&nbsp; %s &nbsp;&nbsp;|&nbsp;&nbsp; %s'
+                    % (m['n'], lv, concept), S['qboxhead'])
+    stem = Paragraph('<b>%d.</b> %s' % (m['n'], m['stem']), S['qboxstem'])
+    rows = [[hdr], [stem]]
+    for i, o in enumerate(m['options']):
+        rows.append([Paragraph('<b>%s.</b> %s' % (chr(65 + i), o), S['opt2'])])
+    rows.append([Paragraph('Correct Answer: (%s)' % m['ans'], S['solans'])])
+    rows.append([Paragraph(m['expl'], S['solstep'])])
+    for k, v in sorted(m.get('traps', {}).items()):
+        rows.append([Paragraph('<font color="#b43a4e"><b>Why (%s) is wrong:</b></font> %s'
+                               % (k, v), S['solwhy'])])
+    rows.append([Paragraph('<b>Hinglish:</b> %s' % m['hinglish'], S['solhing'])])
+    n_opt = len(m['options'])
+    n_ans = 2 + n_opt          # answer row index
+    t = Table(rows, colWidths=[QBOX_W], hAlign='CENTER')
+    st = [
+        ('BOX', (0, 0), (-1, -1), 0.9, BORDER),
+        ('BACKGROUND', (0, 0), (0, 0), ICON),
+        ('BACKGROUND', (0, 1), (0, 1 + n_opt), colors.white),
+        ('BACKGROUND', (0, n_ans), (0, n_ans), ACCENT),
+        ('LEFTPADDING', (0, 0), (-1, -1), 9),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 9),
+        ('TOPPADDING', (0, 0), (-1, -1), 2.8),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 2.8),
+        ('TOPPADDING', (0, 0), (0, 0), 4), ('BOTTOMPADDING', (0, 0), (0, 0), 4),
+        ('TOPPADDING', (0, 1), (0, 1), 6), ('BOTTOMPADDING', (0, 1), (0, 1), 3),
+        ('TOPPADDING', (0, n_ans), (0, n_ans), 4.5), ('BOTTOMPADDING', (0, n_ans), (0, n_ans), 4.5),
+        ('LINEBEFORE', (0, n_ans + 1), (0, -1), 2.2, BORDER),
+        ('TOPPADDING', (0, -1), (0, -1), 5), ('BOTTOMPADDING', (0, -1), (0, -1), 6),
+    ]
+    t.setStyle(TableStyle(st))
+    out.append(t)
+    out.append(Spacer(1, 9))
     return out
 
 def render_question(q):
