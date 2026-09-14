@@ -382,8 +382,8 @@ def render_mcq_boxed(m):
     out.append(CondPageBreak(120))
     lv = m.get('level', 'Normal')
     concept = m.get('concept', '-')
-    hdr = Paragraph('MCQ %d &nbsp;&nbsp;|&nbsp;&nbsp; %s &nbsp;&nbsp;|&nbsp;&nbsp; %s'
-                    % (m['n'], lv, concept), S['qboxhead'])
+    hdr = Paragraph('%s %d &nbsp;&nbsp;|&nbsp;&nbsp; %s &nbsp;&nbsp;|&nbsp;&nbsp; %s'
+                    % (m.get('label', 'MCQ'), m['n'], lv, concept), S['qboxhead'])
     stem = Paragraph('<b>%d.</b> %s' % (m['n'], m['stem']), S['qboxstem'])
     rows = [[hdr], [stem]]
     for i, o in enumerate(m['options']):

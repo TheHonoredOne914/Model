@@ -3,9 +3,9 @@
 from pypdf import PdfWriter, PdfReader
 import os
 
-BODY = '/home/z/my-project/scripts/mathbook/book_body.pdf'
+BODY = '/home/z/my-project/scripts/mathbook/book_final.pdf'
 COVER = '/home/z/my-project/scripts/mathbook/cover.pdf'
-OUT = '/home/z/my-project/download/Ganita_Manjari_Grade9_Advanced_Practice_Book.pdf'
+OUT = '/home/z/my-project/download/Ganita_Manjari_Grade9_Final_Workbook.pdf'
 
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
 w = PdfWriter()
@@ -17,10 +17,10 @@ cover_page.scale_to(bw, bh)   # exact A4 match with the body
 w.add_page(cover_page)
 w.append(BODY)
 w.add_metadata({
-    '/Title': 'Ganita Manjari Grade 9 - Advanced Maths Practice Book (Part I)',
+    '/Title': 'Ganita Manjari Grade 9 - The Final Heavy Workbook (Master Edition)',
     '/Author': 'Z.ai',
     '/Creator': 'Z.ai',
-    '/Subject': 'Advanced practice workbook with Hinglish teacher guide - coordinates, linear polynomials, number systems, algebraic identities, perimeter & area, probability',
+    '/Subject': 'Master practice workbook - 120 solved questions + 20 MCQs + 20 Choose-the-Correct per chapter with cheat sheets, speed tricks, diagrams and Hinglish teacher guide',
 })
 with open(OUT, 'wb') as f:
     w.write(f)

@@ -55,3 +55,22 @@ Stage Summary:
 - FINAL DELIVERABLE: /home/z/my-project/download/Ganita_Manjari_Grade9_Practice_Workbook.pdf
 - 144 pages, 1.64 MB: 6 chapters x [cheat sheet + 14-row type map + 7 speed tricks + 20 boxed solved Qs (9 with diagrams) + 20 boxed MCQs]
 - All scripts recoverable: edit main_full.py picks / make_figs2.py / bookbuilder.py and re-run
+
+---
+Task ID: 6-final120
+Agent: Super Z (main)
+Task: FINAL heavy workbook - user mandated PER-CHAPTER counts: every chapter = exactly 120 solved questions + 20 MCQs + 20 Choose-the-Correct, plus theory/cheat sheet/tricks/diagrams (6 chapters x 160 = 960 questions total).
+
+Work Log:
+- Authored 380 NEW fully-solved questions in 12 bank modules: ch1_g1/g2 (70, coordinate geometry incl. 3 new fig Qs), ch2_g1/g2 (70, linear equations), ch3_g1/g2 (70, number systems & exponents), ch7_g1/g2 (70, probability), ch4_h1/h2 (50, identities), ch6_h1/h2 (50, perimeter & area incl. L-lawn fig Q)
+- make_figs3.py: 6 new bold diagrams (treasure grid, park missing-vertex, kite on axes, circular park ring, arched window, L-shaped lawn)
+- bookbuilder.py render_mcq_boxed: added 'label' key so CTC round renders "CTC n" headers
+- main_120.py: merges 340 existing + 380 new Qs, stable level-sort (Basic->HOTS) per chapter, renumbered 1-120, 4 level-band h3 markers (Warm-up/Core/Exam Power/Boss Zone), reuses main_full speed-trick tables + curated 20 MCQ picks/chapter, new 20 CTC picks/chapter (no overlap, verified)
+- Asserts: 720 q + 120 mcq + 120 ctc; per-chapter 160; all pass
+- Cover updated (Master Edition, stats 720/240/13), cover_validate PASS, html2poster render, merge via merge_final.py
+- pdf_qa.py --skip-cover --no-tables: ALL CHECKS PASS; visual spot checks of 8 pages (tricks table, band headers, boxed Q+solutions, fig questions, MCQ + CTC rounds) all clean
+
+Stage Summary:
+- FINAL DELIVERABLE: /home/z/my-project/download/Ganita_Manjari_Grade9_Final_Workbook.pdf
+- 467 pages, 2.68 MB: cover + TOC + 6 chapters x [theory + cheat sheet + type map + 7 speed tricks + 120 level-ramped boxed solved Qs (13 with diagrams) + 20 boxed MCQs + 20 boxed CTC] = 960 questions
+- Scripts recoverable: edit main_120.py picks / chX_* banks / make_figs3.py and re-run main_120.py + merge_final.py
