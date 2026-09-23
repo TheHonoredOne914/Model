@@ -74,3 +74,24 @@ Stage Summary:
 - FINAL DELIVERABLE: /home/z/my-project/download/Ganita_Manjari_Grade9_Final_Workbook.pdf
 - 467 pages, 2.68 MB: cover + TOC + 6 chapters x [theory + cheat sheet + type map + 7 speed tricks + 120 level-ramped boxed solved Qs (13 with diagrams) + 20 boxed MCQs + 20 boxed CTC] = 960 questions
 - Scripts recoverable: edit main_120.py picks / chX_* banks / make_figs3.py and re-run main_120.py + merge_final.py
+
+---
+Task ID: 7-ch8-standalone
+Agent: Super Z (main)
+Task: User uploaded iemh108.pdf (Chapter 8: Predicting What Comes Next - Sequences and Progressions) and wanted it as a SEPARATE chapter PDF in the EXACT same format as the workbook chapters: 120 solved Qs + 20 MCQs + 20 CTCs per the established 120+40 pattern.
+
+Work Log:
+- Extracted iemh108.pdf text (27 pp) -> ch8_source.txt; mapped sections 8.1-8.6: sequences/notation, explicit rules, recursive rules, Virahanka-Fibonacci (1,2,3,5,8...), AP (a+(n-1)d), sum of naturals n(n+1)/2 (Gauss/Aryabhata), GP (ar^(n-1)), Sierpinski triangle 3^n & (3/4)^n, carpet 8^n & (8/9)^n, bouncing ball, taxi fare, end-of-chapter starred problems
+- make_figs4.py: 8 new bold diagrams (triangular dots f8d_tri, growing squares 1,5,9,13 f8d_grow, doubling 3,6,12,24 f8d_double, AP-on-line f8d_apline, GP-curve f8d_gpcurve, Sierpinski triangle stages 0-3 f8d_sier, carpet stages 0-2 f8d_carpet, bouncing ball 24ft f8d_ball); fixed cropping + arc-geometry bugs; label overlap polish
+- ch8_a.py: intro theory + 9-subsection cheat sheet (What is it/When/How/Tiny example voice) + 14-row T1-T14 type map
+- Authored 120 fully-solved boxed questions in 6 bank modules: ch8_b1 (Q1-20 Basic), ch8_b2 (Q21-32 Basic + Q33-40 Moderate), ch8_b3 (Q41-60 Moderate), ch8_b4 (Q61-76 Moderate), ch8_b5 (Q77-96 Difficult), ch8_b6 (Q97-104 Difficult + Q105-116 High + Q117-120 HOTS). Levels: Basic 32 / Moderate 44 / Difficult 28 / High 12 / HOTS 4 = bands 32/44/28/16; 8 diagram questions embedded; all book exercises + starred EoC problems covered (t11=38,t16=73->t31=178; 100 as consecutive sums; 13/12+product -1 GP; P_n=2^(n-1); W_n=Virahanka; etc.)
+- ch8_e1.py: 20 MCQs with 4 options + colored answer + per-option traps + Hinglish; ch8_e2.py: 20 CTC theory/speed questions same format (label CTC)
+- main_ch8.py: standalone assembly reusing main_120 band system (Level 1-4 zone headers deduped), asserts pass: 120 q + 20 MCQ + 20 CTC, level mix, unique ns, 4-option/ans/trap sanity, figs exist; built book_ch8.pdf (85 pp)
+- cover_ch8.html (Template-01 style: CHAPTER 8 / stats 120/40/8) -> html2poster -> cover_ch8.pdf; merge_ch8.py scaled to A4 and merged
+- pdf_qa.py --skip-cover --no-tables: ALL hard checks pass (2 benign warnings: short single-chapter TOC fill 30%, Template-01 cover margins - same as accepted main workbook)
+- Visual spot checks: tricks table, workout band headers, boxed Q+solutions, fig questions (incl. Sierpinski zoom), MCQ round, CTC round, final page (CTC 20 ends cleanly)
+
+Stage Summary:
+- FINAL DELIVERABLE: /home/z/my-project/download/Ganita_Manjari_Grade9_Ch8_Sequences_and_Progressions.pdf
+- 86 pages, 0.79 MB: cover + TOC + [intro theory + 9-part cheat sheet + T1-T14 type map + 7 speed tricks + 120 level-ramped boxed solved Qs (8 with diagrams) + 20 boxed MCQs + 20 boxed CTCs] = 160 questions, exact workbook format
+- Scripts recoverable: edit ch8_a/b1-b6/e1/e2 banks or main_ch8.py and re-run main_ch8.py + merge_ch8.py; figures via make_figs4.py
