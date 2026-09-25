@@ -114,3 +114,22 @@ Stage Summary:
 - FINAL DELIVERABLE: /home/z/my-project/download/Ganita_Manjari_Grade9_Final_Revision_Sheet.pdf
 - 65 pages, 0.75 MB: cover + TOC + night plan + 7 chapters x [formula table + concept checklist + tricks + IMP Qs with solutions + rapid MCQs] + Exam Morning Power Page
 - Scripts recoverable: edit rev_a/b/c.py content or main_revision.py picks, re-run main_revision.py + merge_revision.py
+
+---
+Task ID: 9-interactive-rev
+Agent: Super Z (main)
+Task: User wanted a SHORT INTERACTIVE version of the 65-page Final Revision Sheet - simple, one concept at a time, full syllabus coverage, target 80/80. Built as an interactive Next.js web app.
+
+Work Log:
+- Exported revision content via scripts/export_revision_web.py: imports main_revision (rev_a/b/c theory + curated 75 IMP Qs + 97 rapid MCQs from banks), converts ReportLab markup to web HTML (<super>-><sup>, entities->unicode, fixed &cup; typo to +/-), parsed BLOCKS into structured JSON
+- src/data/revision.json (181.7 KB): plan (3 rounds + golden rule) + 7 chapters x [intro, 9-13 formulas w/ easy meaning + tiny example, 9-10 concept rules, 7 tricks, 10-12 IMP Qs (steps/answer/why/teacher-note), 12-15 MCQs (options/ans/traps/1-line logic)] + Exam Morning Power Page (12 killer formulas, 8 rules, 10-min drill, pep)
+- Copied 8 question figures to public/figs/ (walk, robot, lines, track, goat, dart, sierpinski, ball)
+- App: src/lib/revision.ts (types, learnDeck, localStorage progress store, readiness calc); components/revision/{atoms,home,chapter-view,power-page}.tsx; page.tsx state machine (home/chapter/power)
+- Features: 80/80 hero + readiness meter (learn 45% + imp 30% + mcq acc 25%); night plan accordion; chapter cards w/ triple progress bars (Learn/IMP/MCQ); Learn mode = one-concept card deck (formula/checklist/trick cards, dots, auto-done); IMP Q mode = hide-then-reveal solutions (numbered steps, answer strip, why rows, teacher note); MCQ mode = instant right/wrong coloring, trap analysis, Hinglish 1-line logic, live score; star any card; swipe + arrow-key nav; Power Page view; reset progress
+- Fixed React strict lint (4 errors): async localStorage hydrate, ref-in-effect, key-based remount to replace set-state-in-effect; layout metadata + dark body + card-in animation
+- Agent Browser verified end-to-end: home render, chapter open, learn nav, formula sup rendering, IMP reveal w/ figure, MCQ correct+wrong flows, localStorage persistence across reload, power page, mobile 390px viewport - all pass, zero console errors
+
+Stage Summary:
+- DELIVERABLE: interactive web app on / (preview link sent to user)
+- Content: 7 chapters, 76 learn cards per-chapter avg (29x7), 75 IMP Qs, 97 MCQs, power page
+- Scripts recoverable: edit scripts/export_revision_web.py or src/data/revision.json + components, re-run export for content changes
