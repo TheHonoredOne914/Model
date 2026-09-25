@@ -167,3 +167,23 @@ Work Log:
 Stage Summary:
 - Live: 10 sweet no-gf-word popup messages, 2s display / 30 min cycle (demo via ?love=demo)
 - GitHub updated: https://github.com/whodhruv7/maths @ a62cded
+
+---
+Task ID: 12-github-pages
+Agent: Super Z (main)
+Task: User asked how long the app can keep running. Preview hosting is session-bound, so deployed the app permanently to GitHub Pages (free 24/7) on the same repo.
+
+Work Log:
+- next.config.ts: added STATIC_EXPORT=1 conditional -> output:'export', basePath:'/maths', images.unoptimized (dev/prod unchanged without env var)
+- chapter-view.tsx: fig img src now prefixed with NEXT_PUBLIC_BASE_PATH (undefined in dev = same behaviour)
+- api/route.ts: added export const dynamic = "force-static" (needed for output:export; no db imports anywhere so prisma not an issue)
+- Static build OK (out/ with index.html, figs x8, _next assets); pushed out/ as gh-pages branch; first build stuck ~10 min -> added .nojekyll (Jekyll excludes _next/) + POST /pages/builds -> built
+- Enabled Pages: source gh-pages root; live URL https://whodhruv7.github.io/maths/
+- Verified: site 200, fig 200, chunk 200; agent-browser on live URL: app renders, ?love=demo popup visible, 10 interactive elements, zero page errors
+- Mid-build dev server 500 (next build overwrote .next) -> restarted clean, DEV:200
+- Synced deploy setup to gh-maths, README got LIVE APP link, pushed main (78f761d), token cleared after each push
+
+Stage Summary:
+- PERMANENT LINK: https://whodhruv7.github.io/maths/ (GitHub Pages, gh-pages branch, auto-serves 24/7, no session dependency)
+- Preview (session) server still running on port 3000 as backup
+- Redeploy recipe: STATIC_EXPORT=1 NEXT_PUBLIC_BASE_PATH=/maths bunx next build; push out/ to gh-pages; add .nojekyll
