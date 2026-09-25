@@ -95,3 +95,22 @@ Stage Summary:
 - FINAL DELIVERABLE: /home/z/my-project/download/Ganita_Manjari_Grade9_Ch8_Sequences_and_Progressions.pdf
 - 86 pages, 0.79 MB: cover + TOC + [intro theory + 9-part cheat sheet + T1-T14 type map + 7 speed tricks + 120 level-ramped boxed solved Qs (8 with diagrams) + 20 boxed MCQs + 20 boxed CTCs] = 160 questions, exact workbook format
 - Scripts recoverable: edit ch8_a/b1-b6/e1/e2 banks or main_ch8.py and re-run main_ch8.py + merge_ch8.py; figures via make_figs4.py
+
+---
+Task ID: 8-revision
+Agent: Super Z (main)
+Task: Build a one-night FINAL REVISION SHEET covering all chapters (1-8): every formula in easy Hinglish with examples, all concepts listed, speed tricks, the most important book-based questions with short solutions, and 12-15 rapid MCQs per chapter. Goal: last-minute read for the 80/80 exam.
+
+Work Log:
+- Curated from existing banks: 75 IMP questions (10-12/chapter, book-exercise classics incl. ch8 starred EoC: t11=38/t16=73, GP 13/12 product -1, Sierpinski, bouncing ball, robot grid, track, goat, dart figs) + 97 rapid MCQs (12-15/chapter, reused curated workbook picks)
+- rev_a/b/c.py: hand-authored per chapter - formula power tables (formula + easy-Hinglish meaning + tiny example), 9-10 bullet concept checklists; reused T1-T8 trick tables; 3-round night plan intro + Exam Morning Power Page (12 killer formulas + 8 hall rules + 10-min drill)
+- bookbuilder.py: added compact render_imp_q (IMP Q header strip + steps + accent answer + Hinglish, no why-rows) and render_mcq_rapid (stem + inline options + accent one-line answer) with 'iq'/'mcqr' block kinds
+- main_revision.py: assembly + asserts (75 iq / 97 mcqr / 8 figs / 7 chapters, 4-option MCQ sanity, fig existence); BOOK_TITLE overridden to revision branding
+- cover_revision.html (Template-01: FINAL REVISION SHEET, stats 75/97/7, chips) -> html2poster --width 794px; fixed ReportLab span-style bug (recurring-decimal overline) by plain notation
+- merge_revision.py scaled cover to A4 and merged; pdf_qa.py --skip-cover --no-tables: ALL PASS
+- Visual spot checks: plan page, ch1 formula table, IMP Qs, running-track figure Q, rapid MCQs, final power page - all clean; added 10-Minute Drill to fill closing page
+
+Stage Summary:
+- FINAL DELIVERABLE: /home/z/my-project/download/Ganita_Manjari_Grade9_Final_Revision_Sheet.pdf
+- 65 pages, 0.75 MB: cover + TOC + night plan + 7 chapters x [formula table + concept checklist + tricks + IMP Qs with solutions + rapid MCQs] + Exam Morning Power Page
+- Scripts recoverable: edit rev_a/b/c.py content or main_revision.py picks, re-run main_revision.py + merge_revision.py

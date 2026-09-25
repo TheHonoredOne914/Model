@@ -300,6 +300,10 @@ def render_blocks(blocks, story):
             story.append(Spacer(1, 6))
         elif kind == 'q':
             story.extend(render_question_boxed(blk[1]))
+        elif kind == 'iq':
+            story.extend(render_imp_q(blk[1]))
+        elif kind == 'mcqr':
+            story.extend(render_mcq_rapid(blk[1]))
         elif kind == 'mcq':
             story.extend(render_mcq_boxed(blk[1]))
         elif kind == 'pagebreak':
@@ -415,6 +419,80 @@ def render_mcq_boxed(m):
     t.setStyle(TableStyle(st))
     out.append(t)
     out.append(Spacer(1, 9))
+    return out
+
+# ---------------- Compact renderers for the Final Revision Sheet ----------------
+_st('mcqrstem', fontName='FreeSerif', fontSize=10.4, leading=15.0, alignment=TA_LEFT,
+    textColor=TEXT_PRIMARY)
+_st('mcqropt', fontName='FreeSerif', fontSize=9.9, leading=14.0, alignment=TA_LEFT,
+    textColor=TEXT_PRIMARY)
+_st('mcqrans', fontName='FreeSerif', fontSize=9.9, leading=13.8, alignment=TA_LEFT,
+    textColor=colors.white)
+
+def render_imp_q(q):
+    """Compact revision question: dark header strip + stem + short steps + accent answer."""
+    out = []
+    out.append(Spacer(1, 7))
+    out.append(CondPageBreak(110))
+    hdr = Paragraph('IMP Q%d &nbsp;&nbsp;|&nbsp;&nbsp; %s' % (q['n'], q.get('concept', '-')),
+                    S['qboxhead'])
+    stem = Paragraph('<b>Q%d.</b> %s' % (q['n'], q['stem']), S['qboxstem'])
+    rows = [[hdr], [stem]]
+    if q.get('fig'):
+        fpath = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'figs', q['fig'])
+        img = embed_image(fpath, max_width=AVAIL_W * 0.55, max_height=PAGE_H * 0.22)
+        rows.append([img])
+    for i, stp in enumerate(q['steps'], 1):
+        rows.append([Paragraph('<b>Step %d.</b> %s' % (i, stp), S['solstep'])])
+    n_ans = len(rows)
+    rows.append([Paragraph('<b>Answer:</b> %s' % q['answer'], S['solans'])])
+    if q.get('hinglish'):
+        rows.append([Paragraph('<b>Hinglish:</b> %s' % q['hinglish'], S['solhing'])])
+    t = Table(rows, colWidths=[QBOX_W], hAlign='CENTER')
+    st = [
+        ('BOX', (0, 0), (-1, -1), 0.9, BORDER),
+        ('BACKGROUND', (0, 0), (0, 0), HEADER_FILL),
+        ('BACKGROUND', (0, 1), (0, n_ans - 1), colors.white),
+        ('BACKGROUND', (0, n_ans), (0, n_ans), ACCENT),
+        ('LEFTPADDING', (0, 0), (-1, -1), 9),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 9),
+        ('TOPPADDING', (0, 0), (-1, -1), 2.8),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 2.8),
+        ('TOPPADDING', (0, 0), (0, 0), 4), ('BOTTOMPADDING', (0, 0), (0, 0), 4),
+        ('TOPPADDING', (0, 1), (0, 1), 6), ('BOTTOMPADDING', (0, 1), (0, 1), 3),
+        ('TOPPADDING', (0, n_ans), (0, n_ans), 4.5), ('BOTTOMPADDING', (0, n_ans), (0, n_ans), 4.5),
+        ('LINEBEFORE', (0, n_ans + 1), (0, -1), 2.2, BORDER),
+        ('TOPPADDING', (0, -1), (0, -1), 4.5), ('BOTTOMPADDING', (0, -1), (0, -1), 5.5),
+    ]
+    t.setStyle(TableStyle(st))
+    out.append(t)
+    out.append(Spacer(1, 8))
+    return out
+
+def render_mcq_rapid(m):
+    """Ultra-compact rapid MCQ: stem + options inline + accent answer line."""
+    out = []
+    out.append(Spacer(1, 5))
+    out.append(CondPageBreak(70))
+    stem = Paragraph('<b>%d.</b> %s' % (m['n'], m['stem']), S['mcqrstem'])
+    opt_txt = '&nbsp;&nbsp;&nbsp;'.join('<b>(%s)</b> %s' % (chr(65 + i), o)
+                                        for i, o in enumerate(m['options']))
+    opts = Paragraph(opt_txt, S['mcqropt'])
+    ans = Paragraph('<b>Ans: (%s)</b> &nbsp;&middot;&nbsp; %s' % (m['ans'], m.get('expl', '')),
+                    S['mcqrans'])
+    rows = [[stem], [opts], [ans]]
+    t = Table(rows, colWidths=[QBOX_W], hAlign='CENTER')
+    t.setStyle(TableStyle([
+        ('BOX', (0, 0), (-1, -1), 0.8, BORDER),
+        ('BACKGROUND', (0, 2), (0, 2), ACCENT),
+        ('LEFTPADDING', (0, 0), (-1, -1), 8),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 8),
+        ('TOPPADDING', (0, 0), (-1, -1), 3),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 3),
+        ('TOPPADDING', (0, 2), (0, 2), 4), ('BOTTOMPADDING', (0, 2), (0, 2), 4),
+    ]))
+    out.append(t)
+    out.append(Spacer(1, 6))
     return out
 
 def render_question(q):
