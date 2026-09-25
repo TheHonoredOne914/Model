@@ -133,3 +133,22 @@ Stage Summary:
 - DELIVERABLE: interactive web app on / (preview link sent to user)
 - Content: 7 chapters, 76 learn cards per-chapter avg (29x7), 75 IMP Qs, 97 MCQs, power page
 - Scripts recoverable: edit scripts/export_revision_web.py or src/data/revision.json + components, re-run export for content changes
+
+---
+Task ID: 10-ch8fix-popup-github
+Agent: Super Z (main)
+Task: User reported "chapter 8 ke formulas shi nhi h" in the interactive revision app; wanted love-note popups (2s display, every 30 min) with messages for Maanu; and everything uploaded to GitHub repo whodhruv7/maths via PAT.
+
+Work Log:
+- Root-caused ch8 formula bug: export_revision_web.py kept cur=ch8 after the Exam Morning h1, so the final page's 12 cross-chapter "Killer formula" table overwrote ch8's real formula cards in revision.json (PDF was unaffected - blocks render in order)
+- Fix: set cur=None when 'Exam Morning' h1 parsed; guarded ch intro callout against in_final; re-ran export -> ch8 back to its real 10 formulas (AP tn=a+(n-1)d, is-k-a-term, n(n+1)/2, range sum, GP ar^(n-1), Virahanka, explicit/recursive, Sierpinski 3^n (3/4)^n, carpet 8^n (8/9)^n, AP-line/GP-curve); final page keeps 12 killer formulas
+- Verified ALL 7 chapters' formulas mathematically (ch1 distance/midpoint, ch2 slope, ch3 recurring/exponents, ch4 identities incl crown, ch6 Heron/sector/Brahmagupta, ch7 probability) - all correct, only ch8 was hit
+- Added LovePopup (atoms.tsx): 5 rotating messages (user's exact lines + 80/80 bonus), first ~3s after open then every 30 min, visible 1.6s hold + 0.5s fade = ~2s then gone; ?love=demo hidden hook (15s interval) for testing; keyframes loveIn/loveOut in globals.css; mounted in app/page.tsx
+- Lint PASS (0 errors); browser-verified: popup screenshot + auto-remove (querySelector null after 2.1s), ch8 Learn cards correct (t10=3+45=48, GP t5=3x4^4=768, Sierpinski stage4 81=3^4 & 81/256), zero console errors
+- GitHub: token verified as whodhruv7; repo maths was empty; staged clean copy in gh-maths/ (src, public, prisma schema, configs, bun.lock, pdfs/ with all 5 workbooks, new README with run steps + love-notes doc, .gitignore); git init -b main, single commit, pushed via x-access-token remote, then stripped token from .git/config
+
+Stage Summary:
+- App fixed + enhanced: ch8 formulas correct in interactive app; love-note popups live (2s / 30 min cycle)
+- PUSHED: https://github.com/whodhruv7/maths (main) - app source + README + pdfs/ (5 workbooks incl. 65pp Final Revision Sheet + 86pp Ch8 workbook)
+- Token NOT committed anywhere (only used in push URL, cleared after)
+- Scripts recoverable: export fix in scripts/export_revision_web.py; staging copy in gh-maths/ can be re-synced + pushed for future edits

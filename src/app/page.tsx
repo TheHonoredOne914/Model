@@ -11,6 +11,7 @@ import {
 import { Home } from "@/components/revision/home";
 import { ChapterView } from "@/components/revision/chapter-view";
 import { PowerPage } from "@/components/revision/power-page";
+import { LovePopup } from "@/components/revision/atoms";
 
 type View = { name: "home" } | { name: "chapter"; num: number } | { name: "power" };
 
@@ -51,6 +52,7 @@ export default function Page() {
 
   return (
     <main className="min-h-screen bg-zinc-950 text-zinc-100">
+      <LovePopup />
       {view.name === "home" && (
         <Home
           progress={progress}

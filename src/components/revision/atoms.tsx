@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
+
 /* Renders trusted self-authored mini-HTML (sup/sub/strong/br only). */
 export function Html({ html, className }: { html: string; className?: string }) {
   return (
@@ -7,6 +9,69 @@ export function Html({ html, className }: { html: string; className?: string }) 
       className={className}
       dangerouslySetInnerHTML={{ __html: html }}
     />
+  );
+}
+
+/* ---------------------------------------------------------------
+   LovePopup — little notes for Maanu 💖
+   Appears for 2 seconds, then disappears. Repeats every 30 minutes.
+   (First one shows ~3s after opening the app.)
+   Hidden test hook: append ?love=demo to the URL to see it every 15s.
+---------------------------------------------------------------- */
+const LOVE_MSGS = [
+  "I am making this for my gf 💖",
+  "Maanu, just chill & shanti se padh 🌸",
+  "Dont take too much stress 💪",
+  "We can do it! 🔥",
+  "80/80 loading… bas shanti se ✨",
+];
+
+export function LovePopup() {
+  const [msg, setMsg] = useState<string | null>(null);
+  const [leaving, setLeaving] = useState(false);
+  const idx = useRef(0);
+  const timers = useRef<Array<ReturnType<typeof setTimeout>>>([]);
+
+  useEffect(() => {
+    const demo =
+      typeof window !== "undefined" &&
+      new URLSearchParams(window.location.search).get("love") === "demo";
+    const everyMs = demo ? 15_000 : 30 * 60 * 1000; // 30 minutes
+    const firstMs = demo ? 1_200 : 3_000;
+
+    const show = () => {
+      timers.current.forEach(clearTimeout);
+      timers.current = [];
+      setLeaving(false);
+      setMsg(LOVE_MSGS[idx.current % LOVE_MSGS.length]);
+      idx.current += 1;
+      // hold ~1.6s, fade out 0.5s => gone after 2 seconds
+      timers.current.push(setTimeout(() => setLeaving(true), 1_600));
+      timers.current.push(setTimeout(() => setMsg(null), 2_100));
+    };
+
+    const first = setTimeout(show, firstMs);
+    const loop = setInterval(show, everyMs);
+    return () => {
+      clearTimeout(first);
+      clearInterval(loop);
+      timers.current.forEach(clearTimeout);
+    };
+  }, []);
+
+  if (!msg) return null;
+  return (
+    <div
+      role="status"
+      className={`love-pop ${leaving ? "love-out" : ""} pointer-events-none fixed left-1/2 top-5 z-[100]`}
+    >
+      <div className="flex items-center gap-2.5 rounded-2xl border border-rose-400/40 bg-gradient-to-r from-rose-950/95 via-rose-900/95 to-rose-950/95 px-5 py-3 shadow-2xl shadow-rose-950/50 backdrop-blur">
+        <span className="animate-pulse text-lg">💖</span>
+        <span className="whitespace-nowrap text-sm font-bold text-rose-100">
+          {msg}
+        </span>
+      </div>
+    </div>
   );
 }
 

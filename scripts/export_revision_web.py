@@ -51,6 +51,7 @@ for b in MR.BLOCKS:
         elif t.startswith('Exam Morning'):
             final['title'] = t
             in_final = True
+            cur = None  # FINAL-page tables must NOT bleed into the last chapter
         else:
             m = re.match(r'Chapter (\d+): (.*)', t)
             num = int(m.group(1))
@@ -60,7 +61,7 @@ for b in MR.BLOCKS:
                    'tricks': [], 'imps': [], 'mcqs': []}
             chapters.append(cur)
     elif kind == 'callout':
-        if cur is not None and not cur['intro']:
+        if cur is not None and not cur['intro'] and not in_final:
             cur['intro'] = web(b[2])
         elif not plan['body'] and b[1] == 'Golden rule':
             plan['golden'] = web(b[2])
