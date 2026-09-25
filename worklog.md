@@ -152,3 +152,18 @@ Stage Summary:
 - PUSHED: https://github.com/whodhruv7/maths (main) - app source + README + pdfs/ (5 workbooks incl. 65pp Final Revision Sheet + 86pp Ch8 workbook)
 - Token NOT committed anywhere (only used in push URL, cleared after)
 - Scripts recoverable: export fix in scripts/export_revision_web.py; staging copy in gh-maths/ can be re-synced + pushed for future edits
+
+---
+Task ID: 11-sweet-popups
+Agent: Super Z (main)
+Task: User wanted the popup messages replaced - remove old/gf-word messages, add sweet babyieee-style notes like "heyy babyieee dont worry uh can do it", "just takeeee careee babyieee", "if need any help further meko dm kr dena", and more variations. No "gf" word.
+
+Work Log:
+- Replaced LOVE_MSGS in atoms.tsx with 10 rotating sweet messages (user's 3 exact lines + 7 more in same vibe: shanti se padhooo, uh got thiss, stressss not todayyy, chillll maro, 80/80 loading, ek ek concept no rushhh, proud of uu)
+- Updated gh-maths README popup description; rsync'd src/ into gh-maths staging
+- Lint PASS; browser-verified via ?love=demo: popup shows "heyy babyieee dont worry uh can do it" and auto-removes after ~2s
+- Push commit a62cded to whodhruv7/maths main (token set-URL -> push -> cleared)
+
+Stage Summary:
+- Live: 10 sweet no-gf-word popup messages, 2s display / 30 min cycle (demo via ?love=demo)
+- GitHub updated: https://github.com/whodhruv7/maths @ a62cded
