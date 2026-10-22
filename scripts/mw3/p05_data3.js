@@ -9,6 +9,7 @@ WORLDS.push(
  concepts:[
 
  {id:'circ1',t:'Circle Anatomy',sub:'NCERT 9.1 · Chords, arcs, segments',
+  irl:['Ordering pizza: chord, sector, segment — you literally eat the vocabulary','Bangles and bike wheels: the radius decides fit and ride; one measurement runs the whole circle'],
   hook:{ic:'🍕',s:'A pizza is a circle textbook: the doughline is the circumference, every cut is a chord, and the slice that reaches crust-to-crust through the centre is the diameter — the longest possible cut. The pepperoni wedge (two radii + arc) is a sector; the leftover cap above a chord is a segment. Lunch = geometry.',
         w:'Vocabulary is half the battle in this chapter. Radius, chord, diameter, arc, sector, segment — the paper sets questions just testing if you can tell them apart.'},
   facts:[['Radius & diameter','All radii are equal. Diameter = 2r and it is the LONGEST chord — it wins every comparison.'],
@@ -39,6 +40,7 @@ WORLDS.push(
   }},
 
  {id:'circ2',t:'Chords & the Centre',sub:'NCERT 9.3–9.5 · Equal chords, equal distances',
+  irl:['Bicycle spokes: equal spokes sit equal distances from the hub — mechanics true a wheel with chord logic','Centering the umbrella on a round table: the perpendicular from centre to chord — theorem as furniture skill'],
   hook:{ic:'🎯',s:'Two arrows (chords) of exactly the same length hit a circular target. The referee checks their distances from the bull\'s eye: IDENTICAL. Longer arrows always sit closer to the centre; shorter ones shy away to the rim. The centre is the fairest referee in geometry.',
         w:'"Perpendicular from centre bisects the chord" and "equal chords ⇔ equal distances" solve every chord question — usually with a hidden Pythagoras triple.'},
   facts:[['The bisector drop','The perpendicular from the centre to a chord ALWAYS bisects it (and the converse: the line from centre to midpoint is perpendicular).'],
@@ -64,6 +66,7 @@ WORLDS.push(
   }},
 
  {id:'circ3',t:'Angles in Circles',sub:'NCERT 9.4–9.5 · Central & inscribed angles',
+  irl:['Cinema screens: seats on the same arc see the frame at the same inscribed angle — the view is fair all along the row','Roundabouts: equal arcs give equal turning angles — traffic design quietly runs on circle theorems'],
   hook:{ic:'🔦',s:'A lighthouse at the centre of a circular bay sweeps a 80° beam. A boat anchored on the shore sees the same two beam-edges — but from the boat the angle looks exactly HALF: 40°. Same arc, two vantage points: centre sees double, rim sees half. Always. No exceptions.',
         w:'The central-angle theorem is the workhorse of circle questions: central = 2 × inscribed on the same arc. Its children: angles in the same segment are equal, and a semicircle always frames 90°.'},
   facts:[['Central = 2 × inscribed','The angle subtended by an arc at the centre is double the angle it subtends at any point on the remaining circle.'],
@@ -90,6 +93,7 @@ WORLDS.push(
   }},
 
  {id:'circ4',t:'Cyclic Quadrilaterals',sub:'NCERT 9.6 · The roundabout four',
+  irl:['Four friends around a bonfire holding a frame: opposite corners always add to 180° — the geometry of every circle camp','Musical chairs with 4 chairs on a round rug: opposite chair lines always make 180° together — fair spacing by theorem'],
   hook:{ic:'🎡',s:'Four friends stand anywhere on a circular roundabout and join hands — a cyclic quadrilateral. No matter where they stand, one law binds them: opposite corners ALWAYS sum to 180°. Move anyone, the angles rebalance like a see-saw. Geometry\'s roundabout has its own traffic rules.',
         w:'"Opposite angles supplementary" identifies cyclic quads, completes missing angles in one step, and appears in almost every circle question paper.'},
   facts:[['Definition','A quadrilateral with ALL four vertices on one circle is cyclic — the circle is its circumcircle.'],
@@ -119,6 +123,7 @@ WORLDS.push(
  concepts:[
 
  {id:'area1',t:'Heron\'s Formula',sub:'NCERT 10.1 · Area from three sides',
+  irl:['Farmers size triangular plots from 3 boundary walls — no angles needed, Heron does everything','Kite makers cut sail cloth from three bamboo lengths: area known before the first cut, zero waste'],
   hook:{ic:'🪁',s:'At the Patang kite festival, a master kite-maker is asked: "How much paper is on that kite?" It is a scalene triangle — no height marked, no right angle anywhere. He smiles, measures only the three sides, computes one helper called s, and answers in ten seconds. Hero of Alexandria\'s 2000-year-old spell: Heron\'s formula.',
         w:'When the height is missing (and building it is messy), Heron\'s formula is the ONLY clean tool for area from sides — a guaranteed exam question.'},
   facts:[['Step 1 — the semi-perimeter','s = (a + b + c)/2. Half of the total boundary — usually a friendly number.'],
@@ -144,6 +149,7 @@ WORLDS.push(
   }},
 
  {id:'area2',t:'Heron in the Field',sub:'NCERT 10.2 · Applications & costs',
+  irl:['Contractors quote paint and turf for triangular parks: area → litres → rupees, all from three sides','Splitting a triangular family plot fairly: shares are weighed in square metres, computed Heron-style'],
   hook:{ic:'🏗️',s:'The municipality hires you: "This triangular park — 122 m, 120 m, 22 m — needs a lawn at ₹5 per m². What\'s the bill?" One Heron computation stands between you and a ₹6,600 invoice. Real maths, real money, one formula.',
         w:'Application questions chain Heron with cost = area × rate. Compute the area precisely; the rupees follow automatically.'},
   facts:[['The workflow','Sides → s → Area → multiply by rate (₹/m²) → total cost.'],
@@ -172,6 +178,7 @@ WORLDS.push(
  concepts:[
 
  {id:'sol1',t:'Cone Chronicles',sub:'NCERT 11.1 · Slant, surfaces & volume',
+  irl:['Ice-cream cones and birthday caps: factories unroll the cone into a sector to cut material with zero waste','Temple shikhara and funnel covers: slant height decides exactly how much cloth or metal wraps it'],
   hook:{ic:'🍦',s:'Unroll a birthday-party cone hat: it flattens into a pizza-slice sector whose radius is the cone\'s SLANT l and whose curved edge is the base circumference 2πr. Fill a cone with water and pour into a same-base cylinder — exactly THREE pours fill it. Cone = ⅓ cylinder, forever.',
         w:'Cone formulas all hang off one Pythagoras relation l² = r² + h². Get l, and CSA, TSA, V all fall in line.'},
   facts:[['The slant link','l² = r² + h² — the slant is the hypotenuse of the hidden right triangle inside every cone.'],
@@ -200,6 +207,7 @@ WORLDS.push(
   }},
 
  {id:'sol2',t:'Sphere & Hemisphere',sub:'NCERT 11.2–11.3 · The round family',
+  irl:['Football makers stitch surface area (leather) while players pump volume (air) — one ball, two formulas','Overhead hemisphere water tanks: capacity in litres and paint for the dome both come from the same r'],
   hook:{ic:'⚽',s:'Cut a football in half: inside, the curved skin of each half measures 2πr², plus one flat πr² face where the knife went — 3πr² in total, called a hemisphere\'s TSA. A sphere\'s whole skin is 4πr²: exactly the same as FOUR circles of its own shadow. Round objects are generous with formulas.',
         w:'Sphere and hemisphere formulas are pure memory marks. Learn the trio (4πr², 2πr², 3πr²) and the volumes, and the bank hands you full credit.'},
   facts:[['Sphere skin','Surface area = 4πr². (Fun: = 4 × the area of its great-circle shadow πr².)'],
@@ -228,6 +236,7 @@ WORLDS.push(
   }},
 
  {id:'sol3',t:'Cylinder City',sub:'NCERT 11.2 · Unrolling the drum',
+  irl:['LPG cylinders and water drums: the printed litres are πr²h — volume you can verify yourself','Soft-drink can labels: unrolled, a rectangle wrapping the curve — the paper industry cuts them by formula'],
   hook:{ic:'🛢️',s:'Peel the label off a can of juice: it flattens into a rectangle whose width is the can\'s circumference 2πr and height is the can\'s height h — that is the curved surface. The tin top and bottom are two circles. Volume? Just stack circles: base area × height, πr²h.',
         w:'Cylinders are the friendliest solid: unwrap the label (CSA), add two lids (TSA), fill the stack (V). Water-tank questions always end in litres: 1000 cm³ = 1 L.'},
   facts:[['Unroll the label','CSA = 2πrh — a rectangle of width 2πr (circumference) and height h.'],
@@ -262,6 +271,7 @@ WORLDS.push(
  concepts:[
 
  {id:'dat1',t:'Taming Raw Data',sub:'NCERT 12.1 · Range & frequency',
+  irl:['Cricket scorecards tame chaos: 300 balls of raw data become overs, frequencies and strike rates','Class attendance registers: range and frequency instantly flag who is drifting away'],
   hook:{ic:'🏏',s:'Coach Bhatia has 20 run-scores scribbled on a napkin: 6, 2, 0, 4, 6, 1, 3, … chaos. "Tell me about my team," she says. You cannot answer from a napkin — but a frequency table turns the mess into a story: who scored ducks, how many fifties, the spread. Data\'s first law: organise before you conclude.',
         w:'Range and frequency tables are the entry ticket to all statistics — and "class width" questions are free marks if you know the three definitions.'},
   facts:[['Raw → organised','Raw data is an unsorted list; an ARRAY sorts it. Range = maximum − minimum: the total spread.'],
@@ -291,6 +301,7 @@ WORLDS.push(
   }},
 
  {id:'dat2',t:'Bars & Histograms',sub:'NCERT 12.1 · Picture the data',
+  irl:['Weather apps draw rainfall as bars per day — a chart you consult every single morning','Fitness bands: steps-per-hour bars show exactly when you moved — continuous bins, histogram style'],
   hook:{ic:'📈',s:'A bar chart of "favourite subject" shows Maths towering — bars with GAPS, one per category. A histogram of marks shows classes 0–10, 10–20… bars TOUCHING, because the data flows continuously. Choose the wrong chart and a statistician somewhere sheds a tear.',
         w:'Histograms answer "how many in each class" at a glance; exams ask you to read, draw, and pick between bar graph and histogram correctly.'},
   facts:[['Bar graph = categories','Distinct categories (subjects, colours) → bars with equal widths and GAPS between them.'],
@@ -314,6 +325,7 @@ WORLDS.push(
   }},
 
  {id:'dat3',t:'Mean, Median, Mode',sub:'NCERT 12.2–12.3 · The three averages',
+  irl:['Cricket batting average is a mean; median house price stops one billionaire from skewing the colony average; shoe shops stock the MODE size','Report cards: your aggregate % is a weighted mean across subjects — every result day is statistics day'],
   hook:{ic:'🏆',s:'Five friends\' salaries: 10k, 12k, 12k, 14k, 200k (the boss walked in). Mean = 49.6k — absurd! Median = 12k — honest. Mode = 12k — the crowd\'s choice. One dataset, three averages, three different truths. Choosing the RIGHT average is a life skill (and an exam question).',
         w:'Mean uses every value, median ignores extremes, mode reports popularity. Know all three and how outliers wreck exactly one of them.'},
   facts:[['Mean = Σx / n','Add everything, divide by count. Uses all data, but one huge outlier drags it far away.'],

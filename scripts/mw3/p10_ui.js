@@ -8,8 +8,8 @@ let QSTATE=null,BOS=null,EXSTATE={};
 function renderTopbar(){
  const lvl=levelOf(S.xp),prog=levelProg(S.xp);
  $('#tb').innerHTML='<div class="tb-in">'
-  +'<button class="logo" onclick="A.home()"><span class="logo-badge"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 4 L20 20 M20 4 L4 20" stroke="#fde68a" stroke-width="2.6" stroke-linecap="round"/><circle cx="12" cy="12" r="4.6" stroke="#fff" stroke-width="2.2"/></svg></span>'
-  +'<span class="logo-t">MATHS WAR<small>GRADE 9 · CONCEPT ARENA</small></span></button>'
+  +'<button class="logo" onclick="A.home()"><span class="logo-badge"><img src="'+LOGO_MARK+'" alt="VidhyaSaathy"></span>'
+  +'<span class="logo-t">MATHS WAR<small>BY VIDHYASAATHY · GRADE 9 ARENA</small></span></button>'
   +'<div class="tb-r">'
   +'<div class="lvl-chip"><span class="av">🛡️</span><span class="lvltext"><b>WARRIOR</b><span>LV '+lvl+' · '+levelTitle(S.xp)+'</span></span></div>'
   +'<div class="xpwrap"><div class="xpbar"><div class="xpfill" style="width:'+prog+'%"></div></div><div class="xplab">'+S.xp+' XP · next LV '+(lvl*260-S.xp>0?lvl*260-S.xp:'MAX')+'</div></div>'
@@ -40,11 +40,18 @@ function renderHome(){
  const bossWins=Object.values(S.boss).reduce((a,b)=>a+b,0);
  App.innerHTML='<div class="screen">'
  +'<div class="hero">'
- +'<span class="hero-kick">⚔️ GRADE 9 · NCERT CONCEPT ARENA · HERO: WARRIOR</span>'
+ +'<img class="hero-logo" src="'+LOGO_CARD+'" alt="VidhyaSaathy — Learning, with you">'
+ +'<div class="brandline"><span class="st">✦</span> A VIDHYASAATHY EXPERIENCE <span class="st">✦</span></div>'
+ +'<div><span class="hero-kick">⚔️ GRADE 9 · NCERT CONCEPT ARENA · HERO: WARRIOR</span></div>'
  +'<h1 class="hero-t">MATHS WAR</h1>'
- +'<p class="hero-sub">Every chapter. Every concept. One living arena. Learn with animated diagrams, train on infinite exam-style questions and dethrone 12 bosses.</p>'
+ +'<p class="hero-sub">Every chapter. Every concept. One living arena. Learn with stories, real-world radar, animated diagrams and hands-on machines — then train on infinite exam-style questions and dethrone 12 bosses.</p>'
  +'<div class="hero-cta"><button class="btn btn-p btn-xl" onclick="document.getElementById(\'wgrid\').scrollIntoView({behavior:\'smooth\'})">🗺️ Choose your battlefield</button>'
  +'<button class="btn btn-g btn-xl" onclick="A.startRandom()">🎲 Surprise me</button></div>'
+ +'<div class="loopband">'
+ +'<div class="loopstep"><div class="ln"><i>1</i>📖 LEARN the concept</div><p>Story hook → key exam facts → play with a living machine → watch a worked example. Real-world uses included.</p></div>'
+ +'<div class="loopstep"><div class="ln"><i>2</i>🎯 PROVE it in practice</div><p>Fresh exam-style questions every run. Explanations teach on right AND wrong answers. 4/5 = concept covered.</p></div>'
+ +'<div class="loopstep"><div class="ln"><i>3</i>⚔️ DETHRONE the boss</div><p>Each world hides a monster. Answer to strike, combo to crit. Defeat it to claim the throne — or study and return.</p></div>'
+ +'</div>'
  +'<div class="hero-stats">'
  +'<div class="stat-pill"><b>'+WORLDS.length+'</b><span>Worlds</span></div>'
  +'<div class="stat-pill"><b>'+tot+'</b><span>Concepts</span></div>'
@@ -65,7 +72,7 @@ function renderHome(){
   +'<span class="ring" data-t="'+pct+'%" style="--p:'+pct+'"></span></div></button>';
  }).join('')
  +'</div>'
- +'<p class="muted" style="text-align:center;margin-top:30px;font-size:12px">Maths War · your progress saves automatically in this browser · <button class="btn btn-sm btn-g" onclick="A.reset()" style="font-size:11px;padding:5px 10px">reset progress</button></p>'
+ +'<p class="muted" style="text-align:center;margin-top:30px;font-size:12px"><span style="display:inline-flex;align-items:center;gap:6px;vertical-align:middle"><img src="'+LOGO_MARK+'" style="width:16px;height:16px;object-fit:contain;vertical-align:middle" alt=""> VidhyaSaathy · Learning, with you</span> · Maths War saves your progress in this browser · <button class="btn btn-sm btn-g" onclick="A.reset()" style="font-size:11px;padding:5px 10px">reset progress</button></p>'
  +'</div>';
 }
 
@@ -113,6 +120,7 @@ function renderLesson(wid,cid,step){
  }else if(step===1){
   body='<div class="stepcard"><span class="step-kick">💡 KEY IDEAS — the facts that matter</span><h3 class="step-t">'+c.t+': what you MUST know</h3>'
   +'<div class="facts">'+c.facts.map((f,i)=>'<div class="fact" style="animation-delay:'+(i*0.12)+'s"><span class="fact-n">'+(i+1)+'</span><span><span class="fact-t">'+f[0]+'</span><div class="fact-d">'+f[1]+'</div></span></div>').join('')+'</div>'
+  +irlHTML(c)
   +'<div style="margin-top:20px;display:flex;gap:10px"><button class="btn btn-p" onclick="A.setStep(\''+wid+'\',\''+cid+'\',2)">Play with the machine →</button></div></div>';
  }else if(step===2){
   body='<div class="labwrap"><div class="lab-head"><b>🧪 '+c.t+' — Interactive Lab</b><span class="hint-lab">drag, slide & tap — it cannot break</span></div>'
@@ -239,12 +247,14 @@ function bossEnd(){
 /* ---------- covered overlay ---------- */
 function coveredOverlay(c,extra){
  const facts=c.facts.map(f=>'<div>'+f[0]+'</div>').join('');
+ const irl=c.irl?('<div class="covirl"><b>🌏 You will actually use this when…</b> '+c.irl[0]+'</div>'):'';
  showOvl('<div class="covcard">'
  +'<div class="covbadge"><div>🏆</div></div>'
  +'<div class="cov-kick">CONCEPT COVERED</div>'
  +'<div class="cov-t">'+c.t+'</div>'
  +'<div class="cov-l">'+(extra||'')+'</div>'
  +'<div class="covlist">'+facts+'</div>'
+ +irl
  +'<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="btn btn-p" onclick="A.closeCov()">Continue</button></div>'
  +'</div>',true);
  burst(90);SFX.win();
@@ -385,9 +395,11 @@ function renderQuiz(){
 function boot(){
  render();
  if(!S.seen){
-  showOvl('<div class="introcard"><div class="big">⚔️</div><h2>Welcome to MATHS WAR</h2>'
+  showOvl('<div class="introcard"><div style="width:92px;height:92px;margin:0 auto 10px;background:#fff;border-radius:24px;display:grid;place-items:center;box-shadow:0 10px 30px rgba(0,0,0,.4)"><img src="'+LOGO_MARK+'" style="width:70px;height:70px;object-fit:contain" alt="VidhyaSaathy"></div>'
+  +'<div style="font-size:10.5px;letter-spacing:.22em;color:#F2D57E;font-weight:800;margin-bottom:4px">VIDHYASAATHY PRESENTS</div>'
+  +'<h2>Welcome to MATHS WAR</h2>'
   +'<p>I am your <b>Warrior</b>-coach. This arena covers the ENTIRE Grade 9 NCERT syllabus — 12 worlds, 38 concepts — and every single one is unlocked from the first second.</p>'
-  +'<div class="steps3"><div><b>1</b><span>📖 LEARN — story → key facts → play with living diagrams → watch a worked example</span></div><div><b>2</b><span>🎯 PRACTICE — fresh exam-style questions every time; explanations teach, nothing punishes</span></div><div><b>3</b><span>👑 BOSSES — beat each world\'s monster to claim the throne. 4/5 wins the fight</span></div></div>'
+  +'<div class="steps3"><div><b>1</b><span>📖 LEARN — story → key facts → real-world uses → living diagrams → worked example</span></div><div><b>2</b><span>🎯 PRACTICE — fresh exam-style questions every time; explanations teach, nothing punishes</span></div><div><b>3</b><span>👑 BOSSES — beat each world\'s monster to claim the throne. 4/5 wins the fight</span></div></div>'
   +'<button class="btn btn-gold btn-xl" onclick="A.introDone()">⚔️ Enter the arena</button>'
   +'</div>',true);
  }

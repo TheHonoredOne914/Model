@@ -250,3 +250,22 @@ Stage Summary:
 - DELIVERABLE: /home/z/my-project/download/maths-war.html (single shareable file, 257 KB, works offline, fonts degrade gracefully)
 - App: "Maths War", hero "WARRIOR", 12 named worlds (Number Nagar, Polynomial Kingdom, Grid Guardians, Line Land, Euclid's Emporium, Angle Realm, Triangle Territory, Quad Quadrangle, Circle Citadel, Area Arsenal, Volume Vault, Data Dungeon), 12 named bosses
 - Everything unlocked; concept-by-concept depth; (a+b)^2 flagship interactive; concept-covered confirmations; brand colors still not provided by user - palette centralized in HUES map + :root vars for one-swap re-theming
+
+---
+Task ID: 16-mathswar-v6-brand-edition
+Agent: Super Z (main)
+Task: User supplied the VidhyaSaathy brand assets (logo PNG + palette screenshots) and demanded: use the actual logo and brand colors, much stronger practical learning depth, hero stays Warrior, everything unlocked, ONE shareable HTML file.
+
+Work Log:
+- Extracted brand assets from upload/file_00000000617c8243a648021ca53a7b22.png via scripts/mw3/make_logo.py: border-flood chroma-key -> transparent V-mark (webp 280px, 18.6 KB), 48px favicon (1.8 KB), full rounded lockup card (430px, 10.9 KB); embedded as base64 data-URIs (~42 KB total)
+- Full re-theme of p01_head.html to the VidhyaSaathy palette: Warm Ivory #F9F6EE page bg, Ink #172A40, navy ramp #041D3D/#193E69/#28517C/#517DAB, Ice #D6E2E6, brand gold #C9962E/#E3AF3C; navy signature-gradient world headers + bossband + arena; gold XP bar/step pills/question chips; new .irl-card, .loopband, .hero-logo, .brandline styles
+- p02: brand-derived 12-world HUES map (navy/steel/azure/teal/slate + gold for Polynomial Kingdom), brand confetti colors, LOGO_MARK/LOGO_FAV/LOGO_CARD consts + favicon injection, irlHTML() helper; fixed double data-uri prefix bug
+- Real-World Radar added to ALL 38 concepts (irl:[2 uses] each, concrete Indian contexts: kirana mental maths, DLS cricket, auto meters, A4 √2 photocopiers, LPG cylinders, batting averages...) — rendered in Key Ideas step + first use shown in CONCEPT COVERED overlay
+- p10_ui: topbar logo-badge now shows the real V-mark with "BY VIDHYASAATHY" small text; home hero = full VidhyaSaathy lockup card + gold brandline + brand kicker; new 3-step LEARN/PROVE/DETHRONE loopband; intro overlay branded (logo tile + "VIDHYASAATHY PRESENTS"); footer "VidhyaSaathy · Learning, with you"
+- Rebuild: bash build.sh -> download/maths-war.html, 312,957 bytes, 9 script blocks all parse OK
+- QA (agent-browser): intro->home->world->lesson all 5 steps->practice 5/5->CONCEPT COVERED overlay->boss intro->fight->strike FX (HP 100->80) verified with screenshots; (a+b)^2 square-cut lab + circle-angle lab render clean; 5,700-question generator stress test = 0 bad; irl coverage 38/38; mobile 390px clean; ZERO console errors
+- GitHub push NOT possible this session (no credentials in container): gh-pages still hosts v2. To publish: copy download/maths-war.html over gh-pages' maths-war.html + wars.html + wars/play.html and push (needs auth)
+
+Stage Summary:
+- DELIVERABLE: /home/z/my-project/download/maths-war.html (single shareable file, 313 KB, offline-capable, favicon included)
+- App: "Maths War" fully re-skinned in VidhyaSaathy brand (ivory+navy+gold), real logo everywhere (topbar/intro/home/footer/favicon), hero WARRIOR, all 38 concepts with new Real-World Radar practical-usage layer, zero locks, teach->test loop intact

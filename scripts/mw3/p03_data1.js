@@ -9,6 +9,7 @@ WORLDS=[
  concepts:[
 
  {id:'num1',t:'The Number Family',sub:'NCERT 1.1 · Naturals → Reals',
+  irl:['Your bank app mixes families on one screen: −₹250 balance (integers), 7.5% interest (rationals), UPI PIN digits (wholes) — knowing the family tells you which rules apply','Cricket commentary is a number-family parade: 287/4 (rationals), 49.3 overs (decimals), DLS target −12 (negative integers)'],
   hook:{ic:'🪜',s:'Riya keeps score during a cricket match: 0, 1, 2, 3… When her team owes 5 runs by DLS, the scoreboard shows −5. At the canteen they split a samosa into quarters — 3/4 each. Then the sports teacher draws the cricket field diagonally and whispers: "That diagonal of a 1 m square? Its length is √2 — and no fraction can ever write it down."',
         w:'One number line holds ALL of them: naturals, zero, negatives, fractions, and wild irrationals. Knowing which family a number belongs to decides which rules apply to it.'},
   facts:[['Five families, nested like dolls','N (1,2,3…) ⊂ W (adds 0) ⊂ Z (adds negatives) ⊂ Q (adds fractions p/q, q≠0) ⊂ R (adds irrationals). Every set swallows the one before it.'],
@@ -41,6 +42,7 @@ WORLDS=[
   }},
 
  {id:'num2',t:'Density: Numbers Between',sub:'NCERT 1.1 · Infinitely many rationals',
+  irl:['Sharing 1 L of cold drink between cousins: between 1/3 L and 1/2 L there is still 5/12 L — pour sizes never run out','Phone battery 47% to 48%: the display can show 47.5% between them — between any two numbers another always exists'],
   hook:{ic:'🪑',s:'Aarav and Zoya sit on a bench at marks 1/4 and 1/3. "There is no seat between us," says Zoya. Their maths teacher smiles, walks over, and places a new bench at 7/24 — exactly the mean. "Now?" "Another bench fits between THOSE two!" Realises Aarav. "We could do this forever…"',
         w:'And that is the whole magic: between any two rationals you can always fit another — infinitely many. No two rationals are ever "next to" each other.'},
   facts:[['The mean never misses','Between rationals a and b, (a+b)/2 is ALWAYS a rational lying strictly between them.'],
@@ -70,6 +72,7 @@ WORLDS=[
   }},
 
  {id:'num3',t:'Decimal Expansions',sub:'NCERT 1.2 · Terminating & recurring',
+  irl:['Money is terminating on purpose: ₹96.375 fits paise exactly because 1000 = 2³×5³ — shopkeepers never meet repeating rupees','Milk booth maths: 3.33… L recurring vs 2.5 L terminating — the denominator (3 vs 10) quietly decides'],
   hook:{ic:'🔁',s:'The bus odometer flips 0.375 km and stops dead. The milk booth\'s meter, though, keeps whispering 3.3333… forever, and the magic meter repeats 4.545454… like a beat drop. Three meters, three personalities — and the secret behind each one is hidden in ONE number: the denominator.',
         w:'Decide from p/q alone whether a decimal will terminate, repeat, or go wild. This single trick answers a full exam question every year.'},
   facts:[['The denominator decides everything','Write the fraction in LOWEST form. If the denominator is only 2s and 5s (like 8 = 2³, 40 = 2³·5), the decimal terminates.'],
@@ -103,6 +106,7 @@ WORLDS=[
   }},
 
  {id:'num4',t:'Irrationals & the Root Spiral',sub:'NCERT 1.2 · Locating √2, √3, √n',
+  irl:['Every photocopier lives on √2: shrink A4 to A5 and you scaled by 1/√2 — the most-printed irrational on Earth','Carpenters square a corner with 3-4-5 but check diagonals with √2 — the root spiral is their invisible ruler'],
   hook:{ic:'📐',s:'2,500 years ago a Greek sailor-geometer, Theodorus, kept drawing right triangles with one arm of length 1, hinged tip-to-tail: √2, then √3, then √4… until his compass reached √17. Legend says when the Pythagoreans proved √2 was NOT a fraction, they threw a feast — and, some say, threw a man overboard for revealing the secret.',
         w:'The spiral is a MACHINE for placing irrational roots exactly on the number line — no measuring, pure construction. Exam papers love asking "locate √3.5-style values".'},
   facts:[['√2 is the first rebel','No integers p, q satisfy p/q = √2. Its decimal 1.41421356… never terminates and never repeats → irrational.'],
@@ -131,6 +135,7 @@ WORLDS=[
   }},
 
  {id:'num5',t:'Exponent Laws & Rationalising',sub:'NCERT 1.4–1.6 · Powers & surds',
+  irl:['Camera zoom and bacteria growth are powers: 2×, 2²×, 2³× — exponents simply count the doublings','Physics labs rationalise denominators so circuit answers stop wobbling: 1/(√2+1) = √2−1 computes faster and cleaner'],
   hook:{ic:'🦠',s:'A scientist counts bacteria: 2, 4, 8, 16… "Doubling is just powers of 2," she says. Then a microbe shears one cell into THREE parts each hour — and suddenly she needs 2^(1/2) and 5^(1/3): powers with FRACTIONS. And when a formula demands 1/√2 in the denominator, she refuses to leave a surd downstairs — she rationalises the basement.',
         w:'Exponent laws work for ALL real exponents, and a rationalised denominator is the exam-clean form every checker wants to see.'},
   facts:[['The four power laws','aᵐ·aⁿ = aᵐ⁺ⁿ · aᵐ/aⁿ = aᵐ⁻ⁿ · (aᵐ)ⁿ = aᵐⁿ · a⁻ⁿ = 1/aⁿ. They hold for any real a > 0.'],
@@ -166,6 +171,7 @@ WORLDS=[
  concepts:[
 
  {id:'poly1',t:'Meet the Polynomials',sub:'NCERT 2.1 · Terms & degrees',
+  irl:['An auto fare = ₹25 + ₹12 × km — a polynomial in base + rate×n form, computed by the meter on every trip','Framing a photo: border thickness x makes area (a+2x)(b+2x) — expanding it is polynomial multiplication'],
   hook:{ic:'🏗️',s:'Think of x as a Lego brick. Stick 3 bricks: 3x. Add a flat 2-brick plate: 3x + 2. Stack a triple-decker: x³ + 2x + 1 — a cubic skyscraper. But the moment you try 1/x or √x, the building inspector shuts the site down: those are NOT polynomials.',
         w:'Degree = the tallest tower of x. It decides the graph\'s shape, the number of zeros, and the whole behaviour of the polynomial.'},
   facts:[['Whole powers only','A polynomial in x has terms like a₀ + a₁x + a₂x² + … where every power of x is a whole number (0, 1, 2, 3…).'],
@@ -195,6 +201,7 @@ WORLDS=[
   }},
 
  {id:'poly2',t:'Zeros of Polynomials',sub:'NCERT 2.2–2.3 · Where p(x) = 0',
+  irl:['Business break-even: profit p(x) = 0 pins the exact price where loss flips to profit','A six in cricket: the ball lands where height = 0 — the spot is a zero of the flight polynomial'],
   hook:{ic:'🎚️',s:'p(x) is a machine with a slider. Slide x to 2 and the display reads 0 — CLUNK, the machine switches off. That value of x is called a ZERO. On the graph, zeros are exactly the spots where the curve dives into (or kisses) the x-axis. Every crossing is a solution of p(x) = 0.',
         w:'Finding zeros = solving equations. It links algebra (p(r) = 0) to geometry (graph meets the x-axis) — a favourite exam connection.'},
   facts:[['Definition','r is a zero of p(x) if p(r) = 0. Substitute and check — that is the entire test.'],
@@ -227,6 +234,7 @@ WORLDS=[
   }},
 
  {id:'poly3',t:'Identity Lab ★ The Square-Cut',sub:'NCERT 2.4 · The four identities',
+  irl:['Mental shopkeeper trick: 98 × 102 = (100−2)(100+2) = 9996 — the difference identity live at the kirana counter','Builders tile an (a+b) square courtyard two ways — the areas must match, and that match IS the (a+b)² identity'],
   hook:{ic:'🟫',s:'A mason must tile a square courtyard of side (a + b). He orders big a×a tiles, slim a×b strips, and tiny b×b corner tiles. When the job is done he counts: ONE big square, TWO strips, ONE corner — total area a² + 2ab + b². But the courtyard side is (a + b), so its area is (a + b)². Same floor, two countings — that is the identity, proven with tiles, not algebra!',
         w:'Identities are true for EVERY value of a and b. Memorise them as pictures, not strings — the square-cut makes them unforgettable and unconfusable.'},
   facts:[['The crown identity','(a + b)² = a² + 2ab + b² — one a², one b², TWO ab rectangles filling the cross gap.'],
@@ -261,6 +269,7 @@ WORLDS=[
   }},
 
  {id:'poly4',t:'The Remainder Machine',sub:'NCERT 2.4 · Remainder theorem',
+  irl:['Days of the week run on remainders: 100 days after Monday? 100 ÷ 7 leaves 2 → Wednesday','Packing 47 laddoos into boxes of 5: the leftover 2 is the remainder — p(x) evaluated at the box size'],
   hook:{ic:'📦',s:'A courier named p(x) carries boxes into cartons shaped (x − k). However he arranges them, some boxes always spill over — the REMAINDER. The magic insight: to know the spillage without opening a single carton, just feed x = k into p(x). p(k) IS the remainder. Always.',
         w:'This turns ugly long division into one substitution. It also secretly powers the factor theorem — the master key of factorisation.'},
   facts:[['The theorem','When p(x) is divided by (x − k), the remainder is p(k). No long division needed.'],
@@ -291,6 +300,7 @@ WORLDS=[
   }},
 
  {id:'poly5',t:'Factor Theorem & Splitting',sub:'NCERT 2.3–2.4 · Factorisation',
+  irl:['Factoring area x²+7x+12 into sides (x+3)(x+4) is exactly how gardeners split a plot into length × width','Splitting the middle term = reorganising a bill: ₹7 = ₹3 + ₹4 groups the items neatly — same trick, algebra edition'],
   hook:{ic:'🕵️',s:'A detective cracks safes by trying likely codes: 1, −1, 2, −2… For cubics, p(±1), p(±2) are the "likely codes". The moment p(k) = 0, the safe door (x − k) swings open, and inside the remaining quadratic waits to be cracked by splitting.',
         w:'Factorising is reversing multiplication. The factor theorem finds the first break-in point; splitting the middle term finishes quadratics in seconds.'},
   facts:[['Factor theorem','(x − k) is a factor of p(x) ⟺ p(k) = 0. It is the remainder theorem with remainder zero.'],
@@ -331,6 +341,7 @@ WORLDS=[
  concepts:[
 
  {id:'grid1',t:'The Cartesian Stage',sub:'NCERT 3.1–3.2 · Axes & quadrants',
+  irl:['Google Maps pins your samosa delivery at (latitude, longitude) — the whole city is one coordinate plane','Ludo and chess: every token lives at a (column, row) — you have played coordinate geometry all along'],
   hook:{ic:'🎬',s:'A cinema ticket says: BALCONY, ROW D, SEAT 7. Two numbers — row and seat — and you walk straight to it. Descartes did this to the whole universe in 1637: two perpendicular number lines, and EVERY point on the plane gets a unique address (x, y). Maths got a GPS.',
         w:'Quadrant rules tell you the SIGNS of coordinates instantly — a one-mark gimme in every exam, and the base of all graph work.'},
   facts:[['The address system','(x, y): x = abscissa (horizontal walk), y = ordinate (vertical climb). ORDER matters — (2, 3) ≠ (3, 2).'],
@@ -359,6 +370,7 @@ WORLDS=[
   }},
 
  {id:'grid2',t:'Plot, Mirror & Measure',sub:'NCERT 3.2 · Plotting & reflections',
+  irl:['Rangoli symmetry: every dot mirrored across the centre line is a reflection of a point','Dance drills: when the coach says mirror my position, your coordinates reflect across the line between you'],
   hook:{ic:'🗺️',s:'A treasure map shows X at (4, 3). Your rival digs at (−4, 3) — the mirror twin across the y-axis! You laugh, then fall into your own trap at (4, −3). Same distances, opposite directions: reflections are coordinate flips, and the axes are the mirrors.',
         w:'Mirror rules and "distance from axis" questions are tiny but guaranteed marks — and they train the eye for graphs of equations next chapter.'},
   facts:[['Mirror across the y-axis','(a, b) → (−a, b). Only the x sign flips; the height never changes.'],
@@ -396,6 +408,7 @@ WORLDS=[
  concepts:[
 
  {id:'line1',t:'Lines & Their Solutions',sub:'NCERT 4.1–4.2 · Solutions of ax + by + c = 0',
+  irl:['Auto fare ₹25 + ₹12/km makes one equation with MANY (km, fare) pairs — every ride is a solution point','Canteen combo samosa + juice = ₹50 has endless (s, j) answers — a whole line of possibilities'],
   hook:{ic:'☕',s:'At Meera\'s chai stall, a cup costs ₹5 and a samosa ₹10. A customer pays exactly ₹30: "5x + 10y = 30 — but how many cups and samosas?" One cup + 2.5 samosas? No! But 6 cups + 0 samosas works, and so do many other combos. ONE equation, MANY solutions — and when you plot them all… they fall on a perfect straight line.',
         w:'A linear equation in two variables is not a puzzle with one answer — it is a whole family of answers, and their graph is a line.'},
   facts:[['The standard form','ax + by + c = 0, with a and b not both zero. Examples: 2x + 3y = 12, x − 4 = 0 (take y\'s coefficient as 0!).'],
@@ -425,6 +438,7 @@ WORLDS=[
   }},
 
  {id:'line2',t:'Drawing the Graph',sub:'NCERT 4.3–4.4 · Intercepts & special lines',
+  irl:['Mobile plan graphs: balance vs days is a straight line; intercepts show full balance and the day it dies','Taxi fare cards are drawn graphs: base fare is the y-intercept, rate per km is the slope'],
   hook:{ic:'⛏️',s:'A cricket coach chalks a boundary line across the field. She only needs TWO points — one near each end — and the chalk snaps a perfect line between them. Graphs work the same: any two solutions of ax + by = c, joined with a ruler, ARE the whole equation on display.',
         w:'Intercepts (put y = 0, then x = 0) give the two easiest points. And special lines like x = 3 or y = −2 have personalities you must recognise on sight.'},
   facts:[['Two points are enough','A straight line is fixed by any two of its points. Find two solutions, plot, join — extend both ways.'],
@@ -452,6 +466,7 @@ WORLDS=[
   }},
 
  {id:'line3',t:'Stories → Equations',sub:'NCERT 4.4–4.5 · Word problems & graphs',
+  irl:['Petrol pump receipts: litres × rate turns into 2x + 3y = 90 — then predict any combo before paying','Fitness trackers: calories vs treadmill minutes is a line — read it, plan the workout, hit the target'],
   hook:{ic:'🛺',s:'Auto-driver Ravi charges ₹20 the moment you sit (flag-down), then ₹8 per kilometre. A 1 km ride: ₹28. A 5 km ride: ₹60. A 0 km ride: ₹20 (just sitting!). Fare = 20 + 8×km — a linear equation wearing a rickshaw costume. Plot (km, fare) and the points line up like beads.',
         w:'Translating stories into equations is half of applied maths. Fixed charge → constant; rate → coefficient; total → the line.'},
   facts:[['Spot the structure','"Fixed fee + rate × quantity" always becomes y = mx + c (m = rate, c = fixed fee).'],

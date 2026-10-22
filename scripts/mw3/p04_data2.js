@@ -9,6 +9,7 @@ WORLDS.push(
  concepts:[
 
  {id:'euc1',t:'Axioms & Postulates',sub:'NCERT 5.1–5.2 · The seeds of geometry',
+  irl:['UPI works because every step follows trusted rules nobody re-verifies — axioms are the terms & conditions of mathematics','Architects prove a whole building from a few guaranteed assumptions — exactly Euclid proving a world from 5 postulates'],
   hook:{ic:'🏛️',s:'Alexandria, 300 BC. In the great library, Euclid refuses to assume ANYTHING without proof. He boils geometry down to a handful of "obvious truths" — axioms for all of maths, five postulates for geometry — and then, brick by brick, builds 465 theorems. When a king demands a shortcut, Euclid replies: "There is no royal road to geometry."',
         w:'Every proof you will ever write stands on these seeds. Exams directly test the postulates — and rightly so: they are the constitution of geometry.'},
   facts:[['Axiom vs postulate','Axioms are self-evident truths used across ALL of maths ("things equal to the same thing are equal"). Postulates are the five truths specific to geometry.'],
@@ -39,6 +40,7 @@ WORLDS.push(
   }},
 
  {id:'euc2',t:'Theorems from Seeds',sub:'NCERT 5.2 · Equivalent versions of the 5th',
+  irl:['Railway tracks are the fifth postulate made real: parallel lines that never meet, trusted by a billion journeys','Ruled notebook lines and zebra crossings: parallel-line reasoning keeps the world aligned'],
   hook:{ic:'⚖️',s:'Two long highways leave Delhi heading "almost the same way". Can they cross TWICE? Imagine it: two crossings would mean both highways pass through the same two towns — forcing them to be one and the same road. Contradiction! This tiny argument is your first real THEOREM.',
         w:'A theorem is a statement PROVED from axioms. Learning how the proof fights a contradiction is the real skill of this chapter.'},
   facts:[['Theorem 5.1','Two distinct lines cannot have more than one point in common. Proof by contradiction: two common points would make them the same line.'],
@@ -69,6 +71,7 @@ WORLDS.push(
  concepts:[
 
  {id:'ang1',t:'Angle Pairs',sub:'NCERT 6.1 · Pairs of angles',
+  irl:['Clock hands: 3:00 is a complementary 90°, 6:00 a supplementary 180° — time-telling is angle-pair reading','Pizza cuts: two straight slices through one point make vertically opposite equal pieces — fair shares, guaranteed'],
   hook:{ic:'🕒',s:'Look at a clock at 3:00 — the hands sit at 90°. At 6:00 they open to 180°, a perfect straight line. Now cross two scissors blades: the opposite openings always MATCH, no matter how you cut. Clocks and scissors are secretly teaching you complementary, supplementary and vertically opposite angles.',
         w:'Angle-pair rules turn "find x" questions into 10-second wins — and they are the engine of every geometry proof ahead.'},
   facts:[['Complementary: sum 90°','40° + 50° = 90°, so each is the other\'s complement. Adjacent or not — only the SUM matters.'],
@@ -96,6 +99,7 @@ WORLDS.push(
   }},
 
  {id:'ang2',t:'The Transversal Chase',sub:'NCERT 6.2 · Parallel lines & transversal',
+  irl:['Railway sleepers crossing two parallel rails make equal alternate angles every time — trains stay on track by theorem','Window grills and ladders on walls: the crossing bar creates F, Z and C patterns that builders trust daily'],
   hook:{ic:'🚆',s:'Two railway tracks run parallel while a footbridge crosses them at a slant — a transversal. Suddenly eight angles appear, and they are not strangers: four of them are clones of each other, four are the other clones. Railway engineers never measure all eight. They measure ONE and copy.',
         w:'Corresponding, alternate, co-interior — these three relationships solve every parallel-line question the board can throw at you.'},
   facts:[['Corresponding angles = equal','Same relative position at each crossing (both top-right, etc.). Equal when lines are parallel.'],
@@ -124,6 +128,7 @@ WORLDS.push(
   }},
 
  {id:'ang3',t:'Angle Sum & the Exterior',sub:'NCERT 6.7–6.8 · Triangle angle properties',
+  irl:['Roof trusses: three angles locked to 180° is why triangular roof frames never fold','Kite frames: measure two angles and the third is forced — a 180° budget with no negotiating'],
   hook:{ic:'📄',s:'Tear the three corners off any paper triangle and place them tip-to-tip: they snap into a perfect straight line — 180°, every single time. And if you stretch one side of the triangle outward, the "outside" angle it makes equals the two far corners ADDED. Paper tears don\'t lie.',
         w:'Angle sum 180° and exterior angle theorem are the two most-used facts in school geometry. Instant marks, forever useful.'},
   facts:[['Angle sum property','The three interior angles of ANY triangle sum to exactly 180° — acute, right or obtuse, no exceptions.'],
@@ -156,6 +161,7 @@ WORLDS.push(
  concepts:[
 
  {id:'tri1',t:'Congruence Rules',sub:'NCERT 7.1 · SSS, SAS, ASA, RHS',
+  irl:['Factory quality control: identical tiles pass when three measurements match — SSS on a production line','Forensics match tyre marks with SAS: same angle between same-length gaps means the same vehicle'],
   hook:{ic:'🔑',s:'A locksmith copies a key not by tracing every millimetre but by matching the few cuts that MATTER. Triangles work identically: check just three carefully-chosen parts, and the whole triangle is forced. That is why SSS, SAS, ASA and RHS are called congruence RULES — shortcut passports to identical triangles.',
         w:'CPCT (Corresponding Parts of Congruent Triangles) then unlocks every remaining side and angle for free. Proof-writing starts here.'},
   facts:[['Congruent = identical','Same size AND shape; superimpose one on the other and they coincide exactly. Symbol: ≅.'],
@@ -182,6 +188,7 @@ WORLDS.push(
   }},
 
  {id:'tri2',t:'Isosceles Tales',sub:'NCERT 7.2 · Angles opposite equal sides',
+  irl:['A tent with two equal guy-ropes gets equal base angles — that symmetry is why tents survive the wind','The India Gate arch and isosceles roof trusses look grand because equal slopes echo each other'],
   hook:{ic:'⛺',s:'Every tent, roof truss and samosa is an isosceles triangle — two equal sides meeting at a peak. Fold a paper triangle down its middle and the two base angles land exactly on each other. The fold line is nature\'s proof: equal sides face equal angles.',
         w:'The isosceles theorem and its converse let you trade side-information for angle-information instantly — a staple of exam geometry.'},
   facts:[['The theorem','In any triangle, angles opposite EQUAL sides are equal. (Equal sides ↔ equal angles.)'],
@@ -208,6 +215,7 @@ WORLDS.push(
   }},
 
  {id:'tri3',t:'Side–Angle Duel',sub:'NCERT 7.3–7.4 · Inequalities',
+  irl:['Bridge bracing: the longest strut always faces the biggest load angle — the side–angle law written in steel','Delivery apps can never beat the straight line: every detour is longer — triangle inequality runs your logistics'],
   hook:{ic:'🥢',s:'Grab three sticks: 2 cm, 3 cm and 7 cm. Try to close the triangle — impossible! The two short sticks simply cannot reach around the long one. Now try 5, 6, 10: they click shut. Triangles obey a strict membership rule, and inside any triangle, the biggest angle stares at the biggest side.',
         w:'Triangle inequality questions are one-liners in exams ("Can 3, 4, 8 form a triangle?") — and the side↔angle ranking finishes inequality proofs in one step.'},
   facts:[['The membership rule','Three lengths form a triangle ONLY if the sum of every two exceeds the third. Fastest check: shortest + middle > longest.'],
@@ -241,6 +249,7 @@ WORLDS.push(
  concepts:[
 
  {id:'quad1',t:'Parallelogram Powers',sub:'NCERT 8.1 · Properties',
+  irl:['Scissor lifts and retractable phone stands: parallelogram linkages rise while staying perfectly level','Sliding cupboards and telescopic gates: opposite sides stay equal while the frame glides'],
   hook:{ic:'🪜',s:'A pantograph (the extendable lamp arm) is a lattice of parallelograms: stretch it any way you like, and opposite bars stay parallel and equal — that is why it copies drawings perfectly. One diagonal slice and each parallelogram splits into two identical triangles. This one fact generates every parallelogram property.',
         w:'Proving the diagonal splits a parallelogram into congruent triangles (by ASA) unlocks ALL other properties in two lines each. Learn one proof, harvest five.'},
   facts:[['Diagonal = congruence maker','A diagonal divides a parallelogram into two CONGRUENT triangles (alternate angles + common side → ASA).'],
@@ -267,6 +276,7 @@ WORLDS.push(
   }},
 
  {id:'quad2',t:'The Royal Family',sub:'NCERT 8.2 · Rhombus, rectangle, square',
+  irl:['Floor tiling works because squares and rectangles interlock with zero gaps — tilers live in the royal family','Your phone screen is a rectangle: a parallelogram that demanded right angles and got them'],
   hook:{ic:'👑',s:'Every parallelogram is a citizen. Some inherit titles: the RHOMBUS (equal sides, diagonals crossing like an X at right angles), the RECTANGLE (four right angles, diagonals measuring equal), and the crown prince SQUARE — inheriting BOTH estates. Know the family tree and every "identify the quadrilateral" question surrenders.',
         w:'Diagonal clues are the exam\'s favourite riddle: "diagonals equal AND perpendicular" instantly outs a square. Learn the table cold.'},
   facts:[['Rectangle','All angles 90°. Diagonals EQUAL (and they still bisect each other).'],
@@ -297,6 +307,7 @@ WORLDS.push(
   }},
 
  {id:'quad3',t:'Midpoint Magic',sub:'NCERT 8.9–8.10 · Midpoint theorem',
+  irl:['Camera gimbal arms join at midpoints so the phone stays half-way stable — the midpoint theorem in your vlogs','Bridge trusses: the mid-segment is exactly half the base — engineers size beams by it'],
   hook:{ic:'🌉',s:'Two villages sit at the midpoints of a triangular forest\'s sides. The engineers discover something eerie: the straight road joining those midpoints is always EXACTLY parallel to the third side — and exactly HALF its length. No matter how the forest triangle deforms, the bridge keeps its promises.',
         w:'The midpoint theorem (and its converse) is a two-line proof machine for "show DE = ½BC" questions — guaranteed marks if you know the setup.'},
   facts:[['The theorem','The segment joining midpoints of two sides of a triangle is PARALLEL to the third side and HALF as long: DE ∥ BC, DE = ½BC.'],
