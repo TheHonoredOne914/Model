@@ -187,3 +187,24 @@ Stage Summary:
 - PERMANENT LINK: https://whodhruv7.github.io/maths/ (GitHub Pages, gh-pages branch, auto-serves 24/7, no session dependency)
 - Preview (session) server still running on port 3000 as backup
 - Redeploy recipe: STATIC_EXPORT=1 NEXT_PUBLIC_BASE_PATH=/maths bunx next build; push out/ to gh-pages; add .nojekyll
+
+---
+Task ID: 13-maths-war-interactive-html
+Agent: Super Z (main)
+Task: User demanded the Maths War app be far more interactive, fun and "stealth-learning": every game like an interactive video, concept-by-concept breakdown woven into gameplay, a teaching feature for the square-divided-into-a-and-b ((a+b)² identity), adjustable circle/triangle machines, obvious how-to-play, and a post-learning debrief message. Deliverable = ONE shareable HTML file.
+
+Work Log:
+- Rebuilt from scratch as single-file app: 10 part files in scripts/mw/ concatenated into download/maths-war.html (~200 KB, 8 script blocks, all syntax-checked via node --check)
+- Design system: soft warm paper palette, Baloo 2/Nunito, chunky 3D press buttons, dot-grid texture, 8 hand-drawn SVG worlds/bosses + Dhruva hero (cape, pencil-blade, π-shield)
+- Stealth-learning engine: Concept Film player (4 interactive scenes/world, 32 scenes total) → MISSION DEBRIEF modal revealing "you just learned:" concept chips
+- Flagship labs: (a+b)² Machine (sliders a/b, live 4-piece square proof), Circle Dial (r→C/A live), Treasure Plotter (click-to-plot), Surd Smith, Fare Line Machine, Angle Tuner, Triangle Forge (triangle inequality + Heron), Storm Data Desk — each with milestone tracking
+- Practice Arena: 38 parametric generators (infinite unique questions), paper-mode note, Watch-me-solve demo, hint, step-by-step Solution Deck, streak/XP economy, 8-solve target
+- Boss battles: 8 SVG monsters, HP bars, 25s timer, attack animations, defeat debrief
+- Map: 8 islands w/ stars + sequential unlock, coach marks, localStorage save (mathswar_v3, array-safe)
+- Browser-tested via agent-browser across full flows (title→intro→map→hub→theater→lab→practice→boss→debrief), all 8 theaters + all 8 labs + practice grind + boss win verified; 32,000-question generator stress test clean
+- Fixed during QA: S.worlds array init, sc.extra injection, boss modal onClose flag, boss HP-text null crash, practice Next button, treasure click math, MCQ duplicate choices (3 generators), generator const-assignment bug, stale-timer DOM crash, SVG CSS-transform-overrides-attribute bugs (boat/islands/finger), mobile HUD/media queries, theater letterboxing
+- Fresh-session load: ZERO console errors
+
+Stage Summary:
+- DELIVERABLE: /home/z/my-project/download/maths-war.html — single shareable file, Class 9 NCERT, 8 named worlds (Isla Numbra, The PolyForge, Cartesia Isles, Twin River Lines, Angle Arena, Triangulum Ridge, Circora & Quadra, Datastorm Vault), hero Dhruva, app "Maths Wars"
+- Verified working end-to-end in headless Chrome with 0 errors on fresh load
