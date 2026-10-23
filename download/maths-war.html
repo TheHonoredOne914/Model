@@ -353,7 +353,7 @@ const sup=s=>'<sup>'+s+'</sup>';
 
 /* ---------- state ---------- */
 const KEY='mathswar_v5';
-let S={xp:0,learned:{},labdone:{},exdone:{},covered:{},boss:{},sound:true,seen:false};
+let S={xp:0,learned:{},labdone:{},exdone:{},covered:{},boss:{},sound:true,seen:false,diag:null,book:{},booster:{}};
 try{const raw=localStorage.getItem(KEY);if(raw){const p=JSON.parse(raw);S=Object.assign(S,p)}}catch(e){}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 
@@ -3019,6 +3019,1446 @@ function bossSVG(art,sz){
 </script>
 <script>
 'use strict';
+/* ============================================================
+   v7 · BASICS CHECK — pehle jaano Warrior ka level,
+   phir uske hisaab se padhai. Adaptive boosters per world.
+   ============================================================ */
+document.head.insertAdjacentHTML('beforeend',`<style>
+/* ---- basics report ---- */
+.bcard{background:linear-gradient(160deg,#fff,#F2F7FB);border:1.5px solid #D6E2E6;border-radius:20px;padding:22px 24px;margin:18px 0;box-shadow:0 10px 30px rgba(4,29,61,.07);animation:rise .5s ease both}
+.bcard h3{margin:0 0 4px;font-size:19px;font-weight:900;color:#041D3D;display:flex;align-items:center;gap:9px}
+.bcard .bsub{font-size:13px;color:#517DAB;font-weight:600;margin-bottom:14px}
+.meters{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.meter{background:#fff;border:1.5px solid #DCE5EE;border-radius:14px;padding:10px 12px}
+.meter .mt{font-size:11px;font-weight:800;letter-spacing:.06em;color:#28517C;text-transform:uppercase}
+.meter .mbar{height:7px;border-radius:99px;background:#E4EDF4;margin:7px 0 6px;overflow:hidden}
+.meter .mfill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.meter .mlab{font-size:12px;font-weight:800}
+.lv-shaky{color:#B4552D}.lv-solid{color:#1D6E79}.lv-sharp{color:#0F6690}
+.bpromo{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.bpromo p{margin:0;font-size:13.5px;color:#28517C;font-weight:600;max-width:560px}
+/* ---- booster band in world ---- */
+.bband{display:flex;gap:12px;align-items:center;background:linear-gradient(120deg,#FDF3E3,#FBEDD2);border:1.5px solid #E9D3A8;border-radius:16px;padding:13px 16px;margin:16px 0;animation:rise .5s ease both}
+.bband .bic{font-size:24px}
+.bband b{color:#7A5A12;font-size:14.5px}
+.bband p{margin:2px 0 0;font-size:12.5px;color:#8A6A25;font-weight:600}
+/* ---- diag screen ---- */
+.diagwrap{max-width:720px;margin:0 auto}
+.dprog{height:10px;border-radius:99px;background:#E4EDF4;overflow:hidden;margin:14px 0 22px}
+.dprog i{display:block;height:100%;background:linear-gradient(90deg,#28517C,#517DAB 60%,#E3AF3C);border-radius:99px;transition:width .45s cubic-bezier(.2,.8,.2,1)}
+.dcount{font-size:12px;font-weight:800;letter-spacing:.14em;color:#517DAB;text-transform:uppercase}
+.dq{background:#fff;border:1.5px solid #DCE5EE;border-radius:22px;padding:26px;box-shadow:0 14px 40px rgba(4,29,61,.08);animation:rise .45s ease both}
+.dq .dq-kick{font-size:11px;font-weight:800;letter-spacing:.18em;color:#C08A2D;text-transform:uppercase}
+.dq h2{margin:8px 0 4px;font-size:24px;font-weight:900;color:#041D3D}
+.dq .dq-sub{color:#517DAB;font-size:13px;font-weight:600;margin-bottom:16px}
+.dres{background:linear-gradient(165deg,#fff,#F2F7FB);border:1.5px solid #D6E2E6;border-radius:24px;padding:28px;animation:rise .5s ease both}
+.dres h2{margin:4px 0 6px;font-size:26px;font-weight:900;color:#041D3D}
+.dadv{background:#fff;border:1.5px solid #DCE5EE;border-radius:14px;padding:12px 15px;margin-top:10px;font-size:13.5px;color:#28517C;font-weight:600}
+.dadv b{color:#041D3D}
+/* ---- refresher block (lesson booster) ---- */
+.boost{background:linear-gradient(150deg,#FDF6E7,#FCF0D8);border:1.5px dashed #E3C77E;border-radius:16px;padding:15px 17px;margin-top:14px;animation:rise .5s ease both}
+.boost .bt{font-size:11px;font-weight:900;letter-spacing:.16em;color:#B8860B;text-transform:uppercase;margin-bottom:8px}
+.boost li{margin:7px 0;font-size:13.5px;color:#5C4A16;font-weight:600;line-height:1.5}
+.boost ul{margin:0;padding-left:18px}
+</style>`);
+
+/* ---------- strand map + levels ---------- */
+const STRAND_MAP={num:'arith',poly:'alg',grid:'geo',line:'alg',euc:'geo',ang:'geo',tri:'geo',quad:'geo',circ:'geo',area:'geo',sol:'geo',dat:'dat',prob:'dat',seq:'alg'};
+const STRAND_NAME={arith:'Arithmetic',alg:'Algebra',geo:'Geometry',dat:'Data & Chance'};
+function diagLevel(n){return n<=1?'shaky':(n===2?'solid':'sharp')}
+function strandOf(wid){return STRAND_MAP[wid]||null}
+function weakStrands(){if(!S.diag)return[];return['arith','alg','geo','dat'].filter(s=>diagLevel(S.diag[s])==='shaky')}
+
+/* ---------- the 12 basics questions ---------- */
+const DIAG_QS=[
+ {s:'arith',q:'3/4 + 1/4 = ?',opts:['1','1/2','1/8','3/8'],a:0,why:'Same denominators? Add the tops only: 3+1 = 4, so 4/4 = 1. Denominator (bottom) batata hai piece ka size — same size ke pieces hi seedha add hote hain.'},
+ {s:'arith',q:'(−7) + 12 = ?',opts:['5','−5','19','−19'],a:0,why:'Number line pe −7 se 12 steps aage jao → 5. Bada sign winner ka: 12 positive hai aur bada, so answer positive 5.'},
+ {s:'arith',q:'25% of 80 = ?',opts:['20','25','40','8'],a:0,why:'25% = 1/4 (quarter). 80 ke 4 hisse → 80 ÷ 4 = 20. Percentage matlab "per hundred" — 25/100 × 80 = 20.'},
+ {s:'alg',q:'Simplify: 5x + 3x',opts:['8x','15x','8x²','5x³'],a:0,why:'5 apples + 3 apples = 8 apples. 5 x + 3 x = 8 x. Same cheez (x) ke counts juddte hain — powers multiply NAHI hote yahan.'},
+ {s:'alg',q:'Solve: 2x = 14',opts:['x = 7','x = 12','x = 16','x = 28'],a:0,why:'Equation ek balance hai. x ko akela karne ke liye dono sides ko 2 se divide karo: 14 ÷ 2 = 7. Jo ek side pe karo, doosri side pe bhi — tabhi balance rehta hai.'},
+ {s:'alg',q:'3² × 3¹ = ?',opts:['27','9','81','6'],a:0,why:'Same base — powers ADD hoti hain: 2+1 = 3, so 3³ = 27. (Agar multiply karke 9 socha toh dhyan se: 3²×3¹ means 9×3.)'},
+ {s:'geo',q:'A triangle ke teeno angles ka sum = ?',opts:['180°','360°','90°','270°'],a:0,why:'Har triangle ka golden rule: teeno angles milke hamesha exactly 180° dete hain. Do angles pata ho toh teesra = 180 − (dono ka sum).'},
+ {s:'geo',q:'Area of a 5 cm × 3 cm rectangle = ?',opts:['15 cm²','8 cm²','16 cm²','10 cm²'],a:0,why:'Rectangle ka area = length × breadth = 5 × 3 = 15 square cm. Area matlab andar ka surface kitni "unit squares" bharta hai.'},
+ {s:'geo',q:'Point (3, −2) kis quadrant me baithta hai?',opts:['IV (x+, y−)','I (x+, y+)','II (x−, y+)','III (x−, y−)'],a:0,why:'x = 3 positive (right side), y = −2 negative (neeche). Right + neeche = Quadrant IV. Order yaad rakho: pehle x ki baari (chalein "x pehle, phir y").'},
+ {s:'dat',q:'4, 8, 12 ka mean = ?',opts:['8','12','6','10'],a:0,why:'Mean = sab jodo, count se baanto: (4+8+12) ÷ 3 = 24 ÷ 3 = 8. Mean is the "equal-share" value — sabko barabar baanto toh har ko kya milta hai.'},
+ {s:'dat',q:'2, 3, 3, 5, 7 ka mode = ?',opts:['3','4','5','7'],a:0,why:'Mode = sabse popular value (jo sabse zyada baar aaye). Yahan 3 do baar aaya, baaki sab ek baar → mode = 3. MOst Ontinuous = MOde!'},
+ {s:'dat',q:'Ek fair coin me heads aane ka probability = ?',opts:['1/2','1','0','1/4'],a:0,why:'2 barabar outcomes (heads, tails) me se 1 favourable. P = favourable/total = 1/2. Probability hamesha 0 aur 1 ke beech rehti hai.'}
+];
+
+/* ---------- strand refreshers (adaptive booster content) ---------- */
+const REFRESH={
+ arith:{t:'Arithmetic refresher — the ground floor',li:['<b>Fractions:</b> same denominator → add tops (3/8+1/8=4/8). Different → pehle common denominator banao.','<b>Negatives:</b> number line pe left = minus. Minus × minus = plus; minus × plus = minus.','<b>%:</b> 25% = 1/4, 50% = 1/2, 10% = 1/10. "% of 80" means (25/100)×80.','<b>Order of operations:</b> Brackets → powers → × ÷ → + − (BODMAS).']},
+ alg:{t:'Algebra refresher — x ke saath dosti',li:['<b>Like terms:</b> 5x+3x = 8x (same cheez count karo). 5x+3x² ko aage nahi badh sakte.','<b>Balance rule:</b> equation dono taraf barabar — jo ek side pe karo, doosri pe bhi.','<b>Solve 2x=14:</b> dono sides ÷ 2 → x=7. Solve x+3=9: dono sides − 3 → x=6.','<b>Powers:</b> x² means x·x. aᵐ·aⁿ = aᵐ⁺ⁿ (same base → powers add).']},
+ geo:{t:'Geometry refresher — shapes ki bhasha',li:['<b>Triangle:</b> angles ka sum 180°. Equilateral = 60° each. Isosceles = 2 barabar sides + 2 barabar base angles.','<b>Area:</b> rectangle = l×b, triangle = ½×base×height, circle = πr².','<b>Coordinates:</b> (x, y) — x pehle (right+/left−), y baad me (up+/down−). 4 quadrants anticlockwise I→IV.','<b>Parallel lines:</b> kabhi nahi milti; transversal ke saath corresponding/alternate angles barabar bante hain.']},
+ dat:{t:'Data & Chance refresher — numbers ka sabudana',li:['<b>Mean:</b> sab jodo ÷ count. <b>Median:</b> order me lagao, beech wala. <b>Mode:</b> sabse zyada baar wala.','<b>Probability</b> = favourable ÷ total outcomes. Range: 0 (impossible) se 1 (certain).','<b>One die:</b> P(any one face) = 1/6. <b>Coin:</b> P(heads) = 1/2.','<b>Frequency table:</b> tally marks se count; bar height = frequency.']}
+};
+
+/* ---------- HTML builders ---------- */
+function meterHTML(s){
+ const lvl=diagLevel(S.diag[s]);
+ const col={shaky:'#C97B4A',solid:'#1D6E79',sharp:'#0F6690'}[lvl];
+ const pct={shaky:33,solid:66,sharp:100}[lvl];
+ return '<div class="meter"><div class="mt">'+STRAND_NAME[s]+'</div><div class="mbar"><div class="mfill" style="width:'+pct+'%;background:'+col+'"></div></div><div class="mlab lv-'+lvl+'">'+lvl.toUpperCase()+'</div></div>';
+}
+function basicsCardHTML(){
+ if(!S.diag){
+  return '<div class="bcard"><h3>🧭 Basics Check — hum pehle aapka level jaanenge</h3><div class="bsub">12 chhote questions · 2 minute · no marks, no judgement — sirf aapke liye</div><div class="bpromo"><p>Ek proper warrior apni talwar ka weight jaanta hai. Ye quick check batayega kaunsi floor strong hai (Arithmetic, Algebra, Geometry, Data) — uske hisaab se har lesson me basics refresher khud ON ho jayega.</p><button class="btn btn-p" onclick="A.diagStart()">🧭 Start Basics Check</button></div></div>';
+ }
+ const ws=weakStrands();
+ const headline=ws.length===0?'Solid ground, Warrior! Har strand ready hai.':'Report ready — '+(ws.length===1?'one':ws.length)+' zone'+(ws.length>1?'s':'')+' needs refresher: humne boosters ON kar diye.';
+ return '<div class="bcard"><h3>🧭 Your Warrior Report</h3><div class="bsub">'+headline+'</div><div class="meters">'+['arith','alg','geo','dat'].map(meterHTML).join('')+'</div>'
+ +'<div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-g btn-sm" onclick="A.diagRetake()">↻ Retake check</button><span class="muted" style="font-size:12px;align-self:center">Weak strands? Har lesson me basics refresher apne aap dikhega.</span></div></div>';
+}
+function basicsBandHTML(wid){
+ const st=strandOf(wid);
+ if(!st||!S.diag)return '';
+ const lvl=diagLevel(S.diag[st]);
+ if(lvl!=='shaky')return '';
+ return '<div class="bband"><span class="bic">🧰</span><div><b>Basics Booster is ON for '+STRAND_NAME[st]+'</b><p>Aapke Basics Check me yeh strand thoda shaky nikla — is world ke har lesson me ground-floor refresher card milega. Ek baar basics pakka, phir yeh world aasan lagega.</p></div><button class="btn btn-g btn-sm" onclick="A.showRefresher(\''+st+'\')">Refresher dekho</button></div>';
+}
+function boosterHTML(wid){
+ const st=strandOf(wid);
+ if(!st||!S.diag||diagLevel(S.diag[st])!=='shaky')return '';
+ const r=REFRESH[st];
+ return '<div class="boost"><div class="bt">🧰 Basics Booster · '+r.t+'</div><ul>'+r.li.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
+}
+
+/* ---------- diag flow ---------- */
+let DSTATE=null;
+function renderDiag(){
+ if(!DSTATE){go('home');return}
+ if(DSTATE.phase==='done'){App.innerHTML='<div class="screen diagwrap">'+diagResultHTML()+'</div>';return}
+ const i=DSTATE.i,q=DIAG_QS[i];
+ App.innerHTML='<div class="screen diagwrap">'
+ +'<div class="backrow"><button class="btn btn-g btn-sm" onclick="A.diagSkip()">Skip for now →</button><span class="muted" style="font-size:12.5px">Basics Check · no marks, only insight</span></div>'
+ +'<div class="dcount">Question '+(i+1)+' of '+DIAG_QS.length+' · '+STRAND_NAME[q.s]+'</div>'
+ +'<div class="dprog"><i style="width:'+Math.round(i/DIAG_QS.length*100)+'%"></i></div>'
+ +'<div class="dq"><span class="dq-kick">🧭 Basics Check</span><h2>'+q.q+'</h2><div class="dq-sub">Jawab soch ke do — galat bhi chalega, wahan se hi seekhna shuru hota hai</div>'
+ +'<div class="opts">'+q.opts.map((o,k)=>'<button class="opt" style="animation-delay:'+(0.06+k*0.06)+'s" onclick="A.diagAns('+k+')"><span class="opt-l">'+'ABCD'[k]+'</span><span>'+o+'</span></button>').join('')+'</div>'
+ +'<div id="dwhy"></div></div></div>';
+}
+function diagResultHTML(){
+ const names={arith:'Arithmetic',alg:'Algebra',geo:'Geometry',dat:'Data & Chance'};
+ const advice={arith:'Fractions, negatives aur percent — ye har chapter ki oxygen hain. Number Nagar se shuru karo, har lesson me refresher milega.',alg:'x wali duniya ka gate Algebra se khulta hai. Polynomial Kingdom + Line Land me booster ON hai.',geo:'Diagrams dost ban jayenge — Angle Realm aur Triangle Territory me ground-floor refresher ke saath shuru karo.',dat:'Data easy hai bas pattern samajh lo — Data Dungeon aur Chance Mansion me refresher ready hai.'};
+ return '<div class="dres"><span class="dq-kick">🧭 WARRIOR REPORT READY</span><h2>Ab hum jaante hain: kahan se shuru karna hai</h2>'
+ +'<div class="meters" style="margin:16px 0">'+['arith','alg','geo','dat'].map(meterHTML).join('')+'</div>'
+ +weakStrands().map(s=>'<div class="dadv"><b>'+names[s]+' booster ON:</b> '+advice[s]+'</div>').join('')
+ +(weakStrands().length===0?'<div class="dadv"><b>Ground strong hai!</b> Seedha koi bhi world chuno — sab unlocked hai. Bosses se darna mana hai.</div>':'')
+ +'<div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap"><button class="btn btn-p btn-xl" onclick="A.diagGo()">⚔️ Arena me enter karo</button><button class="btn btn-g" onclick="A.diagRetake()">↻ Retake</button></div></div>';
+}
+window.A_EXTRA=Object.assign({},window.A_EXTRA,{
+ diagStart(){DSTATE={phase:'test',i:0,ans:[]};go('diag');SFX.click()},
+ diagSkip(){DSTATE=null;go('home')},
+ diagAns(k){
+  if(!DSTATE||DSTATE.phase!=='test')return;
+  const q=DIAG_QS[DSTATE.i],ok=k===q.a;
+  DSTATE.ans.push({s:q.s,ok});
+  const box=$('#dwhy');
+  if(box){box.innerHTML='<div class="why" style="margin-top:14px"><b>'+(ok?'✓ Correct!':'Not quite — koi baat nahi.')+'</b> '+q.why+'</div><div style="margin-top:14px"><button class="btn btn-p" onclick="A.diagNext()">'+(DSTATE.i+1<DIAG_QS.length?'Next question →':'See my report →')+'</button></div>'}
+  if(ok)SFX.ok();else SFX.no();
+ },
+ diagNext(){
+  DSTATE.i++;
+  if(DSTATE.i>=DIAG_QS.length){
+   const sc={arith:0,alg:0,geo:0,dat:0};
+   DSTATE.ans.forEach(a=>{if(a.ok)sc[a.s]++});
+   S.diag=sc;S.booster={};save();DSTATE={phase:'done'};SFX.win();
+   renderDiag();scrollTo(0,0);
+  }else renderDiag();
+ },
+ diagRetake(){DSTATE={phase:'test',i:0,ans:[]};go('diag')},
+ diagGo(){DSTATE=null;go('home')},
+ showRefresher(s){
+  const r=REFRESH[s];
+  showOvl('<div class="introcard" style="text-align:left;max-width:560px"><div class="bt" style="font-size:11px;font-weight:900;letter-spacing:.16em;color:#B8860B;text-transform:uppercase;margin-bottom:6px">🧰 Basics Booster</div><h2>'+r.t+'</h2><ul style="margin:12px 0 18px;padding-left:20px">'+r.li.map(x=>'<li style="margin:9px 0;color:#28517C;font-weight:600;font-size:14px;line-height:1.55">'+x+'</li>').join('')+'</ul><div style="text-align:center"><button class="btn btn-p" onclick="A.ovlClose()">Samajh gaya ✓</button></div></div>',true);
+ }
+});
+</script>
+<script>
+'use strict';
+/* ============================================================
+   BOOK ZONE DATA · part 1 — Grid Guardians (Book Ch 1: Coordinates)
+   Ganita Manjari Grade 9 · real exercise questions, solved
+   step-by-step with Hinglish + English Ask explanations.
+   ============================================================ */
+window.BOOKZ=window.BOOKZ||{};
+BOOKZ.grid={
+ src:'Ganita Manjari · Grade 9 · Part I — Book Ch 1 (Orienting Yourself: The Use of Coordinates)',
+ sets:[
+ {set:'End-of-Chapter Exercises',qs:[
+  {q:'What are the x-coordinate and y-coordinate of the point of intersection of the two axes?',
+   why:'GPS, chess boards, game maps — sab ka "zero point" yahi concept hai. Axes ka intersection hi poore system ka address 0 hai.',
+   steps:[
+    ['The two axes are the x-axis and the y-axis.','x-axis horizontal line hai, y-axis vertical — dono ek dusre ko jahan kaatte hain, wahi intersection point hai.','The x-axis (horizontal) and the y-axis (vertical) cross each other at exactly one point — that point is their intersection.'],
+    ['That intersection point is called the origin.','Is point ka naam hai origin. Poore plane ka "home base" yahi hai — sab measurements yahi se count hoti hain.','This crossing point has a name: the origin. Every measurement in the plane starts counting from here.'],
+    ['At the origin, distance from BOTH axes is 0','Origin se x-axis ki doori = 0, aur y-axis ki doori bhi = 0. x-coordinate y-axis se doori hai, y-coordinate x-axis se — dono 0.','At the origin, the distance from the y-axis is 0 (so x = 0) and the distance from the x-axis is also 0 (so y = 0).'],
+    ['Answer: (0, 0)','Toh intersection point ke coordinates = (0, 0). Isi point ko O bhi likhte hain.','So the coordinates of the intersection are (0, 0) — the origin O.']],
+   ans:'(0, 0) — the origin'},
+  {q:'Point W has x-coordinate equal to −5. Can you predict the coordinates of point H which is on the line through W parallel to the y-axis? Which quadrants can H lie in?',
+   why:'Metro lines socho: ek hi vertical line pe saare stations ka "east-west address" same hota hai. Yahi idea yahan chal raha hai.',
+   steps:[
+    ['A line parallel to the y-axis keeps x fixed','y-axis ke parallel line pe chalne wala HAR point utna hi door rehta hai y-axis se jitna W hai. y-axis se doori = x-coordinate. W ka x = −5, toh is poori line ka x = −5 hi rahega.','Every point on a line parallel to the y-axis stays the same distance from the y-axis. That distance IS the x-coordinate, so every such point has x = −5.'],
+    ['So H = (−5, y) for some value of y','H usi line pe hai, isliye H = (−5, y) — y kuch bhi ho sakta hai. Sirf x pakka −5, y free.','So H must look like (−5, y) — the first number is locked at −5, while y can be anything.'],
+    ['Sign of x is negative → left half of the plane','x = −5 negative hai matlab H y-axis ke LEFT side pe hai. Ab sirf y ka sign decide karega quadrant.','Because x = −5 is negative, H lives to the LEFT of the y-axis. Only the sign of y decides which quadrant.'],
+    ['y > 0 → Quadrant II; y < 0 → Quadrant III','Agar y positive (upar) → Quadrant II. Agar y negative (neeche) → Quadrant III. (Aur agar y = 0 toh H bilkul x-axis pe baith jayega.)','If y > 0, H is in Quadrant II; if y < 0, in Quadrant III. If y = 0, H sits exactly on the x-axis.']],
+   ans:'H = (−5, y); H can lie in Quadrant II (y > 0) or Quadrant III (y < 0)'},
+  {q:'Consider the points R(3, 0), A(0, −2), M(−5, −2) and P(−5, 2), joined in the order R→A→M→P→R. Predict: (i) two sides perpendicular to each other, (ii) one side parallel to an axis, (iii) two points that are mirror images in one axis.',
+   why:'Floor-plan drawing yehi hai: deewar seedhi hai (axis-parallel) ya corner right-angle hai — coordinates se predict karo, phir plot karke verify.',
+   steps:[
+    ['Compare coordinates pair by pair','Side RA: R(3,0)→A(0,−2). Side AM: A(0,−2)→M(−5,−2). Side MP: M(−5,−2)→P(−5,2). Side PR: P(−5,2)→R(3,0). Har side ke dono points ke x aur y alag-alag dekho.','Look at each side and compare the two endpoints: if y stays the same the side is horizontal; if x stays the same it is vertical.'],
+    ['AM is horizontal (both y = −2), MP is vertical (both x = −5)','A aur M dono ka y = −2 → AM x-axis ke parallel seedhi line. M aur P dono ka x = −5 → MP y-axis ke parallel. Horizontal ⊥ vertical hota hai → AM aur MP perpendicular hain (right angle at M).','A(0,−2) and M(−5,−2) share y = −2, so AM is horizontal. M(−5,−2) and P(−5,2) share x = −5, so MP is vertical. Horizontal meets vertical at 90°, so AM ⊥ MP — (i) and (ii) both solved.'],
+    ['Perpendicular sides: AM and MP; axis-parallel side: AM (∥ x-axis) or MP (∥ y-axis)','(i) AM ⊥ MP. (ii) AM x-axis ke parallel (ya MP y-axis ke parallel).','(i) AM and MP are perpendicular. (ii) AM is parallel to the x-axis (MP to the y-axis).'],
+    ['Mirror test: flip the sign of y → reflection in the x-axis','x-axis me mirror image = y ka sign flip. M(−5,−2) → (−5, +2) = P milta hai! Toh M aur P ek dusre ke mirror images hain x-axis me. (iii) answer: M & P, axis = x-axis.','Reflecting in the x-axis changes the sign of y only. M(−5,−2) becomes (−5, 2), which is exactly P. So M and P are mirror images in the x-axis.'],
+    ['Plot and verify','Ab charo points plot karo: RAMP ek tilted quadrilateral banta hai jiska corner M perfect right angle hai — prediction sahi!','Plot the four points: you get a quadrilateral with a perfect right angle at M — exactly as predicted.']],
+   ans:'(i) AM ⊥ MP (right angle at M) · (ii) AM ∥ x-axis (MP ∥ y-axis) · (iii) M and P are mirror images in the x-axis'},
+  {q:'In the triangle with A(3, 4), D(7, 1) and M(9, 6), find the lengths of the three sides AD, DM and MA (use the Baudhāyana–Pythagoras method).',
+   why:'Kabhi kabhi Google Maps "crow-fly distance" deta hai — wo yahi formula hai. Baudhayana ne yeh 800+ saal pehle Pythagoras se pehle likha tha!',
+   steps:[
+    ['Shift along x: 7 − 3 = 4, shift along y: 1 − 4 = −3','A se D jaane ke liye x me 4 kadam aage, y me 3 kadam neeche. Ye dono shift ek right triangle ke legs banate hain, AD hypotenuse hai.','Moving from A to D: 4 units across and 3 units down. These shifts are the two legs of a right triangle whose hypotenuse is AD.'],
+    ['AD = √(4² + 3²) = √(16 + 9) = √25 = 5','Baudhāyana–Pythagoras: legs ka square jodo, root lo. 4²+3² = 25, √25 = 5. AD = 5 units.','By the theorem: AD = √(4² + 3²) = √25 = 5 units. (Remember: sign of the shift does not matter because we square it.)'],
+    ['DM: shifts are 9−7 = 2 and 6−1 = 5 → DM = √(2² + 5²) = √29','D se M: x me 2, y me 5. 4+25 = 29. 29 kisi perfect square ka root nahi → DM = √29 (≈5.39).','From D to M: 2 across, 5 up → DM = √(4 + 25) = √29 units, an irrational number.'],
+    ['MA: shifts are 9−3 = 6 and 6−4 = 2 → MA = √(6² + 2²) = √40 = 2√10','M se A: x me 6, y me 2. 36+4 = 40. √40 = √(4×10) = 2√10 (≈6.32).','From M to A: 6 across, 2 up → MA = √40 = 2√10 units.']],
+   ans:'AD = 5 · DM = √29 · MA = 2√10 (all in units)'},
+  {q:'For each row of the table, state whether M is the midpoint of ST — S(−3,0), M(0,0), T(3,0); S(2,3), M(3,4), T(4,5); S(0,0), M(0,5), T(0,−10); S(−8,7), M(0,−2), T(6,−3). Then find the connection between the coordinates of M, S and T.',
+   why:'Middle seat, halfway point, "tum dono ke beech me" — midpoint har jagah hai. Iska formula ab test karke khud discover karoge.',
+   steps:[
+    ['Row 1: S(−3,0), T(3,0) — M(0,0) is exactly halfway','SM = |0−(−3)| = 3, MT = |3−0| = 3. Barabar doori, aur M S aur T ke BEECH me hai → Yes, midpoint.','SM = 3 and MT = 3, and M lies between S and T → Yes, M is the midpoint.'],
+    ['Row 2: S(2,3), T(4,5) — M(3,4) is halfway in BOTH x and y','SM = √(1²+1²)=√2, MT = √(1²+1²)=√2, equal → Yes. Dhyan do: x me 2→3→4 (steps of 1), y me 3→4→5 (steps of 1).','SM = MT = √2 and M sits between S and T → Yes. Notice x climbs 2→3→4 and y climbs 3→4→5 in equal steps.'],
+    ['Row 3: S(0,0), T(0,−10) — M(0,5) is NOT between them','SM = 5, MT = |−10−5| = 15. Unequal, aur M T ke beech bhi nahi (T neeche hai, M upar) → No.','SM = 5 but MT = 15, and M is not between S and T → No, not the midpoint.'],
+    ['Row 4: S(−8,7), T(6,−3) — check M(0,−2)','True midpoint would be: x = (−8+6)/2 = −1, y = (7−3)/2 = 2 → (−1, 2) ≠ (0,−2) → No. (SM = √(64+81)=√145, MT = √(36+1)=√37 — unequal too.)','The real midpoint of S and T is (−1, 2), not (0, −2) → No.'],
+    ['The connection: M = ((x_S + x_T)/2, (y_S + y_T)/2)','Midpoint = dono coordinates ka AVERAGE. Ye row 1, 2 pe verify karo: (−3+3)/2 = 0 ✓, (2+4)/2 = 3 ✓. Ye formula ab hamesha kaam karega.','The midpoint takes the AVERAGE of the x-coordinates and the average of the y-coordinates: M = ((x₁+x₂)/2, (y₁+y₂)/2).']],
+   ans:'Yes, Yes, No, No — and M = ((x_S+x_T)/2, (y_S+y_T)/2)'},
+  {q:'Use the midpoint connection: find B(x, y) given that M(−7, 1) is the midpoint of A(3, −4) and B.',
+   why:'Ulta question! End point aur mid point pata hai — dusra end point dhundo. Ye "reverse engineering" exam me bahut aati hai.',
+   steps:[
+    ['Write the midpoint equations with the unknown B(x, y)','Midpoint formula ulta lagao: (3 + x)/2 = −7 (x wali equation) aur (−4 + y)/2 = 1 (y wali equation). Do simple equations ban gayi.','Apply M = ((x_A + x_B)/2, (y_A + y_B)/2) with B unknown: (3+x)/2 = −7 and (−4+y)/2 = 1.'],
+    ['Solve the x equation: 3 + x = −14 → x = −17','Dono sides × 2: 3 + x = −14. Dono sides − 3: x = −17.','Multiply both sides by 2: 3 + x = −14, then subtract 3: x = −17.'],
+    ['Solve the y equation: −4 + y = 2 → y = 6','Dono sides × 2: −4 + y = 2. Dono sides + 4: y = 6.','Multiply by 2: −4 + y = 2, then add 4: y = 6.'],
+    ['B = (−17, 6) — check it!','Verify: midpoint of A(3,−4) aur B(−17,6) = ((3−17)/2, (−4+6)/2) = (−14/2, 2/2) = (−7, 1) ✓ = M.','Check: ((3 + (−17))/2, ((−4) + 6)/2) = (−7, 1) = M ✓']],
+   ans:'B = (−17, 6)'},
+  {q:'Show that A(1, −8), B(−4, 7) and C(−7, −4) lie on a circle K whose centre is the origin O(0, 0). Find the radius of K. Then check whether D(−5, 6) and E(0, 9) lie within, on, or outside circle K.',
+   why:'"Same centre se same doori" — yehi circle ki definition hai. Oyo rooms, cell towers coverage — sab "radius ke andar hai ya nahi" wala sawaal hai.',
+   steps:[
+    ['Circle rule: every point on it is the SAME distance from the centre','Circle ki definition: centre O ho toh circle pe har point ki OA-type doori = radius, sab points ke liye SAME. Toh check karna hai: OA, OB, OC barabar hain?','A circle with centre O is the set of all points at one fixed distance (the radius) from O. So we must show OA = OB = OC.'],
+    ['OA = √(1² + (−8)²) = √65','A(1,−8): x me 1, y me 8 shift. 1 + 64 = 65.','OA = √(1² + 8²) = √65.'],
+    ['OB = √((−4)² + 7²) = √65 and OC = √((−7)² + (−4)²) = √65','B(−4,7): 16 + 49 = 65. C(−7,−4): 49 + 16 = 65. Teeno √65! Sab centre se utni hi door → teeno circle K pe hain, radius = √65.','OB = √(16 + 49) = √65 and OC = √(49 + 16) = √65. All three distances are equal, so A, B, C all lie on circle K, and the radius is √65.'],
+    ['D(−5, 6): OD = √(25 + 36) = √61 < √65 → INSIDE','√61 chhota hai √65 se (61 < 65), matlab D centre se thoda zyada paas hai → D circle ke ANDAR.','OD = √61 and 61 < 65, so D is closer to O than the radius → D lies inside K.'],
+    ['E(0, 9): OE = √(0 + 81) = 9, and 9² = 81 > 65 → OUTSIDE','√65 ≈ 8.06 aur 9 > 8.06 → E centre se zyada door → E circle ke BAHAR.','OE = 9 ≈ 9.00 > √65 ≈ 8.06, so E lies outside K.']],
+   ans:'Radius = √65 · D is inside K · E is outside K'},
+  {q:'A screen is 800 × 600 pixels with the origin at the bottom-left. Icon A: centre (100, 150), radius 80. Icon B: centre (250, 230), radius 100. (i) Does any part of either circle go outside the screen? (ii) Do the two circles intersect?',
+   why:'Game/app UI me icons overlap hote hain ya screen se bahar nikal jaate hain — programmer EXACT yehi check karta hai. Real coding question!',
+   steps:[
+    ['Circle A extremes: x from 20 to 180, y from 70 to 230','Leftmost point = 100 − 80 = 20, rightmost = 100 + 80 = 180, bottom = 150 − 80 = 70, top = 150 + 80 = 230. Screen 0→800 (x), 0→600 (y) me sab fit → A poora andar.','Circle A spans x: 20→180 and y: 70→230 — all within the 800 × 600 screen, so A lies fully inside.'],
+    ['Circle B extremes: x from 150 to 350, y from 130 to 330','B: 250 ± 100 → 150 to 350 (x), 230 ± 100 → 130 to 330 (y). Sab screen ke andar → koi part outside NAHI. (i) done: neither goes outside.','Circle B spans x: 150→350, y: 130→330 — also fully inside. So (i) answer: no part of either circle is outside the screen.'],
+    ['Distance between centres: AB = √((250−100)² + (230−150)²)','(150)² + (80)² = 22500 + 6400 = 28900. √28900 = 170. Centres 170 pixels apart hain.','AB = √(150² + 80²) = √28900 = 170 pixels.'],
+    ['Compare AB with r_A + r_B = 180','Circles tab intersect karte hain jab |r₁ − r₂| ≤ d ≤ r₁ + r₂. Yahan 20 ≤ 170 ≤ 180 ✓ → intersect karte hain (2 points).','Circles intersect when the centre distance is between |r₁−r₂| = 20 and r₁+r₂ = 180. Since 20 ≤ 170 ≤ 180, they intersect at two points.']],
+   ans:'(i) No — both circles lie fully on the screen · (ii) Yes — they intersect (AB = 170 < 180 = r_A + r_B)'},
+  {q:'Plot A(2, 1), B(−1, 2), C(−2, −1) and D(1, −2). Is ABCD a square? Explain, and find its area.',
+   why:'Chess board ke kisi bhi tilted square ke corners ke coordinates se hi uska area nikal aata hai — na ruler, na protractor.',
+   steps:[
+    ['Find all four sides with the distance formula','AB: shifts (−3, 1) → √(9+1) = √10. BC: (−1, −3) → √10. CD: (3, −1) → √10. DA: (1, 3) → √10. Charo sides √10 — sab barabar!','AB = BC = CD = DA = √10 — all four sides are equal, so ABCD is at least a rhombus.'],
+    ['Equal sides alone → rhombus. Check the angles / diagonals','Square hone ke liye diagonals barabar hone chahiye. AC: shifts (−4, −2) → √(16+4) = √20. BD: shifts (2, −4) → √(4+16) = √20. Diagonals bhi barabar!','A rhombus with EQUAL diagonals is a square. AC = √20 and BD = √20 — the diagonals match, so ABCD is a square.'],
+    ['(Alternative check: adjacent sides perpendicular)','AB ka slope = (2−1)/(−1−2) = −1/3. BC ka slope = (−1−2)/(−2+1) = 3. (−1/3) × 3 = −1 → perpendicular corner at B ✓','Product of slopes of AB and BC is (−1/3)(3) = −1, so the corner at B is 90° — another proof it is a square.'],
+    ['Area = side² = (√10)² = 10 square units','Side √10 ka square = 10. Bas itna hi — plotting ke bina bhi area mil gaya.','Area = (√10)² = 10 square units.']],
+   ans:'Yes — a square with side √10 and equal diagonals √20 · Area = 10 square units'}
+ ]}
+]};
+</script>
+<script>
+'use strict';
+/* ============================================================
+   BOOK ZONE DATA · part 2 — Polynomial Kingdom
+   (Book Ch 2: Linear Polynomials + Book Ch 4: Algebraic Identities)
+   ============================================================ */
+window.BOOKZ=window.BOOKZ||{};
+BOOKZ.poly={
+ src:'Ganita Manjari · Grade 9 · Part I — Book Ch 2 (Linear Polynomials) + Book Ch 4 (Algebraic Identities)',
+ sets:[
+ {set:'Exercise Set 2.1 — Degrees & Coefficients',qs:[
+  {q:'Find the degrees of: (i) 2x² − 5x + 3 (ii) y³ + 2y − 1 (iii) −9 (iv) 4z − 3',
+   why:'Degree polynomial ki "class" hai — usse pata chalta hai graph ka shape aur kitne solutions milenge. Kisi bhi expression ko dekhte hi degree bolo toh aadha kaam ho gaya.',
+   steps:[
+    ['Degree = highest power of the variable','Degree matlab variable ki SABSE BADI power. Sirf highest dekhna hai — baaki terms ignore.','The degree of a polynomial is the highest power of the variable in it.'],
+    ['(i) powers are 2, 1, 0 → degree 2','2x² me power 2, 5x me power 1, 3 me 0. Highest = 2 → degree 2 (quadratic).','In 2x² − 5x + 3 the highest power is 2, so the degree is 2.'],
+    ['(ii) powers 3, 1, 0 → degree 3; (iii) no variable → degree 0','y³ + 2y − 1: highest 3 → degree 3 (cubic). −9 me variable hi nahi — constant polynomial, degree 0.','y³ + 2y − 1 has degree 3. The constant −9 has no variable, so its degree is 0.'],
+    ['(iv) 4z − 3: highest power 1 → degree 1','Power 1 wale ko LINEAR polynomial bolte hain — isi poore chapter ka hero.','4z − 3 has degree 1 — a linear polynomial, the hero of this chapter.']],
+   ans:'(i) 2 · (ii) 3 · (iii) 0 · (iv) 1'},
+  {q:'What are the coefficients of x² and x³ in x⁴ − 3x³ + 6x² − 2x + 7, and what is the constant term of 9x³ + 5x² − 8x − 10?',
+   why:'Coefficient = us term ka "quantity tag". Physics formulas me bhi yehi hota hai — ½gt² me ½ g ka coefficient hai.',
+   steps:[
+    ['Spot the exact term, then read its number','x² ka coefficient matlab x² kitne "copies" lag rahi hain. x⁴ − 3x³ + 6x² − 2x + 7 me x² wali term = +6x².','In x⁴ − 3x³ + 6x² − 2x + 7, the x²-term is 6x², so the coefficient of x² is 6.'],
+    ['Coefficient of x³ = −3, coefficient of x² = 6','x³ ki term −3x³ hai → coefficient −3 (minus yaad rakhna!). x² ki term 6x² → coefficient 6.','The coefficient of x³ is −3 (sign included!) and the coefficient of x² is 6.'],
+    ['Constant term = jisme variable ho hi na','9x³ + 5x² − 8x − 10 me variable-free term = −10. Isliye constant term −10.','The constant term of 9x³ + 5x² − 8x − 10 is −10 — the term with no variable at all.']],
+   ans:'coeff of x³ = −3 · coeff of x² = 6 · constant term = −10'}
+ ]},
+ {set:'Exercise Set 2.2 — Values & Word Problems',qs:[
+  {q:'Find the value of the linear polynomial 5x − 3 at: (i) x = 0 (ii) x = −1 (iii) x = 2',
+   why:'Polynomial ko "machine" samjho: x daalo, output lo. Auto-rickshaw meter bhi yehi hai — distance daalo, fare niklo.',
+   steps:[
+    ['Substitute x = 0: 5(0) − 3','x ki jagah 0 rakho: 5×0 = 0, toh 0 − 3 = −3.','Put x = 0: 5(0) − 3 = −3.'],
+    ['Substitute x = −1: 5(−1) − 3','5 × (−1) = −5. −5 − 3 = −8. Negative se multiply karte waqt sign dhyan se.','Put x = −1: 5(−1) − 3 = −5 − 3 = −8.'],
+    ['Substitute x = 2: 5(2) − 3 = 7','5 × 2 = 10, 10 − 3 = 7. Machine ne teen alag outputs diye — yehi polynomial ki "value" hai.','Put x = 2: 10 − 3 = 7.']],
+   ans:'(i) −3 · (ii) −8 · (iii) 7'},
+  {q:'The present age of Salil\'s mother is three times Salil\'s present age. After 5 years, their ages will add up to 70 years. Find their present ages.',
+   why:'Age problems insurance forms, Aadhaar corrections — sab me aate hain. "Abhi" aur "5 saal baad" ka farak line me kholna hi solution hai.',
+   steps:[
+    ['Name the unknown: Salil = x, so mother = 3x','Salil ki age x maan lo. Mother 3 guna → 3x. "Present age" ke liye ye dono variables ready.','Let Salil\'s present age be x. Then his mother\'s is 3x.'],
+    ['After 5 years BOTH grow: (x + 5) + (3x + 5) = 70','Galti jo sab karte hain: sirf ek ko +5 dena! DONO 5 saal budhe honge. Sum: x + 5 + 3x + 5 = 70.','After 5 years Salil is x + 5 and his mother is 3x + 5, and their sum is 70.'],
+    ['Simplify: 4x + 10 = 70 → 4x = 60','x + 3x = 4x; 5 + 5 = 10. Dono sides − 10: 4x = 60.','Combine: 4x + 10 = 70, so 4x = 60.'],
+    ['x = 15 → Salil is 15, mother is 45','Dono sides ÷ 4: x = 15. Mother = 3×15 = 45. Check: (15+5) + (45+5) = 20 + 50 = 70 ✓','x = 15, so Salil is 15 and his mother is 45. Check: 20 + 50 = 70 ✓']],
+   ans:'Salil = 15 years, Mother = 45 years'},
+  {q:'Ruby has 3 times as many two-rupee coins as she has five-rupee coins. If she has a total ₹88, how many coins of each type does she have?',
+   why:'Piggy bank, cash drawer, chhutad change — "kitne coin kis type ke" classic inventory problem hai, cashier roz karta hai.',
+   steps:[
+    ['Let five-rupee coins = f, so two-rupee coins = 3f','Jo KAM hain usse f bolo — two-rupee coins 3 guna zyada hain, toh wo 3f banenge.','Let the number of five-rupee coins be f. Then two-rupee coins = 3f.'],
+    ['Money equation: 5 × f + 2 × 3f = 88','Har five-rupee coin ₹5 deta hai: 5f rupees. Har two-rupee coin ₹2: 2 × 3f = 6f rupees. Total 5f + 6f = 88.','Value: 5f + 2(3f) = 5f + 6f = 88 rupees.'],
+    ['11f = 88 → f = 8','5f + 6f = 11f. Dono sides ÷ 11: f = 8.','So 11f = 88, giving f = 8.'],
+    ['8 five-rupee coins and 24 two-rupee coins','Two-rupee = 3 × 8 = 24. Total coins = 32. Check money: 8×5 + 24×2 = 40 + 48 = ₹88 ✓','Ruby has 8 five-rupee coins and 24 two-rupee coins — total value 40 + 48 = ₹88 ✓.']],
+   ans:'8 five-rupee coins · 24 two-rupee coins'}
+ ]},
+ {set:'Exercise Set 2.4 — Linear Growth & Decay',qs:[
+  {q:'A mobile phone is bought for ₹10,000. Its value decreases by ₹800 every year. (i) Find its value after 3 years. (ii) Find an expression relating value v and time t, and explain why it represents linear decay.',
+   why:'Phone, bike, laptop — sab depreciate hote hain. Resale price ka andaza lagane ka formula yehi hai; OLX seller bhi yehi sochta hai.',
+   steps:[
+    ['Each year costs ₹800 → after 3 years, 3 × 800 = ₹2400 gone','3 saal me total girawat = 800 × 3 = 2400 rupees.','Total decrease in 3 years = 800 × 3 = ₹2400.'],
+    ['Value after 3 years = 10000 − 2400 = ₹7,600','Starting value minus total fall: 10000 − 2400 = 7600.','v = 10000 − 2400 = ₹7,600.'],
+    ['General expression: v = 10000 − 800t','t saal ke liye: value = starting − (rate × time) = 10000 − 800t. Ye hi linear relationship hai.','After t years, v = 10000 − 800t.'],
+    ['Why LINEAR decay? Rate per year is CONSTANT','Har saal EXACTLY ₹800 ka girawat — change per step constant hai, isliye graph ek seedhi neeche jaati line (negative slope −800). Value kabhi negative nahi hogi: t = 12.5 pe zero.','Because the change each year is a constant −800, the graph is a straight line falling with slope −800: linear decay.']],
+   ans:'(i) ₹7,600 · (ii) v = 10000 − 800t (linear decay, slope −800)'}
+ ]},
+ {set:'End-of-Chapter Exercises',qs:[
+  {q:'A positive number is 5 times another number. If 21 is added to both the numbers, then one of the new numbers becomes twice the other new number. What are the numbers?',
+   why:'Ratio-based problems profit-sharing, recipe scaling, map scales me sab aate hain — "5 times" ko x aur 5x me kholna hi skill hai.',
+   steps:[
+    ['Let the smaller number = x, so bigger = 5x','"5 times another" → x aur 5x. Dono positive hain, tension nahi.','Let the numbers be x and 5x (x > 0).'],
+    ['Add 21 to both: x + 21 and 5x + 21','Dono numbers ko 21 mila — dono badal jayenge.','After adding 21 to each: x + 21 and 5x + 21.'],
+    ['New condition: 5x + 21 = 2(x + 21)','"one becomes twice the other" — bada wala (5x+21) ab chhota wale (x+21) ka double hai.','The larger new number is twice the smaller: 5x + 21 = 2(x + 21).'],
+    ['Expand: 5x + 21 = 2x + 42 → 3x = 21 → x = 7','Right side kholo: 2x + 42. Dono sides − 2x: 3x + 21 = 42. Dono sides − 21: 3x = 21. ÷3: x = 7.','Expanding: 5x + 21 = 2x + 42 → 3x = 21 → x = 7.'],
+    ['Numbers are 7 and 35 — verify!','Check: 7+21 = 28, 35+21 = 56. 56 = 2 × 28 ✓ Perfect.','The numbers are 7 and 35. Check: 28 and 56, and 56 = 2 × 28 ✓.']],
+   ans:'The two numbers are 7 and 35'},
+  {q:'If temperature in Kelvin is x K and in Fahrenheit is y °F, then y = (9/5)(x − 273) + 32. (i) Find y when x = 313 K. (ii) Find x when y = 158 °F.',
+   why:'Science lab me Kelvin, ghar me Celsius/Fahrenheit — same temperature, different "address". Conversion bhi ek linear polynomial hi hai!',
+   steps:[
+    ['Substitute x = 313: y = (9/5)(313 − 273) + 32','Bracket PEHLE: 313 − 273 = 40. BODMAS yaad rakho.','Substitute: y = (9/5)(40) + 32 (bracket first!).'],
+    ['(9/5) × 40 = 72 → y = 72 + 32 = 104 °F','40 ÷ 5 = 8, 8 × 9 = 72. Plus 32 → 104. Toh 313 K = 104 °F.','(9/5)(40) = 72, so y = 72 + 32 = 104 °F.'],
+    ['Reverse: 158 = (9/5)(x − 273) + 32 → subtract 32 first','Ab ulta jana hai. Dono sides − 32: 126 = (9/5)(x − 273).','For (ii): subtract 32 from both sides: 126 = (9/5)(x − 273).'],
+    ['Multiply by 5/9: x − 273 = 126 × 5/9 = 70 → x = 343 K','126 × 5 = 630; 630 ÷ 9 = 70. Dono sides + 273: x = 343. Toh 158 °F = 343 K.','Multiply both sides by 5/9: x − 273 = 70, so x = 343 K.']],
+   ans:'(i) 104 °F · (ii) 343 K'},
+  {q:'The graph of a linear polynomial p(x) passes through (1, 5) and (3, 11). (i) Find p(x). (ii) Find where the graph cuts the axes.',
+   why:'Do points milo → poori line ka rule nikal lo. Trending stock price, speed ke saath distance — 2 data points se future predict karna yehi hai.',
+   steps:[
+    ['Let p(x) = ax + b — every linear polynomial looks like this','Linear polynomial ka general form ax + b. Bas a (slope) aur b (y-intercept) dhundne hain.','Write p(x) = ax + b with unknowns a and b.'],
+    ['Both points must satisfy it: a + b = 5 and 3a + b = 11','(1,5): p(1) = a + b = 5. (3,11): p(3) = 3a + b = 11. Do equations, do unknowns.','Point (1, 5) gives a + b = 5; point (3, 11) gives 3a + b = 11.'],
+    ['Subtract: (3a + b) − (a + b) = 11 − 5 → 2a = 6 → a = 3','Equations minus karo — b gayab! 2a = 6 → a = 3. Slope = 3 matlab x har 1 badhe toh y 3 badhta hai.','Subtracting kills b: 2a = 6, so a = 3 (the slope).'],
+    ['Back-substitute: 3 + b = 5 → b = 2 → p(x) = 3x + 2','a = 5−b wali equation me daalo: 3 + b = 5 → b = 2. p(x) = 3x + 2.','Then 3 + b = 5 gives b = 2, so p(x) = 3x + 2.'],
+    ['Axes cuts: y-axis at (0, 2), x-axis at (−2/3, 0)','p(0) = 2 → y-axis cut (0,2). p(x) = 0: 3x + 2 = 0 → x = −2/3 → x-axis cut (−2/3, 0).','p(0) = 2 gives the y-cut (0, 2); 3x + 2 = 0 gives the x-cut (−2/3, 0).']],
+   ans:'(i) p(x) = 3x + 2 · (ii) cuts y-axis at (0, 2), x-axis at (−2/3, 0)'}
+ ]},
+ {set:'Book Ch 4 · Exercise Set 4.1 & 4.3 — Identities at Work',qs:[
+  {q:'Using (a + b)² = a² + 2ab + b², expand: (i) (7x + 4y)²',
+   why:'Yahi identity aage mental maths, physics (kinematics), aur poore algebra me kaam karegi. Tiles se dekho toh ek square ke 4 tukde ban jaate hain.',
+   steps:[
+    ['Match: a = 7x, b = 4y','Identity me a ki jagah 7x aur b ki jagah 4y rakhna hai. (a+b)² ko teen tukdon me kholte hain: a², 2ab, b².','Set a = 7x and b = 4y in the identity.'],
+    ['a² = (7x)² = 49x²','Dono ko square karo: 7² = 49 aur x². (7x)² = 49x² — power har factor pe lagti hai.','(7x)² = 49x².'],
+    ['2ab = 2 × 7x × 4y = 56xy','Middle term: 2 × 7 × 4 = 56, x ko y se multiply → xy. Ye term sabse aasan bhool jaate hain — 2ab hamesha yaad!','The middle term: 2 × 7x × 4y = 56xy — this is the term everyone forgets.'],
+    ['b² = (4y)² = 16y² → answer: 49x² + 56xy + 16y²','4² = 16 with y². Teen terms jodo: 49x² + 56xy + 16y².','(4y)² = 16y². Answer: 49x² + 56xy + 16y².']],
+   ans:'49x² + 56xy + 16y²'},
+  {q:'Using the same identity, find (105)².',
+   why:'Calculator ke bina 5-second me bade squares! Bank exams, aptitude tests me yehi trick kaam aati hai.',
+   steps:[
+    ['Split 105 = 100 + 5 → a = 100, b = 5','Bade number ko easy tukdon me todo: 105 = 100 + 5. Ab identity lagao.','Write 105² = (100 + 5)².'],
+    ['a² = 100² = 10000','100 ka square 10000 — ek ke baad chaar zero.','(100)² = 10000.'],
+    ['2ab = 2 × 100 × 5 = 1000','Middle term: 2 × 100 × 5 = 1000.','2ab = 2 × 100 × 5 = 1000.'],
+    ['b² = 25 → 10000 + 1000 + 25 = 11025','Sab jodo: 10000 + 1000 + 25 = 11025. Calculator ke bina!','Add: 10000 + 1000 + 25 = 11025.']],
+   ans:'105² = 11025'},
+  {q:'Find 117² using a suitable identity.',
+   why:'117 jaise "boring" numbers bhi identity se 4 lines me square ho jaate hain — exam me saving 1 minute = 1 extra question.',
+   steps:[
+    ['Choose the split: 117 = 100 + 17 (or 120 − 3)','Do options hain: (100 + 17) ya (120 − 3). (a−b) wala chhota numbers deta hai — 120 − 3 lena smarter hai.','117² can be (100 + 17)² or (120 − 3)². Pick (120 − 3)² for smaller numbers.'],
+    ['Use (a − b)² = a² − 2ab + b²: 120² − 2(120)(3) + 3²','a = 120, b = 3. Identity ka minus wala version: middle term MINUS.','Apply (a − b)² = a² − 2ab + b².'],
+    ['14400 − 720 + 9 = 13689','14400 − 720 = 13680; +9 → 13689.','14400 − 720 + 9 = 13689.']],
+   ans:'117² = 13689'},
+  {q:'Factor completely: 16y² − 24y + 9',
+   why:'Factorisation expansion ka REVERSE hai. Area diya hai, sides dhundni hain — interior design, farming plots, sab me ulta kaam.',
+   steps:[
+    ['Check the pattern: is it a perfect square?','Pattern dekho: first term 16y² = (4y)², last term 9 = 3². Middle −24y? Test: 2 × 4y × 3 = 24y ✓ (sign negative toh minus version).','Check for a perfect square: 16y² = (4y)², 9 = 3², and 2·(4y)·3 = 24y matches the middle term.'],
+    ['Use (a − b)² = a² − 2ab + b² with a = 4y, b = 3','Sign negative hai isliye MINUS identity: a² − 2ab + b² = (a − b)².','Since the middle term is negative, use (a − b)² with a = 4y, b = 3.'],
+    ['16y² − 24y + 9 = (4y − 3)²','Seedha answer: (4y − 3)². Verify karo expand karke: 16y² − 24y + 9 ✓','So 16y² − 24y + 9 = (4y − 3)². (Verify by expanding!)']],
+   ans:'(4y − 3)²'},
+  {q:'A rectangular pool has area 2x² + 7x + 3 square hastas. If its width is (2x + 1) hastas, find its length.',
+   why:'Area = length × width — algebra me iska matlab "expression ko factor karo". Old units (hasta) ke saath history bhi mili!',
+   steps:[
+    ['Area = length × width → length = area ÷ width','Formula se: length = (2x² + 7x + 3) ÷ (2x + 1). Divide karne ke liye FACTORISE karo.','Length = Area ÷ Width = (2x² + 7x + 3)/(2x + 1). Factorise the area.'],
+    ['Split the middle term: 7x = 6x + x','2x² + 7x + 3: aisa jodo ki grouping ho. 7x = 6x + x: 2x² + 6x + x + 3. Product check: 2×3 = 6, aur 6x·x = 6x² = product of ends ✓','Split 7x = 6x + x (since 2 × 3 = 6 and 6 + 1 = 7).'],
+    ['Group: 2x(x + 3) + 1(x + 3) = (x + 3)(2x + 1)','Pehli do terms me 2x common, aakhri do me 1: 2x(x+3) + 1(x+3). Common (x+3) bahar: (x+3)(2x+1).','Grouping: 2x(x + 3) + 1(x + 3) = (x + 3)(2x + 1).'],
+    ['Length = (x + 3) hastas — the other factor','Area = (2x+1)(x+3), width = (2x+1) diya gaya → length = (x + 3).','Since Area = (2x + 1)(x + 3) and width = 2x + 1, the length is (x + 3) hastas.']],
+   ans:'Length = (x + 3) hastas'},
+  {q:'The village playground is a square of side 40 m. A walking path of width s metres is built around it. Find an expression for the area of the path.',
+   why:'Border/fence/path wale questions "bada square minus chhota square" hote hain — tiles lagane, garden design, sab me same idea.',
+   steps:[
+    ['Path ke saath whole side = 40 + 2s','Path CHAARO taraf hai → har side pe s do baar judta hai (dono ends). New side = 40 + 2s.','With the path on both ends of every side, the outer square has side 40 + 2s.'],
+    ['Big square area: (40 + 2s)²','Whole area (playground + path) = (40 + 2s)². Identity se: 1600 + 160s + 4s².','Outer area = (40 + 2s)² = 1600 + 160s + 4s².'],
+    ['Playground area: 40² = 1600','Andar wala square fixed: 1600 m².','Playground area = 1600 m².'],
+    ['Path area = outer − inner = (1600 + 160s + 4s²) − 1600 = 4s² + 160s','Subtract: 1600 cancel! Path ka area = 4s² + 160s square metres. (s = 2 ho toh 16 + 320 = 336 m².)','Path area = (40 + 2s)² − 40² = 4s² + 160s square metres.']],
+   ans:'Area of path = 4s² + 160s square metres (i.e. s(4s + 160))'}
+ ]}
+]};
+</script>
+<script>
+'use strict';
+/* ============================================================
+   BOOK ZONE DATA · part 3 — Number Nagar (Book Ch 3: The World of Numbers)
+   ============================================================ */
+window.BOOKZ=window.BOOKZ||{};
+BOOKZ.num={
+ src:'Ganita Manjari · Grade 9 · Part I — Book Ch 3 (The World of Numbers)',
+ sets:[
+ {set:'Exercise Set 3.2 — Integers (Brahmagupta style)',qs:[
+  {q:'The temperature in the high-altitude desert of Ladakh is 4 °C at noon. By midnight it drops by 15 °C. What is the midnight temperature?',
+   why:'Weather apps, hill trips, freezer settings — temperature exactly aise hi chalta hai. Drop matlab MINUS.',
+   steps:[
+    ['"Drops by 15" means subtract 15','Drop = girti hai = minus. Starting 4°C se 15 kam karna hai: 4 − 15.','A drop of 15 means we subtract: new temperature = 4 − 15.'],
+    ['4 − 15: number line pe 15 kadam LEFT','4 me se 15 nahi katega — 4 se 15 kadam left jao: 4 → 0 (4 kadam) → aur 11 kadam = −11. Brahmagupta ka debt idea: jab cheez kam pad jaye, negative.','On the number line, move 15 steps left from 4: you pass 0 after 4 steps and land 11 further left, at −11.'],
+    ['Midnight temperature = −11 °C','Freezing se bhi 11 degree neeche — Ladakh normal!','The midnight temperature is −11 °C.']],
+   ans:'−11 °C'},
+  {q:'A spice trader takes a loan (debt) of ₹850. Next day he makes a profit (fortune) of ₹1,200. The following week he incurs a loss of ₹450. Write this as an equation using integers and find his final financial standing.',
+   why:'Brahmagupta ne yehi kiya tha — debt = negative (ṛiṇa), fortune = positive (Dhana). Aaj ka bank statement exactly yahi system hai.',
+   steps:[
+    ['Loan = −850, profit = +1200, loss = −450','Ṛiṇa (debt) negative: −850. Dhana (fortune) positive: +1200. Loss phir negative: −450.','Loan → −850, profit → +1200, loss → −450 (Brahmagupta\'s dhana/ṛiṇa convention).'],
+    ['Equation: −850 + 1200 − 450','Teen events ko sign ke saath jodo.','Combine the three events: −850 + 1200 − 450.'],
+    ['−850 + 1200 = +350','1200 me se 850 ka debt chuka do — 350 bacha, ab profit side pe.','−850 + 1200 = +350 — the trader is now in fortune.'],
+    ['350 − 450 = −100 → net debt ₹100','350 se 450 ka loss — phir debt me: −100. Negative number ek story kehta hai!','350 − 450 = −100 — back into debt. Final standing: −100 (owes ₹100).']],
+   ans:'−850 + 1200 − 450 = −100 → a net debt of ₹100'},
+  {q:'Calculate using Brahmagupta\'s laws: (i) (−12) × 5 (ii) (−8) × (−7) (iii) 0 − (−14) (iv) (−20) ÷ 4',
+   why:'Sign rules har exam, EMI, physics — sab jagah. Ek baar rule pakka, lifetime set.',
+   steps:[
+    ['Rule: same signs → PLUS, different signs → MINUS','Multiply/divide me: (+)(+) = +, (−)(−) = +, (+)(−) = −. Sizes alag se multiply/divide hote hain.','For × and ÷: like signs give +, unlike signs give −. Handle sizes separately from signs.'],
+    ['(i) (−12) × 5 = −60','Signs alag → minus. 12 × 5 = 60 → −60.','(−12) × 5 = −60 (unlike signs).'],
+    ['(ii) (−8) × (−7) = +56','Dono minus → PLUS. 8 × 7 = 56. "Do galat ek saath = sahi"!','(−8) × (−7) = 56 (like signs give positive).'],
+    ['(iii) 0 − (−14) = 0 + 14 = 14','Minus ke saath minus = plus. (Debt maaf = labh!)','Subtracting a negative ADDS: 0 − (−14) = 14.'],
+    ['(iv) (−20) ÷ 4 = −5','Signs alag → minus. 20 ÷ 4 = 5 → −5.','(−20) ÷ 4 = −5 (unlike signs).']],
+   ans:'(i) −60 · (ii) 56 · (iii) 14 · (iv) −5'}
+ ]},
+ {set:'Exercise Set 3.3 & 3.4 — Rational Numbers',qs:[
+  {q:'Find the sum: (i) 2/5 + 3/10 (ii) −4/7 + 3/14',
+   why:'Pizza slices alag size me cut ho toh pehle SAME size ke slices banao — yehi LCM ka kaam hai.',
+   steps:[
+    ['Different denominators → same banao (LCM)','2/5 aur 3/10: LCM(5,10) = 10. 7 aur 14: LCM = 14.','Rewrite both fractions with the LCM of the denominators.'],
+    ['(i) 2/5 = 4/10 → 4/10 + 3/10 = 7/10','5 → 10 karne ke liye upar-neeche ×2: 2/5 = 4/10. 4 + 3 = 7.','(i) 2/5 = 4/10, so the sum is 7/10.'],
+    ['(ii) −4/7 = −8/14 → −8/14 + 3/14 = −5/14','7 → 14: ×2. −8 + 3 = −5. Sign numerator ke saath chalta hai.','(ii) −4/7 = −8/14, so the sum is −5/14.']],
+   ans:'(i) 7/10 · (ii) −5/14'},
+  {q:'Find three distinct rational numbers strictly between −1/2 and 1/4.',
+   why:'Rationals ke beech INFINITELY many aur rationals hote hain — "density" ka pehla hands-on feel.',
+   steps:[
+    ['Common denominator banao taaki gap dikhe','−1/2 aur 1/4: LCM 4 → −2/4 aur 1/4. Beech me sirf −1/4 dikh raha hai. Densify!','Write −1/2 = −2/4 and 1/4 — only −1/4 shows up. We need more room.'],
+    ['Scale to eighths: −4/8 and 2/8','Dono ko ×2 upar-neeche: −1/2 = −4/8, 1/4 = 2/8. Ab beech me: −3/8, −2/8, −1/8, 0, 1/8.','Scaling to eighths reveals −3/8, −2/8, −1/8, 0, 1/8.'],
+    ['Pick any three: −3/8, 0, 1/8','Teeno strictly beech hain ✓. (−2/8 = −1/4 bhi chalega.)','One valid answer: −3/8, 0, 1/8.'],
+    ['Aur bhi — infinity tak','16ths, 32nds... denominator badhao, aur numbers milte rahenge. Isliye "infinitely many".','With denominators 16, 32, … you keep finding more — that is density.']],
+   ans:'e.g. −3/8, 0, 1/8 (any three strictly between work)'},
+  {q:'Find three rational numbers between 3.1415 and 3.1416.',
+   why:'π = 3.14159... isi gali me rehta hai! Decimals me beech ka number = digit chipkao.',
+   steps:[
+    ['Decimals me "beech" = extra digit','3.1415 aur 3.1416 ke beech: 5th decimal digit 1 se 9 tak kuch bhi — 3.14151 … 3.14159.','Between 3.1415 and 3.1416, append any 5th digit from 1 to 9.'],
+    ['Candidates: 3.14151, 3.14155, 3.14159','Teeno strictly beech ✓ — check: 3.1415 < 3.14151 < 3.1416.','Examples: 3.14151, 3.14155, 3.14159.'],
+    ['Fun fact: π khud isi window me hai','π ≈ 3.14159265… bhi in dono ke beech hai — ek IRRATIONAL, rationals ke beech chhupa hua!','π itself lies in this interval — an irrational hiding among rationals.']],
+   ans:'e.g. 3.14151, 3.14155, 3.14159'}
+ ]},
+ {set:'Exercise Set 3.5 — Terminating, Repeating & Irrational',qs:[
+  {q:'Without long division, decide which have terminating decimals: 7/20, 4/15, 13/250.',
+   why:'Division se PEHLE denominator ka "DNA test" (sirf 2s aur 5s?) bata deta hai decimal ki qismat. Exam time-saver!',
+   steps:[
+    ['Rule: terminating ⟺ denominator (lowest form) = only 2s & 5s','Denominator prime factors me todo. Sirf 2/5 → terminating. Koi aur prime (3, 7…) → repeating.','A fraction terminates exactly when its lowest-form denominator has no primes except 2s and 5s.'],
+    ['7/20: 20 = 2²×5² → TERMINATES (0.35)','Dono allowed. 7 ÷ 20 = 0.35.','7/20 = 0.35 — terminates.'],
+    ['4/15: 15 = 3×5 → REPEATS (0.2666…)','3 villain hai. 4 ÷ 15 = 0.2666… (6 ghumta rehta hai).','4/15 = 0.2666… — repeats (the 3 spoils it).'],
+    ['13/250: 250 = 2×5³ → TERMINATES (0.052)','Sirf 2 aur 5. 13 ÷ 250 = 0.052.','13/250 = 0.052 — terminates.']],
+   ans:'7/20 → 0.35 (terminates) · 4/15 → repeats · 13/250 → 0.052 (terminates)'},
+  {q:'Classify as rational or irrational: (i) √81 (ii) √12 (iii) 0.33333… (iv) 0.123451234512345… (v) 1.01001000100001…',
+   why:'Irrationals pehchanna = Number Nagar ka black belt. Decimals ka pattern test karna seekho.',
+   steps:[
+    ['√81 = 9 — perfect square → RATIONAL','81 = 9². Root nikla integer = rational.','√81 = 9 — rational.'],
+    ['√12 = 2√3 → IRRATIONAL','12 = 4×3 → √12 = 2√3. √3 irrational → 2√3 bhi.','√12 = 2√3 — irrational.'],
+    ['0.333… and 0.1234512345… → RATIONAL (repeating)','Dono me FIXED block repeat hota hai (3 aur 12345) → rational. 0.333… = 1/3.','Repeating blocks mean rational: 0.333… = 1/3; 0.1234512345… = 12345/99999.'],
+    ['1.010010001… → IRRATIONAL (growing gaps)','1 ke beech zeros badhte ja rahe hain (0, 00, 000…) — koi FIXED block repeat nahi → irrational. Trap!','The zero-gaps keep growing — no repeating block → irrational.']],
+   ans:'Rational: √81, 0.333…, 0.1234512345… · Irrational: √12, 1.010010001…'},
+  {q:'Without dividing, determine whether 18/125 terminates; if so, how many decimal places?',
+   why:'"Kitne decimal places" bhi denominator se predict hota hai — max power of 2 ya 5. Billing systems me yehi hota hai.',
+   steps:[
+    ['Factor: 125 = 5³ → terminates','Sirf 5s → terminating. Koi 2 nahi, koi aur prime nahi.','125 = 5³ → the decimal terminates.'],
+    ['Places = max power of 2 or 5 = 3','Rule: places = max(exponent of 2, exponent of 5) = max(0,3) = 3.','Number of decimal places = 3.'],
+    ['See it: 18/125 = (18×8)/(125×8) = 144/1000 = 0.144','125 ko 1000 banane ke liye 8 se multiply — 144/1000 = 0.144. Teen places ✓','18/125 = 144/1000 = 0.144.']],
+   ans:'Terminating · 3 decimal places · 0.144'}
+ ]},
+ {set:'End-of-Chapter Exercises',qs:[
+  {q:'Prove that √5 is an irrational number.',
+   why:'Classic exam proof — "contradiction" ki kala: maan lo rational, phir khud ko galat saabit karo.',
+   steps:[
+    ['Assume the opposite: √5 = p/q (lowest terms)','Maan lo √5 = p/q, p-q co-prime (no common factor).','Suppose √5 = p/q in lowest terms.'],
+    ['Square: p² = 5q² → 5 | p² → 5 | p','p² me 5 ka factor → p me bhi 5 (prime 5 square me pair bana ke aata hai).','Then p² = 5q², so 5 divides p², hence 5 divides p.'],
+    ['Let p = 5k → q² = 5k² → 5 | q','p = 5k: 25k² = 5q² → q² = 5k² → q me bhi 5.','Write p = 5k: then q² = 5k², so 5 divides q too.'],
+    ['Contradiction → √5 irrational','p aur q DONO me 5 common — but humne kaha tha lowest terms. Contradiction! → √5 rational ho hi nahi sakta.','Both divisible by 5 contradicts lowest terms, so √5 is irrational. Template works for √2, √3, √7…']],
+   ans:'√5 is irrational (proof by contradiction)'}
+ ]}
+]};
+</script>
+<script>
+'use strict';
+/* ============================================================
+   BOOK ZONE DATA · part 4 — Circle Citadel (Book Ch 5: Circles)
+   ============================================================ */
+window.BOOKZ=window.BOOKZ||{};
+BOOKZ.circ={
+ src:'Ganita Manjari · Grade 9 · Part I — Book Ch 5 (I\'m Up and Down, and Round and Round)',
+ sets:[
+ {set:'Exercise Set 5.2 — Chords & Isosceles Triangles',qs:[
+  {q:'Show that the triangle formed by a chord and the centre of the circle is isosceles.',
+   why:'Pizza slice dekho — crust (chord) aur centre milake ek triangle banta hai jiske do sides barabar hain. Yehi observation aage ke saare circle theorems ka gate hai.',
+   steps:[
+    ['Setup: chord AB, centre O — join OA and OB','Chord ke dono ends ko centre se jodo. Triangle OAB ban gaya.','Join the centre O to both endpoints of chord AB, forming triangle OAB.'],
+    ['OA = OB = radius','O se circle pe HAR point ki doori radius hai. A aur B dono circle pe hain → OA = OB.','Both A and B lie on the circle, so OA = OB = radius.'],
+    ['Two equal sides → isosceles (base angles equal)','Do sides barabar = isosceles triangle. Bonus: ∠OAB = ∠OBA bhi (base angles).','Triangle OAB has two equal sides — it is isosceles, with equal base angles at A and B.']],
+   ans:'OA = OB = r, so ∆OAB is isosceles with ∠OAB = ∠OBA'}
+ ]},
+ {set:'Exercise Set 5.3 — Perpendicular from the Centre',qs:[
+  {q:'Two parallel chords of lengths 6 cm and 8 cm are on opposite sides of the centre of a circle. If the radius is 5 cm, find the distance between the midpoints of the chords.',
+   why:'Bridge pillars dono taraf — "opposite sides" wala case distance JODTA hai, ghata nahi. Ye trap exam me bahut baar aata hai.',
+   steps:[
+    ['Drop perpendiculars: centre bisects each chord','Theorem 5: centre se chord pe perpendicular chord ko bisect karta hai. Half-chords: 6/2 = 3 aur 8/2 = 4.','The perpendicular from the centre bisects each chord: half-lengths are 3 and 4.'],
+    ['Pythagoras for chord 1: d₁ = √(5² − 3²) = 4','r = hypotenuse 5, half-chord = leg 3 → distance from centre d₁ = √(25−9) = √16 = 4 cm.','For the 6 cm chord: d₁ = √(25 − 9) = 4 cm.'],
+    ['Pythagoras for chord 2: d₂ = √(5² − 4²) = 3','Half-chord 4 ke liye: d₂ = √(25−16) = √9 = 3 cm.','For the 8 cm chord: d₂ = √(25 − 16) = 3 cm.'],
+    ['Opposite sides → ADD: 4 + 3 = 7 cm','Chords centre ke ULT sides pe hain → unke midpoints ke beech distance = d₁ + d₂ = 7 cm. (Same side hote toh minus hota!)','The chords are on opposite sides, so the midpoint distance is 4 + 3 = 7 cm.']],
+   ans:'7 cm'},
+  {q:'An isosceles triangle ABC is inscribed in a circle with AB = AC. Show that the altitude from A to BC passes through the centre of the circle.',
+   why:'Umbrella ka centre rod seedha canopy ke beech me kyun aata hai? Symmetry ka jawab — aur yahan algebraic proof milta hai.',
+   steps:[
+    ['Centre must be equidistant from B and C','O se B aur C dono radius doori pe hain: OB = OC. Matlab O, BC ke perpendicular bisector PE PADA hai (equidistant points ka locus).','O satisfies OB = OC, so O lies on the perpendicular bisector of BC.'],
+    ['Isosceles altitude = perpendicular bisector','AB = AC wale triangle me A se BC pe daala gaya altitude BC ko bisect bhi karta hai aur perpendicular bhi hai — matlab altitude hi BC ka perpendicular bisector hai.','In an isosceles triangle, the altitude from the apex A is also the perpendicular bisector of the base BC.'],
+    ['Both O and the altitude sit on the same line → altitude passes through O','Dono (O aur altitude) BC ke perpendicular bisector pe hain, aur ek hi point (midpoint of BC) se guzarte hain → wahi line! Isliye altitude centre se guzarti hai.','The altitude and the centre both lie on the (unique) perpendicular bisector of BC — so the altitude passes through O.']],
+   ans:'The altitude from A is the perpendicular bisector of BC, and the centre lies on it'}
+ ]},
+ {set:'Exercise Set 5.5 — Chord Lengths',qs:[
+  {q:'Find the length of the chord of a circle where the radius is 7 cm and the perpendicular distance from the centre is 6 cm.',
+   why:'Ceiling fan ka blade wall se kitna paas — chord-distance relation. Pythagoras ek baar phir!',
+   steps:[
+    ['Draw: centre O, chord AB, perpendicular OM, OM = 6','Theorem: OM ⊥ AB, aur M midpoint hai. Half-chord = AM = MB.','Draw the perpendicular OM from the centre to the chord; M is the midpoint and OM = 6.'],
+    ['Right triangle OMA: OA² = OM² + AM²','r = 7 hypotenuse. 7² = 6² + AM².','In right ∆OMA: OA² = OM² + AM².'],
+    ['AM = √(49 − 36) = √13','49 − 36 = 13. AM = √13 cm (√13 ≈ 3.61).','AM = √(49 − 36) = √13 ≈ 3.61 cm.'],
+    ['Chord = 2 × AM = 2√13 ≈ 7.21 cm','Chord poora = do half = 2√13 cm.','Chord AB = 2√13 ≈ 7.21 cm.']],
+   ans:'2√13 cm (≈ 7.21 cm)'},
+  {q:'Explain why: if the perpendicular distance of a chord from the centre is d and the radius is r, then chord length = 2√(r² − d²).',
+   why:'Formula RATTNA band — nikalna seekho. Ek baar derive kiya toh bhoologe nahi.',
+   steps:[
+    ['Half-chord, distance d, and radius form a right triangle','OM = d (distance), AM = half-chord (kya?), OA = r (hypotenuse). Right angle at M (Theorem 4).','OM = d and OA = r are a leg and the hypotenuse of right triangle OMA.'],
+    ['Pythagoras: AM² + d² = r²','Legs ka square jodo = hypotenuse ka square: AM² = r² − d².','By Pythagoras: AM² = r² − d².'],
+    ['AM = √(r² − d²)','Root lo — ye half-chord hai.','So the half-chord is √(r² − d²).'],
+    ['Chord = 2 × half = 2√(r² − d²)','Poora chord dono halves ka sum: 2√(r² − d²). Sanity check: d = 0 → chord = 2r = diameter ✓ (longest chord).','Chord = 2√(r² − d²). Check: d = 0 gives 2r, the diameter — the longest chord.']],
+   ans:'Chord = 2√(r² − d²) (from Pythagoras on half-chord, distance, radius)'}
+ ]},
+ {set:'End-of-Chapter Exercises',qs:[
+  {q:'Two parallel chords of lengths 10 cm and 24 cm are on the SAME side of the centre. The distance between the chords is 7 cm. Find the radius.',
+   why:'Reverse engineering: chord distances se radius nikalna — wheel design, tunnel boring me real use. Answer guess karoge toh maza aayega (hint: 5-12-13!).',
+   steps:[
+    ['Half-chords: 5 and 12 → distances x and y from centre','Half of 10 = 5, half of 24 = 12. Chhoti chord zyada door hoti hai: x = √(r²−25), y = √(r²−144).','Half-chords 5 and 12 give distances x = √(r²−25) and y = √(r²−144), with x > y.'],
+    ['Same side → gap = x − y = 7','Dono chords ek hi side → distance unke centre-distances ka FARAK: √(r²−25) − √(r²−144) = 7.','Same side means the gap is x − y = 7.'],
+    ['Try the 5-12-13 triangle: r = 13','Test r = 13: x = √(169−25) = √144 = 12, y = √(169−144) = √25 = 5. 12 − 5 = 7 ✓','Try r = 13: x = 12, y = 5, and 12 − 5 = 7 ✓.'],
+    ['Radius = 13 cm','Famous 5-12-13 Pythagorean triple ne kaam kar diya! (Algebra se bhi solve hota: dono squares subtract karo.)','Radius = 13 cm — the 5-12-13 triple in action.']],
+   ans:'r = 13 cm'},
+  {q:'Quadrilateral MNOP is inscribed in a circle. If MN is a diameter, what can you say about ∠MOP and ∠MNP? Explain.',
+   why:'Central angle theorem ka direct application — arc MP ko centre se aur circumference se dono jagah se dekhna.',
+   steps:[
+    ['Both angles stare at the SAME arc MP','∠MOP centre pe bana hai, chords OM & OP se. ∠MNP circle PE (point N pe) bana hai, chords NM & NP se. Dono ka "target" arc MP hai.','∠MOP is the angle at the centre and ∠MNP an inscribed angle — both subtend the same arc MP.'],
+    ['Central angle theorem: ∠MOP = 2 ∠MNP','Centre pe bana angle hamesha DOUBLE hota hai circle pe bane (same arc ke liye) inscribed angle ka. Ye book ka main theorem hai.','The angle at the centre is twice the inscribed angle on the same arc: ∠MOP = 2∠MNP.'],
+    ['Answer: ∠MOP = 2 ∠MNP','Isliye ∠MOP, ∠MNP ka exact double hai — hamesha, chahe N kahan bhi ho (arc MP ke opposite side).','So ∠MOP is exactly twice ∠MNP, wherever N sits on the opposite arc.']],
+   ans:'∠MOP = 2∠MNP (central angle theorem on arc MP)'},
+  {q:'Explain why the exterior angle at any vertex of a cyclic quadrilateral equals the interior opposite angle (e.g., ∠CDE = ∠ABC, E on extension of CD).',
+   why:'Cyclic quad ke opposite angles ka sum 180° hai — aur iska instant bonus ye exterior trick deta hai. Proving contest me time bachata hai.',
+   steps:[
+    ['Cyclic quad rule: ∠ADC + ∠ABC = 180°','Circle ke andar bane quadrilateral ke opposite angles ka sum exactly 180° (Theorem).','In a cyclic quadrilateral, opposite angles sum to 180°: ∠ADC + ∠ABC = 180°.'],
+    ['Linear pair: ∠ADC + ∠CDE = 180°','CD ko extend kiya → D pe straight line: interior ∠ADC + exterior ∠CDE = 180°.','Extending CD makes ∠ADC and exterior ∠CDE a linear pair: sum 180°.'],
+    ['Dono equations me ∠ADC cancel: ∠CDE = ∠ABC','Pehli se doosri compare karo — dono ka sum 180 hai, ∠ADC common. Toh bache: ∠CDE = ∠ABC. DONE.','Subtracting ∠ADC from both equations: ∠CDE = ∠ABC. The exterior angle equals the interior opposite angle.']],
+   ans:'Both ∠ADC+∠ABC and ∠ADC+∠CDE equal 180°, so ∠CDE = ∠ABC'},
+  {q:'Consider all chords of a circle of a fixed length. What shape do their midpoints form?',
+   why:'Pattern-spotting ka khel: ek condition fix karo (same length), doosri cheez ka locus dekho. GPS geofencing isi concept pe hai.',
+   steps:[
+    ['Fixed chord length → fixed distance from centre','Chord = 2√(r² − d²) — length fix hai toh d bhi FIX hai! Har same-length chord centre se utni hi door hai.','From chord = 2√(r²−d²), a fixed chord length fixes the distance d from the centre.'],
+    ['Midpoints sab us distance pe, har direction me','Har chord ka midpoint centre se exactly d door hai — aur chords har angle pe ho sakti hain.','Each midpoint is exactly d from the centre, in every direction.'],
+    ['Shape = a circle (concentric, radius d)','Same centre, fixed distance d, all directions → EK CHHOTA CIRCLE! Centre wahi, radius d.','The midpoints form a circle with the same centre and radius d.']],
+   ans:'A concentric circle of radius d (the fixed centre-distance)'},
+  {q:'Justify: "There is no chord of a circle that is longer than its diameter."',
+   why:'Diameter = longest chord — ye feel se zyada PROOF se aata hai. Triangle inequality ka classy use.',
+   steps:[
+    ['Diameter = 2r, chord ≤ 2r (Pythagoras result)','Chord formula se: chord = 2√(r² − d²) ≤ 2√(r²) = 2r, kyunki d ≥ 0. Barabari sirf d = 0 (diameter) pe.','From chord = 2√(r²−d²) with d ≥ 0: chord ≤ 2r, with equality only when d = 0 — the diameter.'],
+    ['Triangle way: OA + OB ≥ AB','Kisi bhi chord AB ke liye: OA + OB = 2r. Triangle inequality se AB ≤ OA + OB = 2r.','Or by the triangle inequality: AB ≤ OA + OB = 2r for any chord AB.'],
+    ['Equality sirf tab jab O, A, B ek seedhi line pe ho','O beech me aata hai sirf tab jab AB diameter ho (A, O, B collinear). Tabhi chord = 2r = diameter. Toh diameter sabse lambi — proof done.','Equality holds only when A, O, B are collinear — i.e., AB is the diameter.']],
+   ans:'For any chord AB: AB ≤ OA + OB = 2r, equality only for the diameter'}
+ ]}
+]};
+</script>
+<script>
+'use strict';
+/* ============================================================
+   BOOK ZONE DATA · part 5 — Area Arsenal (Book Ch 6: Perimeter & Area)
+   ============================================================ */
+window.BOOKZ=window.BOOKZ||{};
+BOOKZ.area={
+ src:'Ganita Manjari · Grade 9 · Part I — Book Ch 6 (Measuring Space: Perimeter and Area)',
+ sets:[
+ {set:'Exercise Set 6.1 — Circles: Perimeter & Arcs',qs:[
+  {q:'Calculate the length of the arc: (i) r = 3.5 cm, angle 60° (ii) r = 6.3 m, angle 120°',
+   why:'Pizza slice ka crust, race track ka curve, clock ki sui ka rasta — arc length har jagah hai. Full circle ka fraction lo!',
+   steps:[
+    ['Arc = (angle/360) × full circumference','60° matlab poore circle ka 60/360 = 1/6 hissa. Fraction of circumference — bas yehi idea hai.','Arc length = (θ/360) × 2πr — take the fraction of the whole circle.'],
+    ['(i) (60/360) × 2 × (22/7) × 3.5','2 × 22/7 × 3.5 = 22. Ek-sixth of 22 = 22/6 = 11/3 ≈ 3.67 cm.','(i) (1/6) × 2 × (22/7) × 3.5 = 22/6 ≈ 3.67 cm.'],
+    ['(ii) (120/360) × 2 × (22/7) × 6.3','2 × 22/7 × 6.3 = 39.6. One-third: 39.6/3 = 13.2 m.','(ii) (1/3) × 2 × (22/7) × 6.3 = 39.6/3 = 13.2 m.']],
+   ans:'(i) 11/3 ≈ 3.67 cm · (ii) 13.2 m'}
+ ]},
+ {set:'Exercise Set 6.2 — Heron\'s Formula & Quadrilaterals',qs:[
+  {q:'The parallel sides of a trapezium are 40 cm and 20 cm. Its non-parallel sides are equal, each 26 cm. Find the area.',
+   why:'Isosceles trapezium = bridge cross-section, dam wall, roof truss. Height khud nikalni padti hai — yahi asli skill hai.',
+   steps:[
+    ['Drop heights → the base sticks out by (40−20)/2 = 10 each side','Symmetric shape: dono taraf equal overhang. 40 − 20 = 20, half-half = 10 cm each side.','By symmetry, each end sticks out (40−20)/2 = 10 cm.'],
+    ['Height: √(26² − 10²) = √576 = 24','Slant side 26 = hypotenuse, horizontal leg 10 → vertical leg (height) = √(676−100) = √576 = 24 cm.','Height = √(26² − 10²) = 24 cm.'],
+    ['Area = ½ × (sum of parallel sides) × height','½ × (40 + 20) × 24 = ½ × 60 × 24 = 720.','Area = ½(a + b)h = ½(60)(24).'],
+    ['Area = 720 cm²','Done — trapezium ke liye Heron nahi, ye direct formula best.','The trapezium\'s area is 720 cm².']],
+   ans:'720 cm²'},
+  {q:'One diagonal of a rhombus is twice the other. The area is 128 cm². Find the length of the shorter diagonal.',
+   why:'Kite, diamond tiles, sarpanch ka khets — rhombus ka area diagonals se hi nikalta hai: ½ d₁d₂.',
+   steps:[
+    ['Rhombus area = ½ × d₁ × d₂','Diagonals perpendicular hote hain — 4 right triangles ban jaate hain. Formula: ½ d₁d₂.','For a rhombus, Area = ½ d₁ d₂ (diagonals are perpendicular).'],
+    ['Let shorter = d, longer = 2d → ½ × d × 2d = d²','Substitute: ½ × d × 2d = d². Area = d² = 128.','Let the shorter diagonal be d: Area = d² = 128.'],
+    ['d = √128 = 8√2 ≈ 11.3 cm','√128 = √(64×2) = 8√2. Shorter diagonal = 8√2 cm.','d = √128 = 8√2 ≈ 11.3 cm.']],
+   ans:'Shorter diagonal = 8√2 ≈ 11.3 cm'}
+ ]},
+ {set:'Exercise Set 6.3 — Sectors & Real Life',qs:[
+  {q:'The length of the minute hand of a clock is 7 cm. Find the area swept by it in 10 minutes.',
+   why:'Clock ki sui ek sector sweep karti hai — wiper, sprinkler, radar sab isi me. 10 min = kitne degrees? Wahi asli sawaal.',
+   steps:[
+    ['10 minutes = 60° sweep (60 min = 360°)','Minute hand 60 min me 360° → per minute 6°. 10 min → 60°.','In 10 minutes the hand sweeps 60° (6° per minute).'],
+    ['Sector area = (θ/360) × πr²','Poora circle = π × 7² = 154 cm² (π = 22/7). One-sixth of it: 154/6 ≈ 25.67 cm².','Sector = (60/360) × π × 49 = 154/6 ≈ 25.67 cm².'],
+    ['Answer ≈ 25.67 cm² (77/3 exactly with π = 22/7)','154/6 = 77/3 ≈ 25.67.','Area swept ≈ 25.67 cm².']],
+   ans:'≈ 25.67 cm²'},
+  {q:'A car has two non-overlapping wipers; each blade is 28 cm long and sweeps 120°. Find the total area cleaned per sweep.',
+   why:'Wiper design literally isi calculation pe banta hai — windshield coverage percentage nikalna company ka kaam hai!',
+   steps:[
+    ['One wiper = sector of radius 28, angle 120°','Blade ki length = radius, sweep = sector angle.','Each wiper sweeps a 120° sector of radius 28 cm.'],
+    ['One sector = (120/360) × (22/7) × 28²','One-third of full circle: (1/3) × (22/7) × 784. 784/7 = 112 → 22 × 112 = 2464 → /3 ≈ 821.33 cm².','One sector = (1/3) × (22/7) × 784 = 2464/3 ≈ 821.33 cm².'],
+    ['Two wipers → × 2 = 4928/3 ≈ 1642.67 cm²','Dono same size, no overlap → seedha double: 2 × 2464/3 = 4928/3 ≈ 1642.67 cm².','Total = 2 × 2464/3 = 4928/3 ≈ 1642.67 cm².']],
+   ans:'4928/3 ≈ 1642.67 cm²'}
+ ]},
+ {set:'End-of-Chapter Exercises',qs:[
+  {q:'An isosceles triangle has perimeter 40 cm; the equal sides are 15 cm each. Find its area.',
+   why:'Pankha blade, rooftop tent, park design — isosceles ka area chahiye toh pehle base nikalo, phir height ya Heron.',
+   steps:[
+    ['Base = 40 − 15 − 15 = 10 cm','Perimeter se base katega: 40 − 30 = 10 cm. Sides: 15, 15, 10.','The base is 40 − 30 = 10 cm.'],
+    ['Height: split the base → 5 and 5; h = √(15² − 5²) = √200 = 10√2','Apex se height base ko bisect karti hai (isosceles). Right triangle: 5, h, 15 → h = √(225−25) = √200 = 10√2 ≈ 14.14.','Height = √(15² − 5²) = 10√2 ≈ 14.14 cm.'],
+    ['Area = ½ × 10 × 10√2 = 50√2 ≈ 70.7 cm²','½ × base × height = ½ × 10 × 10√2 = 50√2.','Area = 50√2 ≈ 70.7 cm².'],
+    ['(Heron se bhi same: s = 20, √(20·5·5·10) = √5000 = 50√2 ✓)','Dono raste ek jawab — formulas cross-check karne ka maza.','Heron: s = 20, Area = √(20·5·5·10) = 50√2 ✓ — both methods agree.']],
+   ans:'50√2 ≈ 70.7 cm²'},
+  {q:'The area of a right-angled triangle is 54 cm². One leg is 12 cm. Find its perimeter.',
+   why:'Reverse Heron+Pythagoras combo: area se leg, phir hypotenuse, phir perimeter. Ladder climb karna seekho.',
+   steps:[
+    ['Area = ½ × leg1 × leg2 → 54 = ½ × 12 × b','Right triangle me dono legs perpendicular — direct area formula. 54 = 6b.','For a right triangle, Area = ½ × product of legs.'],
+    ['b = 9 cm','54 ÷ 6 = 9. Doosri leg 9 cm.','The other leg is 9 cm.'],
+    ['Hypotenuse = √(9² + 12²) = √225 = 15','9-12-15 = 3× (3-4-5) — famous triple!','Hypotenuse = √(81 + 144) = 15 cm (the 9-12-15 triple).'],
+    ['Perimeter = 9 + 12 + 15 = 36 cm','Teen sides jodo: 36 cm.','Perimeter = 36 cm.']],
+   ans:'36 cm (legs 9 & 12, hypotenuse 15)'},
+  {q:'The sides of a triangle are in the ratio 2:3:4 and its perimeter is 45 cm. Find its area.',
+   why:'Ratio questions me "x ka magic" — ratio ko actual numbers me convert karna hi aadha solution hai.',
+   steps:[
+    ['Sides = 2x, 3x, 4x → 9x = 45 → x = 5','Sum = 2x+3x+4x = 9x = 45 → x = 5. Sides: 10, 15, 20.','Let sides be 2x, 3x, 4x. Then 9x = 45, x = 5 → sides 10, 15, 20.'],
+    ['s = 45/2 = 22.5','Heron ka s = half perimeter = 22.5.','Semi-perimeter s = 22.5.'],
+    ['s−a = 12.5, s−b = 7.5, s−c = 2.5','Teen differences: 22.5−10 = 12.5; 22.5−15 = 7.5; 22.5−20 = 2.5.','Differences: 12.5, 7.5, 2.5.'],
+    ['Area = √(22.5 × 12.5 × 7.5 × 2.5) = √5273.44 ≈ 72.6 cm²','Product = 5273.4375. Root ≈ 72.62. (Exact: (225√843.75)/... decimal is fine.)','Area ≈ 72.6 cm².']],
+   ans:'Sides 10, 15, 20 · Area ≈ 72.6 cm²'},
+  {q:'The sides of a triangle are 7, 24, 25. Find its area in TWO different ways.',
+   why:'Ek triangle, do raste — Heron aur direct. Jab dono same answer dete hain, confidence double ho jaata hai. (7-24-25 ek Pythagorean triple hai!)',
+   steps:[
+    ['Spot it: 7² + 24² = 49 + 576 = 625 = 25²','7-24-25 ek right triangle hai! Right angle 7 aur 24 ke beech.','Check: 7² + 24² = 625 = 25² → right-angled at the corner of sides 7 and 24.'],
+    ['Way 1 (direct): Area = ½ × 7 × 24 = 84','Legs perpendicular → direct formula. ½ × 168 = 84 cm².','Way 1: Area = ½ × 7 × 24 = 84 cm².'],
+    ['Way 2 (Heron): s = 28 → √(28·21·4·3) = √7056 = 84','s = 56/2 = 28. Differences: 21, 4, 3. Product 28×21 = 588; 4×3 = 12; 588×12 = 7056. √7056 = 84 ✓','Way 2: s = 28, Area = √(28·21·4·3) = √7056 = 84 cm².'],
+    ['Same answer, dono tareeke = 84 cm²','Cross-verification successful. Aisa check exam me bhi kar sakte ho!','Both methods agree: Area = 84 cm².']],
+   ans:'84 cm² (both by ½×7×24 and by Heron)'},
+  {q:'A bicycle wheel has diameter 60 cm. How far does the cyclist travel after the wheel rotates 100 times?',
+   why:'Odometer, smartwatch cycling mode, ferris wheel — "kitne rotation = kitni doori" sab isi pe hai.',
+   steps:[
+    ['One rotation = one circumference','Wheel ek baar ghoomti hai toh ground pe circumference jitna rasta jaati hai.','Each rotation covers one circumference.'],
+    ['Circumference = πd = (22/7) × 0.6 m ≈ 1.885 m','Diameter 60 cm = 0.6 m. π × 0.6 = 22/7 × 0.6 = 13.2/7 ≈ 1.886 m.','Circumference = (22/7) × 0.6 ≈ 1.886 m.'],
+    ['100 rotations → 100 × 1.886 ≈ 188.6 m (exactly 60π m)','100 × 13.2/7 = 1320/7 ≈ 188.57 m — exact 60π.','Distance = 100π(0.6) = 60π ≈ 188.5 m.']],
+   ans:'60π ≈ 188.5 m'}
+ ]}
+]};
+</script>
+<script>
+'use strict';
+/* ============================================================
+   BOOK ZONE DATA · part 6 — Chance Mansion (Book Ch 7: Probability)
+   ============================================================ */
+window.BOOKZ=window.BOOKZ||{};
+BOOKZ.prob={
+ src:'Ganita Manjari · Grade 9 · Part I — Book Ch 7 (The Mathematics of Maybe: Introduction to Probability)',
+ sets:[
+ {set:'Book Ideas — Gambler\'s Fallacy & Fairness',qs:[
+  {q:'You roll a fair die three times and get a 6 every time. What is the probability of rolling a 6 on the next roll? (And why is "now a 6 is due" wrong?)',
+   why:'Ye book ka sabse important life-lesson concept hai — Gambler\'s Fallacy. Ludo, cricket toss, betting — har jagah bachata hai.',
+   steps:[
+    ['Each roll is an INDEPENDENT event','Die ko memory nahi hoti. Pichle teen 6 ka agle roll pe ZERO asar. Har roll fresh start hai.','Each roll is independent — the die has no memory, so past results change nothing.'],
+    ['P(6) = 1/6 ≈ 16.6% — same as always','Fair die ke 6 faces, 1 favourable → 1/6. Chaaro baar 6 aane ke baad bhi 1/6 hi.','P(6) = 1/6 on every roll, no matter what came before.'],
+    ['"Ab tail aayega" / "ab 6 nahi aayega" = Gambler\'s Fallacy','Coin/die past track nahi karta. Long run me average theory jaisa aata hai (Law of Large Numbers), lekin agla roll abhi bhi fresh hai.','Believing outcomes "balance out" in the short run is the Gambler\'s Fallacy — randomness has no pattern to complete.']],
+   ans:'Still 1/6 — rolls are independent; the die has no memory'}
+ ]},
+ {set:'Exercise Set 7.3 — Sample Spaces',qs:[
+  {q:'A fair die is rolled. Find the probability of getting: (i) an odd number (ii) a number greater than 2 (iii) a number less than 9 (iv) a multiple of 3',
+   why:'P = favourable/total — pehli baar sample space likhna, phir count. Ye 4 sub-parts ek hi die me poore probability ka taste de dete hain.',
+   steps:[
+    ['Sample space S = {1, 2, 3, 4, 5, 6} — total 6','Pehle total outcomes likho. Fair die → sab equally likely.','Sample space has 6 equally likely outcomes.'],
+    ['(i) odd: {1,3,5} → 3/6 = 1/2','Teen favourable → P = 3/6 = 1/2.','P(odd) = 3/6 = 1/2.'],
+    ['(ii) >2: {3,4,5,6} → 4/6 = 2/3 · (iii) <9: all → 1','4 favourable → 2/3. "Less than 9" — die ka max 6 hai, toh SAB outcomes favourable → P = 1 (certain event!).','P(>2) = 4/6 = 2/3; P(<9) = 6/6 = 1 — a certain event.'],
+    ['(iv) multiples of 3: {3,6} → 2/6 = 1/3','Do favourable → 1/3.','P(multiple of 3) = 2/6 = 1/3.']],
+   ans:'(i) 1/2 · (ii) 2/3 · (iii) 1 (certain) · (iv) 1/3'},
+  {q:'In a village fair there are 3 snacks (Samosa, Pakora, Bhaji) and 2 drinks (Chai, Lassi). List the sample space of snack+drink combos, and the event "Samosa chosen".',
+   why:'Menu combinations, outfit combos, seat+meal choices — counting pairs is the base of probability. Table banao, confusion zero.',
+   steps:[
+    ['Each snack pairs with EACH drink → 3 × 2 = 6 combos','Multiplication principle: snack ke 3 options × drink ke 2 options = 6 total paths.','3 snacks × 2 drinks = 6 equally likely combinations.'],
+    ['S = {(Samosa,Chai), (Samosa,Lassi), (Pakora,Chai), (Pakora,Lassi), (Bhaji,Chai), (Bhaji,Lassi)}','Table banao: rows = snacks, columns = drinks. Har cell ek outcome.','S = {(Samosa,Chai), (Samosa,Lassi), (Pakora,Chai), (Pakora,Lassi), (Bhaji,Chai), (Bhaji,Lassi)}.'],
+    ['Event "Samosa": 2 outcomes → P = 2/6 = 1/3','Samosa wali row ke dono cells — 2 favourable out of 6.','P(Samosa chosen) = 2/6 = 1/3.']],
+   ans:'6 outcomes in S · P(Samosa) = 1/3'}
+ ]},
+ {set:'Exercise Set 7.4 — Tree Diagrams',qs:[
+  {q:'Basket A: 1 apple, 2 oranges. Basket B: 1 banana, 1 mango. You pick one fruit from each basket. Draw the tree, list S, and find P(one apple and one banana).',
+   why:'Two-stage experiments ka classic starter — tree diagram banana khud probability ko visual bana deta hai.',
+   steps:[
+    ['Tree: stage 1 = A-basket (apple 1/3, orange 2/3), stage 2 = B-basket (banana 1/2, mango 1/2)','Pehli branch fruit-from-A, doosri fruit-from-B. Har path ka probability = branches ka PRODUCT.','Stage 1: apple (1/3) or orange (2/3); stage 2: banana (1/2) or mango (1/2).'],
+    ['S = {apple-banana, apple-mango, orange-banana, orange-mango} — 4 paths','Tree ke 4 leaves = 4 outcomes.','S has 4 paths: apple-banana, apple-mango, orange-banana, orange-mango.'],
+    ['P(apple AND banana) = 1/3 × 1/2 = 1/6','Independent picks → probabilities multiply. Path ke saare branch-probabilities multiply karo.','P(apple, banana) = (1/3)(1/2) = 1/6.']],
+   ans:'4 outcomes · P(apple & banana) = 1/6'},
+  {q:'A box has 3 red, 4 black, 2 green pens. You pick one and put it back; your friend does the same. Find P(both pick the same colour).',
+   why:'"With replacement" = dono picks identical chances. Same-colour ka matlab teeno colour cases JODO — OR ka rule.',
+   steps:[
+    ['With replacement → second pick same odds: R 3/9, B 4/9, G 2/9','Pen wapas jaata hai → 9 pens har baar. Probabilities dono picks me same.','With replacement, each pick has R 3/9, B 4/9, G 2/9.'],
+    ['Same colour ke 3 trees: RR, BB, GG — sabko JODO (or-rule)','RR: (3/9)(3/9) = 9/81. BB: (4/9)(4/9) = 16/81. GG: (2/9)(2/9) = 4/81.','P(RR) = 9/81, P(BB) = 16/81, P(GG) = 4/81.'],
+    ['Total = (9 + 16 + 4)/81 = 29/81','Addition karke 29/81 ≈ 0.358. Bas — mutually exclusive cases add hote hain.','P(same colour) = 29/81 ≈ 0.36.']],
+   ans:'29/81 ≈ 0.36'}
+ ]},
+ {set:'End-of-Chapter Exercises',qs:[
+  {q:'A bag has 3 red, 2 blue, 1 green ball. One ball is picked at random. What is the probability that it is NOT red?',
+   why:'"Not" events ka shortcut: P(not A) = 1 − P(A). Complement ek second ka kaam kar deta hai.',
+   steps:[
+    ['Total balls = 6','3 + 2 + 1 = 6 equally likely picks.','There are 6 equally likely balls.'],
+    ['Method 1 (direct): not-red = blue + green = 3 → 3/6 = 1/2','Blue 2 + green 1 = 3 favourable.','P(not red) = 3/6 = 1/2 directly.'],
+    ['Method 2 (complement): 1 − P(red) = 1 − 3/6 = 1/2','P(red) = 3/6. Complement rule: 1 − 3/6 = 1/2. Same answer, alag soch!','Or: P(not red) = 1 − P(red) = 1 − 1/2 = 1/2.']],
+   ans:'1/2'},
+  {q:'Three coins are tossed simultaneously. What is the probability of getting exactly two heads?',
+   why:'"Simultaneously" bhi tree diagram se hi hota hai — bas coins ko ek-ek karke toss maan lo.',
+   steps:[
+    ['Sample space (toss one-by-one on paper): {HHH, HHT, HTH, THH, HTT, THT, TTH, TTT} — 8 outcomes','3 coins = 2 × 2 × 2 = 8 equally likely paths.','There are 2³ = 8 equally likely outcomes.'],
+    ['Exactly two heads: {HHT, HTH, THH} — 3 outcomes','Exactly 2 matlab teen me se DO H aur ek T. Teen paths match karte hain.','The paths with exactly two H are HHT, HTH, THH.'],
+    ['P = 3/8','3 favourable / 8 total = 3/8 = 0.375.','P(exactly two heads) = 3/8.']],
+   ans:'3/8'},
+  {q:'Two dice are rolled. What is the probability that the sum is a prime number greater than 5?',
+   why:'Two-dice sample space (36 pairs) exam ka favourite hai. Prime > 5 filter lagao — careful counting ka test.',
+   steps:[
+    ['Total outcomes = 36; primes greater than 5 up to 12: only 7 and 11','Sums 2–12 me primes: 2,3,5,7,11. ">5" filter → sirf 7 aur 11.','From the 36 pairs, the qualifying sums are 7 and 11 only.'],
+    ['Sum = 7: (1,6),(2,5),(3,4),(4,3),(5,2),(6,1) → 6 pairs','7 sabse "popular" sum hai — 6 tareeke.','Six pairs give sum 7.'],
+    ['Sum = 11: (5,6),(6,5) → 2 pairs','Sirf do tareeke.','Two pairs give sum 11.'],
+    ['P = (6 + 2)/36 = 8/36 = 2/9','Favourable 8 out of 36 → 2/9.','P(sum is prime > 5) = 8/36 = 2/9.']],
+   ans:'2/9'},
+  {q:'A four-digit number is formed using digits 1, 2, 3, 4 with no repetition. What is the probability that the number is even?',
+   why:'Even ka matlab LAST digit even — counting ko peeche se shuru karo. Permutation thinking ka first taste.',
+   steps:[
+    ['Total numbers = 4! = 4 × 3 × 2 × 1 = 24','Pehli jagah 4 options, doosri 3, teesri 2, chauthi 1 → 24 numbers.','There are 4! = 24 such numbers.'],
+    ['Even ⟺ last digit ∈ {2, 4}','Units digit hi evenness decide karta hai.','The number is even exactly when its last digit is 2 or 4.'],
+    ['For each even last digit: 3! = 6 arrangements of the rest','Last digit fix (say 2) → baaki 3 digits pehle teen jagah: 3! = 6. Do choices (2,4) → 12 numbers.','Fixing an even last digit leaves 3! = 6 arrangements; two choices give 12.'],
+    ['P = 12/24 = 1/2','Adhe numbers even — balanced digits ki wajah se.','P(even) = 12/24 = 1/2.']],
+   ans:'1/2'},
+  {q:'I throw a pair of dice. Write down an event with probability 0 and one with probability 1.',
+   why:'Probability ke extremes — 0 (impossible) aur 1 (certain) — ko pehchanna hi range samajhna hai.',
+   steps:[
+    ['P = 0 means IMPOSSIBLE — no outcome matches','Die ka max sum 12 hai. Event "sum = 13" → koi pair nahi → P = 0.','Event "sum = 13" is impossible: P = 0.'],
+    ['P = 1 means CERTAIN — every outcome matches','"Sum 2 se 12 ke beech hai" — har pair satisfy karta hai → P = 36/36 = 1.','Event "the sum is between 2 and 12" covers all 36 pairs: P = 1.'],
+    ['Range reminder: 0 ≤ P ≤ 1','Probability kabhi negative nahi, kabhi 1 se bada nahi. Beech me hi sab kuch.','All probabilities live in [0, 1].']],
+   ans:'P(sum = 13) = 0 · P(2 ≤ sum ≤ 12) = 1'}
+ ]}
+]};
+</script>
+<script>
+'use strict';
+/* ============================================================
+   BOOK ZONE DATA · part 7 — Sequence Spires (Book Ch 8: Sequences & Progressions)
+   ============================================================ */
+window.BOOKZ=window.BOOKZ||{};
+BOOKZ.seq={
+ src:'Ganita Manjari · Grade 9 · Part I — Book Ch 8 (Predicting What Comes Next: Sequences and Progressions)',
+ sets:[
+ {set:'Section Examples — Patterns Meet Real Life',qs:[
+  {q:'A taxi charges ₹200 fixed booking plus ₹40 per km. Write the fare sequence for 1, 2, 3, … km and the fare for a 10 km trip.',
+   why:'Auto/taxi meter, gym membership, phone plan — "fixed + per-unit" har jagah hai, aur ye ek AP hi hai!',
+   steps:[
+    ['Fares: 240, 280, 320, … — an AP with a = 240, d = 40','Har km pe ₹40 badh raha hai — constant difference = AP ki pehchaan.','Fares 240, 280, 320, … form an AP: first term 240, common difference 40.'],
+    ['nth fare: tn = 240 + (n−1)×40 = 200 + 40n','Formula lagao aur simplify: 240 + 40n − 40 = 200 + 40n. Fixed 200 wapas dikh gaya!','tn = 240 + (n−1)(40) = 200 + 40n — the fixed fee reappears.'],
+    ['10 km: 200 + 40×10 = ₹600','n = 10 daalo: 600 rupaye.','For n = 10: 200 + 400 = ₹600.']],
+   ans:'tn = 200 + 40n · 10 km trip = ₹600'}
+ ]},
+ {set:'Exercise Set 8.3 — Geometric Progressions',qs:[
+  {q:'Find the 12th term of a GP with common ratio 2, whose 8th term is 192.',
+   why:'Ek door ka term diya, aur door ka term chahiye — beech ka gap ratio ke powers se bridge hota hai. Shortcut seekho!',
+   steps:[
+    ['t12 and t8 ka relationship: t12 = t8 × r⁴','Formula se: t12 = ar¹¹, t8 = ar⁷. Ratio: t12/t8 = r⁴. Beech me exactly 4 multiplications.','t12 = ar¹¹ = ar⁷ × r⁴ = t8 · r⁴.'],
+    ['t12 = 192 × 2⁴ = 192 × 16','2⁴ = 16. 192 × 16 = 3072.','t12 = 192 × 16 = 3072.'],
+    ['Answer: 3072 — without even finding a!','a ki zaroorat hi nahi padi — relative jump kaam kar gayi. Ye trick time bachati hai.','The 12th term is 3072, found without computing the first term.']],
+   ans:'t12 = 3072'},
+  {q:'Which term of the GP 2, 6, 18, … is 4374? Write both the explicit and recursive formulas.',
+   why:'GP me "kaunsa term" = exponent solve karna. Powers of 3 pehle chhant lo — 2187 = 3⁷ yaad ho toh 10 second ka kaam.',
+   steps:[
+    ['GP form: tn = a·r^(n−1) with a = 2, r = 3','6/2 = 3, 18/6 = 3 — ratio constant 3.','tn = 2·3^(n−1) is the explicit formula.'],
+    ['Set 2·3^(n−1) = 4374 → 3^(n−1) = 2187','Dono sides ÷ 2: 2187. Ye 3 ki power hai: 3⁷ = 2187 (3,9,27,81,243,729,2187).','2·3^(n−1) = 4374 gives 3^(n−1) = 2187 = 3⁷.'],
+    ['n − 1 = 7 → n = 8','Exponents barabar → n = 8. Aathwa term hi 4374 hai.','n − 1 = 7, so the 8th term is 4374.'],
+    ['Recursive form: t1 = 2, t(n+1) = 3·tn','Har term pichle ko ×3 — yehi recursive rule hai.','Recursive: t1 = 2, t(n+1) = 3 t(n).']],
+   ans:'8th term · tn = 2·3^(n−1) · t1 = 2, t(n+1) = 3tn'},
+  {q:'A ball is dropped from 80 m and bounces back to 60% of its previous height each time. (i) Height after the 5th bounce? (ii) Total vertical distance travelled by the time it hits the ground for the 6th time?',
+   why:'Basketball, rubber ball, physics lab — bounce = GP in action. Ratio 0.6 har baar multiply hota hai.',
+   steps:[
+    ['Heights form a GP: 80, 48, 28.8, … with r = 0.6','Har bounce 60% = ×0.6. Heights: 80×0.6ⁿ.','Bounce heights: 80·(0.6)ⁿ — a GP with ratio 0.6.'],
+    ['(i) 5th bounce: 80 × 0.6⁵ = 80 × 0.07776 ≈ 6.22 m','0.6⁵ = 0.07776. ×80 = 6.2208 m.','After the 5th bounce: 80(0.6)⁵ ≈ 6.22 m.'],
+    ['(ii) Down 80, then 5 up-down pairs of GP heights','Distance = 80 + 2×(48 + 28.8 + 17.28 + 10.368 + 6.2208). Har bounce UPAR bhi jaata hai aur NEECHE bhi — isliye 2× (except the final hit).','Total = 80 + 2(48 + 28.8 + 17.28 + 10.368 + 6.2208).'],
+    ['Sum inside: 110.6688 → total ≈ 80 + 221.38 = 301.38 m','GP terms add karo: 110.6688. Double: 221.3776. Plus initial 80 → ≈ 301.38 m.','Total vertical distance ≈ 301.38 m.']],
+   ans:'(i) ≈ 6.22 m · (ii) ≈ 301.38 m'},
+  {q:'Sierpiński triangle: each black triangle becomes 3 at the next stage. If Stage 0 has 1, find the count at stage n and the black area rule (area ×3/4 each stage).',
+   why:'Fractals = GP chhupa ke rakhte hain. Sierpiński ka triangle 3ⁿ triangles and (3/4)ⁿ area — dono GP! Nature (fern, snowflake) bhi aisa hi karta hai.',
+   steps:[
+    ['Count: 1, 3, 9, 27, … → tn = 3ⁿ (a GP with r = 3)','Har stage pe har black triangle 3 banta hai → ×3. Stage n pe 3ⁿ triangles.','Black triangle count at stage n is 3ⁿ — a GP with ratio 3.'],
+    ['Stage 4 → 81, Stage 5 → 243','3⁴ = 81, 3⁵ = 243.','Stages 4 and 5 have 81 and 243 black triangles.'],
+    ['Area: 1, 3/4, (3/4)², … → (3/4)ⁿ','Har stage pe centre ka 1/4 hissa hat-ta hai → black area ×3/4. Stage n pe (3/4)ⁿ square units.','Black area at stage n is (3/4)ⁿ — a GP with ratio 3/4.'],
+    ['n badhao → area → 0, count → ∞','EkGP girti ja rahi hai (area), doosri badhti ja rahi hai (count). Fractal ka jaadu!','As n grows, the count explodes while the area shrinks toward 0.']],
+   ans:'Count = 3ⁿ · Area = (3/4)ⁿ square units'}
+ ]},
+ {set:'End-of-Chapter Exercises',qs:[
+  {q:'Find the 31st term of an AP whose 11th term is 38 and 16th term is 73.',
+   why:'Do terms diye, doosra term chahiye — classic exam question. d nikalna hi asli game hai.',
+   steps:[
+    ['Equations: a + 10d = 38, a + 15d = 73','t11 = a+10d, t16 = a+15d — dono equations likho.','t11 = a + 10d = 38 and t16 = a + 15d = 73.'],
+    ['Subtract: 5d = 35 → d = 7','Doosri minus pehli: 5d = 35 → d = 7 (common difference).','Subtracting gives 5d = 35, so d = 7.'],
+    ['a = 38 − 70 = −32','a + 10(7) = 38 → a = −32.','Then a = 38 − 70 = −32.'],
+    ['t31 = a + 30d = −32 + 210 = 178','31st term ke liye 30 jumps: −32 + 30×7 = 178.','t31 = −32 + 210 = 178.']],
+   ans:'t31 = 178 (a = −32, d = 7)'},
+  {q:'Determine the AP whose third term is 16 and whose 7th term exceeds the 5th term by 12.',
+   why:'"t7 exceeds t5 by 12" ka matlab seedha hai: 2d = 12. Translate karne ki aadat daalo — aadhe questions yahin khatam ho jaate hain.',
+   steps:[
+    ['Translate: t7 − t5 = 12 → (a+6d) − (a+4d) = 12','Dono expand karo — a cancel! 2d = 12.','t7 − t5 = 2d = 12, so d = 6.'],
+    ['d = 6 → a + 2d = 16 → a = 4','t3 = a + 2d = 16 → a = 16 − 12 = 4.','From t3 = 16: a + 12 = 16, so a = 4.'],
+    ['AP: 4, 10, 16, 22, …','General: a + (n−1)d = 4 + (n−1)6 = 6n − 2.','The AP is 4, 10, 16, 22, … (tn = 6n − 2).']],
+   ans:'AP: 4, 10, 16, 22, … (a = 4, d = 6)'},
+  {q:'How many three-digit numbers are divisible by 7?',
+   why:'"Counting multiples" = AP ka length nikalna. Divisibility, seating, scheduling — counting with steps yahi hai.',
+   steps:[
+    ['Smallest 3-digit multiple of 7: 105 (7×15)','100 ÷ 7 = 14.28… → aage ka multiple 7×15 = 105.','The smallest is 105.'],
+    ['Largest: 994 (7×142)','999 ÷ 7 = 142.7… → 7×142 = 994.','The largest is 994.'],
+    ['AP: 105, 112, …, 994 with d = 7 → n = ?','tn = a + (n−1)d: 994 = 105 + (n−1)7.','Solve 994 = 105 + (n−1)(7).'],
+    ['(n−1) = 889/7 = 127 → n = 128','889 ÷ 7 = 127 → n = 128 numbers.','n = (994−105)/7 + 1 = 128.']],
+   ans:'128 three-digit numbers are divisible by 7'},
+  {q:'How many multiples of 4 lie between 10 and 250?',
+   why:'"Between" me dono ends EXCLUDE hote hain (10 aur 250 khud multiples nahi hain anyway). Boundary cases ka dhyan — yahi exam trap hai.',
+   steps:[
+    ['First multiple > 10: 12','10 ke baad pehla 4-multiple = 12.','The first multiple is 12.'],
+    ['Last multiple < 250: 248','250 ÷ 4 = 62.5 → 4×62 = 248.','The last is 248.'],
+    ['n = (248 − 12)/4 + 1 = 236/4 + 1 = 59 + 1 = 60','Formula: count = (last − first)/d + 1. Yahan 60.','There are 60 multiples of 4.']],
+   ans:'60'},
+  {q:'The number of bacteria in a culture doubles every hour. If there are 30 bacteria originally, how many at the end of the 2nd, 4th and nth hour?',
+   why:'Population growth, viral reels, compound interest — doubling = r = 2 wala GP. Biology + maths combo!',
+   steps:[
+    ['Counts: 30, 60, 120, … — GP with r = 2','Har ghante ×2. a = 30.','The bacteria count forms a GP: 30·2ⁿ after n hours.'],
+    ['2nd hour: 30 × 2² = 120','Do doublings: ×4 → 120.','After 2 hours: 30·2² = 120.'],
+    ['4th hour: 30 × 2⁴ = 480','Chaar doublings: ×16 → 480.','After 4 hours: 30·2⁴ = 480.'],
+    ['nth hour: 30 × 2ⁿ','General rule: 2ⁿ growth factor. nth hour pe 30·2ⁿ.','After n hours: 30·2ⁿ.']],
+   ans:'2 h → 120 · 4 h → 480 · n h → 30·2ⁿ'}
+ ]}
+]};
+</script>
+<script>
+'use strict';
+/* ============================================================
+   BOOK ZONE DATA · part 8 — NCERT Classics
+   (Line Land, Euclid's Emporium, Angle Realm, Triangle Territory,
+    Quad Quadrangle, Volume Vault, Data Dungeon)
+   ============================================================ */
+window.BOOKZ=window.BOOKZ||{};
+BOOKZ.line={src:'NCERT Class 9 · Linear Equations in Two Variables — classic exam questions',sets:[{set:'NCERT Classic Exercises',qs:[
+ {q:'The cost of a notebook is twice the cost of a pen. Write a linear equation in two variables to represent this statement.',
+  why:'Statement → equation translation hi algebra ki asli shakti hai. Bill splitting, budgeting — sab yahi hai.',
+  steps:[
+   ['Name the variables: notebook cost = ₹x, pen cost = ₹y','Jo pata nahi usse variable bolo — dono costs unknown hain.','Let the notebook cost ₹x and the pen cost ₹y.'],
+   ['"Twice" means = 2 ×','Notebook 2 guna mehnga → x = 2y.','The notebook costs twice the pen: x = 2y.'],
+   ['Equation: x = 2y (or x − 2y = 0)','Standard form me likho: x − 2y = 0. Ek equation, do variables — a linear equation in two variables.','In standard form: x − 2y = 0.']]},
+ {q:'A taxi charges ₹8 for the first kilometre and ₹5 per km for every subsequent kilometre. Taking distance as x km and total fare as ₹y, write the equation and find the fare for 7 km.',
+  why:'Real taxi/rapido pricing! "First km special rate" = ek constant + variable part — linear equation ka everyday avatar.',
+  steps:[
+   ['First km costs 8; remaining (x − 1) km cost 5 each','Total = 8 + 5 × (x − 1). Bas structure samjho.','Fare = 8 + 5(x − 1).'],
+   ['Simplify: y = 8 + 5x − 5 = 5x + 3','Distribute karo: 5x − 5. Jodo: 5x + 3.','y = 5x + 3.'],
+   ['x = 7: y = 5(7) + 3 = 38','7 km ka fare ₹38.','For 7 km: y = 38.']]},
+ {q:'Find four different solutions of the equation 2x + y = 7.',
+  why:'Ek equation ke INFINITE solutions hote hain — x chuno, y khud nikal aayega. Graph ki poori line hi solution-set hai.',
+  steps:[
+   ['Pick any x, compute y = 7 − 2x','x ki jagah apni marzi ki value — y apne aap nikal aayega.','Choose x freely and compute y = 7 − 2x.'],
+   ['x = 0 → y = 7; x = 1 → y = 5','(0, 7) aur (1, 5) dono solutions hain.','(0, 7) and (1, 5) are solutions.'],
+   ['x = 2 → y = 3; x = 3 → y = 1','(2, 3) aur (3, 1). Chaar solutions ready!','(2, 3) and (3, 1) — four solutions: (0,7), (1,5), (2,3), (3,1).'],
+   ['Note: infinite solutions exist','x = −1 bhi chalega: (−1, 9). Line ke HAR point solution hai.','Any point on the line 2x + y = 7 is a solution.']]},
+ {q:'Give the geometric representation of y = 3 as: (i) an equation in one variable (ii) an equation in two variables.',
+  why:'Same equation, different "lens" — ek variable me point, do variables me poori line. Perspective badalne ka khel.',
+  steps:[
+   ['One variable: y = 3 is a single POINT on the number line','Sirf y ki duniya me y = 3 matlab ek hi point.','In one variable, y = 3 is just the point 3 on the number line.'],
+   ['Two variables: y = 3 means y is ALWAYS 3, x free','Ab x bhi hai — lekin y fix. Har x ke liye y = 3: (0,3), (5,3), (−2,3)…','In two variables, y = 3 holds for every x — all points (x, 3).'],
+   ['Representation: a HORIZONTAL line 3 units above the x-axis','Wo saare points jodne pe ek horizontal line banti hai jo x-axis ke upar 3 units par hai.','It is the horizontal line passing through (0, 3).']]}]}]};
+BOOKZ.euc={src:'NCERT Class 9 · Introduction to Euclid\'s Geometry — classic exam questions',sets:[{set:'NCERT Classic Exercises',qs:[
+ {q:'How many lines can pass through: (i) one given point (ii) two given distinct points?',
+  why:'Euclid ka pehla postulate hi ye kehta hai — GPS se laptop screen tak, "2 points se 1 line" har design ka base hai.',
+  steps:[
+   ['(i) One point → INFINITELY many lines','Ek point ke through jitne chahe lines guzar sakti hain — har direction me ek.','Through one point, infinitely many lines pass.'],
+   ['(ii) Two distinct points → EXACTLY one line','Euclid\'s Postulate 1: do points se unique line. Ye "unique" hi navigation ka foundation hai.','Through two distinct points there is exactly ONE line (Postulate 1).'],
+   ['Test it: two pins on a board — one stretched string only','Do pins me ek hi string seedhi fit hoti hai. Practical proof!','Two pins determine exactly one stretched string.']]},
+ {q:'What is the difference between an axiom and a postulate?',
+  why:'Definitions clear honi chahiye — exam me 1-mark ka seedha sawaal, aur thinking ke liye foundation.',
+  steps:[
+   ['Axiom: universal truth used EVERYWHERE in mathematics','Axiom har jagah chalega — algebra me bhi, geometry me bhi. Example: "Things equal to the same thing are equal to each other."','An axiom is a truth assumed across all of mathematics.'],
+   ['Postulate: truth specific to GEOMETRY','Postulate sirf geometry ke rules hain. Example: "A line can be drawn through any two points."','A postulate is an assumption specific to geometry.'],
+   ['Dono PROOF ke bina accept kiye jaate hain','Na axiom, na postulate — kisi ko prove nahi kiya ja sakta; ye starting points hain. Inhi pe saara structure khada hai.','Both are accepted without proof — they are the starting bricks.']]},
+ {q:'If A, B, C are three points on a line and B lies between A and C, prove that AB + BC = AC.',
+  why:'"Whole = sum of parts" — segment addition. Ruler reading, distance calculation, har measurement me implicit hai.',
+  steps:[
+   ['Axiom: "If equals are added to equals, wholes are equal"','Ye Euclid ka Axiom 2 hai — additivity ka rule.','Use Euclid\'s axiom: wholes of equal parts are equal.'],
+   ['AC = AB (with B between) → AC coincides with AB + BC','B ke beech hone se AB aur BC judd ke exactly AC bante hain — overlap nahi, coincidence (Axiom 4).','With B between A and C, the segments AB and BC together exactly match AC.'],
+   ['Hence AB + BC = AC. QED','Isi logic se: agar AC = AB + BC, toh B neccessarily beech me hota hai (converse bhi true).','Therefore AB + BC = AC — and the converse holds too.']]}]}]};
+BOOKZ.ang={src:'NCERT Class 9 · Lines and Angles — classic exam questions',sets:[{set:'NCERT Classic Exercises',qs:[
+ {q:'Two complementary angles differ by 10°. Find both angles.',
+  why:'Complementary = 90° ka jodi. Pipe fittings, roof slopes, TV mounts — right angles ke pieces har engineering me.',
+  steps:[
+   ['Let the angles be x and x + 10','Chhota x, bada x+10. Difference 10 diya hai.','Let the angles be x and x + 10.'],
+   ['Sum = 90: x + (x + 10) = 90','Complementary angles ka sum 90° — equation ready.','x + (x + 10) = 90.'],
+   ['2x = 80 → x = 40','Solve: x = 40. Angles: 40° and 50°.','2x + 10 = 90 → x = 40. The angles are 40° and 50°.'],
+   ['Check: 40 + 50 = 90 ✓ and 50 − 40 = 10 ✓','Dono conditions satisfy.','Verified: sum 90°, difference 10°.']]},
+ {q:'Two lines intersect. One of the angles formed is 35°. Find the other three.',
+  why:'Scissors, road crossing, X sign — vertically opposite angles ka instant use.',
+  steps:[
+   ['Vertically opposite pair: 35° and 35°','Line cross pe opposite corners barabar hote hain (vertically opposite angles).','The angle vertically opposite 35° is also 35°.'],
+   ['Linear pair: 35° + x = 180° → x = 145°','Same line ke adjacent angles ka sum 180° (linear pair).','The adjacent angle on the straight line: 180° − 35° = 145°.'],
+   ['Fourth angle: 145° (vertical opposite again)','Bacha hua bhi 145° — opposite pair.','The remaining angle is 145°. So: 35°, 145°, 35°, 145°.']]},
+ {q:'The angles of a triangle are in the ratio 2 : 3 : 4. Find all three angles.',
+  why:'Angle sum property + ratio handling — exam me sabse zyada repeat hone wala combo.',
+  steps:[
+   ['Let angles = 2x, 3x, 4x','Ratio ko x me kholo.','Let the angles be 2x, 3x, 4x.'],
+   ['Sum = 180: 2x + 3x + 4x = 180','Triangle ka golden rule: 180°.','Angle sum: 9x = 180.'],
+   ['x = 20 → 40°, 60°, 80°','Solve aur substitute: 40, 60, 80.','x = 20 gives angles 40°, 60°, 80°.'],
+   ['Check: 40 + 60 + 80 = 180 ✓','Verify always.','Sum checks out.']]},
+ {q:'In the figure, PQ ∥ RS and a transversal cuts them. If one alternate interior angle is 65°, find the remaining angles on the diagram.',
+  why:'Railway tracks + bridge girder — parallel lines aur transversal ka poora angle-map ek hi fact se khul jaata hai.',
+  steps:[
+   ['Alternate interior angles are EQUAL: partner = 65°','Z-pattern yaad karo: alternate interior pair barabar.','The alternate interior angle is also 65°.'],
+   ['Corresponding angles EQUAL: the matching F-pattern angle = 65°','Same side matching position → 65°.','Corresponding angles are equal too: 65°.'],
+   ['Linear pairs fill the rest: 180° − 65° = 115°','Baki positions linear pair se: 115°.','The remaining positions get 115° each (linear pair with 65°).'],
+   ['Final map: four 65°, four 115°','Parallel + transversal ke 8 angles me sirf DO values hoti hain.','The 8 angles alternate between 65° and 115°.']]}]}]};
+BOOKZ.tri={src:'NCERT Class 9 · Triangles — classic exam questions',sets:[{set:'NCERT Classic Exercises',qs:[
+ {q:'In ∆ABC, AB = AC. Prove that ∠B = ∠C (base angles of an isosceles triangle).',
+  why:'Isosceles ka property har proof, har design (roof trusses!) me. Ye NCERT ka first formal congruence proof hai.',
+  steps:[
+   ['Draw the angle bisector of ∠A meeting BC at D','Helper line: ∠A ka bisector. Ab do triangles ban gaye: ∆BAD aur ∆CAD.','Draw the bisector of ∠A, meeting BC at D.'],
+   ['Compare ∆BAD and ∆CAD','AB = AC (given), ∠BAD = ∠CAD (construction), AD = AD (common).','In ∆BAD and ∆CAD: AB = AC, ∠BAD = ∠CAD, AD common.'],
+   ['SAS congruence: ∆BAD ≅ ∆CAD','Do sides aur included angle barabar → SAS.','By SAS, ∆BAD ≅ ∆CAD.'],
+   ['CPCT: ∠B = ∠C','Corresponding parts of congruent triangles — done!','By CPCT, ∠B = ∠C. Base angles are equal.']]},
+ {q:'In an isosceles triangle, the vertex angle is 80°. Find the base angles.',
+  why:'Same property, numeric form. Exam me 1-2 marks ka instant question.',
+  steps:[
+   ['Base angles are EQUAL (isosceles property)','Do barabar sides → do barabar base angles. Dono ko x bolo.','The two base angles are equal; call each x.'],
+   ['x + x + 80 = 180','Angle sum: 180°.','x + x + 80 = 180.'],
+   ['2x = 100 → x = 50°','Base angles 50°, 50°.','Each base angle is 50°.']]},
+ {q:'Which congruence criterion proves two triangles congruent if two sides and the INCLUDED angle are equal? What about two angles and the included side?',
+  why:'SAS/ASA/SSS/RHS — tool selection hi asli skill hai. Galat criterion likha toh proof invalid.',
+  steps:[
+   ['Two sides + included angle → SAS','Angle dono sides ke BEECH me ho toh SAS. (SSA nahi hota!)','Sides with the angle between them → SAS.'],
+   ['Two angles + included side → ASA','Do angles aur unke beech ki side → ASA. (AAS bhi chalega logically.)','Two angles with the side between them → ASA.'],
+   ['Right angle + hypotenuse + side → RHS','Right triangles ka special: RHS (Right angle-Hypotenuse-Side).','For right triangles: RHS.'],
+   ['SSS: all three sides','Teeno sides barabar → SSS. Har triangle unique ban jaata hai.','All three sides equal → SSS.']]}]}]};
+BOOKZ.quad={src:'NCERT Class 9 · Quadrilaterals — classic exam questions',sets:[{set:'NCERT Classic Exercises',qs:[
+ {q:'The angles of a quadrilateral are in the ratio 3 : 5 : 9 : 13. Find all the angles.',
+  why:'Quad ka angle sum 360° — rectangle/window/frame sab me. Ratio + sum = instant equation.',
+  steps:[
+   ['Let angles = 3x, 5x, 9x, 13x','Ratio ko x me kholo.','Let the angles be 3x, 5x, 9x, 13x.'],
+   ['Sum = 360: 30x = 360','Quadrilateral ka angle sum 360°.','3x+5x+9x+13x = 30x = 360.'],
+   ['x = 12 → 36°, 60°, 108°, 156°','Substitute x = 12.','Angles: 36°, 60°, 108°, 156°.'],
+   ['Check: 36+60+108+156 = 360 ✓','Verify.','Sum checks.']]},
+ {q:'One angle of a parallelogram is 70°. Find the other three angles.',
+  why:'Doors, grids, escalators — parallelogram ke angle rules sab jagah. Adjacent supplementary, opposite equal.',
+  steps:[
+   ['Opposite angle = 70° (opposite angles equal)','Parallelogram me opposite angles barabar.','The opposite angle is also 70°.'],
+   ['Adjacent angles are supplementary: 180 − 70 = 110°','Co-interior/adjacent pair ka sum 180°.','Each adjacent angle = 110°.'],
+   ['Fourth = 110° (opposite pair again)','Doosra bhi 110°. Final: 70, 110, 70, 110.','So the angles are 70°, 110°, 70°, 110°.']]},
+ {q:'In ∆PQR, L and M are the midpoints of PQ and PR. If QR = 14 cm, find LM.',
+  why:'Midpoint theorem — triangle ke andar chhota parallel segment. Bridge trusses me load distribution isi pe.',
+  steps:[
+   ['Midpoint theorem: LM ∥ QR and LM = ½ QR','Do midpoints jodne wali segment third side ke parallel aur aadhi hoti hai.','By the Midpoint Theorem: LM ∥ QR and LM = QR/2.'],
+   ['LM = 14/2 = 7 cm','Half of 14 = 7.','LM = 7 cm.'],
+   ['Why? Extend LM to double it → congruent triangles (CPCT)','Proof idea: LM ko double karo, congruence se third point S pe QS ∥ PR nikalta hai — parallelogram ban jaata hai.','The proof doubles LM and uses congruence to form a parallelogram.']]}]}]};
+BOOKZ.sol={src:'NCERT Class 9 · Surface Areas & Volumes — classic exam questions',sets:[{set:'NCERT Classic Exercises',qs:[
+ {q:'The diameter of a cone is 10.5 cm and its slant height is 10 cm. Find its curved surface area.',
+  why:'Birthday cap, ice-cream cone, traffic cone — CSA hi "wrapper" ka area hai. Material estimate karna industry me roz hota hai.',
+  steps:[
+   ['r = diameter/2 = 5.25 cm, l = 10 cm','Slant height l hai (tip se base edge tak) — height nahi!','Radius r = 5.25 cm, slant height l = 10 cm.'],
+   ['CSA of cone = πrl','Formula: π × r × l.','CSA = πrl.'],
+   ['= (22/7) × 5.25 × 10','5.25 × 22 = 115.5; ÷7 = 16.5; ×10 = 165.','(22/7)(5.25)(10) = 165.'],
+   ['CSA = 165 cm²','Wrapper needs 165 cm² of material.','The curved surface area is 165 cm².']]},
+ {q:'Find the surface area of a sphere of radius 7 cm.',
+  why:'Footballs, globes, water tanks — sphere ka SA = 4πr². Ek formula, poora duniya ke gol cheezon ka budget.',
+  steps:[
+   ['SA of sphere = 4πr²','Poora surface — koi edge nahi, koi base nahi.','Surface area = 4πr².'],
+   ['= 4 × (22/7) × 7²','7² = 49.','= 4 × (22/7) × 49.'],
+   ['= 4 × 22 × 7 = 616 cm²','49/7 = 7 cancels beautifully.','SA = 616 cm².']]},
+ {q:'A hemispherical brass bowl has inner diameter 10.5 cm. Find the cost of tin-plating its inside at ₹16 per 100 cm².',
+  why:'Real-world cost problem — bowl, dome, jhoola cover. Area nikalo, rate lagao. (Hemisphere ka CSA = 2πr²!)',
+  steps:[
+   ['r = 10.5/2 = 5.25 cm; CSA hemisphere = 2πr²','Half sphere ka curved area = 2πr² (poore sphere ka aadha).','Inner radius 5.25 cm; curved area = 2πr².'],
+   ['= 2 × (22/7) × 5.25² = 2 × (22/7) × 27.5625','5.25² = 27.5625.','Compute: 2 × (22/7) × 27.5625 = 173.25 cm².'],
+   ['= 173.25 cm²','Plating area.','Area to plate: 173.25 cm².'],
+   ['Cost = (173.25/100) × 16 = ₹27.72','Rate ₹16 per 100 cm² → 1.7325 × 16 = 27.72.','Cost = ₹27.72.']]}]}]};
+BOOKZ.dat={src:'NCERT Class 9 · Statistics — classic exam questions',sets:[{set:'NCERT Classic Exercises',qs:[
+ {q:'Find the mean, median and mode of: 4, 6, 5, 9, 6, 4, 6, 8',
+  why:'Teen "averages" teeno stories kehte hain — salary negotiation, cricket scores, marks. Ek hi data, teen lenses.',
+  steps:[
+   ['Mean = sum ÷ count = 48/8 = 6','4+6+5+9+6+4+6+8 = 48. ÷8 = 6.','Mean = 48/8 = 6.'],
+   ['Median: sort first → 4,4,5,6,6,6,8,9 → middle two 6,6 → 6','Order me lagao (8 values) → 4th aur 5th ka average = (6+6)/2 = 6.','Sorted: 4,4,5,6,6,6,8,9 → median = (6+6)/2 = 6.'],
+   ['Mode = 6 (appeared 3 times)','Sabse zyada baar wala value = 6 (3 times).','Mode = 6.'],
+   ['Sab 6! Balanced data','Symmetric data me teeno milte hain — good sign.','All three agree at 6 — a balanced dataset.']]},
+ {q:'The median of the data 29, 32, 48, 50, x, x+2, 72, 78, 84, 95 (arranged in order) is 63. Find x.',
+  why:'Median REVERSE engineering — beech wali value di hai, unknown dhundo. 10 values = beech ke DO values ka average.',
+  steps:[
+   ['10 values → median = average of 5th & 6th','Even count me median do beech values ka mean hota hai.','With 10 values, the median is the mean of the 5th and 6th.'],
+   ['5th = x, 6th = x + 2','Data already sorted — beech wale dono x aur x+2 hain.','The 5th and 6th values are x and x + 2.'],
+   ['(x + x + 2)/2 = 63 → 2x + 2 = 126','Equation banao.','(x + (x+2))/2 = 63.'],
+   ['2x = 124 → x = 62','Solve: x = 62. (Values 62 aur 64 — aur 63 inka exact beech ✓)','x = 62. The middle pair is 62 and 64.']]},
+ {q:'The mean of the following frequency distribution is 18. Find the missing frequency f — classes 11-13, 13-15, 15-17, 17-19, 19-21, 21-23, 23-25 with frequencies 7, 6, 9, 13, f, 5, 4.',
+  why:'Survey me ek response count miss ho gaya? Mean se REVERSE nikal sakte ho. Grouped data + unknown frequency = exam favourite.',
+  steps:[
+   ['Midpoints: 12, 14, 16, 18, 20, 22, 24','Class interval ka midpoint = (lower + upper)/2. Yehi representative value hai.','Use class midpoints: 12, 14, 16, 18, 20, 22, 24.'],
+   ['N = 7+6+9+13+f+5+4 = 44 + f','Total frequency me f bhi jodo.','N = 44 + f.'],
+   ['Σfx = 7×12 + 6×14 + 9×16 + 13×18 + f×20 + 5×22 + 4×24 = 752 + 20f','Compute: 84 + 84 + 144 + 234 + 20f + 110 + 96 = 752 + 20f.','Σfx = 752 + 20f.'],
+   ['Mean: (752 + 20f)/(44 + f) = 18','Mean formula set karo.','Set (752 + 20f)/(44 + f) = 18.'],
+   ['752 + 20f = 792 + 18f → 2f = 40 → f = 8','Cross-multiply: 18 × 44 = 792. Solve: f = 8.','f = 8.']]}]}]};
+</script>
+<script>
+'use strict';
+/* ============================================================
+   v7 · TWO NEW WORLDS — Chance Mansion (Probability, Book Ch 7)
+   and Sequence Spires (Sequences, Book Ch 8) + their labs.
+   Total = 14 worlds, as the syllabus demands.
+   ============================================================ */
+Object.assign(HUES,{
+ prob:['#5B4B8A','#E7E3F2','#2E2456'],
+ seq:['#1F6B54','#DFF2EA','#0C3A2C']
+});
+
+/* ---------- LAB 21 · DICE CASINO ---------- */
+LABS.dicecasino=function(box,ctl,opts,api){
+ const mode=opts.mode||'die';
+ const faces=mode==='coin'?2:6;
+ const labels=mode==='coin'?['Heads','Tails']:['1','2','3','4','5','6'];
+ const theo=1/faces;
+ let counts=new Array(faces).fill(0),rolls=0;
+ box.innerHTML='';const s=makeSVG(520,300);box.appendChild(s);
+ const g=s.appendChild(NS('g',{}));
+ const info=readout(ctl,'');
+ function draw(){
+  g.innerHTML='';
+  const W=520,H=300,pad=46,bw=Math.min(56,(W-2*pad)/faces-14);
+  const max=Math.max(5,...counts);
+  // axes
+  g.appendChild(LN(pad,H-40,W-pad,H-40,{stroke:'#3f3c58','stroke-width':2}));
+  const thY=H-40-(theo)*(H-110)/ (max/rolls>theo?max:Math.max(1,max));
+  // theoretical line position: count corresponding to theo proportion of rolls
+  const thCount=rolls*theo;
+  const thPix=H-40-(thCount/max)*(H-110);
+  if(rolls>0)g.appendChild(LN(pad,thPix,W-pad,thPix,{stroke:'#C08A2D','stroke-width':2,'stroke-dasharray':'6 4'}));
+  if(rolls>0)g.appendChild(T(W-24,thPix-8,'fair share '+(theo*100).toFixed(1)+'%',{'font-size':11,fill:'#C08A2D','text-anchor':'end','font-weight':800}));
+  for(let i=0;i<faces;i++){
+   const x=pad+(i+0.5)*((W-2*pad)/faces);
+   const h=rolls? (counts[i]/max)*(H-110):0;
+   g.appendChild(NS('rect',{x:x-bw/2,y:H-40-h,width:bw,height:Math.max(h,2),rx:6,fill:i%2?'#28517C':'#517DAB',opacity:.9}));
+   g.appendChild(T(x,H-22,labels[i],{'font-size':12,fill:'#26243a','font-weight':800}));
+   g.appendChild(T(x,H-48-h,String(counts[i]),{'font-size':12,fill:'#041D3D','font-weight':900}));
+  }
+  const emp=rolls?counts.reduce((a,c,i)=>Math.abs(c/rolls-theo)<Math.abs(a-theo)?c/rolls:0,0):0;
+  let msg=rolls===0?'Roll karo! Bars = counts. Dashed gold line = the "fair share" every face SHOULD have.':
+   'After '+rolls+' roll'+(rolls>1?'s':'')+': each bar vs the gold line. Long run me experimental ≈ theoretical (Law of Large Numbers).';
+  if(rolls>=25)msg+=' Notice the gap shrinking as rolls grow — that is convergence!';
+  info.innerHTML=msg;
+  api.touch();
+ }
+ function roll(n){
+  for(let k=0;k<n;k++){counts[R(1,faces)-1]++;rolls++}
+  SFX.click();draw();
+ }
+ addBtn(ctl,'🎲 Roll 1','btn-s',()=>roll(1));
+ addBtn(ctl,'⚡ Roll 25','btn-s',()=>roll(25));
+ addBtn(ctl,'↺ Reset','btn-g',()=>{counts=new Array(faces).fill(0);rolls=0;draw()});
+ if(mode==='coin')box.insertAdjacentHTML('afterbegin','<div style="text-align:center;font-weight:800;color:#5B4B8A">🪙 Coin Tally — heads vs tails</div>');
+ draw();
+};
+
+/* ---------- LAB 22 · SEQUENCE MACHINE ---------- */
+LABS.seqmachine=function(box,ctl,opts,api){
+ box.innerHTML='';const s=makeSVG(520,300);box.appendChild(s);
+ const g=s.appendChild(NS('g',{}));
+ const info=readout(ctl,'');
+ let kind=opts.kind||'AP';
+ let a=2,d=3,r=2,n=8;
+ function terms(){
+  const out=[];
+  for(let i=1;i<=10;i++)out.push(kind==='AP'? a+(i-1)*d : a*Math.pow(r,i-1));
+  return out;
+ }
+ function draw(){
+  g.innerHTML='';
+  const t=terms(),W=520,H=300,pad=52;
+  const mx=Math.max(...t);
+  // baseline
+  g.appendChild(LN(pad,H-52,W-30,H-52,{stroke:'#3f3c58','stroke-width':2}));
+  const step=(W-30-pad)/10;
+  t.forEach((v,i)=>{
+   const x=pad+step*(i+0.5),y=H-52-(v/mx)*(H-130);
+   const on=(i+1)===n;
+   g.appendChild(CR(x,y,on?15:9,{fill:on?'#E3AF3C':(kind==='AP'?'#28517C':'#1F6B54'),opacity:on?1:.85,stroke:on?'#7A5A12':'none','stroke-width':2}));
+   g.appendChild(T(x,H-36,'t'+(i+1),{'font-size':11,fill:'#517DAB','font-weight':700}));
+   g.appendChild(T(x,y-22,on?String(v):'',{'font-size':14,fill:'#7A5A12','font-weight':900}));
+  });
+  const formula=kind==='AP'? ('tn = '+a+' + (n−1)×'+d+' = '+a+' + '+(a-0)+'+(n−1)·'+d) : ('tn = '+a+'×'+r+'^(n−1)');
+  const val=kind==='AP'? a+(n-1)*d : a*Math.pow(r,n-1);
+  g.appendChild(T(W/2,34,kind+' · t'+n+' = '+val,{'font-size':16,fill:'#041D3D','font-weight':900}));
+  g.appendChild(T(W/2,56,formula,{'font-size':12.5,fill:'#517DAB','font-weight':700}));
+  info.innerHTML=(kind==='AP'? 'AP: har term me '+d+' JUDD raha hai (constant difference). Growth seedhi line me.':'GP: har term ko '+r+' se MULTIPLY ho raha hai (constant ratio). Growth curve me — explosion!');
+  api.touch();
+ }
+ addTabs(ctl,['AP · adding','GP · multiplying'],0,i=>{kind=i===0?'AP':'GP';draw()});
+ addSlider(ctl,'first term a',1,10,a,1,v=>{a=v;draw()});
+ if(true)addSlider(ctl,'step d (AP)',1,9,d,1,v=>{d=v;draw()});
+ addSlider(ctl,'ratio r (GP)',2,4,r,1,v=>{r=v;draw()});
+ addSlider(ctl,'pick term n',1,10,n,1,v=>{n=v;draw()});
+ draw();
+};
+
+/* ---------- NEW WORLD 13 · CHANCE MANSION ---------- */
+WORLDS.push(
+{id:'prob',n:'Chance Mansion',ch:'Book Ch 7 · Probability (The Mathematics of Maybe)',ic:'🎲',
+ tag:'Where "maybe" gets a number. Snakes & Ladders, cricket tosses, card tricks — every maybe has a maths.',
+ boss:{n:'LUCKYLICH',ti:'Keeper of Odds',taunt:'You feel lucky, Warrior? My dice never lie — they only follow the maths you have not learned yet!',art:'crystal'},
+ concepts:[
+  {id:'prob1',t:'What Are the Chances?',sub:'Empirical vs theoretical probability',
+   irl:['Weather app "80% rain" = probability from past data (empirical). Batting order ka toss = fair 50-50 (theoretical)','Snakes & Ladders: chaar 6 lagane ke baad bhi P(6) = 1/6 hi rehta hai — die ko memory nahi hoti (Gambler\'s Fallacy!)'],
+   hook:{ic:'🎲',s:'Gaming night: Riya tosses the coin for batting — and gets HEADS seven times in a row! "Ab toh tails pakka!" shouts her brother. Their Dadi, chess champion of the colony, smiles: "The coin has no memory, beta. Har toss fresh hai." Then she rolls a six on demand... because she knows exactly what the odds were all along.',
+         w:'Probability assigns a NUMBER to "maybe". Ek baar samajh gaye, toh games, weather, insurance, cricket DRS — sab ka hidden score-pad dikhne lagta hai.'},
+   facts:[['P = favourable ÷ total','P(event) = (outcomes that count) ÷ (ALL equally likely outcomes). Range hamesha 0 se 1: 0 = impossible, 1 = certain.'],
+          ['Theoretical vs empirical','Theoretical = pure counting on fair assumptions (P(heads) = 1/2). Empirical = ACTUAL trials (13 heads in 20 tosses = 0.65). Dono different ho sakte hain.'],
+          ['Law of Large Numbers','Trials badhao → experimental probability theoretical ke paas converge karti hai. 10 tosses me bias dikhta hai, 10,000 me nahi.'],
+          ['Events have no memory','Independent events: past results ka agle result pe ZERO asar. "6 teen baar aa gaya, ab nahi aayega" — Gambler\'s Fallacy, maths galat hai.']],
+   lab:['dicecasino',{mode:'die'}],
+   tasks:['Roll 25 twice and find the face farthest from the gold line','Roll until some face crosses the fair-share line — count the rolls it took','Reset, then check: does the SAME face win again? (Randomness!)'],
+   ex:{t:'In 20 tosses Riya got 13 heads. What is the empirical probability of heads, and why is it not 1/2?',
+       steps:[['Empirical P = favourable trials ÷ total trials','Experimental probability ACTUAL data se aati hai: 13/20.','Empirical P(heads) = 13/20.'],
+              ['13/20 = 0.65 = 65%','Simple division: 13 ÷ 20 = 0.65.','13/20 = 0.65.'],
+              ['Theoretical is still 1/2 = 0.5','Fair coin ASSUME karke theoretical 1/2 hai. Actual run me 0.65 aaya — chhote sample me gap normal hai.','Theoretical P stays 1/2 — the gap is normal sampling variation.'],
+              ['More trials → closer to 0.5','1000 tosses karo — percentage 50% ke aas-paas settle hogi. Law of Large Numbers in action.','With many more tosses the empirical value drifts toward 0.5.']]},
+   gen(){
+    const t=R(1,3);
+    if(t===1){
+     const f=pick(['heads','tails']);
+     return Q('A fair coin is tossed once. P('+f+') = ?','1/2',['1/4','1','0'],'2 equally likely outcomes, 1 favourable.','P = favourable ÷ total = 1/2.');
+    }
+    if(t===2){
+     const n=R(1,6);
+     return Q('A fair die is rolled once. P(getting '+n+') = ?','1/6',['1/2','1/3','1/4'],'6 equally likely faces, 1 favourable — 1/6.','Count: 1 favourable out of 6.');
+    }
+    const got=R(7,16),tot=20;
+    return Q('A coin lands heads '+got+' times in '+tot+' tosses. The empirical probability of heads is…',got+'/'+tot,[ (tot-got)+'/'+tot,'1/2','1/5'],'Empirical = actual heads ÷ total tosses = '+got+'/'+tot+'. (Theoretical 1/2 se different ho sakta hai!)','Empirical uses ACTUAL trial data, not fair assumptions.');
+   }},
+  {id:'prob2',t:'Sample Spaces & Events',sub:'Listing outcomes like a bookkeeper',
+   irl:['Menu combos: 3 snacks × 2 drinks = 6 choices — restaurant, uniform, seat+meal sab me counting rules chalti hain','Cricket analyst: two-dice run predictions, over-by-over outcome tables — sample space sabse pehle banta hai'],
+   hook:{ic:'📋',s:'The village fair snack stall: Samosa, Pakora, Bhaji — and Chai or Lassi to drink. Little Kabir wants to count EVERY possible snack-and-drink combo before choosing. His aunt laughs: "Bas 6 hain, page likhna band kar." But Kabir draws a table — and realises the TABLE is the secret weapon of probability.',
+         w:'Sample space likhna = poora game board dekh lena. Har probability usi table ke upar banti hai — count karna aata hai toh P nikalna minutes ka kaam hai.'},
+   facts:[['Sample space S = ALL outcomes','Experiment ke har possible result ki list. Die: {1..6}. Coin: {H, T}. Do coins: {HH, HT, TH, TT} — 4 outcomes.'],
+          ['Counting rule: multiply stages','Die + coin = 6 × 2 = 12 outcomes. 2 shirts × 3 pants = 6 outfits. Har stage ke options MULTIPLY hote hain.'],
+          ['Event = S ka subset','"Odd number" event = {1, 3, 5} — sample space ke selected members. P(event) = size of subset ÷ size of S.'],
+          ['Tree diagrams tame multi-step chaos','Har branch = ek choice. Paths start-to-end = complete outcomes. Probabilities branches pe multiply, different paths pe add.']],
+   lab:['seqmachine',{kind:'AP'}],
+   tasks:['List S for a die and a coin tossed together (12 outcomes!)','Pick an event of 3 outcomes and compute its probability'],
+   ex:{t:'A die is rolled and a coin tossed. Find |S| and P(die shows 6 AND coin shows heads).',
+       steps:[['Two stages: 6 × 2 = 12 outcomes','Die 6 ways, coin 2 ways — multiply: 12 equally likely pairs.','|S| = 6 × 2 = 12.'],
+              ['Favourable: only (6, H)','Ek hi pair match karta hai: die 6 aur heads.','Exactly 1 favourable outcome: (6, H).'],
+              ['P = 1/12','1 ÷ 12. (Shortcut check: 1/6 × 1/2 = 1/12 — independent events multiply!)','P = 1/12 — and indeed (1/6)(1/2) = 1/12.']]},
+   gen(){
+    const t=R(1,3);
+    if(t===1){
+     return Q('A die is rolled and a coin is tossed together. How many outcomes are in the sample space?','12',['8','6','36'],'Stages multiply: 6 × 2 = 12.','Multiply options at each stage.');
+    }
+    if(t===2){
+     return Q('Two coins are tossed together. How many outcomes are in the sample space?','4',['2','3','8'],'HH, HT, TH, TT — 2 × 2 = 4. (Note: HT and TH are DIFFERENT paths!)','2 stages × 2 outcomes each = 4 paths.');
+    }
+    return Q('From a bag with 3 red and 5 blue balls, one is drawn. P(red) = ?','3/8',['5/8','1/2','3/5'],'Total 8 balls, 3 red → 3/8.','Favourable ÷ total = 3/8.');
+   }},
+  {id:'prob3',t:'Complement & the 0–1 Range',sub:'P(not A) = 1 − P(A)',
+   irl:['"Kal barish hogi ya nahi" — dono cases ka sum 1 hota hai. Insurance premiums exactly is math pe bante hain','Match jeetne ka chance 2/7 hai toh haare ka 5/7 — commentators yehi boltе hain'],
+   hook:{ic:'🪞',s:'Archery range: Arjun ka bullseye probability 0.15 hai. Uski didi poochti hain: "Toh MISS hone ka chance?" Arjun calculates: 1 − 0.15 = 0.85. "Miss hi zyada likely hai, didi!" Didi giggle karti hain — but Arjun ne complement ka master trick pakad liya hai: jo nahi hua, wo 1 minus jo hua.',
+         w:'"NOT" events ka shortcut 99% cases me time bachata hai — direct counting painful ho toh complement ek second me answer deta hai.'},
+   facts:[['P(not A) = 1 − P(A)','A aur not-A milke POORA sample space dhak dete hain. Sum hamesha 1.','A + complement = 1.'],
+          ['P = 0 means impossible','"Die pe 7 aana" — koi outcome match nahi karta → P = 0.','An event with no favourable outcomes has probability 0.'],
+          ['P = 1 means certain','"Die pe 9 se kam number" — har outcome satisfy → P = 1.','An event covering the whole sample space has probability 1.'],
+          ['Probabilities NEVER leave [0, 1]','Negative probability ya 1.5 jaise numbers maths me exist hi nahi karte. Agar nikle — calculation me galti hai!','0 ≤ P ≤ 1, always.']],
+   lab:['dicecasino',{mode:'coin'}],
+   tasks:['Roll the coin tally and check heads% + tails% stays 100%','Find P(not 6) on a die using the complement (5/6)'],
+   ex:{t:'A bag has 3 red, 2 blue, 1 green ball. One is drawn. Find P(not red).',
+       steps:[['Total = 6 balls','3 + 2 + 1 = 6 equally likely draws.','Total outcomes = 6.'],
+              ['P(red) = 3/6 = 1/2','Direct: 3 red out of 6.','P(red) = 3/6 = 1/2.'],
+              ['P(not red) = 1 − 1/2 = 1/2','Complement rule — instant! (Direct bhi: blue + green = 3/6.)','P(not red) = 1 − 1/2 = 1/2.'],
+              ['Bonus: P(not green) = 1 − 1/6 = 5/6','Same trick har "not" event pe chalta hai.','Complement works for any "not" question.']]},
+   gen(){
+    const t=R(1,3);
+    if(t===1){
+     const red=R(2,5),blue=R(2,5);
+     return Q('A bag has '+red+' red and '+blue+' blue balls. One is drawn. P(NOT red) = ?',blue+'/'+(red+blue),[red+'/'+(red+blue),'1/2','1/'+(red+blue)],'P(red) = '+red+'/'+(red+blue)+', so P(not red) = 1 − that = '+blue+'/'+(red+blue)+'.','Complement: 1 − P(red).');
+    }
+    if(t===2){
+     return Q('A die is rolled once. P(a number less than 10) = ?','1',['5/6','0','1/6'],'Max face is 6 — EVERY outcome is < 10 → certain event.','All outcomes qualify → P = 1.');
+    }
+    return Q('A die is rolled once. P(a number greater than 6) = ?','0',['1/6','1/2','1'],'Impossible event — no face exceeds 6.','No favourable outcomes → P = 0.');
+   }}
+ ]},
+/* ---------- NEW WORLD 14 · SEQUENCE SPIRES ---------- */
+{id:'seq',n:'Sequence Spires',ch:'Book Ch 8 · Sequences & Progressions',ic:'♾️',
+ tag:'Predicting what comes next — patterns from chai stalls to Sierpiński fractals.',
+ boss:{n:'THE INFINITE',ti:'Pattern Serpent',taunt:'Each scale on my body follows the last, Warrior. Predict me… if you dare to think in patterns!',art:'ring'},
+ concepts:[
+  {id:'seq1',t:'Patterns All Around',sub:'Sequences & the language of terms',
+   irl:['Staircase steps, calendar dates, chai stall token numbers — life sequences me bhara hai','Stadium seat rows, parking bays, EMI schedule numbers — sab indexed lists hain (t1, t2, t3…)'],
+   hook:{ic:'🪜',s:'The chai stall keeps tokens: 1, 2, 3, 4… easy. But the kolam rangoli outside grows: 3 dots, 5 dots, 7 dots each ring. Little Meera squints: "Har ring me 2 extra!" She has just READ a pattern — the first superpower of Sequence Spires. Her brother bets she cannot guess ring 100. She smiles: "199 dots. Seedha formula se."',
+         w:'Sequence = numbered list (t1, t2, t3…). Pattern pakadna = future predict karna. Maths, coding, science — sab me yahi hota hai.'},
+   facts:[['A sequence is an ordered list','t1, t2, t3, … — position matters! {3,5,7} ≠ {5,3,7}. Subscript n = position ka address.'],
+          ['Terms follow a RULE','Har sequence ke peeche ek rule chhupa hai — "add 2", "double it", "multiply by previous + 1". Rule mil gaya toh ANY term mil sakta hai.'],
+          ['t_n means the nth term','t1 = pehla, t5 = paanchwa, t100 = sauwa. Rule likhne ke baad t100 ka jawab seconds me.'],
+          ['Guess-check-verify','Pattern pakdo → next term predict karo → verify karo. Ye scientific method ka maths version hai.']],
+   lab:['seqmachine',{kind:'AP'}],
+   tasks:['Spot the rule of 3, 5, 7, 9… and predict t10 (answer: 21)','Switch to GP mode and watch adding become exploding'],
+   ex:{t:'Find the next three terms of: 3, 5, 7, 9, …',
+       steps:[['Differences: 5−3 = 2, 7−5 = 2, 9−7 = 2','Har step me +2 — constant difference!','The pattern adds 2 each time.'],
+              ['Next: 11, 13, 15','9 + 2 = 11, 11 + 2 = 13, 13 + 2 = 15.','Next three: 11, 13, 15.'],
+              ['Bonus rule: tn = 2n + 1','Check: t1 = 3 ✓, t2 = 5 ✓ — formula mil gaya. t100 = 201!','tn = 2n + 1 (verify with the given terms).']]},
+   gen(){
+    const starts=[[3,2],[10,4],[7,5],[2,6],[50,3],[1,7]];
+    const [a0,d0]=pick(starts);
+    const seq=[a0,a0+d0,a0+2*d0].join(', ');
+    return Q('Find the next term of: '+seq+', …',String(a0+3*d0),[String(a0+4*d0),String(a0+2*d0),String(a0+3*d0+d0+1)],'Constant difference '+d0+' — add it again to the last term: '+(a0+2*d0)+' + '+d0+' = '+(a0+3*d0)+'.','Find the constant difference, then add once more.');
+   }},
+  {id:'seq2',t:'Arithmetic Progressions',sub:'a, d, and tn = a + (n−1)d',
+   irl:['Taxi fare: ₹200 fixed + ₹40/km = AP 240, 280, 320… (book ka exact example!)','Gym membership renewal, salary increments ₹2000/half-year, staircase heights — constant step = AP'],
+   hook:{ic:'🚕',s:'Taxi meter story from the book: booking ₹200, then ₹40 per km. 1 km → ₹240, 2 km → ₹280, 3 km → ₹320. "Ye toh wahi rangoli pattern hai!" bolti Meera — "2 ki jagah 40 badh raha hai." Papa calculate karte hain 10 km ka fare bina meter dekhe: ₹600. AP ne paise bacha diye.',
+         w:'AP = constant JUDDNE wala pattern. Formula tn = a + (n−1)d kisi bhi term ko seedha nikaal deta hai — counting ke bina t1000 bhi.'},
+   facts:[['AP = constant difference d','Har term me SAME amount judta hai. d = t2 − t1 = t3 − t2 = … (always check 2 gaps!).'],
+          ['tn = a + (n−1)d','a = first term, d = step. t1 = a, t2 = a + d, … t_n = a + (n−1)d. "(n−1) jumps of d" — yahi geometry hai.'],
+          ['Recursive rule: t1 = a, tn = tn−1 + d','Ek-ek karke aage badhna. Explicit formula se fast, recursive se intuitive.'],
+          ['Real model: fixed + rate×n','Taxi: 200 + 40n. Savings: 500 + 150n. "Fixed fee + per-unit charge" = AP in disguise.']],
+   lab:['seqmachine',{kind:'AP'}],
+   tasks:['Set a = 5, d = 4 and check t6 = 25 by hand','Find which term equals 100 for a = 4, d = 6'],
+   ex:{t:'Find the 31st term of an AP whose 11th term is 38 and 16th term is 73.',
+       steps:[['Equations: a + 10d = 38, a + 15d = 73','t_n = a + (n−1)d — dono terms ko equation me likho.','Write both as a + (n−1)d.'],
+              ['Subtract: 5d = 35 → d = 7','Equations minus karo — a cancel, d mil gaya.','Subtracting: 5d = 35, so d = 7.'],
+              ['a = 38 − 10×7 = −32','Back-substitute: a + 70 = 38.','Then a = −32.'],
+              ['t31 = −32 + 30×7 = 178','31st term = a + 30d = −32 + 210 = 178.','t31 = 178.']]},
+   gen(){
+    const t=R(1,2);
+    if(t===1){
+     const a0=R(2,9),d0=R(2,8),n=R(8,15);
+     return Q('In the AP with first term '+a0+' and common difference '+d0+', the '+n+'th term is…',String(a0+(n-1)*d0),[String(a0+n*d0),String(a0+(n-2)*d0),String(a0+(n-1)*(d0+1))],'t'+n+' = a + (n−1)d = '+a0+' + '+(n-1)+'×'+d0+' = '+(a0+(n-1)*d0)+'.','t_n = a + (n−1)d — (n−1) jumps of size d.');
+    }
+    const a0=R(2,8),d0=R(2,6),target=a0+R(5,12)*d0;
+    const n=(target-a0)/d0+1;
+    return Q('Which term of the AP '+a0+', '+(a0+d0)+', '+(a0+2*d0)+', … is '+target+'?','t'+n,['t'+(n+1),'t'+(n-1),'t'+(n+2)],'Solve a + (n−1)d = '+target+': (n−1) = ('+(target)+'−'+a0+')/'+d0+' = '+(n-1)+' → n = '+n+'.','Set tn = target and solve for n.');
+   }},
+  {id:'seq3',t:'Geometric Progressions',sub:'a, r, and tn = a·r^(n−1)',
+   irl:['Bacteria doubling (book ka example): 30 → 60 → 120 → … = 30·2ⁿ','Population growth, compound interest, viral video shares, Sierpiński fractal triangles — multiply-style growth = GP'],
+   hook:{ic:'🦠',s:'Science lab: 30 bacteria rakh diye. Ek ghante me DOUBLE — 60. Phir 120, 240… Do din baad teacher ne whiteboard pe likha: 30 × 2⁴⁸. Class hansi, phir chup — number itna BADA tha ki poore earth se zyada! "Yehi hai multiplying power," teacher boli. "Adding linear hai, multiplying EXPONENTIAL."',
+         w:'GP = constant MULTIPLY wala pattern (ratio r). Doubling, halving, tripling — GP hi hai. Fractals aur finance dono yahin milte hain.'},
+   facts:[['GP = constant ratio r','Har term ko pichle se MULTIPLY kiya gaya. r = t2/t1 = t3/t2 (do ratios check karo).'],
+          ['tn = a·r^(n−1)','a = first term, r = multiplier. t8 = a·r⁷ — seven jumps of multiplication.'],
+          ['r = 2 → doubling explosion','2ⁿ bahut tez badhta hai: 2¹⁰ ≈ 1000, 2²⁰ ≈ 10 lakh, 2³⁰ = 100 crore ke aas paas!'],
+          ['r < 1 → shrinking GP','Bounce ball 60% tak hi uthta hai: heights 80, 48, 28.8… — GP with r = 0.6. Area of fractal also SHRINKS.']],
+   lab:['seqmachine',{kind:'GP'}],
+   tasks:['Set a = 3, r = 2 and watch t10 (multiply, don\'t add!)','Compare AP d = 2 vs GP r = 2 at t8 — kiski value zyada?'],
+   ex:{t:'The bacteria count starts at 30 and doubles every hour. Find the count after 2 h, 4 h and n hours.',
+       steps:[['It\'s a GP: 30, 60, 120, … with r = 2','Doubling = ×2 each hour — geometric progression.','Counts form a GP with first term 30 and ratio 2.'],
+              ['2 h: 30 × 2² = 120','Do doublings: ×4.','After 2 hours: 120.'],
+              ['4 h: 30 × 2⁴ = 480','Chaar doublings: ×16.','After 4 hours: 480.'],
+              ['n h: 30 × 2ⁿ','General: after n hours, n multiplications of 2 → 30·2ⁿ.','After n hours: 30·2ⁿ.']]},
+   gen(){
+    const t=R(1,3);
+    if(t===1){
+     const a0=pick([2,3,5]),r0=pick([2,3]);
+     return Q('Find the next term of the GP: '+a0+', '+(a0*r0)+', '+(a0*r0*r0)+', …',String(a0*r0*r0*r0),[String(a0*r0*r0+r0),String(a0*r0*r0*r0*r0),String(a0*r0*r0+ a0*r0)],'Ratio = '+r0+' (constant). Multiply: '+(a0*r0*r0)+' × '+r0+' = '+(a0*r0*r0*r0)+'.','Divide consecutive terms to find r, then multiply again.');
+    }
+    if(t===2){
+     return Q('Bacteria double every hour, starting from 50. After 3 hours the count is…','400',['150','200','350'],'GP: 50 × 2³ = 400.','50·2ⁿ after n hours.');
+    }
+    const a0=R(2,6),r0=2,n=R(6,9);
+    return Q('In the GP with a = '+a0+' and r = 2, the '+n+'th term is…',String(a0*Math.pow(2,n-1)),[String(a0*Math.pow(2,n)),String(a0*(n-1)*2),String(a0*Math.pow(2,n-2))],'t'+n+' = a·r^(n−1) = '+a0+' × 2^'+(n-1)+' = '+(a0*Math.pow(2,n-1))+'.','t_n = a·r^(n−1).');
+   }}
+ ]}
+);
+</script>
+<script>
+'use strict';
+/* ============================================================
+   v7 · BOOK ZONE UI — textbook solved like a teacher:
+   step-by-step reveal, Ask button (Hinglish + English) per step.
+   ============================================================ */
+document.head.insertAdjacentHTML('beforeend',`<style>
+.bsrc{font-size:12px;font-weight:700;color:#517DAB;background:#EDF3F8;border:1px solid #D6E2E6;border-radius:99px;padding:6px 14px;display:inline-block;margin-bottom:14px}
+.bset{font-size:11.5px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:#7A5A12;margin:22px 0 10px;display:flex;align-items:center;gap:10px}
+.bset:after{content:'';flex:1;height:1.5px;background:linear-gradient(90deg,#E9D3A8,transparent)}
+.brow{display:flex;gap:14px;align-items:center;background:#fff;border:1.5px solid #DCE5EE;border-radius:16px;padding:13px 16px;margin-bottom:10px;transition:box-shadow .2s,transform .2s;animation:rise .45s ease both}
+.brow:hover{box-shadow:0 8px 24px rgba(4,29,61,.1);transform:translateY(-1px)}
+.brow .bnum{width:34px;height:34px;border-radius:11px;background:#EDF3F8;color:#28517C;font-weight:900;display:grid;place-items:center;font-size:14px;flex-shrink:0}
+.brow.done .bnum{background:#1D6E79;color:#fff}
+.bq{flex:1;min-width:0}
+.bq .bt2{font-size:14.5px;font-weight:800;color:#17253C;display:block;line-height:1.4}
+.bq .bsub2{font-size:12px;color:#517DAB;font-weight:600;display:block;margin-top:3px}
+.bempty{background:#fff;border:1.5px dashed #C9D6E2;border-radius:18px;padding:26px;text-align:center;color:#517DAB;font-weight:600}
+/* question player */
+.bqwrap{max-width:780px;margin:0 auto}
+.bqcard{background:#fff;border:1.5px solid #DCE5EE;border-radius:22px;padding:24px 26px;box-shadow:0 14px 40px rgba(4,29,61,.08)}
+.bqcard .bsetchip{font-size:11px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:#7A5A12;background:#FBF3DF;border-radius:99px;padding:5px 12px;display:inline-block}
+.bqcard h2{font-size:20px;font-weight:900;color:#041D3D;line-height:1.45;margin:12px 0 4px}
+.bwhy{background:linear-gradient(130deg,#F0F6FB,#EAF3F9);border-left:4px solid #517DAB;border-radius:0 12px 12px 0;padding:10px 14px;font-size:13.5px;color:#28517C;font-weight:600;margin:14px 0 4px}
+.bsteps{margin-top:16px}
+.bstep{display:flex;gap:14px;padding:14px 0;border-bottom:1px dashed #E2EAF2;animation:rise .4s ease both}
+.bstep .rail{display:flex;flex-direction:column;align-items:center;flex-shrink:0}
+.bstep .nd2{width:30px;height:30px;border-radius:10px;background:linear-gradient(140deg,#28517C,#517DAB);color:#fff;font-weight:900;font-size:13.5px;display:grid;place-items:center}
+.bstep .ln2{width:2px;flex:1;background:#DCE5EE;margin-top:6px;min-height:10px}
+.bmath{font-size:16.5px;font-weight:900;color:#041D3D;line-height:1.5}
+.bhi{font-size:13.5px;color:#1D6E79;font-weight:700;margin-top:6px;line-height:1.55}
+.bhi:before{content:'🗣️ ';font-size:12px}
+.ben{font-size:12.5px;color:#517DAB;font-weight:600;margin-top:4px;line-height:1.5;padding-left:2px}
+.ben:before{content:'✦ English: ';font-style:italic;opacity:.8}
+.askrow{margin-top:8px}
+.askbtn{font-size:11.5px;font-weight:900;letter-spacing:.06em;color:#7A5A12;background:#FBF3DF;border:1.5px solid #E9D3A8;border-radius:99px;padding:5px 13px;cursor:pointer;transition:all .2s}
+.askbtn:hover{background:#F6E8C4;transform:translateY(-1px)}
+.bans{background:linear-gradient(135deg,#EAF7F1,#E2F3EC);border:1.5px solid #9AD4BE;border-radius:16px;padding:14px 18px;margin-top:18px;animation:rise .45s ease both}
+.bans .blab{font-size:10.5px;font-weight:900;letter-spacing:.18em;color:#0B5E44;text-transform:uppercase}
+.bans .bval{font-size:19px;font-weight:900;color:#0B5E44;margin-top:3px}
+.bctl{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;align-items:center}
+.bprog{font-size:12px;font-weight:800;color:#517DAB;letter-spacing:.08em}
+/* ask overlay content */
+.askcard{text-align:left;max-width:600px}
+.askcard .ak{font-size:10.5px;font-weight:900;letter-spacing:.2em;color:#C08A2D;text-transform:uppercase}
+.askcard h3{font-size:20px;font-weight:900;color:#fff;margin:6px 0 14px}
+.askctx{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:10px 14px;font-size:12.5px;color:#B9C8DC;font-weight:600;margin-bottom:12px}
+.askhi{background:rgba(227,175,60,.12);border:1px solid rgba(227,175,60,.4);border-radius:14px;padding:13px 16px;margin-bottom:10px}
+.askhi .lb{font-size:10px;font-weight:900;letter-spacing:.18em;color:#F2D57E;text-transform:uppercase;display:block;margin-bottom:5px}
+.askhi p{margin:0;color:#FBEFD4;font-size:14.5px;font-weight:600;line-height:1.6}
+.asken{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:13px 16px}
+.asken .lb{font-size:10px;font-weight:900;letter-spacing:.18em;color:#9FC3E8;text-transform:uppercase;display:block;margin-bottom:5px}
+.asken p{margin:0;color:#EAF2FB;font-size:14px;font-weight:600;line-height:1.6}
+</style>`);
+
+/* ---------- list inside world view ---------- */
+function bookListHTML(wid){
+ const bk=BOOKZ[wid];
+ if(!bk)return '<div class="bempty">📕 Book Zone for this world is being inked — check back after the next update. (Concepts, labs & practice are fully live above!)</div>';
+ let n=0;bk.sets.forEach(s=>n+=s.qs.length);
+ const done=Object.keys(S.book).filter(k=>k.startsWith(wid+':')).length;
+ return '<div class="bsrc">📖 '+bk.src+' · '+n+' solved questions</div>'
+ +bk.sets.map(st=>'<div class="bset">'+st.set+'</div>'
+  +st.qs.map((q,qi)=>{
+   const gi=bk.sets.slice(0,bk.sets.indexOf(st)).reduce((a,s2)=>a+s2.qs.length,0)+qi;
+   const key=wid+':'+gi,ok=S.book[key];
+   const prev=q.q.length>110?q.q.slice(0,110)+'…':q.q;
+   return '<div class="brow'+(ok?' done':'')+'" style="animation-delay:'+(qi*0.05)+'s">'
+   +'<span class="bnum">'+(ok?'✓':(gi+1))+'</span>'
+   +'<span class="bq"><span class="bt2">'+prev+'</span><span class="bsub2">'+(q.steps?q.steps.length:0)+' teacher steps · Ask button on every step</span></span>'
+   +'<button class="btn '+(ok?'btn-g':'btn-p')+' btn-sm" onclick="A.bookQ(\''+wid+'\','+gi+')">'+(ok?'Re-solve':'Solve it')+'</button>'
+   +'</div>';
+  }).join('')).join('')
+ +(done?'<p class="muted" style="margin-top:10px;font-size:12.5px">✅ You have solved '+done+' of these, Warrior. Re-solving is free — revision is a weapon.</p>':'');
+}
+
+/* ---------- dedicated book screen ---------- */
+function renderBook(wid){
+ const w=worldById(wid),bk=BOOKZ[wid];
+ if(!w||!bk){go('home');return}
+ App.innerHTML='<div class="screen">'
+ +'<div class="backrow"><button class="btn btn-g btn-sm" onclick="A.world(\''+wid+'\')">← '+w.n+'</button><span class="muted" style="font-size:12.5px">Book Zone</span></div>'
+ +'<div class="whead"><div class="whead-in"><span class="wkick">📕 BOOK ZONE · SOLVED LIKE A TEACHER</span><h1>'+w.n+'</h1><p>'+bk.src+'</p></div></div>'
+ +'<div class="blist">'+bookListHTML(wid)+'</div></div>';
+}
+
+/* ---------- question player ---------- */
+let BQ=null;
+function renderBookQ(wid,qi){
+ const w=worldById(wid),bk=BOOKZ[wid];if(!w||!bk){go('home');return}
+ let gi=0,q=null,set=null;
+ for(const st of bk.sets){for(const qq of st.qs){if(gi===qi){q=qq;set=st;break}gi++}}
+ if(!q){go('book',{wid});return}
+ BQ={wid,qi,rev:(BQ&&BQ.wid===wid&&BQ.qi===qi)?BQ.rev:0,q,set};
+ const steps=q.steps||[];
+ const done=S.book[wid+':'+qi];
+ const body='<div class="bqcard">'
+ +'<span class="bsetchip">'+set.set+'</span>'
+ +'<h2>'+q.q+'</h2>'
+ +(q.why?'<div class="bwhy"><b>💡 Why it matters:</b> '+q.why+'</div>':'')
+ +'<div class="bsteps">'+steps.slice(0,BQ.rev).map((s,i)=>stepHTML(s,i)).join('')+'</div>'
+ +'<div class="bctl">'
+ +(BQ.rev<steps.length
+   ?'<button class="btn btn-p" onclick="A.bstep()">Teacher writes step '+(BQ.rev+1)+' →</button>'
+   :(q.ans?'<div class="bans" style="flex:1"><span class="blab">✔ FINAL ANSWER</span><div class="bval">'+q.ans+'</div></div>':'')
+  )
+ +'</div>'
+ +(BQ.rev>=steps.length
+   ?'<div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">'+(done?'<span class="muted" style="font-size:12.5px;align-self:center">✓ Already in your solved collection</span>':'<button class="btn btn-gold" onclick="A.bdone()">🏅 Mark as solved · +8 XP</button>')+'<button class="btn btn-g" onclick="A.book(\''+wid+'\')">Back to Book Zone</button></div>'
+   :'<div style="margin-top:14px"><button class="btn btn-g btn-sm" onclick="A.book(\''+wid+'\')">← Back</button> <span class="bprog">'+BQ.rev+'/'+steps.length+' steps revealed — answer ek hi baar me nahi, teacher ki tarah ek-ek karke</span></div>')
+ +'</div>';
+ App.innerHTML='<div class="screen bqwrap">'
+ +'<div class="backrow"><button class="btn btn-g btn-sm" onclick="A.book(\''+wid+'\')">← Book Zone</button><span class="muted" style="font-size:12.5px">'+w.n+'</span></div>'
+ +body+'</div>';
+}
+function stepHTML(s,i){
+ return '<div class="bstep"><div class="rail"><span class="nd2">'+(i+1)+'</span>'+(i<99?'<span class="ln2"></span>':'')+'</div>'
+ +'<div style="flex:1;min-width:0"><div class="bmath">'+s[0]+'</div>'
+ +'<div class="bhi">'+s[1]+'</div>'
+ +'<div class="ben">'+s[2]+'</div>'
+ +'<div class="askrow"><button class="askbtn" onclick="A.bask('+i+')">🙋 Ask — yeh step kaise aaya?</button></div>'
+ +'</div></div>';
+}
+
+/* ---------- actions ---------- */
+window.A_EXTRA=Object.assign({},window.A_EXTRA,{
+ book(wid){BQ=null;go('book',{wid})},
+ bookQ(wid,qi){go('bookq',{wid,qi})},
+ bstep(){
+  if(!BQ)return;
+  BQ.rev++;SFX.step();
+  renderBookQ(BQ.wid,BQ.qi);
+ },
+ bask(i){
+  if(!BQ)return;
+  const q=BQ.q,steps=q.steps||[],s=steps[i];
+  const prev=i>0?'<div class="askctx"><b>Pehle kya tha (step '+i+'):</b> '+steps[i-1][0]+'</div>':'<div class="askctx">Ye PEHLA step hai — yahin se solution shuru hota hai.</div>';
+  showOvl('<div class="introcard askcard"><span class="ak">🙋 ASK THE TEACHER · STEP '+(i+1)+'/'+steps.length+'</span><h3>'+s[0]+'</h3>'
+  +prev
+  +'<div class="askhi"><span class="lb">Hinglish me samjho</span><p>'+s[1]+'</p></div>'
+  +'<div class="asken"><span class="lb">In English</span><p>'+s[2]+'</p></div>'
+  +'<div style="text-align:center;margin-top:16px"><button class="btn btn-p" onclick="A.ovlClose()">Clear ho gaya ✓</button></div>'
+  +'</div>',true);
+  SFX.click();
+ },
+ bdone(){
+  if(!BQ)return;
+  const key=BQ.wid+':'+BQ.qi;
+  if(!S.book[key]){S.book[key]=1;save();addXP(8,'book question solved');burst(60)}
+  renderBookQ(BQ.wid,BQ.qi);
+ }
+});
+</script>
+<script>
+'use strict';
 /* ================= UI · SCREENS · ROUTER · BATTLE ================= */
 const App=$('#app');
 let QSTATE=null,BOS=null,EXSTATE={};
@@ -3049,6 +4489,9 @@ function render(){
  else if(ROUTE.view==='world'){setHue(ROUTE.wid);renderWorld(ROUTE.wid)}
  else if(ROUTE.view==='lesson'){setHue(ROUTE.wid);renderLesson(ROUTE.wid,ROUTE.cid,ROUTE.step||0)}
  else if(ROUTE.view==='quiz'){setHue(ROUTE.wid);renderQuiz()}
+ else if(ROUTE.view==='book'){setHue(ROUTE.wid);renderBook(ROUTE.wid)}
+ else if(ROUTE.view==='bookq'){setHue(ROUTE.wid);renderBookQ(ROUTE.wid,ROUTE.qi)}
+ else if(ROUTE.view==='diag'){setHue('quad');renderDiag(ROUTE.phase)}
  renderTopbar();
 }
 
@@ -3063,7 +4506,7 @@ function renderHome(){
  +'<div class="brandline"><span class="st">✦</span> A VIDHYASAATHY EXPERIENCE <span class="st">✦</span></div>'
  +'<div><span class="hero-kick">⚔️ GRADE 9 · NCERT CONCEPT ARENA · HERO: WARRIOR</span></div>'
  +'<h1 class="hero-t">MATHS WAR</h1>'
- +'<p class="hero-sub">Every chapter. Every concept. One living arena. Learn with stories, real-world radar, animated diagrams and hands-on machines — then train on infinite exam-style questions and dethrone 12 bosses.</p>'
+ +'<p class="hero-sub">Every chapter. Every concept. One living arena. Learn with stories, real-world radar, animated diagrams and hands-on machines — read your actual textbook solved step-by-step in the Book Zone — then train on infinite exam-style questions and dethrone '+WORLDS.length+' bosses.</p>'
  +'<div class="hero-cta"><button class="btn btn-p btn-xl" onclick="document.getElementById(\'wgrid\').scrollIntoView({behavior:\'smooth\'})">🗺️ Choose your battlefield</button>'
  +'<button class="btn btn-g btn-xl" onclick="A.startRandom()">🎲 Surprise me</button></div>'
  +'<div class="loopband">'
@@ -3077,8 +4520,9 @@ function renderHome(){
  +'<div class="stat-pill"><b>'+cov+'/'+tot+'</b><span>Covered</span></div>'
  +'<div class="stat-pill"><b>'+bossWins+'</b><span>Boss wins</span></div>'
  +'</div></div>'
- +'<div class="free-note">🔓 <span><b>Nothing is locked.</b> Jump to ANY chapter, ANY concept, in ANY order. Learn, practice and fight bosses wherever you want.</span></div>'
- +'<div class="sect-h" id="wgrid"><h2>🗺️ The 12 Worlds</h2><span>pick any — the whole syllabus is open</span></div>'
+ +'<div class="free-note">🔓 <span><b>Nothing is locked.</b> Jump to ANY chapter, ANY concept, in ANY order. Learn, practice, read the textbook step-by-step and fight bosses wherever you want.</span></div>'
+ +basicsCardHTML()
+ +'<div class="sect-h" id="wgrid"><h2>🗺️ The '+WORLDS.length+' Worlds</h2><span>pick any — the whole syllabus is open</span></div>'
  +'<div class="wgrid">'
  +WORLDS.map(w=>{
   const covw=worldCov(w),pct=Math.round(covw/w.concepts.length*100);
@@ -3119,7 +4563,11 @@ function renderWorld(wid){
   +'<button class="btn btn-s btn-sm" onclick="A.practice(\''+wid+'\',\''+c.id+'\')">🎯 Practice</button></span>'
   +'</div>';
  }).join('')
- +'</div></div>';
+ +'</div>'
+ +basicsBandHTML(wid)
+ +'<div class="sect-h"><h2>📕 Book Zone — your textbook, solved like a teacher</h2><span>real exercise questions · every step revealed one by one · Ask button on every step</span></div>'
+ +'<div class="blist">'+bookListHTML(wid)+'</div>'
+ +'</div>';
 }
 
 /* ---------- LESSON ---------- */
@@ -3140,6 +4588,7 @@ function renderLesson(wid,cid,step){
   body='<div class="stepcard"><span class="step-kick">💡 KEY IDEAS — the facts that matter</span><h3 class="step-t">'+c.t+': what you MUST know</h3>'
   +'<div class="facts">'+c.facts.map((f,i)=>'<div class="fact" style="animation-delay:'+(i*0.12)+'s"><span class="fact-n">'+(i+1)+'</span><span><span class="fact-t">'+f[0]+'</span><div class="fact-d">'+f[1]+'</div></span></div>').join('')+'</div>'
   +irlHTML(c)
+  +boosterHTML(wid)
   +'<div style="margin-top:20px;display:flex;gap:10px"><button class="btn btn-p" onclick="A.setStep(\''+wid+'\',\''+cid+'\',2)">Play with the machine →</button></div></div>';
  }else if(step===2){
   body='<div class="labwrap"><div class="lab-head"><b>🧪 '+c.t+' — Interactive Lab</b><span class="hint-lab">drag, slide & tap — it cannot break</span></div>'
@@ -3369,9 +4818,10 @@ window.A={
  reset(){
   showOvl('<div class="introcard"><div class="big">⚠️</div><h2>Reset all progress?</h2><p>XP, covered concepts and boss wins will be wiped. This cannot be undone.</p><div style="display:flex;gap:10px;justify-content:center;margin-top:18px"><button class="btn btn-red" onclick="A.resetYes()">Yes, reset</button><button class="btn btn-sm" style="background:rgba(255,255,255,.1);color:#fff" onclick="A.ovlClose()">Keep my progress</button></div></div>',true);
  },
- resetYes(){S={xp:0,learned:{},labdone:{},exdone:{},covered:{},boss:{},sound:S.sound,seen:true};save();closeOvl();render();toast('Progress reset — a fresh Warrior rises!')},
- introDone(){S.seen=true;save();closeOvl();SFX.win()}
+ resetYes(){S={xp:0,learned:{},labdone:{},exdone:{},covered:{},boss:{},sound:S.sound,seen:true,diag:null,book:{},booster:{}};save();closeOvl();render();toast('Progress reset — a fresh Warrior rises!')},
+ introDone(){S.seen=true;save();closeOvl();SFX.win();if(!S.diag)setTimeout(()=>A.diagStart(),400)}
 };
+Object.assign(window.A,(window.A_EXTRA||{}));
 
 /* ---------- practice end ---------- */
 function endPractice(){
@@ -3417,7 +4867,7 @@ function boot(){
   showOvl('<div class="introcard"><div style="width:92px;height:92px;margin:0 auto 10px;background:#fff;border-radius:24px;display:grid;place-items:center;box-shadow:0 10px 30px rgba(0,0,0,.4)"><img src="'+LOGO_MARK+'" style="width:70px;height:70px;object-fit:contain" alt="VidhyaSaathy"></div>'
   +'<div style="font-size:10.5px;letter-spacing:.22em;color:#F2D57E;font-weight:800;margin-bottom:4px">VIDHYASAATHY PRESENTS</div>'
   +'<h2>Welcome to MATHS WAR</h2>'
-  +'<p>I am your <b>Warrior</b>-coach. This arena covers the ENTIRE Grade 9 NCERT syllabus — 12 worlds, 38 concepts — and every single one is unlocked from the first second.</p>'
+  +'<p>I am your <b>Warrior</b>-coach. This arena covers your full Grade 9 syllabus — '+WORLDS.length+' worlds, '+WORLDS.reduce((a,w)=>a+w.concepts.length,0)+' concepts, your actual Ganita Manjari textbook solved step-by-step — and every single one is unlocked from the first second.</p>'
   +'<div class="steps3"><div><b>1</b><span>📖 LEARN — story → key facts → real-world uses → living diagrams → worked example</span></div><div><b>2</b><span>🎯 PRACTICE — fresh exam-style questions every time; explanations teach, nothing punishes</span></div><div><b>3</b><span>👑 BOSSES — beat each world\'s monster to claim the throne. 4/5 wins the fight</span></div></div>'
   +'<button class="btn btn-gold btn-xl" onclick="A.introDone()">⚔️ Enter the arena</button>'
   +'</div>',true);

@@ -269,3 +269,25 @@ Work Log:
 Stage Summary:
 - DELIVERABLE: /home/z/my-project/download/maths-war.html (single shareable file, 313 KB, offline-capable, favicon included)
 - App: "Maths War" fully re-skinned in VidhyaSaathy brand (ivory+navy+gold), real logo everywhere (topbar/intro/home/footer/favicon), hero WARRIOR, all 38 concepts with new Real-World Radar practical-usage layer, zero locks, teach->test loop intact
+
+---
+Task ID: 17-mathswar-v7-bookzone-basics
+Agent: Super Z (main)
+Task: User round-3 feedback: (1) basics pehle test karo — "ask the student kitna woh janta h, basics ka test", adaptive teaching by level; (2) Book Zone — real textbook exercise questions with practical explanation + step-by-step teacher-style solutions (one step at a time) + Ask button per step with Hinglish AND English; (3) 14 chapters; (4) more practicality everywhere; hero Warrior; ONE shareable HTML.
+
+Work Log:
+- Discovered upload/iemh101-108.pdf = user's ACTUAL textbook "Ganita Manjari Grade 9 Part I" (8 chapters) — extracted full text (pdftotext) + wrote extract_exercises.py to pull all exercise sets into scripts/mw4/exercises/
+- Built v7 in scripts/mw4/ extending QA'd v6 (copied mw3->mw4, kept VidhyaSaathy branding): 11 new parts (pA_diag, pB1-pB8 book data, pF_newworlds, pG_bookui), each its own <script> block (p09 closes the data block — initial raw-text bug fixed by wrapping)
+- pA_diag.js — BASICS CHECK: 12 gentle questions across 4 strands (Arithmetic/Algebra/Geometry/Data), Warrior Report with meters (shaky/solid/sharp), adaptive: weak strand -> booster band on every related world + refresher overlay + auto-injected refresher card in lesson Key Ideas; retake + skip; S.diag saved (mathswar_v5 key preserved, new fields diag/book/booster default-safe)
+- Book Zone data (97 real questions, every step = [math, Hinglish, English]): grid(9 from Book Ch1 incl. Reiaan's room, Baudhāyana-Pythagoras distance, screen-circles), poly(15 from Book Ch2+Ch4), num(10 from Book Ch3 incl. Brahmagupta's laws, Ladakh temp, spice trader), circ(10 from Book Ch5), area(10 from Book Ch6 incl. Heron, trapezium, wipers), prob(10 from Book Ch7 incl. Gambler's Fallacy, tree diagrams), seq(10 from Book Ch8 incl. taxi AP, bacteria GP, Sierpiński), + NCERT classics for line/euc/ang/tri/quad/sol/dat
+- pG_bookui.js — Book Zone UI: per-world section (embedded in world view) + dedicated route; question player reveals steps ONE at a time ("Teacher writes step N ->"), each step has Ask button -> dark overlay: step math + "Pehle kya tha" context + HINGLISH ME SAMJHO + IN ENGLISH blocks; final answer banner; Mark solved +8 XP; done states
+- pF_newworlds.js — worlds 13-14: Chance Mansion (Probability, Book Ch7, boss LUCKYLICH) + Sequence Spires (Sequences, Book Ch8, boss THE INFINITE) with 6 new concepts (hook/facts/irl/lab/ex/gen), 2 new labs: dicecasino (roll tally bars vs gold fair-share line, Law of Large Numbers) + seqmachine (AP/GP dots, a/d/r/n sliders, formula live)
+- p10_ui.js edits: new routes (book/bookq/diag), world view +basics band +Book Zone section, home +Warrior Report card +dynamic counts (14 worlds/44 concepts/14 bosses), intro -> auto-launch Basics Check, A gained diag/book/ask actions via A_EXTRA merge
+- Fixed during QA: basicsBandHTML(w) -> (wid) object/param bug; pF two broken steps-array syntaxes + bad distractor; pB8 dat statement premature closes (3 sets->1) rebuilt to correct bracket depth; pB1-7 stray ")"; pA multi-line style string -> template literal; all new parts wrapped in script blocks
+- QA (agent-browser): fresh session -> intro -> auto Basics Check -> report -> boosters live; book flow (steps reveal, Ask overlay, final answer, +8 XP, done state) verified with screenshots; dice + sequence labs interactive; LUCKYLICH boss fight + practice 5/5 -> CONCEPT COVERED overlay OK; mobile 390px clean; ZERO console errors; stress test 2,640 generated questions 0 bad; book data integrity 97/97 complete
+- Build: bash build.sh -> 461,773 bytes, 20 script blocks all parse OK
+
+Stage Summary:
+- DELIVERABLE: /home/z/my-project/download/maths-war.html (single shareable file, 462 KB, offline, VidhyaSaathy branded, favicon)
+- NEW this round: Basics Check diagnostic + adaptive per-strand boosters; Book Zone with 97 real Ganita Manjari exercise questions solved teacher-style (step-by-step + Ask per step in Hinglish+English); 14 worlds total (added Chance Mansion + Sequence Spires); 2 new interactive labs (Dice Casino, Sequence Machine)
+- App: "Maths War" by VidhyaSaathy, hero WARRIOR, everything unlocked, saves to localStorage (v5 key compatible)
