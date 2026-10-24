@@ -390,3 +390,20 @@ Work Log:
 Stage Summary:
 - App now offers one-click download of the full standalone Saathy HTML from its header
 - GitHub repo updated: commit "One-click standalone app HTML download" on main
+
+---
+Task ID: Saathy-pages-dl
+Agent: Super Z (main)
+Task: User demanded a plain tappable download link (frustrated with in-app button instructions).
+
+Work Log:
+- Probed preview-*.space-z.ai candidate bot ids from env (ws-…/fn-…/container id) — all 404 from inside container; bot id not discoverable at runtime here, so pivoted to GitHub Pages as the delivery host
+- Enabled GitHub Pages on whodhruv7/Model (source: main / root) via API
+- Verified deployment: /public/Saathy.html 200 on whodhruv7.github.io/Model (note: file serves under public/ path since it lives in the repo's public dir)
+- Created + pushed download.html (auto-click <a download> + visible fallback button, peach-blue branded card) -> one-tap link downloads Saathy.html
+- Verified LIVE: download.html 200, public/Saathy.html 200; temp clone destroyed, PAT never persisted
+
+Stage Summary:
+- ONE-TAP LINK (user-facing): https://whodhruv7.github.io/Model/download.html
+- Direct app link: https://whodhruv7.github.io/Model/public/Saathy.html
+- Repo now: 3 commits (orphan app + download button delta + download page)
