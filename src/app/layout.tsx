@@ -1,27 +1,29 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Manrope } from "next/font/google";
 import "./globals.css";
+import "katex/dist/katex.min.css";
 import { Toaster } from "@/components/ui/toaster";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const manrope = Manrope({
+  variable: "--font-manrope",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
-  title: "80/80 Mission — Ganita Manjari Gr 9 Final Revision",
+  title: "Saathy — Learning, with you. | VidhyaSaathy",
   description:
-    "Interactive last-night revision: saare formulas easy bhasha mein, concept-by-concept cards, 75 IMP book questions with solutions, aur 97 rapid MCQs — sab 7 chapters ka. Goal: 80/80.",
-  keywords: ["revision", "maths", "Ganita Manjari", "grade 9", "80/80", "MCQ practice"],
-  authors: [{ name: "Z.ai" }],
-  icons: {
-    icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
-  },
+    "Saathy is the AI learning companion of VidhyaSaathy. Grounded in your teacher's notes, personalised to your learning evidence — explain, solve, practise and summarise, step by step.",
+  keywords: ["Saathy", "VidhyaSaathy", "AI learning companion", "Class 9", "CBSE", "tutor"],
+  authors: [{ name: "VidhyaSaathy" }],
+  icons: { icon: "/saathy/logo_vs.png" },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  themeColor: "#FFF9F5",
 };
 
 export default function RootLayout({
@@ -31,9 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-zinc-950 text-zinc-100`}
-      >
+      <body className={`${manrope.variable} antialiased`}>
         {children}
         <Toaster />
       </body>
