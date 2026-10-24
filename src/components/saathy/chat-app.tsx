@@ -3,7 +3,7 @@
 // Saathy — the chat experience. Orchestrates context, streaming, the mastery
 // loop, and the three-panel layout (sidebar / chat / settings).
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Menu, PanelLeftClose, PanelLeftOpen, Settings as SettingsIcon, Sparkles } from 'lucide-react';
+import { Menu, PanelLeftClose, PanelLeftOpen, Settings as SettingsIcon, Sparkles, Download } from 'lucide-react';
 import { Sheet, SheetContent, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { useToast } from '@/hooks/use-toast';
 import { Mascot, type MascotPose } from './mascot';
@@ -284,10 +284,14 @@ export function ChatApp() {
         // finalize — strip the meta block from the visible text (the server
         // already saved the clean version; the client shows the same).
         const parsed = parseSaathyMeta(acc);
-        const finalResolvedMeta: ChatMeta = {
-          ...parsed.meta,
-          ...(finalMeta.followups?.length || finalMeta.sources?.length || finalMeta.quickcheck ? finalMeta : {}),
-        };
+        const serverHasMeta = !!(
+          finalMeta.followups?.length ||
+          finalMeta.sources?.length ||
+          finalMeta.quickcheck ||
+          finalMeta.levelcheck ||
+          finalMeta.artifact
+        );
+        const finalResolvedMeta: ChatMeta = serverHasMeta ? { ...parsed.meta, ...finalMeta } : parsed.meta;
         setMessages((prev) =>
           prev.map((m) =>
             m.id === streamId
@@ -378,6 +382,44 @@ export function ChatApp() {
   };
 
   const onFollowup = (text: string) => send(text, { mode: 'chat' });
+
+  // ---------- Level Check completion → tier stored → teach in the student's way ----------
+  const onLevelCheckComplete = async (correct: number, total: number, concept: string, results: boolean[]) => {
+    setCelebrate(true);
+    setTimeout(() => setCelebrate(false), 1800);
+    try {
+      const res = await fetch('/api/evidence', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          conceptName: concept,
+          levelcheck: { results: results.map((r) => ({ correct: r })), total: results.length },
+        }),
+      });
+      if (res.ok) {
+        const snap = (await res.json()).snapshot as MasterySnapshot;
+        // live-update the mastery tree like the quick-check path does
+        setCtx((prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            subjects: prev.subjects.map((s) => ({
+              ...s,
+              chapters: s.chapters.map((ch) => ({
+                ...ch,
+                concepts: ch.concepts.map((c) =>
+                  c.name === snap.concept ? { ...c, score: snap.score, tier: snap.tier, label: snap.label } : c
+                ),
+              })),
+            })),
+          };
+        });
+      }
+    } catch {
+      /* keep going — teaching matters more than the write */
+    }
+    send(`Level check done on ${concept} — now teach me according to my level, step by step.`, { mode: 'explain' });
+  };
 
   // ---------- auto-scroll (stick to bottom unless user scrolled up) ----------
 
@@ -481,7 +523,7 @@ export function ChatApp() {
           </button>
 
           <div className="flex min-w-0 flex-1 items-center gap-2">
-            <Mascot pose={headerPose} size={34} animationsEnabled={animations} thinking={streaming} />
+            <Mascot pose={headerPose} size={34} animationsEnabled={animations} thinking={streaming} interactive />
             <div className="min-w-0">
               <p className="truncate text-[13.5px] font-extrabold leading-tight text-[#16305b]">
                 {currentChapterInfo ? `${currentChapterInfo.subject} — ${currentChapterInfo.chapter.name}` : 'Saathy'}
@@ -505,6 +547,18 @@ export function ChatApp() {
             </button>
           ) : null}
 
+          {activeId ? (
+            <a
+              href={`/api/export/html?conversationId=${activeId}`}
+              download
+              className="hidden rounded-xl p-2 text-[#5c6f8a] transition hover:bg-[#e6f0ff] hover:text-[#2a5298] sm:block"
+              aria-label="Download this chat as an HTML file"
+              title="Download this chat as HTML"
+            >
+              <Download className="h-5 w-5" />
+            </a>
+          ) : null}
+
           <button
             type="button"
             onClick={() => {
@@ -523,7 +577,7 @@ export function ChatApp() {
           <div className="mx-auto flex max-w-3xl flex-col gap-4 pb-6 pt-4">
             {showWelcome ? (
               <div className="flex flex-col items-center pt-6 text-center sm:pt-10">
-                <Mascot pose={celebrate ? 'excited' : 'happy'} size={120} float animationsEnabled={animations} alt="Saathy, your learning companion" />
+                <Mascot pose={celebrate ? 'excited' : 'happy'} size={120} float animationsEnabled={animations} interactive alt="Saathy, your learning companion" />
                 <h1 className="mt-3 text-[24px] font-extrabold tracking-tight text-[#16305b] sm:text-[28px]">
                   Hi {ctx?.profile.name ?? 'there'}! I&apos;m Saathy. ☁️
                 </h1>
@@ -577,6 +631,7 @@ export function ChatApp() {
                 onHint={onHint}
                 onRetry={onRetry}
                 onFollowup={onFollowup}
+                onLevelCheckComplete={onLevelCheckComplete}
               />
             ))}
 

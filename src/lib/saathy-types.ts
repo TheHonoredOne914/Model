@@ -139,11 +139,81 @@ export interface QuickCheck {
   difficulty: 1 | 2 | 3;
 }
 
+// ---------- Level Check (the cute-cards diagnostic before teaching) ----------
+
+// One card = one basics question about the concept the student just asked for.
+export interface LevelCheckQ {
+  skill: string; // which basic skill this probes, e.g. "What a variable means"
+  question: string;
+  options: string[];
+  answer: number; // index of correct option
+  why: string; // one-line reason shown after answering (friendly, never shaming)
+}
+
+export interface LevelCheckPlan {
+  concept: string;
+  chapter?: string;
+  bookRef?: string; // e.g. "Ganita Manjari G9 · Ch 2"
+  questions: LevelCheckQ[]; // 2-3 questions, easiest first
+}
+
+// Percentage bucket per the VS-22 four bands (0-25 / 25-50 / 50-75 / 75-100).
+export function tierFromCorrect(correct: number, total: number): Tier {
+  const pct = total > 0 ? correct / total : 0;
+  return tierFor(pct);
+}
+
+// ---------- Artifacts (interactive visuals inside a reply) ----------
+
+export interface ChartPoint {
+  x: number;
+  y: number;
+  label?: string;
+}
+
+export interface ChartSpec {
+  kind: 'line' | 'bar';
+  xLabel: string;
+  yLabel: string;
+  series: Array<{ name: string; points: ChartPoint[] }>;
+  // bar charts may carry simple categories instead of numeric x
+  categories?: string[];
+  xMin?: number;
+  xMax?: number;
+  yMin?: number;
+  yMax?: number;
+}
+
+export type DemoWidget =
+  | 'numberline' // drag a point on the number line (Ch 3 world of numbers)
+  | 'parabola' // sliders a,b,c — live parabola + roots (identities/plotting)
+  | 'apline' // AP/GP dot-machine with a,d/r sliders (Ch 8)
+  | 'dice' // probability simulator: roll N times, bars converge (Ch 7)
+  | 'pythag' // right triangle with squares on the sides (Ch 1 distance / Ch 4)
+  | 'linegraph'; // y = mx + c live line (Ch 2 / Ch 13 slope-intercept)
+
+export interface DemoSpec {
+  widget: DemoWidget;
+  // widget params chosen by the model, e.g. {a:1,b:2,c:-3} or {a:2,d:3,type:'AP'}
+  params?: Record<string, number | string>;
+  // one prompt shown inside the artifact ("Drag the slider, watch the roots")
+  prompt?: string;
+}
+
+export interface Artifact {
+  type: 'chart' | 'demo';
+  title: string;
+  chart?: ChartSpec;
+  demo?: DemoSpec;
+}
+
 export interface ChatMeta {
   mode?: ChatMode;
   followups?: string[];
   sources?: string[];
   quickcheck?: QuickCheck | null;
+  levelcheck?: LevelCheckPlan | null;
+  artifact?: Artifact | null;
   focusConcept?: string | null;
 }
 

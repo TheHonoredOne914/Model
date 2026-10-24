@@ -7,6 +7,8 @@ import { Check, Copy, BookOpen } from 'lucide-react';
 import { Mascot } from './mascot';
 import { Markdown } from './markdown';
 import { QuickCheckCard } from './quick-check';
+import { LevelCheckCard } from './level-check';
+import { ArtifactCard } from './artifacts/artifact-card';
 import type { ChatMeta, MasterySnapshot } from '@/lib/saathy-types';
 
 export interface UiMessage {
@@ -27,6 +29,7 @@ export interface MessageBubbleProps {
   onHint: (qc: QuickCheckMetaQC, level: 1 | 2) => void;
   onRetry: (qc: QuickCheckMetaQC) => void;
   onFollowup: (text: string) => void;
+  onLevelCheckComplete: (correct: number, total: number, concept: string, results: boolean[]) => void;
 }
 
 type QuickCheckMetaQC = NonNullable<ChatMeta['quickcheck']>;
@@ -40,6 +43,7 @@ export function MessageBubble({
   onHint,
   onRetry,
   onFollowup,
+  onLevelCheckComplete,
 }: MessageBubbleProps) {
   const [copied, setCopied] = useState(false);
   const isUser = message.role === 'user';
@@ -135,6 +139,16 @@ export function MessageBubble({
               onHint={(level) => onHint(meta.quickcheck as QuickCheckMetaQC, level)}
               onRetry={() => onRetry(meta.quickcheck as QuickCheckMetaQC)}
             />
+          ) : null}
+
+          {/* Level Check — the cute-cards gate before teaching */}
+          {meta?.levelcheck && !message.streaming ? (
+            <LevelCheckCard plan={meta.levelcheck} animationsEnabled={animationsEnabled} onComplete={onLevelCheckComplete} />
+          ) : null}
+
+          {/* Artifact — interactive chart / concept machine */}
+          {meta?.artifact && !message.streaming ? (
+            <ArtifactCard artifact={meta.artifact} animationsEnabled={animationsEnabled} />
           ) : null}
         </div>
 

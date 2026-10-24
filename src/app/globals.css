@@ -186,10 +186,93 @@
 
 /* reduced motion: honour globally (mascot behaviour rule 9) */
 @media (prefers-reduced-motion: reduce) {
-  .mascot-float, .mascot-thinking, .mascot-pop, .msg-in, .chip-in, .shake, .typing-dot {
+  .mascot-float, .mascot-thinking, .mascot-pop, .msg-in, .chip-in, .shake, .typing-dot,
+  .lc-card, .lc-opt, .lc-confetti, .chart-line, .chart-bar, .chart-dot, .mascot-sparkle, .mascot-bubble {
     animation: none !important;
   }
 }
+
+/* ------- Interactive mascot (poke layer) ------- */
+.mascot-poke { transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1); }
+.mascot-poke:hover { transform: scale(1.07) rotate(-2.5deg); }
+.mascot-poke:active { transform: scale(0.94); }
+.mascot-poke:focus-visible { outline: 2px solid var(--sky, #a9cee8); outline-offset: 3px; border-radius: 9999px; }
+
+@keyframes sparkleBurst {
+  0% { transform: translate(-50%, -50%) scale(0.4); opacity: 1; }
+  100% { transform: translate(calc(-50% + var(--sx)), calc(-50% + var(--sy))) scale(1.1); opacity: 0; }
+}
+.mascot-sparkle {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  pointer-events: none;
+  animation: sparkleBurst 0.85s ease-out both;
+}
+
+@keyframes bubbleIn {
+  0% { transform: translate(-50%, -86%) scale(0.7); opacity: 0; }
+  55% { transform: translate(-50%, -104%) scale(1.05); opacity: 1; }
+  100% { transform: translate(-50%, -100%) scale(1); opacity: 1; }
+}
+.mascot-bubble { animation: bubbleIn 0.32s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* ------- Level Check (cute cards) ------- */
+@keyframes lcCardIn {
+  from { opacity: 0; transform: translateY(14px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.lc-card { animation: lcCardIn 0.34s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+@keyframes lcOptIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.lc-opt { animation: lcOptIn 0.3s ease-out both; }
+
+@keyframes lcConfetti {
+  0% { transform: translateY(-12px) rotate(0deg); opacity: 0; }
+  12% { opacity: 1; }
+  100% { transform: translateY(240px) rotate(340deg); opacity: 0; }
+}
+.lc-confetti {
+  position: absolute;
+  top: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 2.5px;
+  animation: lcConfetti 2.4s ease-in both;
+}
+
+/* ------- Artifacts ------- */
+@keyframes chartDraw {
+  from { stroke-dashoffset: 1400; }
+  to { stroke-dashoffset: 0; }
+}
+.chart-line {
+  stroke-dasharray: 1400;
+  animation: chartDraw 1.5s ease-out both;
+}
+
+@keyframes barGrow {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+.chart-bar { animation: barGrow 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+@keyframes dotPop {
+  0% { transform: scale(0); opacity: 0; }
+  70% { transform: scale(1.35); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.chart-dot { animation: dotPop 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; transform-box: fill-box; transform-origin: center; }
+
+@keyframes nlPulse {
+  0%, 100% { r: 9; }
+  50% { r: 10.5; }
+}
+.nl-dot { animation: nlPulse 1.8s ease-in-out infinite; }
 
 /* ------- Markdown content inside chat ------- */
 .saathy-md {

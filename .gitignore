@@ -30,8 +30,9 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files — NEVER commit secrets (founder configures keys in-app; DB-stored)
 .env*
+.env
 
 # vercel
 .vercel
@@ -52,3 +53,30 @@ prompt
 server.log
 # Skills directory
 /skills/
+
+# ---- workspace-only artefacts (not part of the app codebase) ----
+/db
+/upload
+/download
+/tool-results
+/shot-intro.png
+# other apps built in this workspace
+/gh-maths
+/scripts/mw
+/scripts/mw2
+/scripts/mw3
+/scripts/mw4
+/scripts/saathy
+/scripts/saathy2
+/scripts/ghp
+/scripts/mathbook
+/examples
+/tests
+/prisma/migrations
+.bun*
+Caddyfile
+
+# KB intermediates (raw extracts + QA shots stay local)
+scripts/kb/qa-*.png
+scripts/kb/g9_*.txt
+scripts/kb/g10_*.txt
