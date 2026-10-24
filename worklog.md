@@ -374,3 +374,19 @@ Stage Summary:
 - Repo: https://github.com/whodhruv7/Model (single clean commit, full stack)
 - Running app: Next.js Saathy on localhost:3000, healthy
 - No further work pending from the user's latest instruction
+
+---
+Task ID: Saathy-dl-btn
+Agent: Super Z (main)
+Task: User could not download the standalone HTML — make it downloadable with one click from the running app + push delta to GitHub.
+
+Work Log:
+- Copied standalone app into public/Saathy.html (207 KB, statically served)
+- New route src/app/api/download/app/route.ts: reads the file, returns Content-Disposition attachment -> browser downloads instead of rendering
+- Header: added FileDown icon button "Download app as HTML (works offline)" next to the existing chat-export Download button
+- Verified: static /Saathy.html 200 (207380 bytes), /api/download/app 200 + attachment header, lint exit 0
+- Local commit + GitHub delta push via temp clone (PAT used transiently in clone URL only, temp dir destroyed, no token persisted)
+
+Stage Summary:
+- App now offers one-click download of the full standalone Saathy HTML from its header
+- GitHub repo updated: commit "One-click standalone app HTML download" on main
