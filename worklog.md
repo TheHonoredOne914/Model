@@ -291,3 +291,24 @@ Stage Summary:
 - DELIVERABLE: /home/z/my-project/download/maths-war.html (single shareable file, 462 KB, offline, VidhyaSaathy branded, favicon)
 - NEW this round: Basics Check diagnostic + adaptive per-strand boosters; Book Zone with 97 real Ganita Manjari exercise questions solved teacher-style (step-by-step + Ask per step in Hinglish+English); 14 worlds total (added Chance Mansion + Sequence Spires); 2 new interactive labs (Dice Casino, Sequence Machine)
 - App: "Maths War" by VidhyaSaathy, hero WARRIOR, everything unlocked, saves to localStorage (v5 key compatible)
+
+---
+Task ID: Saathy-Chat-1
+Agent: Super Z (main)
+Task: Build the Saathy chatbot interface for VidhyaSaathy as a single shareable HTML file — exact cloud mascot, calm peach×blue theme, chat history sidebar, 3-tier settings (Chat/Student/Founder with PIN 2405 + changeable API keys), responsive, honest statuses.
+
+Work Log:
+- Extracted all 9 cloud poses (idle/happy/thinking/wink/explaining/excited/reading/cheering/sleeping) from the reference sprite sheet via flood-fill bg removal + soft shadow falloff + connected-component caption removal (scripts/saathy/extract_mascots.py)
+- Extracted VidhyaSaathy V-wing logo transparent; embedded all 10 assets as base64 (~95 KB)
+- Built single-file app in parts (scripts/saathy/parts/, build.py concatenates): design tokens peach×ocean, Manrope, navy sidebar with collapse rail, welcome hero with floating mascot + twinkling stars, markdown-lite renderer with $..$/$$..$$ math (fractions, sup/sub, Greek, ×÷⇒), tables, blockquotes
+- Chat engine: localStorage persistence, seeded honest Sample chats, auto-titling, search filter, delete w/ confirm, typing indicator (thinking pose), honest notice when no key, error bubble + Retry (no duplicate user bubble — runModelTurn refactor), follow-up chips, copy button, header wink on success
+- Founder: PIN gate (djb2-hashed, default 2405, changeable, lock now), provider adapters for OpenAI-compatible/Gemini/Anthropic (real fetch), save+mask key (••••last4, replace/remove), Test connection w/ truthful status, knowledge-source status "No books indexed yet — ready for textbook integration", security limitation note
+- Settings: Chat (tone/style/length segmented + language + mascot motion switch) and Student (class/subject/topic/note → header chip) all persisted; system prompt composes identity + honesty + prefs
+- Responsive: mobile drawer sidebar + full-screen settings + composer safe-area; calm/reduced-motion support
+- Browser-tested 25 checkpoints (desktop+mobile): PIN wrong/right, config save/mask/test-fail, mocked happy path (markdown+math+table+chips), search, delete, rail, persistence across reloads; fixed 4 bugs found (drawer reserving flex space, .hidden vs inline display, sidebar snippet crash on error msgs, PIN leak in notice)
+
+Stage Summary:
+- FINAL DELIVERABLE: /home/z/my-project/download/Saathy_Chat.html (202 KB, single shareable file, JS syntax-checked)
+- Asset pack: /home/z/my-project/download/saathy-assets/ (9 poses + logo, transparent PNGs)
+- Rebuild anytime: python3 scripts/saathy/build.py after editing parts/
+- Pending for later phases: real API keys entered by founder via UI (none hardcoded), textbook indexing pipeline (architecture boundary prepared), backend for production-grade credential security
