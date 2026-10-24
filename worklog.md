@@ -333,3 +333,26 @@ Stage Summary:
 - Integration contract ready for the VidhyaSaathy app: /api/context (hydrate student tree+mastery), /api/evidence (push quiz/practice events), /api/chat (same shapes), /api/profile — the app can push context+evidence and Saathy adapts automatically
 - Personalisation: VS-22 four internal bands (never shown as labels), VS-23 difficulty routing, VS-29 Socratic, VS-32 honesty layer, IND-03 language layers, AI-10 hint ladder, VS-18 mistake->reason->retry loop — all verified live
 - Lint: 0 problems in all Saathy files; dev.log: 0 runtime errors; console: clean
+
+---
+Task ID: Saathy-v2-refine
+Agent: Super Z (main)
+Task: Refine Saathy into a polished, book-grounded, level-aware tutor: read all maths book uploads (Ganita Manjari G9+G10), build step-by-step tier-personalised teaching with animations/artifacts, cute-card level checks (2-3 questions before teaching, 4 bands 0-25/25-50/50-75/75-100), interactive mascot, de-AI-flavour the output, HTML download, and push the full codebase (frontend+backend) to GitHub repo "model".
+
+Work Log:
+- Extracted all 14 book PDFs (iemh101-108, iemh201-206) via pdftotext; built scripts/kb/build_kb.py -> src/data/books/ganita-manjari.json (14 chapters / 70 sections / 168 KB) with section parser (numbered + fallback chunking), quality filters, title fixing
+- New backend: src/server/saathy/books.ts (tokenised index, chapter-hint regex map, scored retrieval with per-chapter diversity, bookGroundingBlock + bookChaptersForHits); /api/books route; chat route injects TEXTBOOK GROUNDING; prompt cites book inline + lists section refs in meta.sources
+- LEVEL CHECK flagship: prompt gate (unassessed concept + explain/practise/solve -> short warm intro + levelcheck meta, no teaching); LevelCheckPlan/LevelCheckQ types; LevelCheckCard UI (one cute card at a time, progress dots, letter badges, mascot reactions, correct/wrong reveals with why-lines, confetti tier-reveal "this is just a start, not a score", Teach-me-my-way button); /api/evidence batch mode sets mastery = 0.75*(correct/total)+0.25*prev (3-card map: 0->band0, 1->band1, 2->band2, 3->band3); auto-continue sends tier-aware teaching request
+- ARTIFACTS: artifact meta contract (chart line/bar + 6 demo widgets: numberline/parabola/apline/dice/pythag/linegraph); ArtifactCard with animated SVG (path draw, bar grow, dot pop), sliders/pointer-drag interactions, fullscreen modal; sanitizer in saathy-meta
+- Anti-AI-voice: HUMAN_VOICE prompt block (banned openers/filler words, rhythm variation, concrete Indian examples, max one heading rule, no bullet-spam)
+- Meta reliability: parseSaathyMeta structural rescue (balancedSlice brace-matching per key survives misnesting/truncation); chat route rescueMetaOnce (fast non-streaming call regenerates ONLY the JSON when a teaching reply ships without its meta block); client merge honours server meta
+- Mascot: poke interactions (debounced) -> random pose flash + 6-particle sparkle burst + speech bubble (8 lines); hover tilt; reduced-motion safe; header + welcome mascots interactive
+- HTML export: /api/export/html renders conversation via mini-markdown + katex (display math extracted pre-parse), inlines peach-blue theme CSS + base64 mascot, bakes sources/quickcheck/levelcheck cards + static chart SVG; Download button in header
+- Seed: scripts/kb/seed_books.ts replaces demo subjects with Ganita Manjari tree (14 chapters, 47 concepts, all bands fresh -> level checks gate everything); ALIASES map rewritten for book concepts
+- QA (agent-browser): welcome + book chapters render; level check flow end-to-end (3 cards, wrong-answer path, why-lines, tier reveal 2/3 -> "Almost there"); tier-aware teaching (band-2 exam-trap focus, KaTeX, numbered steps); artifact renders with live sliders; mascot poke (bubble + 6 sparkles verified); export 200 OK 38.5 KB with katex-display + cards; fixed ??+|| parse error, multi-line $$ display math in export; zero console errors on fresh load; lint clean (src)
+- GitHub: verified PAT (whodhruv7), repo "Model" existed empty; force-pushed ONE clean orphan commit (2638021) with app tree only (src, prisma, public, scripts/kb, configs, README, .env.example); .env/db/QA shots/raw txts excluded; scanned ALL historical DB blobs for key patterns -> clean; no token persisted anywhere
+
+Stage Summary:
+- DELIVERABLE: refined full-stack Saathy (level-check gate -> 4-tier teaching -> artifacts loop), book-grounded on the student's actual Ganita Manjari textbook
+- REPO: https://github.com/whodhruv7/Model (single clean commit, full frontend+backend, architecture README with VidhyaSaathy integration contracts)
+- All prior constraints intact: PIN 2405 founder gate, honest statuses, peach-blue theme, mascot identity, no fabricated success states
