@@ -312,3 +312,24 @@ Stage Summary:
 - Asset pack: /home/z/my-project/download/saathy-assets/ (9 poses + logo, transparent PNGs)
 - Rebuild anytime: python3 scripts/saathy/build.py after editing parts/
 - Pending for later phases: real API keys entered by founder via UI (none hardcoded), textbook indexing pipeline (architecture boundary prepared), backend for production-grade credential security
+---
+Task ID: Saathy-App-2
+Agent: Super Z (main)
+Task: Upgrade Saathy from single-file HTML to a REAL full-stack Next.js application with strong backend for future VidhyaSaathy app integration — personalised 4-tier adaptive engine, step-by-step output UX, streaming, and verified end-to-end.
+
+Work Log:
+- Verified the scaffolded codebase (prisma schema, /api/* routes, server engine, UI components) and fixed the SSR crash: sessionStorage was read during server render in ChatApp -> added client-only founderUnlocked state
+- Moved meta parser to shared src/lib/saathy-meta.ts; client now strips the ```saathy JSON block during live streaming (stripStreamingMeta) and at finalize (parseSaathyMeta) — raw JSON never shows
+- Added server-side intent routing detectMode() (summarise/practise/solve/explain/chat) so naturally typed messages auto-route to the right pedagogy mode
+- Prompt hardening: meta-block template now shows the FULL filled object (followups+sources+quickcheck) for explain/practise modes with MANDATORY quickcheck + PLACEMENT rule (question only in JSON, never in body); language rule moved to object form + high-priority LANGUAGE REMINDER appended at prompt end (Hinglish/Hindi now actually enforced); hint/why sub-prompts now carry explicit language instructions
+- Engine hardening: repairJson() re-escapes LaTeX single-backslash invalid JSON escapes before parsing the meta block (was silently dropping quickchecks)
+- Fixed all lint errors (set-state-in-effect -> React render-phase adjustment pattern in settings sheet; removed stale eslint-disable)
+- Fixed a11y/console: SheetTitle+Description (sr-only) in mobile drawer, mascot+logo switched to plain img (next/image preflight aspect warning), console 100% clean
+- Browser-verified (agent-browser, desktop 1280 + mobile 390): welcome state, real GLM streaming with KaTeX math + honesty source chips, adaptive Quick Check (L1 for tier-0 concept, L2 for tier-2 concept), evidence loop (answer -> mastery 0.27->0.32 tier 0->1 live in sidebar + gap-detector chip re-routed), hint ladder (2-level Socratic, never the answer), Why-was-I-wrong loop, solve mode (Given/Find + steps + correct math 2.5 m/s² & 80 m), Hinglish output, founder PIN gate (wrong PIN rejected, 2405 accepted, REAL connection test "Connected in 447ms"), knowledge-source honest statuses, mobile drawer + composer, history persistence across reload
+- Cleared test conversations for clean delivery; final screenshots in scripts/saathy2/
+
+Stage Summary:
+- DELIVERABLE: real full-stack Next.js Saathy app (not HTML) — streaming chat, Prisma/SQLite persistence, provider adapter (built-in Z.ai GLM + any OpenAI-compatible key via Founder Settings PIN 2405)
+- Integration contract ready for the VidhyaSaathy app: /api/context (hydrate student tree+mastery), /api/evidence (push quiz/practice events), /api/chat (same shapes), /api/profile — the app can push context+evidence and Saathy adapts automatically
+- Personalisation: VS-22 four internal bands (never shown as labels), VS-23 difficulty routing, VS-29 Socratic, VS-32 honesty layer, IND-03 language layers, AI-10 hint ladder, VS-18 mistake->reason->retry loop — all verified live
+- Lint: 0 problems in all Saathy files; dev.log: 0 runtime errors; console: clean

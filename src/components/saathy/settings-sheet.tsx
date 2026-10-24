@@ -149,7 +149,6 @@ function FounderPanel({
         })
         .catch(() => sessionStorage.removeItem('saathy_founder_pin'));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const saveConfig = async () => {
@@ -448,15 +447,19 @@ export function SettingsSheet({
   const [subjectId, setSubjectId] = useState<string>('');
   const [chapterId, setChapterId] = useState<string>('');
 
-  useEffect(() => {
+  // React-recommended render-phase adjustment: re-sync local form state when
+  // the sheet opens or the server context changes (no cascading effect renders).
+  const [prevOpen, setPrevOpen] = useState(open);
+  const [prevCtx, setPrevCtx] = useState<ContextResponse | null>(ctx);
+  if (open !== prevOpen) {
+    setPrevOpen(open);
     if (open) setTab(initialTab);
-  }, [open, initialTab]);
-
-  useEffect(() => {
-    if (!ctx) return;
-    setSubjectId(ctx.profile.focusSubjectId ?? ctx.subjects[0]?.id ?? '');
-    setChapterId(ctx.profile.focusChapterId ?? ctx.subjects[0]?.chapters[0]?.id ?? '');
-  }, [ctx, open]);
+  }
+  if (ctx !== prevCtx) {
+    setPrevCtx(ctx);
+    setSubjectId(ctx?.profile.focusSubjectId ?? ctx?.subjects[0]?.id ?? '');
+    setChapterId(ctx?.profile.focusChapterId ?? ctx?.subjects[0]?.chapters[0]?.id ?? '');
+  }
 
   const profile = ctx?.profile;
   const subjects: SubjectCtx[] = ctx?.subjects ?? [];

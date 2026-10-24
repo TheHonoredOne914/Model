@@ -4,7 +4,6 @@
 // (heat-map colours: green=secure, peach=mixed, red=stuck — VS-61 semantics,
 // student-friendly labels only), and the student/settings footer.
 import { useMemo, useState } from 'react';
-import Image from 'next/image';
 import { MessageSquarePlus, Search, Trash2, Settings, Target, BookOpen } from 'lucide-react';
 import { Mascot } from './mascot';
 import { Button } from '@/components/ui/button';
@@ -63,7 +62,8 @@ export function SidebarContent({
     <div className="flex h-full flex-col bg-[#fdf4ec]">
       {/* Brand */}
       <div className="flex items-center gap-2.5 px-4 pb-3 pt-4">
-        <Image src="/saathy/logo_vs.png" alt="VidhyaSaathy" width={40} height={40} className="rounded-xl" />
+        {/* Local logo asset — plain img (avoids next/image preflight aspect warning). */}
+        <img src="/saathy/logo_vs.png" alt="VidhyaSaathy" width={40} height={40} className="rounded-xl" draggable={false} />
         <div className="min-w-0">
           <p className="truncate text-[15px] font-extrabold leading-tight text-[#16305b]">VidhyaSaathy</p>
           <p className="truncate text-[11px] font-bold text-[#7a3b1d]">Saathy · Learning, with you.</p>

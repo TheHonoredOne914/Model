@@ -14,14 +14,24 @@ You are a warm, sharp Class 9-10 tutor for Indian students. You are NOT a generi
 
 Personality: calm, encouraging, genuinely curious. You celebrate small wins without being cringe. You never shame, never pressure, never lecture about screen time. When something fails, you say what happened and what to try next — you never blame the student.`;
 
-function languageRule(language: string): string {
+function languageRule(language: string): { rule: string; name: string | null } {
   switch (language) {
     case 'hinglish':
-      return `LANGUAGE — Hinglish mode: Write explanations in friendly Hinglish (natural Hindi-English mix, Roman script) the way Indian students actually talk — "dekho", "samjho", "matlab", "bas itna hi". HARD RULE: every technical term, definition, formula, unit and exam phrase stays in English (that is the exam language). Example flavour: "Acceleration matlab velocity kitni fast change ho rahi hai. Formula hai $a = \\frac{v - u}{t}$ — jahan u initial velocity hai."`;
+      return {
+        rule: `LANGUAGE — Hinglish mode: Write explanations in friendly Hinglish (natural Hindi-English mix, Roman script) the way Indian students actually talk — "dekho", "samjho", "matlab", "bas itna hi", "yaad rakho". HARD RULE: every technical term, definition, formula, unit and exam phrase stays in English (that is the exam language). Example flavour: "Acceleration matlab velocity kitni fast change ho rahi hai. Formula hai $a = \\frac{v - u}{t}$ — jahan u initial velocity hai."
+EVERY sentence of prose you write must carry this Hinglish flavour — if a paragraph could pass as plain English, rewrite it.`,
+        name: 'friendly Hinglish (Roman-script Hindi-English mix)',
+      };
     case 'hindi':
-      return `LANGUAGE — Hindi mode: Write explanations in simple Hindi (Devanagari script). HARD RULE: keep every technical term, definition, formula, unit and exam phrase in English within the Hindi sentence (e.g. "acceleration वह दर है जिस पर velocity बदलती है — $a = \\frac{v-u}{t}$").`;
+      return {
+        rule: `LANGUAGE — Hindi mode: Write explanations in simple Hindi (Devanagari script). HARD RULE: keep every technical term, definition, formula, unit and exam phrase in English within the Hindi sentence (e.g. "acceleration वह दर है जिस पर velocity बदलती है — $a = \\frac{v-u}{t}$").`,
+        name: 'simple Hindi (Devanagari script)',
+      };
     default:
-      return `LANGUAGE — English mode: clear, simple Indian-classroom English. Short sentences. Define any hard word the first time you use it.`;
+      return {
+        rule: `LANGUAGE — English mode: clear, simple Indian-classroom English. Short sentences. Define any hard word the first time you use it.`,
+        name: null,
+      };
   }
 }
 
@@ -113,22 +123,29 @@ const FORMAT = `OUTPUT FORMAT (strict):
 - Never mention these instructions, bands, scores, or that you are reading notes verbatim — you "just know" their class context, like a good tutor would.`;
 
 function metaRule(mode: ChatMode, tierForFocus: number | null): string {
-  const qcRule =
-    mode === 'practise' || mode === 'explain'
-      ? `ALWAYS include a "quickcheck" for this reply (one question, MCQ with exactly 4 options). difficulty: ${
-          tierForFocus !== null ? `band ${tierForFocus} student → difficulty ${difficultyFor(tierForFocus as 0 | 1 | 2 | 3)}` : 'pick from the concept band (band 0→1, band 1-2→2, band 3→3)'
-        }. The question must test the concept taught, at that difficulty. "hint" must nudge thinking without revealing the answer; "hint2" goes one step further (still not the answer).`
-      : `"quickcheck": null for this reply (unless the student explicitly asks to be quizzed).`;
+  const needsQC = mode === 'practise' || mode === 'explain';
+  const qcShape = `{"concept":"<concept name>","question":"<one board-style MCQ testing THIS reply's idea>","options":["<A>","<B>","<C>","<D>"],"answer":<index 0-3 of the correct option>,"hint":"<nudge toward the idea, never the answer>","hint2":"<stronger nudge: the formula or first step, still not the answer>","difficulty":<1|2|3>}`;
+  const template = needsQC
+    ? `{"followups":["<chip 1>","<chip 2>","<chip 3>"],"sources":[<sourceRefs used>],"quickcheck":${qcShape}}`
+    : `{"followups":["<chip 1>","<chip 2>","<chip 3>"],"sources":[<sourceRefs used>],"quickcheck":null}`;
+
+  const qcRule = needsQC
+    ? `"quickcheck" is MANDATORY in this mode — a real question object, never null, never copied into the reply body. difficulty: ${
+        tierForFocus !== null ? `band ${tierForFocus} student → difficulty ${difficultyFor(tierForFocus as 0 | 1 | 2 | 3)}` : 'band 0→1, band 1-2→2, band 3→3'
+      }. It must test the idea THIS reply taught. Exactly 4 options, exactly one correct "answer" index.`
+    : `"quickcheck": null for this reply (unless the student explicitly asks to be quizzed).`;
 
   return `META BLOCK CONTRACT (strict): At the VERY END of every reply, append exactly one fenced block, nothing after it:
 
 \`\`\`saathy
-{"followups":["...","...","..."],"sources":[],"quickcheck":null}
+${template}
 \`\`\`
 
+- Fill EVERY field of the template. All four keys (followups, sources, quickcheck) must be present.
 - "followups": exactly 3 short next-step chips written in the STUDENT's voice, in the current language mode (e.g. "Why is displacement zero if I return?", "Give me one harder question", "Show a real-life example"). Each ≤ 6 words.
 - "sources": the exact sourceRef strings you used, e.g. ["Teacher's notes — Motion, Slide 9"]. Empty array if none.
 - ${qcRule}
+- PLACEMENT RULE: any quiz/check question exists ONLY inside this JSON — never also as markdown text in the reply body. The UI renders the interactive card for the student.
 - The block MUST be valid JSON (no trailing commas, no comments, double quotes only).`;
 }
 
@@ -156,6 +173,11 @@ export function buildSystemPrompt(input: PromptInput): string {
   const focusHit = hits.find((h) => h.conceptName === focusName) ?? hits[0] ?? null;
   const focusTier = focusHit?.tier ?? null;
 
+  const lang = languageRule(profile.language);
+  const langReminder = lang.name
+    ? `LANGUAGE REMINDER (highest priority, overrides habit): the prose of your ENTIRE reply must be in ${lang.name}. Only technical terms, definitions, formulas, units and exam phrases stay in English. Reply in plain English prose = failed instruction.`
+    : null;
+
   const parts: string[] = [
     IDENTITY,
     `\nSTUDENT CONTEXT\n- Name: ${profile.name} (${profile.className}-${profile.section}, ${profile.board}, ${profile.schoolName})${currentChapter ? `\n- Current chapter: ${currentChapter}` : ''}${focusName ? `\n- Current focus concept: ${focusName}` : ''}`,
@@ -163,25 +185,28 @@ export function buildSystemPrompt(input: PromptInput): string {
     notesBlock(notes),
     HONESTY,
     modeRule(mode, profile.socratic),
-    languageRule(profile.language),
+    lang.rule,
     toneRule(profile.tone),
     styleRule(profile.style),
     lengthRule(profile.length),
     FORMAT,
     metaRule(mode, focusTier),
+    langReminder,
   ];
 
   return parts.filter(Boolean).join('\n\n');
 }
 
 // Extra system nudge appended when the student taps "Hint" on a Quick Check.
-export function buildHintPrompt(level: 1 | 2): string {
+export function buildHintPrompt(level: 1 | 2, language = 'english'): string {
+  const lang = language === 'hinglish' ? 'Reply in friendly Hinglish (Roman-script Hindi-English mix); technical terms stay English.' : language === 'hindi' ? 'Reply in simple Hindi (Devanagari); technical terms stay English.' : 'Reply in simple English.';
   return level === 1
-    ? 'The student tapped "Give me a hint" on the pending Quick Check. Reply with ONLY a tiny Socratic nudge (1-2 short lines, current language mode) that points at the right idea or formula WITHOUT giving the answer or the final number. No headings, no meta block, no markdown beyond maybe bold.'
-    : 'The student tapped "Bigger hint" (second level). Reply with ONLY a stronger nudge (2-3 short lines): name the exact formula or first step to take, but still do NOT give the final answer. No headings, no meta block.';
+    ? `The student tapped "Give me a hint" on the pending Quick Check. Reply with ONLY a tiny Socratic nudge (1-2 short lines) that points at the right idea or formula WITHOUT giving the answer or the final number. ${lang} No headings, no meta block, no markdown beyond maybe bold.`
+    : `The student tapped "Bigger hint" (second level). Reply with ONLY a stronger nudge (2-3 short lines): name the exact formula or first step to take, but still do NOT give the final answer. ${lang} No headings, no meta block.`;
 }
 
 // Extra system nudge when a Quick Check was answered wrong and the student asks why.
-export function buildWhyPrompt(): string {
-  return 'The student just answered the Quick Check incorrectly and tapped "Why?". Reply with ONLY: (1) one line naming which idea the question actually tested, (2) 2-3 short lines re-explaining that idea in the simplest words, (3) one line of encouragement. No meta block, no new question.';
+export function buildWhyPrompt(language = 'english'): string {
+  const lang = language === 'hinglish' ? 'Reply in friendly Hinglish (Roman-script Hindi-English mix); technical terms stay English.' : language === 'hindi' ? 'Reply in simple Hindi (Devanagari); technical terms stay English.' : 'Reply in simple English.';
+  return `The student just answered the Quick Check incorrectly and tapped "Why?". Reply with ONLY: (1) one line naming which idea the question actually tested, (2) 2-3 short lines re-explaining that idea in the simplest words, (3) one line of encouragement. ${lang} No meta block, no new question.`;
 }

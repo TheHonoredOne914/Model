@@ -116,6 +116,19 @@ export interface NoteCtx {
 
 export type ChatMode = 'chat' | 'explain' | 'solve' | 'practise' | 'summarise';
 
+// Intent routing (server-side): when the student just types naturally, route the
+// message to the right TASK MODE so the pedagogy matches the intent — the same
+// Saathy, but the output UX always fits what was actually asked.
+export function detectMode(content: string): ChatMode {
+  const t = content.toLowerCase().trim();
+  const has = (...words: string[]) => words.some((w) => t.includes(w));
+  if (has('summarise', 'summarize', 'summary of', 'revise quickly', 'quick revision')) return 'summarise';
+  if (has('practise', 'practice', 'quiz me', 'test me', 'give me questions', 'questions on', 'questions about', 'mcq')) return 'practise';
+  if (has('solve', 'find the value', 'calculate', 'how much is', 'what is the value', 'evaluate', 'simplify', 'numerical', 'a car ', 'a train ', 'a ball ')) return 'solve';
+  if (has('explain', 'what is', 'what are', 'why does', 'why is', 'how does', 'how do', 'difference between', 'define', 'meaning of', 'teach me', "i don't understand", 'i dont understand', 'confus', 'elaborate', 'samjha')) return 'explain';
+  return 'chat';
+}
+
 export interface QuickCheck {
   concept: string;
   question: string;

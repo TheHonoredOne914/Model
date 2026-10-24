@@ -4,13 +4,14 @@
 // loop, and the three-panel layout (sidebar / chat / settings).
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Menu, PanelLeftClose, PanelLeftOpen, Settings as SettingsIcon, Sparkles } from 'lucide-react';
-import { Sheet, SheetContent } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { useToast } from '@/hooks/use-toast';
 import { Mascot, type MascotPose } from './mascot';
 import { MessageBubble, type UiMessage } from './message-bubble';
 import { Composer } from './composer';
 import { SidebarContent, type ConversationListItem } from './sidebar';
 import { SettingsSheet } from './settings-sheet';
+import { parseSaathyMeta, stripStreamingMeta } from '@/lib/saathy-meta';
 import type { ChatMeta, ChatMode, ConceptCtx, ContextResponse, MasterySnapshot, ProfileCtx, QuickCheck } from '@/lib/saathy-types';
 
 let tempId = 0;
@@ -31,6 +32,8 @@ export function ChatApp() {
   const [mobileSidebar, setMobileSidebar] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const [celebrate, setCelebrate] = useState(false);
+  // Client-only: sessionStorage is not available during SSR.
+  const [founderUnlocked, setFounderUnlocked] = useState(false);
 
   const abortRef = useRef<AbortController | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -67,6 +70,15 @@ export function ChatApp() {
     refreshContext();
     refreshConversations();
   }, [refreshContext, refreshConversations]);
+
+  // Refresh the founder lock state whenever settings opens/closes (client only).
+  useEffect(() => {
+    try {
+      setFounderUnlocked(!!window.sessionStorage.getItem('saathy_founder_pin'));
+    } catch {
+      setFounderUnlocked(false);
+    }
+  }, [settingsOpen]);
 
   const loadConversation = useCallback(async (id: string) => {
     try {
@@ -243,7 +255,8 @@ export function ChatApp() {
                 }
               } else if (ev.type === 'delta' && typeof ev.text === 'string') {
                 acc += ev.text;
-                setMessages((prev) => prev.map((m) => (m.id === streamId ? { ...m, content: acc } : m)));
+                const shown = stripStreamingMeta(acc);
+                setMessages((prev) => prev.map((m) => (m.id === streamId ? { ...m, content: shown } : m)));
               } else if (ev.type === 'done') {
                 finalMeta = ev.meta ?? {};
               } else if (ev.type === 'error') {
@@ -268,11 +281,17 @@ export function ChatApp() {
           }
         }
 
-        // finalize
+        // finalize — strip the meta block from the visible text (the server
+        // already saved the clean version; the client shows the same).
+        const parsed = parseSaathyMeta(acc);
+        const finalResolvedMeta: ChatMeta = {
+          ...parsed.meta,
+          ...(finalMeta.followups?.length || finalMeta.sources?.length || finalMeta.quickcheck ? finalMeta : {}),
+        };
         setMessages((prev) =>
           prev.map((m) =>
             m.id === streamId
-              ? { ...m, id: nextTempId(), content: acc || m.content, streaming: false, meta: finalMeta, error: null }
+              ? { ...m, id: nextTempId(), content: parsed.clean || m.content, streaming: false, meta: finalResolvedMeta, error: null }
               : m
           )
         );
@@ -412,10 +431,11 @@ export function ChatApp() {
           />
         </div>
       </aside>
-
       {/* Mobile sidebar */}
       <Sheet open={mobileSidebar} onOpenChange={setMobileSidebar}>
         <SheetContent side="left" className="w-[300px] border-[#f0e4d8] p-0">
+          <SheetTitle className="sr-only">Chats and menu</SheetTitle>
+          <SheetDescription className="sr-only">Your chat history, concepts and settings</SheetDescription>
           <SidebarContent
             profile={ctx?.profile ?? null}
             subjects={ctx?.subjects ?? []}
@@ -583,7 +603,7 @@ export function ChatApp() {
         onOpenChange={setSettingsOpen}
         initialTab={settingsTab}
         ctx={ctx}
-        founderUnlocked={!!sessionStorage.getItem('saathy_founder_pin')}
+        founderUnlocked={founderUnlocked}
         onPatchProfile={patchProfile}
         onConceptFocus={(id) =>
           setCtx((prev) => (prev ? { ...prev, profile: { ...prev.profile, focusConceptId: id } } : prev))

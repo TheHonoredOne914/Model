@@ -4,7 +4,6 @@
 // Poses come from the official mascot asset set. Motion is restrained per the
 // mascot behaviour rules: idle float, thinking pulse, entrance pop — and fully
 // static when the student prefers reduced motion or disables animations.
-import Image from 'next/image';
 
 export type MascotPose =
   | 'idle'
@@ -68,13 +67,14 @@ export function Mascot({
       role={alt ? 'img' : undefined}
       aria-label={alt}
     >
-      <Image
+      {/* Tiny pre-optimised local PNGs — plain img avoids next/image aspect-ratio warnings. */}
+      <img
         src={SRC[pose]}
         alt=""
-        width={size * 2}
-        height={size * 2}
+        width={size}
+        height={size}
         className="h-full w-full object-contain drop-shadow-[0_6px_14px_rgba(30,58,138,0.14)]"
-        priority={size >= 96}
+        draggable={false}
       />
     </span>
   );

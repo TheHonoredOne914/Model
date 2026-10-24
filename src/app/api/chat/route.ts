@@ -4,11 +4,11 @@
 //   SSE stream of JSON lines: {type:'meta'|'delta'|'done'|'error', ...}
 import { NextRequest } from 'next/server';
 import { db } from '@/lib/db';
-import type { ChatMode } from '@/lib/saathy-types';
+import { detectMode, type ChatMode } from '@/lib/saathy-types';
 import { loadProfile, loadSubjects, matchConcepts, loadNotes, loadRecentMessages } from '@/server/saathy/context';
 import { buildSystemPrompt, buildHintPrompt, buildWhyPrompt } from '@/server/saathy/prompt';
 import { streamChat } from '@/server/saathy/providers';
-import { parseSaathyMeta } from '@/server/saathy/meta';
+import { parseSaathyMeta } from '@/lib/saathy-meta';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 120;
@@ -35,7 +35,8 @@ export async function POST(req: NextRequest) {
   const content = (body.content ?? '').trim();
   if (!content) return Response.json({ error: 'Message is required' }, { status: 400 });
 
-  const mode: ChatMode = body.mode ?? 'chat';
+  // Explicit modes (chips, practice flows) win; natural typing is auto-routed.
+  const mode: ChatMode = body.mode && body.mode !== 'chat' ? body.mode : detectMode(content);
 
   try {
     const profile = await loadProfile();
@@ -91,9 +92,9 @@ export async function POST(req: NextRequest) {
     // System prompt
     let system: string;
     if (body.hintLevel) {
-      system = buildHintPrompt(body.hintLevel);
+      system = buildHintPrompt(body.hintLevel, profile.language);
     } else if (body.whyRequest) {
-      system = buildWhyPrompt();
+      system = buildWhyPrompt(profile.language);
     } else {
       system = buildSystemPrompt({
         profile,
@@ -127,8 +128,9 @@ export async function POST(req: NextRequest) {
             sse(controller, enc, { type: 'delta', text: delta });
           }
 
-          // Persist the assistant reply (meta block stripped)
-          const { clean, meta } = body.hintLevel || body.whyRequest ? { clean: full.trim(), meta: {} } : parseSaathyMeta(full);
+          // Persist the assistant reply (meta block stripped) — same parse for
+          // every turn so the stored text is always what the student saw.
+          const { clean, meta } = parseSaathyMeta(full);
           const saved = await db.message.create({
             data: {
               conversationId: convId,
