@@ -1,0 +1,61 @@
+Describing Motion Around Us G9)
+4.2.3 Velocity-time graphs
+
+The velocity-time graph of an object in motion represents the change in its
+velocity with time. In a manner similar to the position-time graph, you can
+plot velocity-time graphs following the steps of Activity 4.3.
+
+Let us take the example of a car moving
+in the same direction on a straight stretch of Table 4.5: Increasing Table 4.6: Decreasing
+a highway at a steady velocity of 72 km h* velocity velocity
+or 20ms*. The velocity-time graph
+corresponding to it is shown in Fig. 4.17a.
+
+Consider another car that starts moving
+from rest and its velocity increases with
+time as shown in Table 4.5. The velocity-time
+graph plotted for this case is shown in
+Fig. 4.17b.
+
+Consider yet another car moving with a
+velocity of 15.0 m s*. Its velocity decreases
+with time as shown in Table 4.6 and its
+velocity-time graph is shown in Fig. 4.17c.
+
+What does the shape of the velocity-time graph indicate about
+the nature of motion?
+
+In equal intervals of time >
+velocity is decreasing by equal
+amounts -> acceleration is
+
+pese ge
+
+Velocity (ms)
+ed
+in
+
+Velocity (ms')
+
+a
+|
+2
+3
+s
+
+&
+
+0 5 10 15 20 25 ® 0 5 10 15 20 25 30
+Time (s) Time {s)
+(b) Increasing velocity with (c) Decreasing velocity with
+constant acceleration constant acceleration
+
+Fig. 4.17: Velocity-time graph of a moving car
+
+When the velocity of the car is constant, the velocity-time graph is
+a straight line parallel to the X-axis (Fig. 4.17a) and acceleration is zero.
+Astraight line velocity-time graph as shown in Fig. 4.17b indicates that
+the velocity is increasing with a constant acceleration (in the direction of
+velocity). Whereas, a straight line velocity-time graph as shown in Fig. 4.17c
+indicates that the velocity is decreasing with a constant acceleration
+(opposite to the direction of velocity).

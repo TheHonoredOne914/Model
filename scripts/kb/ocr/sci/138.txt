@@ -1,0 +1,87 @@
+The SI unit of work done is joule which is represented by J. The SI unit
+Thus, using Eq. (7.2), 1 joule can be defined as
+
+bs rom Go of force is the newton (N) and the SI unit of displacement is the metre (m).
+4 <2 > ‘on
+
+Force and
+
+displacement
+have both
+
+magnitude
+
+and direction.
+Work, however,
+does not have a
+direction. It can
+be described
+using a number
+with a positive
+or a negative
+sign.
+
+a wall
+
+&
+
+1J=1Nxim
+That is, 1 joule of work is done on an object when a constant force
+of 1 newton is applied to it and it is displaced by 1 metre in the direction
+of the force. Since 1 N = 1 kg ms“, note that
+1j=ikgms*xim=ikgm's* 1042
+In the graph shown in Fig. 7.4, the force
+on an object is plotted on the Y-axis against = &
+the displacement in the direction of force on z 6
+the X-axis. In this case, the work done on the 5
+object by the force is equal to the area of the ~ ‘
+
+shaded rectangle in the graph which is 2
+10Nx1m=10]
+Even when the force is not constant, work ° 0.6 08 1
+done can still be calculated by finding the area Displacement (m)
+
+under the force-displacement graph between Fig. 74: Foree-displacement graph
+the initial and the final positions.
+
+7.1.1 When is work done equal to zero?
+
+From the definition of work done (Eq. 7.2), you can see that if the force
+acting on an object is zero, ie., F=0, then no work is done on the object.
+The work done on an object is also zero if there is no displacement of the
+object, Le., s=0, regardless of the force being applied on it. For example,
+if you apply a force on an object, such as a rigid wall (Fig. 7.5), there is no
+displacement in the wall and you have done no work on the wall.
+
+This may seem odd because you feel tired. To apply a force, the muscles
+in your body repeatedly expand and contract, and use up the internal
+energy of your body. Thus, you may feel tired even though, in a scientific
+sense, you have not done any work on the object.
+
+= Ready to Go Beyond
+
+Ifa force acts in a direction perpendicular to the displacement of
+
+the wit ee the box @h object, the work done by that force is zero (Fig, 7.6) because
+
+there is no displacement in the direction of the force. For example,
+when a girl carries a box while walking, she applies an upward
+
+3
+force to balance its weight, while the box moves horizontally.
+f AG Since, the force and are to each other,
+
+no work is done by this force on the box. In higher grades, (o,
+you will learn how to calculate the work done when force | ‘y™*
+
+Fig. 7.6: Carrying @ box and displacement are at an angle to each other.
+
+7.1.2 Positive and negative work done
+
+The work done by a force on an object can either be positive or negative
+depending upon the relative directions of the force and the displacement.
+When the displacement is in the same direction as the applied force, the
+work done by the force on the object is said to be positive, For example,
+
+(8) Exploration | Grade 9
+

@@ -1,0 +1,65 @@
+(2) Threads of Curiosity
+
+Medieval architects across the world, including in India, designed several monuments with deep
+acoustic insights. The renowned Whispering Gallery of the Gol Gumbaz in Bijapur, Karnataka,
+has a remarkable design that allows even a faint whisper to be heard multiple times across the
+
+large dome.
+10.8 Ultrasonic and Infrasonic Waves, and their
+Applications
+Sound waves with frequencies outside the human audible range have
+important applications in science, medicine, and technology.
+[e2| Threads of Curiosity Fy
+
+Used for detecting natural events, such as
+earthquakes and volcanic eruptions
+
+Used for detecting severe storms as such waves
+travel long distances through air and the Earth
+Used for imaging internal organs without
+gery (known as ultrasonography)
+
+Used for breaking kitiney stones into smaller
+pieces, which can then be passed out of the body
+
+Used for ultrasonic welding and for cleaning
+delicate machine parts in industries
+
+Human audible range
+(20 Hz to 20 kHz)
+{more than 20 ki2)7: | (sed Gar detecting defects inside metal blocks
+during construction and industrial testing
+Used for locating objects when sound waves get
+~ [reflected off them
+
+10.8.1 Echolocation
+Bats are nocturnal creatures that fly and
+search for their prey in the dark without
+9 colliding into objects. Most bats emit short
+‘ ~y What if bursts of ultrasonic waves which are
+Cr iad reflected from nearby objects. By sensing
+
+Infrasonic waves
+ess than 20 Hz)
+
+Ultrasonic
+waves sent
+from the bat
+
+humans could the echoes the bat can determine the
+
+Ky
+WN
+
+Cee position of obstacles and prey (Fig. 10.27). | Wil { CL] Re
+
+See eh This ability to locate _ objects 7
+
+would be the using reflected sound waves is called Ultrasonic waves
+
+advantagesand echolocation. Besides bats, animals suchas —_ reflected from the
+
+disadvantages? dolphins, whales, and some birds also use prey
+
+echolocation for navigation and hunting. Fig. 10.27: Echolocation by hats
+

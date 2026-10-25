@@ -1,0 +1,68 @@
+Threads of
+(oe Curiosity
+reading of
+
+ieee.
+ofa vehicle is
+
+The average velocity of an object over a large time interval may differ
+from its velocity at a particular instant. Throughout this chapter, we will use
+the term ‘velocity’ to mean the velocity of an object at a particular instant.
+
+?
+
+Ready to Go Beyond
+
+d What we simply called ‘velocity at an instant’ is known as ‘instantaneous
+Prodap borgher ie Gola smaller and
+In. 4.2b), the in
+pore vem a the oe tae “isis Infinitestinally small, the
+posuestimgneisarlpaebies apap parenann Bo
+instantaneous velocity. You will learn more about this physical | tom
+
+quantity in higher grades.
+
+The velocity of an object can be constant or it can change with time.
+How can we express the change in velocity of an object?
+
+4.1.4 Average acceleration
+
+When you sit in a vehicle and it suddenly moves from rest, you feel a
+noticeable jolt. Similarly, when the vehicle is in motion and suddenly
+stops, you experience a jolt. These occurrences capture the feeling of the
+change in velocity. You can find the change in velocity if you know the
+velocity at two different instants of time.
+
+Let us now learn another physical quantity, the average acceleration.
+The average acceleration of an object over a time interval is the change in
+its velocity divided by the time interval. That is,
+
+son = Change in velocity
+average acceleration she haarval (4.3a)
+final velocity - initial velocity
+—timeinterval 43)
+
+If the velocity of an object changes from an initial value u at time f, to
+the final value v at time t, the average acceleration ais,
+
+average acceleration =
+
+p-u
+
+aan a (4.3c)
+
+The SI unit of average acceleration is m s~* or m/s*. Like displacement
+and velocity, we need to specify the magnitude as well as the direction
+of acceleration. For motion in a straight line, if the magnitude of velocity
+is increasing in a given time interval, the average acceleration is in the
+direction of velocity (Fig. 4.8). Whereas, the average acceleration is opposite
+to the direction of velocity if the magnitude of velocity is decreasing.
+
+Car is speeding up Car is slowing down
+Velocity”
+Acceleration Acceleration
+Fig. 4.8: Direction of average acceleration when magnitude of velocity is
+(a) increasing, and (b) decreasing
+
+Bo) Exploration | Grade 9
+

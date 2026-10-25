@@ -1,0 +1,65 @@
+As learnt in the earlier section, the displacement s of the object during
+the time interval tis given by the area enclosed within OABD. Thus,
+
+s=area of OABD
+= area of the rectangle OACD + area of the triangle ABC
+
+= (AOxDO) + 5 *CA x BC]
+
+Substituting AO = u, DO = CA = tand BC = BD - CD = EO-AO = (v-u),
+oe A
+
+s=uxtedx[tx(v-u)]
+
+Substituting the value of (v - u) from Eq. (4.4a),
+s= us Sx txat
+
+s<ut+>xar (4.4b)
+
+These two equations (Eq. 4.4a and Eq. 4.4b) are the primary equations.
+Combining these equations in different ways, we can obtain three more
+equations. Let us derive one of those by eliminating ¢ in Eq. (4.4b) (the
+remaining two equations are given as an exercise in ‘The Journey Beyond’
+at the end of the chapter).
+
+From Eq. (4.4a), we get
+yeu
+a
+
+Substituting this in Eq. (4.4b), we obtain
+| 1 a
+$= ul|——} += a| —
+a a
+
+t=
+
+2
+2
+
+= eo meow i Ba
+
+2uv—2u? + u* + v* -2uy
+0__—i8 8 OC
+eer
+
+aa.
+
+> Jas=-uv+v*
+
+=> v =u'+2as (44c)
+
+For the motion of an object in a straight line with constant acceleration,
+the five physical quantities-displacement (s), time interval (t), initial
+velocity (u), final velocity (v) and acceleration (a), can be related by the
+
+following set of equations,
+v=u+at {4.4a)
+1
+aanirse (4.4b)
+vu? =u"+2as (44c)
+
+These are known as kinematic equations. These equations provide a
+mathematical description of how the motion of an object changes with time.
+
+(4) Exploration| Grade 9
+

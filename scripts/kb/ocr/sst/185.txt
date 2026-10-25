@@ -1,0 +1,48 @@
+The y-axis in the Fig. 9.2 (b) represents the price of mangoes (in®%),and ;
+the x-axis shows the quantity demanded of mangoes (in kg). Srivalli
+bought 1 kg of mangoes at 7150 (represented at point A). As the price
+fell to 2100 per kg, she bought 2 kg (at point B). But as the price fell to
+%50, she bought 3 kg (at point C). When the points of intersection, such
+as A, B, and C, are connected, the downward sloping line DD’ is called
+the demand curve. The downward-sloping individual demand curve
+represents the inverse relationship between price and the quantity
+of a product demanded by the buyer, assuming other factors like
+income, taste, etc., to be constant.
+
+What happens when others want to buy mangoes too? The total
+quantity of mangoes demanded by all potential buyers at different
+prices is known as market demand, that is, the sum of all individual
+demand. Let us consider two more consumers, Alex and Israt, whose
+individual demand is given in the schedule below:
+
+Table 9.1. Individual and market demand schedule
+
+Market
+Demand (Q,,)
+
+By summing the demand of all three consumers, Q1+Q2+Q3, the
+market demand Q,, is derived. When the market demand is plotted at
+
+Individual Demand Curve Market Demand Curve
+
+Demand Curve of Srivalli v Demand Curve of all the buyers
+Y
+PD Dm
+150], A 150 E
+g &
+”
+3 $ F
+& 100 B 5100
+c c
+a S
+E —
+s a]
+2 50 c & 50 G
+= Dp’ = Dm’
+x
+12345678 12345 6 7 8 91011121314 15 1617 18
+Quantity of mangoes (kg) Quantity of mangoes (kg)
+(a) (b) 9 - The Price Puzzle:
+Fig. 9.3. Individual demand curve (a) and market demand curve (b) What Drives the
+Market
+197

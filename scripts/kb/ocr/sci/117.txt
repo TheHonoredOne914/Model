@@ -1,0 +1,61 @@
+(up| Pause and Ponder
+
+1. A weightlifter lifts a barbell (Fig. 6.8). List
+two forces that are acting on the barbell. Are
+these forces balanced if the weightlifter keeps
+the barbell steady?
+
+2. Two players R and S are participating in an
+arm-wrestling match (Fig. 6.9). At the instant,
+when the arms tilt to the front direction
+(out of the page towards you), are the forces
+exerted by the players balanced? If not, which
+player exerted the larger force?
+
+6.3 The Force of Friction: Often
+Overlooked but Always Present
+
+You have learnt about the force of friction in an «sanz
+earlier grade but now let us learn more about it.
+Suppose an object is kept at rest on the floor and
+you apply a force on it in the forward direction (Fig. 6.10).
+Will the force applied by you make the object move? Many
+a times, you might have experienced that on applying a
+
+Corioaity
+Chapter 5
+
+force on an object, it did not move and you had to apply a Fig. 6.10: A box being pushed
+larger force to move it. Why is it so?
+It is due to the force of friction arising between the Note
+
+bottom surface of the box and the floor acting in a direction a
+
+opposite to the direction of the force applied by you. The forces may act on an
+box will start moving when the force applied by you is of object, ae depends
+larger magnitude than the force of friction, so that a net melee sini
+
+force acts on the box in the direction of its motion.
+
+2. Ready to Go Beyond
+
+For an object being pushed, apart fram the applied force and
+
+~~ the force of friction, some other forces may also he acting on Normal force
+it (Fig. 6.11). One of these is the gravitational force (weight) Applied
+and the other is the force exerted by the surface on which it is Jorce
+
+placed called the normal force. The weight acts in the downwards robo stopiacy
+direction, whereas the normal force acts in the upward direction Cruiational
+perpendicular to the surface, However, the two forcesare balanced. force
+
+Air around the object also exerts a force of friction on the . i
+box when the-box moves through the alr, but in many cases its 7 514 Frees acting on an object
+magnitude is so small that it can be neglected.
+
+For the situation shown in Fig, 6.10, once the box starts moving and you
+stop applying the force on it, the box slows down and comes to a stop. You
+must have experienced this in many cases around you. You stop pedalling
+a bicycle and after some time it comes to rest after travelling some distance.
+You stop pushing a ball and it also comes to rest after travelling some
+distance. Does it mean that you need to continuously apply a force to keep

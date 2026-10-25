@@ -1,0 +1,60 @@
+Let us take the example of an athlete
+running on a straight track (Fig. 4.2).
+
+To describe the position of the athlete, let us
+take her starting point as the reference point. As
+shown in Fig. 4.3, let us make a straight line with
+distances marked on it and mark the reference
+point on it as the origin ‘0’. The athlete starts
+running from O, and her positions at two
+instants of time are marked by points B and A.
+
+oO B A
+so or oo Ht oo ooo
++--— -20m om 20m 40m 60m 80m 100m +—
+Fig. 4.3: Reference point and positions of the athlete at different instants
+Note of time on a straight line
+An instant of To describe the position of an object, we also need to specify its
+
+ineareat are wbx direction. For the object moving in a straight line, the object can move only
+
+in one of the two directions — forward and backward. Thus, the direction
+‘An taatant of is represented by plus (+) and minus (-) signs as shown in Fig. 4.3. Positions
+time is a single to the right of the reference point O are generally taken as positive, and to
+
+reading of the left of O as negative (Fig. 4.3).
+nani rata 4.1.2 Distance travelled and displacement
+
+Whereas, atime Suppose an athlete starts running from point O at time t= 0 s, reaches
+interval is the point B at t= 4s, then reaches point A at t= 10, then runs back along the
+time duration same path till point B reaching there at t= 16 s (Fig. 4.4). How much is the
+
+between two total distance travelled by the athlete between the starting and stopping
+spuyendiatarend positions? The total distance travelled is OA + AB = 100 m + 60 m= 160m.
+readings of a ‘Total distance travelled
+clock. / Lf <b TE yp. SPENT POET:
+Displacement
+t=16s5
+(i) B A
+t——- + t+ Ht
+Om 20m 40m 60m 80m 100m
+t=0s t=4s t=10s
+
+Fig. 4.4: Reference point and positions of athlete at different instants of time
+
+Let us now think about the distance between the starting and the
+stopping positions of the athlete. It is OB = 40 m, which is different from
+the total distance travelled by the athlete. So, let us now define another
+| quantity — displacement.
+
+Displacementis the net change in the position of an object between the
+two given instants of time. A complete description of physical quantities
+like displacement requires specifying both a direction and its numerical
+value (with units). The numerical value (with units) of such a physical
+quantity is called its magnitude. The magnitude of displacement is the
+distance between the object’s positions at the two instants. The direction
+of displacement is specified from the position at the first instant towards
+the position at the second instant. To describe the total distance travelled,
+
+6 Exploration| Grade 9
+

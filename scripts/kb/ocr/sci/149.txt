@@ -1,0 +1,64 @@
+Work, Energy, and Simple Machines
+
+2000000 J = (50000 + 50000) N = d
+
+q — 2000000 J _ 2000000 Nm _ 59 .,
+100000 N 100000 N
+
+Thus, the minimum length of the ramp to be able to stop such a truck is 20 m.
+
+ll >| Pause and Ponder
+
+7.5 Power
+
+Suppose you carry your bag up a flight of stairs to your classroom. Running
+up the stairs in one minute feels very different than walking up slowly
+in five minutes, even though the same work is done in both cases. This
+difference is described by a physical quantity called power.
+
+Power is defined as the rate at which work is done. Mathematically, the
+average power Pis the work done W, divided by the time taken t, ie.,
+
+ins (711)
+
+P=—
+t
+
+To do more work in the same time interval, requires more power. To
+do the same amount of work but in a shorter time interval also requires
+more power. The SI unit of power is the watt (W), where 1 watt is equal to
+1 joule of work done per second, Le., 1 W =1]s*.
+Example 7.10: A weightlifter lifts a 75 kg mass by 2 m in 5 seconds. How
+much power would she require for this task?
+Answer: The work done would be equal to mgh= 75 kg x 10 ms*=x 2m
+
+= 1500]
+
+Thus, the power required will be 2001 = 300. w
+Example 7.11: A car of mass 1000 kg starts from rest and reaches a speed
+of 72 kmh“ in 10 seconds. Calculate the power of the engine required to
+achieve this start.
+Answer: Final velocity, v = 72 km h* =
+
+while initial velocity u= 0m s*
+
+72000 m _ 99 ms
+3600 s
+
+Fig. 7.22: Ball rolier coaster in a
+
+Threads of
+Se Curiosity
+
+You may have
+another unit called
+horsepower (hp)
+used to measure
+power, especially
+for car engines,
+or pumps used
+to lift water. One
+is
+
+horsepower
+equal to 746 W.

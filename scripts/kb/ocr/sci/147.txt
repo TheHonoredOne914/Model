@@ -1,0 +1,58 @@
+Work, Energy, and Simple Machines
+
+As the object falls down with time ¢, its potential energy decreases while
+its kinetic energy increases. Comparing Eq. (7.9) and e (7.10), you find that
+
+at time ¢, the a ca aaa gain 2 ing*t, which is also
+equal to the decrease in the potential energy, imgit’ this shows that the
+
+lost potential energy of the object is sii into kinetic energy during
+motion, while its mechanical energy remains constant and equal to mgh.
+
+As an object moves due to the gravitational force, its mechanical energy
+remains the same, i.e., the mechanical energy of the object is conserved
+if no other external forces act on it. This is called the conservation of
+mechanical energy.
+
+Letusconductan activity tounderstand this. Doyouremember ~ oma?
+experimenting with a simple pendulum earlier? Let us use that | cnaptere
+simple pendulum again to experiment further.
+
+Activity 7.2: Let us experiment
+1, Set upa simple pendulum as you have
+learnt in Grade 7.
+2. Paste a white sheet of paper on a
+wall behind the pendulum, Draw a kineti
+horizontal line above the position &e (Bitenticl ener
+of the bob when it is not oscillating
+
+(Fig. 7.20).
+
+3. Take the bob to one side to a point P,
+which is at the level of the horizontal nis 5
+line and let it go, Observe it at the ener ey
+extreme points of the first couple Jie peeentiol ay
+of oscillations. Does the bob almost Fig. 720:A pendulum
+
+reach the level of the horizontal line?
+
+At point P, the pendulum bob has the potential energy equal to mgh,
+where h is the height from the bottom-most point. At point Q, the potential
+energy is zero, but the pendulum has kinetic energy. Finally at point R, on
+the other side of the pendulum where it stops, the kinetic energy is zero
+but the pendulum bob regains its potential energy. The pendulum bob
+reaches almost the same height it started with. This demonstrates that the
+mechanical energy of the bob remains constant. However, in real life, the
+pendulum slows down and eventually stops because of energy loss due to
+friction at the support and air resistance.
+
+The conservation of mechanical energy can often be useful in solving
+several real-life problems.
+
+a A
+pz Ready to Go Beyond
+ee het te me ee a an nature, energy can
+appear in many different forms. have discovered that the total
+
+Seuiay it an chinet oe bovin GF Shnicns wate aor cist noes aad
+external forces, stays constant.

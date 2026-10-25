@@ -1,0 +1,53 @@
+are /Ready toGo Example 7.7: After taking a catch, a fielder threw the cricket ball of mass
+; Beyond 200g high up in the air about 10 m above the ground in celebration,
+5 How much potential energy does the ball have when the ball reaches its
+maximum height? Assume g = 10 m s+.
+
+potential energy Answer: Using Eq. (7.8), the potential energy of the ball will be equal to
+
+of an object at mgh = 0.2 kg x10 ms** 10m =20]
+
+height his valid
+only near the (11> | Pause and Ponder
+
+Expression
+(Eq. 7.8) for the
+
+Earth’s surface.
+
+Further away 6. Does the potential energy of an object near the surface of the Earth
+from the Earth's change if it moves with constant velocity in the horizontal direction?
+surface, the What if the object is gradually raised in the vertical direction?
+
+7.4.3 Conservation of mechanical energy
+
+The sum of the kinetic energy and the potential energy of the object is
+called its mechanical energy. Let us find the mechanical energy of an
+
+Ace object at different points as it falls freely due to the gravitational force.
+i Once again, consider an object with mass m which has been lifted to
+
+| a Point A at height A and dropped (Fig. 7.19). Its initial velocity u is equal
+mg to zero.
+: Thus, at point A (using Eqs. 7.6 and 7.8):
+th—n? potential energy of the object = mgh (7.9a)
+: kinetic energy of the object = 0 (7.9b)
+mechanical energy = 0 + mgh = mgh (7.9)
+
+As the object falls due to the gravitational force (mg) for a time t till point
+B, its velocity increases to a value v. You can find the velocity v of the object
+and the height h* of point B from ground by using the kinematic equations
+(Use acceleration a to be equal to the acceleration due to gravity g).
+
+veu* gt=O0+gt=gt
+
+is i 1 1 +:
+Fig. 7.19 An object =ut+= -h'=04= aha,
+eae s ut+ sgt h h 0+5gt' +h h 5
+ome Thus, at point B:
+potential energy of the object = mgh’ = mgh - dng? (7.10a)
+kinetic energy of the object = Smo" = zigit (7.10b)
+mechanical energy = mgh- img" ee zmgit! = mgh (7.10c)
+
+(26) Exploration | Grade 9
+

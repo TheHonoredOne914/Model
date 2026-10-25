@@ -1,0 +1,63 @@
+Sound Waves: Characteristics and Applications
+
+In this activity, you would have noticed that the frequency is lowest for
+the ‘Sa’ and gradually increases for the other notes. Each musical note has
+a distinct frequency, which makes it sound different. You can use the app
+to compare the frequencies of other sounds, including the voices of your
+friends too.
+
+Example 10.1: If there are 10 density oscillations in 2 seconds at a given
+position, then calculate the (i) frequency of sound wave, and (ii) its time
+period.
+
+Answer: Frequency of sound wave = number of oscillations . 2. =5Hz
+
+time taken
+Time taken for a single density oscillation at a position = #-02s
+‘11 > | Pause and Ponder
+
+7. Conduct Activity 10.1 once again with a thick rubber
+band and then with a thin rubber band. Does the
+thin rubber band vibrate faster than the thick
+rubber band? If yes, how do the frequency and time
+ahead Benue
+band differ from that of the thick rubber band? —
+8. If the frequency of a sound wave produced | san
+oscillating piston of a long tube filled withairis 13 20
+28 Be then Dane maany cociistians Sng she Tati
+complete per minute?
+
+Density
+
+45
+Distance (cm)
+
+9. For the sound wave represented by the graph shown __ 7M 20.19, craplical eptesentation
+
+in Fig. 10.19, what Is half of its wavelength?
+
+10.6.2 Amplitude and intensity of the sound waves
+Sound propagates as density
+oscillations of the medium via
+compressions and rarefactions.
+The amplitude of a sound wave
+is the maximum change in the
+density of air in a compression =
+(or a rarefaction) compared to
+the average density. A larger
+change in density corresponds
+
+toa larger amplitude (Fig. 10.20). ‘4
+The amplitude and the (a) Low amplitude
+amount of energy a wave carries Fig. 10.20: Sound waves
+
+are related. A wave with a larger amplitude carries more energy than the one
+with a smaller amplitude. This can be seen in Activity 10.6. When the plate
+is struck harder, more energy is transferred to the particles of surrounding
+medium, causing larger displacements from their mean positions. As a result,
+the sheet vibrates to a larger displacement and the grains jump higher.
+
+The amount of sound energy passing through a unit area perpendicular
+to the direction of the propagation of sound wave in a unit time is called the
+intensity of sound.
+

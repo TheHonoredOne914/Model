@@ -1,0 +1,69 @@
+Which physical quantities can be obtained from a
+velocity-time graph?
+
+Apart from finding the magnitude of velocity of the object at each
+instant of time, what other physical quantities can be calculated
+150 from the velocity-time graph?
+
+In Section 4.2.2, we found that velocity can be determined from
+the slope of the straight line on position-time graph. What can
+you find from the slope of the straight line on a velocity-time
+graph? The slope of the line on velocity-time graph gives how
+fast the velocity is changing with time, Le., the acceleration.
+
+For the graph shown in Fig. 4.17a, there is no change in the
+height of the line from the X-axis, ie., its slope is zero. Hence, the
+“ velocity is constant and the acceleration is zero in this case.
+
+Fig. 4.17(d): Calculating acceleration Now consider the graph shown in Fig. 4.17d which is the
+from a velocity-time graph same as Fig. 4.17b, except for some markings. Consider a part
+of the line, AB. Suppose at time ¢, corresponding to point A, the
+velocity is denoted by ‘u’, and at time ¢, corresponding to point
+B, it is represented by ‘v’. By dividing the change in velocity (BC)
+by the change in time (CA), you get, a % = An
+Substituting the values from graph, we obtain the magnitude of
+average acceleration between the time interval from 10 s to 20s
+10ms'~Sms' Sms"
+20s-10s 10s
+
+If we follow the above steps for the graph shown in Fig. 4.17e
+which is same as Fig. 4.17c, we obtain average acceleration to
+be -0.5 ms*. The minus sign indicates that the direction of
+acceleration is opposite to the direction of velocity (as the velocity
+Fig. 4.17(e): Calculating acceleration is decreasing).
+
+from a velocity-time graph Can you calculate some other physical quantity from the
+velocity-time graph?
+
+Maa, a hy ieee fading got ad except that
+some parts between the line on graph and the time axis are
+shaded. Does the area of the shaded part represent some physical
+
+Velocity (ms')
+
+0 5S 10 15 20 25 30
+Time (5)
+
+a= =0.5ms*
+
+Velocity (ms)
+
+0 S 10 15 20 25 30
+Time (s)
+
+In Fig. 4.18a, OA is magnitude of the velocity and OC is the
+time interval.
+So, area of rectangle OABC = OA « OC = velocity = time interval
+(Since, in this case the velocity is constant, it is equal to the
+average velocity).
+o 12345 6 Using Eq. (4.2a), we can say,
+
+Velocity (m s*)
+
+Time (s) area of rectangle OABC = displacement
+4.18(ay; Velocity-time graph of Substituting the values from graph, we obtain
+an object moving with displacement between 0 s and 6s = area of OABC
+ome Sey =20ms**6s=120m
+
+(2) Exploration| Grade 9
+

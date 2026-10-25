@@ -1,0 +1,68 @@
+Bridging Science and Society
+
+aa
+
+fn
+
+Some isotopes have special that are useful in
+
+various fields. Some of the applications of isotopes are:
+
++ *2U, an isotope of uranium, is used as a fuel ina
+nuclear reactor to generate electricity in a nuclear
+power plant (Fig. 8.14).
+
++ ©Co, a radioactive isotope of cobalt, is used in radiation
+treatment for cancer.
+
++ 231, an isotope of iodine, is used to treat goitre and
+thyroid cancer.
+
++ *{C, an isotope of carbon, is used in archaeology and
+geology to determine the age of ancient fossils and artefacts.
+
+A. Average atomic mass
+
+Chlorine occurs in nature in two isotopic forms. One isotope has a mass of
+35 u, and the other has a mass of 37 u. They occurin the ratio 3:1. This raises
+an interesting question — should we consider the mass of a chlorine atom
+to be 35 u or 37 u?
+
+If the atomic mass of a natural element is taken as the average mass of
+all its naturally occurring isotopes, it would be the simple arithmetic mean
+of the masses of its isotopes, calculated without accounting for the relative
+abundances of each isotope. For chlorine, with isotopes *5C! and *7Cl, the
+simple average would be —
+35+ aa
+
+Average atomic mass = (
+
+=36u
+
+However, this does not accurately reflect nature, since isotopes do not
+occur in equal ratios. The more common isotope is *5Cl, which constitutes
+about 75% while the other isotope, 77Cl makes up about 25%. The accurate
+average atomic mass can be calculated by considering their natural
+abundances, This is called a weighted average atomic mass, which can be
+calculated by multiplying the mass of each isotope by its percent relative
+abundance and then adding the two values, as explained below.
+
+Mathematically,
+
+= (355+ 37x25
+100 100
+
+~(8.57)a
+“L404
+142
+
+=<—u
+
+4
+=35.5u
+
+Journey Inside the Atom
+
+Fig. 8.14: A nuclear power plant
+
+:

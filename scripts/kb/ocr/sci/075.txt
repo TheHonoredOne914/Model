@@ -1,0 +1,50 @@
+Describing Motion Around Us
+
+The average acceleration can result from change in the magnitude of
+velocity or change in its direction, or both. Later in Section 4.4, we will
+discuss an example of acceleration resulting from only the change of
+direction of the motion while the speed remains constant.
+
+Activity 4.2: Let us calculate
+
+1, The magnitude of average acceleration of cars is generally specified as
+
+the time taken by the car to go from 0 km h~ to 100 km h-+. Look it up
+on the internet and find this time for various cars, and record those in
+Table 4.2.
+
+2, Calculate the magnitude of average acceleration for each car.
+
+Table 4.2: The magnitude of average acceleration in a time interval
+
+Com [Somanaes | smote)
+speed goes from 0 to 100 km h* acceleration (m s*)
+
+Example 4.3; A bus is moving on a long straight highway (Fig. 4.9) with a
+velocity of 36 km h-. The driver presses the accelerator for a time interval
+of 10s and velocity of the bus increases to 54 km h"*. For some time, the bus
+moves at a constant velocity. Then, the driver notices an obstacle on the
+road ahead and presses the brake. The bus comes to a stop in a time interval
+of 5 s. Find the average acceleration in the two time intervals, (i) when the
+accelerator was pressed, and (ii) when the brakes were pressed.
+
+Fig. 4.9: A bus moving on a long straight highway
+Answer: (i) When the driver presses the accelerator
+
+ws 36 km bt = 36x OT <10ms%, v=54kmh*=15ms*,t=10s,a=?
+
+Using Eq. (4.3c), we obtain the average acceleration
+_15ms*-10ms*
+
+Since the magnitude of velocity of the bus is increasing, the acceleration is
+acting in the direction of velocity.
+(ii) When the driver presses the brake
+
+u=54kmh't=15 ms", v=Oms"', t=5s,a=?
+Using Eq. (4.3c) again, we obtain
+
+Oms?-15ms*_ -15ms* 2
+
+a= ——__—_ = ———__= -3 ms
+The minus sign indicates that the acceleration is acting opposite to the
+direction of velocity (since the magnitude of velocity of the bus is decreasing).

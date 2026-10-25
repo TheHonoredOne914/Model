@@ -1,0 +1,55 @@
+While learning about force earlier, did you notice that whenever any
+type of force acting on an object was described, its direction was also «——
+specified? For example, the phrases used were, force of friction acting On | cures =]
+an object in a direction opposite to the direction of its motion; like poles of \"="=*
+a magnet repelling each other or unlike poles attracting each other due to
+the magnetic force; like charges repelling or unlike charges attracting each | S250".
+other due to the electrostatic force; the Earth attracting objects towards
+itself due to the gravitational force; buoyant force exerted by liquid in an
+upward direction on an object placed in it, and so on. Force is a physical
+quantity for which we need to specify direction along with its magnitude
+and unit, just like for the physical quantities— position, displacement,
+velocity and acceleration of an object which were introduced in Chapter 4.
+The SI unit of force is the newton (written with a small ‘n’) and its symbol
+is N. The magnitude of the force expresses its strength.
+
+Note
+
+If either the magnitude or direction, or the both, of a force applied on an f
+object changes, the effect of the force also changes. .
+
+6.1.1 Measuring the magnitude of a force ¥
+How can we measure the magnitude of a force? Do you remember using
+a spring balance earlier to measure the weight of objects (Fig.6.2)? Do you , ccrecay
+also remember that the weight of an object is the gravitational force with et:=
+which the Earth pulls the object? A spring balance can be used to measure i
+not just the weight of an object but the magnitude of the force in general. 6a
+If you pull on the free end of the spring balance, it measures the force with
+which you pull on the spring inside the balance. 5 :
+
+Fig. 6.2: Measuring the
+
+\@@)| Threads of Curiosity bash hs ta
+
+In everyday life, the smallest forces we can directly feel are of the order of
+
+millinewtons (10° N), such as a light touch. Scientists, however, can measure
+
+forces far smaller than this, down to yoctonewtons (10~* N) in specialised Force by hand
+experiments (as of 2026). a
+
+6.2 Balanced and Unbalanced Forces Force of friction
+In real life, situations seldom exist where only one force acts on an object. !- 63: (a) Pushing a box
+Usually, there is more than one force acting on an object. For example, when —_‘*ePt 0" table or floor
+you are pushing a box placed on a surface then, apart from the force with
+which you are pushing it, the force of friction is also acting on the box in the Buoyant force
+direction opposite to that of the motion (Fig. 6.3a).
+
+Or, take the example of a ball floating on water (Fig. 6.3b). Two forces
+are acting upon it — gravitational force by the Earth acting downwards and a
+buoyant force applied by the liquid acting upwards. In such cases, what is Pp Gewitational
+the effect of forces when more than one force is acting on an object at rest fee
+or in motion?
+
+Have you ever played a game of tug of war where two teams pull at pig. 63: (b) A ball
+a rope in opposite directions? If both the teams pull the rope with equal floating on water

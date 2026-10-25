@@ -7,6 +7,7 @@ import { db } from '@/lib/db';
 import { detectMode, type ChatMode } from '@/lib/saathy-types';
 import { loadProfile, loadSubjects, matchConcepts, loadNotes, loadRecentMessages } from '@/server/saathy/context';
 import { searchBook, bookGroundingBlock } from '@/server/saathy/books';
+import { searchFounderDocs, docsGroundingBlock } from '@/server/saathy/docs';
 import { buildSystemPrompt, buildHintPrompt, buildWhyPrompt } from '@/server/saathy/prompt';
 import { streamChat, completeOnce } from '@/server/saathy/providers';
 import { parseSaathyMeta, repairJson } from '@/lib/saathy-meta';
@@ -131,10 +132,14 @@ export async function POST(req: NextRequest) {
     const notes = await loadNotes(noteIds);
     const history = await loadRecentMessages(conversationId);
 
-    // Book grounding (Ganita Manjari) — the school's own textbook corpus.
+    // Book grounding (all four textbooks) — the school's own corpus.
     const bookQuery = `${content} ${focusConcept?.name ?? hits[0]?.conceptName ?? ''}`;
     const bookChunks = mode === 'chat' && !focusConcept ? [] : searchBook(bookQuery, { limit: 4 });
     const book = bookGroundingBlock(bookChunks);
+
+    // Founder Library grounding — documents the founder uploaded in the Data section.
+    const libChunks = await searchFounderDocs(content, 3);
+    const library = docsGroundingBlock(libChunks);
 
     // System prompt
     let system: string;
@@ -151,6 +156,7 @@ export async function POST(req: NextRequest) {
         mode,
         focusConceptName: focusConcept?.name ?? hits[0]?.conceptName ?? null,
         book,
+        library,
       });
     }
 

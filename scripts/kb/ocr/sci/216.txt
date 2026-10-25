@@ -1,0 +1,56 @@
+As sound wave travels away from its source, Point source
+it spreads over a larger area (Fig. 10.21). Since the
+energy must be conserved, the same amount of
+energy is now spread over a larger area. Hence,
+the intensity decreases with distance from the
+source. Sounds produced with initial larger
+amplitude carry more energy and can travel a te: 1024: Soxanal ‘is
+larger distance before intensity reduces to zero. eg Leena wok een
+10.6.3 Speed of Sound
+The speed of sound describes how fast sound waves propagate through a
+medium. In terms of compressions and rarefactions, one can think of speed
+as how fast these density disturbances propagate through the medium. The
+speed of sound can be defined as the distance which a point on a wave,
+such as a crest (or a trough), travels in unit time.
+
+For a sound wave of given frequency, the distance between two
+consecutive crests (or two consecutive troughs) is one wavelength (4). This
+distance is covered by the disturbance in one time period (T ). Therefore,
+the speed of sound (v) is
+
+distance
+
+wae
+We know that frequency v = a (Eq. 10.1). Thus,
+
+beAxy (10.2)
+speed = wavelength « frequency
+The speed of sound depends on the medium through which it
+travels. It travels fastest in solids, slower in liquids, and slowest in gases.
+For example, sound travels about 4~5 times faster in water and typically
+15-20 times faster in solids than in the air.
+The speed ofsound in air also depends on the temperature and humidity.
+As we increase the temperature or humidity, the speed of sound increases.
+For example, the speed of sound in dry air is about 331 m s* at 0 °C and
+nearly 344 m s* at 22°C.
+
+9 re Ready to Go Beyond
+Cas What if... ‘SE nme mth tert scind apn ontyon h ned
+* enchant whee. pag ap mar opie a
+
+the speed of the wavelength of the sound wave in the medium changes, while the
+sound in air speed remains constant. Some special materials, such as porous foams or
+depended on sb crac td hina
+
+its frequency?
+
+Would music still
+
+sound pleasant Example 10.2: Human hearing roughly spans 20 Hz to 20 kHz. What are
+when a singer the corresponding wavelengths in air for these two frequencies? Use the
+performs with speed of sound in air as 344 m s*.
+Answer: Using the relation between wavelength (4), frequency (v), and
+speed (v),
+
+speed of the wave = frequency = wavelength
+

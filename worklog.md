@@ -407,3 +407,28 @@ Stage Summary:
 - ONE-TAP LINK (user-facing): https://whodhruv7.github.io/Model/download.html
 - Direct app link: https://whodhruv7.github.io/Model/public/Saathy.html
 - Repo now: 3 commits (orphan app + download button delta + download page)
+
+---
+Task ID: Saathy-v3-sst
+Agent: Super Z (main)
+Task: User's next level-up — ingest ALL SST books fully, auto-detect any provider key, lock identity to "Saathy v.1", de-AI the interface further, timeline artifacts for SST.
+
+Work Log:
+- Extracted all 9 Understanding Society PDFs (iest101-109 naming: G9P1 ch3/8/9 + G9P2 ch1-6) via pdftotext -> scripts/kb/sst_*.txt (340 KB)
+- New build_kb_sst.py: curated per-chapter section titles (heading-regex matcher w/ wrap+suffix tolerance, diacritic folding Śhivājī->Shivaji via NFD), quality filters -> src/data/books/understanding-society.json (9 chapters / 69 sections / 166 KB)
+- books.ts: multi-book KB (maths 1-14 + SST 101-109), subject-aware hint table (SST checked first), book/part-aware sourceRefs + scoring, diacritic-folding tokenizer
+- context.ts: +51 SST concept aliases (tides, biomes, mughal, bhakti, personal finance, policy cycle, startups...)
+- seed_books.ts: SST_BOOK tree (9 chapters / 53 concepts, prerequisite chains) as second subject; seeded -> 23 chapters, 100 concepts, all fresh
+- Provider auto-detect: /api/founder/autodetect (PIN-gated) — key-shape detection (gsk_/AIza/sk-ant-/sk-), GET /models listing, preference-sorted model probing w/ latency, winner returned; founder UI "Auto-detect from key" button (Wand2) fills baseUrl+model
+- Identity lock in prompt: "Saathy v.1, trained on NCERT modules and school books" — never reveal/confirm/deny any underlying provider; IDENTITY now covers maths AND SST tutoring
+- Timeline artifact: DemoWidget 'timeline' + DemoSpec.events, sanitizer support, animated widget (staggered reveal, reduced-motion safe), prompt docs (history/policy/journeys)
+- Human welcome: "ready when you are" + Hinglish sub-copy + chips "Samjha do / Yeh solve karo / Test me / Notes bhar do"
+- Fixed: langReminder null-type error, dice timer cleanup, level-check gate now fires on natural chat too (user spec: EVERY concept query)
+- QA: retrieval spot-checks (tides->Ocean Currents, shivaji->Marathas, mutual funds->Investment Options, policy->Policy Cycle), live chat: "explain neap tides" -> levelcheck meta w/ 2 questions + book source, lint 0, tsc clean, APIs 200
+- GitHub: 2 delta commits pushed via temp clone (SST corpus+autodetect, gate fix); PAT transient only
+
+Stage Summary:
+- Saathy now covers BOTH books: Ganita Manjari (14ch) + Understanding Society (9ch/69 sections) with level-check gating on every concept query
+- Any provider key (Groq/OpenAI/Gemini/Anthropic/compatible) auto-configures via founder panel
+- Identity: always "Saathy v.1, trained on NCERT modules and books" — engine never leaks
+- Timeline artifacts ready for history/civics/economics teaching

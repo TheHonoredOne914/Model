@@ -1,0 +1,56 @@
+the speed of light (unlike EM waves, sound waves, which you studied
+in Chapter 10, Sound Waves: Characteristics and Applications, are
+mechanical waves and require a medium to travel). The speed of light in
+vacuum is 3 « 10* ms*. EM waves cover a wide range of frequencies, from
+high frequency or short wavelength radiation (gamma rays and X-rays) to
+low frequency or long wavelength radiation (infrared and radio waves).
+The high frequency EM waves, such as gamma rays and X-rays have very
+high energy and can be harmful for life on Earth.
+
+The entire range of electromagnetic
+radiation called electromagnetic
+spectrum is shown in Fig. 13.2. However,
+the solar radiation reaching Earth is
+lower frequency or | Concentratedmainlyin theultraviolet(UV),
+longer wavelength visible and infrared (IR) range—about
+99 per cent of the Sun's energy falls within
+
+Sa Vv . these wavelengths. These three regions
+: Visible es Radio w
+hfe reat Sena of the spectrum shape the Earth's climate
+
+BUR ae Spar ie Gata as ae a
+are mostly filtered by the Earth's upper
+atmosphere, while microwaves and
+
+Fig. 13.2: Electromagnetic spectrum radio waves carry very little energy to
+significantly warm the Earth.
+
+Short wavelength UV radiation is mostly absorbed by the ozone
+layer in the upper atmosphere, protecting life and contributing to some
+atmospheric heating. Visible light from the Sun reaches the Earth’s surface
+and provides energy for photosynthesis, which is the primary source of
+food for most organisms. It also partly warms the land and water. Infrared
+radiation warms the Earth's surface, which then re-radiates this heat back
+into the atmosphere. A portion of this outgoing heat is trapped by the
+greenhouse gases, such as carbon dioxide (CO,), methane (CH,) and water
+vapour, keeping the Earth warm enough to support life.
+
+XP _; Ready to Go Beyond
+
+fy The UV rays lie in the wavelength range of 100 nm to 400 nm [1 nanometre (nm)
+= 10° mJ and have a much higher energy than the visible light. Prolonged exposure to
+these rays can damage the eyes and skin, and increase the risk of cancer. Therefore,
+adios Gosia den liv peotanttee glasses sad soiniexenn if any sae Maly tole coped
+to UV rays. UV rays are also useful in killing germs in water purifiers and help power
+fluorescent lights.
+
+The amount of the Sun's radiation that reaches the Earth's surface is
+called insolation. It is responsible for warming the Earth's surface and its
+atmosphere. The average amount of solar energy received per unit time
+per unit area that is perpendicular to the Sun's rays at the top of the Earth's
+atmosphere is called the solar constant. Its value is approximately 1.4
+kilowatts per square metre (1.4 kWm~), or about 1400 joules per second
+per square metre (1400 J s'm*). It represents the Sun's energy available
+on the Earth before any absorption, scattering or reflection occurs in the
+

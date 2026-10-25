@@ -1,0 +1,59 @@
+1500kg is moving towards the east >
+and its velocity-time graph is shown in
+Fig. 6.21, Calculate the force acting on the
+
+car during
+
+@ OstoSs
+(i) Ssto10s
+(iii) 10sto15s 0 5.0 asian 15.0
+eee Fig. 6.21: Velocity-time graph for a
+Gi) During 0s to5s: sports car
+
+As the velocity-time graph is a straight line inclined to the time axis, it indicates
+that the sports car is moving with a constant acceleration during this time
+interval with u=Oms*,v=10ms* and t=5s.
+
+Using the kinematic equation v= u + af, we can find the acceleration,
+
+10ms*=Oms*+(ax5s)
+
+a=2ms*
+
+Now, using the Newton's second law of the motion F = ma, we can find
+the force acting on the sports car as,
+
+F= 1500 kg « 2m s+ = 3000 N acting towards the east.
+(ii) During 5s to 10s:
+As the velocity-time graph is a straight line parallel to the time axis, it
+indicates that the sports car is moving with a constant velocity. Hence, no
+force is acting on the sports car.
+(iii) During 10 sto 15s:
+As the velocity-time graph is a straight line inclined to the time axis, it
+indicates that the sports car is moving with a constant acceleration in this
+time interval with u = 10 ms“, v= 0 ms“ and t= 5s. Using the kinematic
+equation v= u+ at, we can find the acceleration,
+
+Oms*=10ms*+(a*5s)
+
+=-2ms*
+
+Now, using the Newton's second law of the motion F= ma, we can find
+the force acting on the sports car as,
+
+F=1500kg *(-2 ms*)=-—3000N
+
+The negative sign shows that the force is acting in a direction opposite
+to the direction of motion, that is towards the west.
+
+_| U1 > | Pause and Ponder
+| 6. A toy car of mass 100 g is moving with a constant velocity of 0.5 m s*.
+What is the net farce acting on the toy car?
+
+7. Two children of different masses are sitting on identical swings. To
+impart identical initial acceleration, for which child would you require
+to apply a larger force? Explain why.
+
+8. How are glass items packed for transportation using a bubble wrap or
+hay protected from damage?
+

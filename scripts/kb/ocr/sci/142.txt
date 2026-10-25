@@ -1,0 +1,53 @@
+final velocity and it undergoes a displacement s. To simplify the situation,
+let us assume that the force F acting on the object is constant. In that case,
+the acceleration a is also constant, and the kinematic equations can be
+
+used. We can then write
+v= u'+2as
+(v'-w)
+or s= “Tay (A)
+From the definition of work (Eq. 7.2), the work done W by the force is
+W-=Fxs
+Using Newton's second law, F = ma, we get
+W=maxs
+Substituting the value of s from Eq. (7.4), we obtain,
+(2a)
+We Fm(v7 -u') (7.5)
+
+From the work-energy theorem (Eg. 7.3), the work done by the force
+acting on the object translates into the change in the energy of the object.
+Thus, Eq. (7.5) represents the change in the energy of the object.
+
+If the initial velocity of the object is u = 0, the change in the energy
+of the object is equal to its final kinetic energy. Thus, using Eq. (7.5), the
+kinetic energy of an object of mass m moving with a velocity vis
+
+Ke= ju" (7.6)
+
+The SI unit of kinetic energy is the joule (J). The kinetic energy has
+no direction. When positive work is done on the object and its velocity
+increases, its kinetic energy also increases. If negative work is done on the
+object and its velocity decreases, its kinetic energy will also decrease. If
+no work is done by the force on the object (W = 0) and its velocity does not
+change, then its kinetic energy remains constant.
+
+Example 7.4: If the velocity of a vehicle doubles in magnitude, what will its
+kinetic energy be compared to its original value?
+
+Answer: Let the mass of the vehicle be m and its initial velocity be v. Its
+
+1
+initial kinetic energy will be rags . If the vehicle travels with a velocity
+of 2», its kinetic energy will Ry $m(2} =4x Smo". The new value of the
+kinetic eiisiey wil be «haan is pein value.
+Example 7.5: In one of their fastest deliveries, an Indian cricketer bowled
+a cricket ball with an approximate mass of 0.2 kg at a velocity of about
+154.8 km h“. Calculate the kinetic energy of the ball at the time of its
+delivery.
+Answer: Mass of the cricket ball = 0.2 kg
+
+Velocity of the ball = 154.8 km h* = 43 ms*
+
+K = pm" = 5x02 kg (43 ms") = 184.9]
+
+Exploration | Grade 9

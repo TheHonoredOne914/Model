@@ -1,0 +1,56 @@
+Position (m)
+seesss&
+
+Position (m)
+
+Time (s)
+
+Fig. 4.11(c: Making a graph
+
+123 45 6
+
+this point. Then, draw a line parallel to the X-axis
+from the point corresponding to distance 20 m on
+the Y-axis. The point where these two lines intersect
+represents the position 20 m at time t = 1s on the
+graph (Fig. 4.11b).
+
+(ii) Similarly, plot on the graph paper all points
+corresponding to positions of the vehicle at different
+instants of time.
+
+7. Once all points are plotted, connect them to create the
+position-time graph for the vehicle's motion (Fig. 4.11c). It
+is a straight line for the data given in Table 4.3.
+
+This was an example of plotting a position-time graph.
+Similar procedure can be used to plot the other graphs which
+you will be learning ahead.
+
+m,
+
+eS. Zope $e Nerent. Ps
+ee noe represent possible values for
+
+jermediate times. y are correct if
+venice s moving wi Bs consant sports
+
+Example 4.5: For a vehicle starting from rest and speeding up,
+the data for position and time are given in Table 4.4. Plot the
+position-time graph corresponding to it.
+
+Table 4.4: Positions of vehicle at different instants of time
+
+Choosing the scale to be
+
+X-axis: 5 divisions = 2 s
+
+Y-axis: 5 divisions = 5m
+and following the procedure of Activity 4.3, all points
+corresponding to positions of the vehicle at different instants
+of time are marked. Unlike Fig. 4.11¢, the points do not fall on
+a straight line. The points can be joined by a curve as shown
+in Fig. 4.12.
+
+Now that you know how to plot a graph from the data given
+for the motion of an object, let us learn to interpret the graphs,

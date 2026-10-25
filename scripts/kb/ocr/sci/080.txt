@@ -1,0 +1,61 @@
+from the
+
+Position (m)
+86s
+
+0 1 2-3
+Time (s)
+
+Fig. 4.15: Position-time
+graph of a vehicle
+
+3. As per Eq. (4.2a), by dividing the change in position (BC) by the change
+in time (CA), you get the average velocity
+S-S: _ BC
+h-t CA
+4. By extracting values of time ¢, and t,, and distances s, and s, from the
+graph, the magnitude of average velocity can be calculated as
+fom Am ine
+4s-2s 2s
+From a position-time graph, by finding the positions of the object at two
+instants of time, you can calculate the average velocity by using Eq. (4.2a).
+
+Geometrically, aa is called the slope of line AB connecting initial
+position A and final position B in Fig. 4.14. The slope ofa line is the steepness
+
+of the line. The slope of a graph gives information about the rate of change of
+the quantity shown on Y-axis with respect to the quantity shown on X-axis.
+
+v=
+
+cs Ready to Go Beyond
+. For the case ofa curve also, the velocity at any instant an be calculated geometrically (s=
+position-time
+
+Sepp re a eeee arene he ee (=
+
+Example 4.6: What does the graph shown in Fig. 4.15 indicate about the
+nature of motion of the vehicle?
+
+Answer: The position of the vehicle is 40 m from the origin and is
+not changing with time. Thus, the vehicle is at rest at 40 m from the
+origin. A straight line parallel to the time axis on a position-time graph
+represents a stationary object (In this case, the position-time graph is not
+
+distance-time graph).
+
+Example 4.7: The position-time graphs of two objects A and B are given
+in Fig. 4.16a. The magnitude of average velocity of which object is higher?
+Answer: By making lines parallel to axes as shown in Fig. 4.16b, it is found
+
+interval. That is, the slope of line for B is steeper than the slope for line A.
+Thus, the velocity of B is higher than that of A.
+
+c
+i
+Time ; Time
+Time interval t
+Fig. 4.16(a): Position-time graph of Fig. 4.16(b: Comparing displacement of
+
+(0) Exploration Grade 9
+

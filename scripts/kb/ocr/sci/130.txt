@@ -1,0 +1,71 @@
+(>| Pause and Ponder
+
+9. Why does a fireperson sometimes struggle when holding the pipe
+issuing water?
+
+10. Suppose a Spacecraft is moving in a region of space where the
+gravitational force acting upon it is negligible. Suggest how can it
+change its velocity.
+
+— You have learnt about contact and non-contact forces earlier. Is
+émeee's| Newton's third law applicable only for contact forces? Newton's third
+law applies to all types of forces, contact or non-contact, that we come
+
+across in everyday mechanical situations (Figs. 6.31, 6.32, 6.33).
+
+— — eae
+
+Fig. 6.31: Two bar magnets applying equal and Fig. 6.32: Two similarly charged
+opposite magnetic forces on each other balloons applying equal and opposite
+electrostatic forces on each other
+Example 6.7: As shown in Fig. 6.33, the Earth and the fruit apply equal
+and opposite gravitational forces on each other. Then why does the
+fruit move towards the Earth while the Earth doesn’t seem to move
+towards the fruit?
+Answer: Though the forces acting on both the Earth and the fruit are
+equal in magnitude; the mass of the Earth is so large (as compared
+to the fruit) that the acceleration of the Earth caused by the force is
+
+extremely small {as per a = *). Thus, its effect on the Earth is too
+
+Force on
+the Earth
+
+by the frit
+
+Fig. 6.33: The Earth and the
+fruit applying equal and small to be noticed.
+
+opposite gravitational forces
+on each other Example 6.8: When a 0.1 kg bullet is fired from a 5 kg gun with a force
+of 2 N, the gun recoils, What are the magnitudes of initial accelerations
+Note of the bullet and the gun?
+
+Even though the Answer: From the Newton’s third law of motion, the recoil force on
+
+forces acting on the gun is also 2 N.
+
+the two interacting From the Newton's second law of motion, the initial magnitudes of
+
+edad acceleration of gun
+
+always equal in
+
+magnitude, they force __ 2N _ogms2
+
+do not, in general, massofgun 5kg
+
+produce equal .
+
+acceleration, While the initial acceleration of bullet
+
+This is because force 2N 20 ms”
+
+ber ia ee P mass of bullet 0.1 kg
+
+they are acting Even though the pair of forces are equal in magnitude, the
+
+may be different. magnitudes of accelerations are not equal because their masses are
+different.
+
+(110) Exploration | Grade 9

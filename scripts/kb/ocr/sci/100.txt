@@ -1,0 +1,36 @@
+When we allow a solvent to evaporate to get a solute,
+such as salt from a salt solution, the solvent di
+However, we may also want to recover the solvent. What
+should we do then?
+
+While experimenting in the laboratory, a student
+accidentally mixed acetone and water, two miscible
+liquids. How can we separate the two miscible liquids? Is it
+possible to separate the mixture of two miscible liquids by
+evaporation and obtain both the liquids?
+
+5.3.2 Distillation
+
+A homogeneous mixture of two miscible liquids can be
+separated by heating the mixture until the liquid with
+the lower boiling point vaporises. The vapour is then
+cooled, turning back into liquid (Fig. 5.11). This process
+is known as distillation. It allows the recovery of the
+solvent or the separation of liquids that differ in boiling
+point by at least about 25 °C. This method can also be
+used to separate a liquid from a solution containing
+
+Heating dissolved solids.
+
+——
+
+During the process, vapours of the lower-boiling liquid
+are passed through a condenser where they are cooled,
+usually by circulating water or air and condensed as
+lig 2 oy a pure liquid is collected in a separate
+
+vessel, while the solid or other liquid from the mixture
+
+nie) remiiphin,dhe tistilgjtityy Bask. A distilation set-up is
+stigeatip Fig-5.22,
+

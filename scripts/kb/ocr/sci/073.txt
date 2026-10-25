@@ -1,0 +1,62 @@
+Describing Motion Around Us
+
+Let us define another physical quantity, average velocity, which
+describes how fast the position of an object is changing and in which
+direction,
+
+The average velocity of an object in a time interval is the change in the
+position (or displacement) divided by the time interval in which the change
+in position (or displacement) occurs. Thus,
+
+... change in position _ displacement 42,
+average velarny time interval time interval G28)
+
+If we represent average velocity by v,,, displacement by s and time
+interval by t, then Eq. (4.2a) can be written as
+
+at
+Ye (42b) Note
+
+To express the average velocity, you need to specify its magnitude as For motion in
+well as the direction. How do we associate direction with velocity when the _ straight line,
+motion is in a straight line? The direction of the velocity is the same as the the average
+direction of displacement and is indicated by a ‘+’ or ~’ sign. _ Speed and the
+
+The SI unit of average speed and average velocity are the same It is Magnitude of
+metre per second which is represented by ms“ or m/s. It is also commonly
+measured in kilometre per hour (km h*).
+
+To describe how fast or slow a change in a physical quantity happens, —_ object moves in
+we use the idea of a rate of change. The ratio of change in one quantity to _ one direction.
+the corresponding change in time is called the rate of change. To calculate
+average velocity, we find the ratio of change in position to the time taken
+(Eq. 4.2a). So, we can say that average velocity is the average rate of change
+of position of an object with respect to time.
+
+Example 4.2: Sarang takes 50 seconds to swim from one end to the other
+
+end and back in the swimming pool shown in Fig. 4.7. Find his average
+
+speed and average velocity within the time interval of 50 s.
+
+Answer: |
+
+Total distance travelled by Sarang in 50s= 50m
+displacement of Sarang in 50s=0m
+
+aventer eee time interval 50s
+5 25m
+. cement Om _ Y
+average velochy > oer soe oe Pg 47: Sutin poo
+
+During the 50 s time interval, the average speed of Sarang is approximately
+ims“ while his average velocity is 0m s*.
+
+U1 | Pause and Ponder
+
+4. During a family road trip, you drive 200 km north in three hours. Afterwards, you drive 200 km
+south in two hours. Find the average speed and average velocity for your entire trip.
+
+5. Under what condition(s) is the
+(i) magnitude of average velocity of an object equal to its average speed?
+(ii) magnitude of average velocity of an object zero while its average speed is not zero?

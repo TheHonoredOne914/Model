@@ -1,0 +1,48 @@
+shows various combinations of quantities of barley and wheat that |
+can be grown by the farmer. H
+
+Combination | Barley (in kg) | Wheat (in kg)
+
+When these combinations are plotted on a graph (Fig. 8.3),
+where the x-axis represents the quantity (in kg) of barley grown,
+and the y-axis represents the quantity (in kg) of wheat grown, a_ |
+downward sloping curve is derived. '
+
+y-axis
+100
+80
+
+60
+
+40
+
+Wheat (in kg)
+
+28 Production
+
+Possibility
+a | Curve (PPC):
+i) 20 40 60 80 100 | The curve
+
+. | showing
+wr eh ! different
+
+Fig. 8.3. Production Possibility Curve | combinations
+| of goods
+
+This is called the Production Possibility Curve (PPC), which shows | thatcanbe
+
+the trade-off between barley and wheat produced. As the farmer | produced
+moves from point A to E, they produce more barley and lesser wheat. ‘ petra
+However, to grow more barley, some wheat must be sacrificed—this | resources.
+is the opportunity cost of growing barley. All the points on the PPC |
+
+show the maximum output that can be produced through efficient
+
+use of resources by avoiding wastage. This helps in better planning
+
+and decision-making by enterprises and the governments.
+
+8 - Building Blocks
+in Economics:
+The Problem of Choice

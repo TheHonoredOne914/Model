@@ -1,0 +1,60 @@
+How Forces Affect Motion
+
+ball as it slows down, thus requiring a smaller force to be applied by the
+fielder to stop the ball. Applying a smaller force to the moving ball also
+minimises injury to the fielder.
+
+@ Bridging Science and Society
+F
+
+“For a similar reason, airbags are provided in vehicles
+(Fig. 6.19). In the event of a collision and the vehicle
+coming to an abrupt halt, the airbag inflates quickly into
+
+hitting
+the hard steering wheel or dashboard, the passenger's
+head and chest push into the bag, and the time over
+which the hitting occurs increases. Smaller acceleration
+means a reduced force exerted on the person, thereby
+lowering the risk of serious injuries, particularly when Fig. 6.19: Inflated airbag in
+combined with the seat belt usage. avehicle
+
+“yp Have you ever attempted cracking a fresh coconutin one
+zy go? It is brought down at a very high velocity to hit a hard
+
+surface (Fig. 6.20). When the cocanut hits the ground, it stops in
+
+4 a very short time. To change its velocity so quickly, the ground
+
+Fig. 6.20: Crackinga ust exert a very large force on it. This large force breaks the
+coconut in one go shell.
+
+Example 6.4: A weight lifter is holding a barbell with mass of 10 kg fixed on
+each side of the bar (Fig. 6.8), The mass of the bar itself is 10 kg. How much
+force is she applying to keep the barbell steady?
+Answer: The total mass of the barbell is 30 kg. The gravitational force due to
+the Earth, acting on the barbell in the downward direction is (using Eq. 6.3),
+
+F = mg=30kgx98ms*=294N
+
+To keep the barbell steady, the weightlifter has to apply an equal force
+in the opposite direction. So, she is applying 294 N in the upward direction,
+Example 6.5: A student is trying to push a stationary block of 25 kg on a
+horizontal floor. The maximum force of friction opposing this motion is
+50 N. Determine the displacement of the block in 2 seconds if Rahul pushes
+it with a constant force of (i) 50 N and (ii) 55 N in the forward direction.
+Answer:
+
+(i) The force applied by the student is equal to the opposing force of
+friction. Thus, the two forces are balanced and the net force acting on
+the block is zero. So, the block will remain stationary.
+
+(ii) The net force on the block is 55 N-50N=5N.
+The mass of the block is 25 kg. Using the Newton's second law of
+motion, the acceleration of the block is
+
+o- ke ake mS
+
+Using the kinematic equation, the displacement of the block in
+2 seconds is s = ut + tat =[Oms* x2s]+ +[fx02ms* «(23 |=04 m
+in the forward direction.

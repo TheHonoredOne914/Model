@@ -1,0 +1,66 @@
+Describing Motion Around Us
+
+only the numerical value (with units) is required, not the direction of | Note
+
+motion. The SI unit for both is the metre (m). For motion in a
+For example, in Fig. 4.4, between r= 0s and t= 16 s, the total distance ooo
+
+travelled by the athlete is 160 m, but her displacement is 40 m in the te rade
+
+positive direction. We find that between these two instants, the total the magnitude
+
+distance travelled and the magnitude of displacement are not equal. Can _of displacement
+
+these quantities ever be equal? are equal if the
+Activity 4.1: Let us analyse bor agclopito
+
+1. As shown in Fig. 4.5, a ball is thrown vertically upwards from O. It _ back, Le, if it
+moves up straight till B and then falls back to 0. Can this be considered © moves in one
+a motion in a straight line? direction.
+2, For this motion, fill up the values in Table 4.1.
+Table 4.1: Distance travelled and displacement of the ball
+
+Suite prose pcorr hing Displacement of the ball from | ‘“°™
+that position O till that position ‘eden
+
+100 cm
+
+fn
+
+80cm
+
+u--e--=
+
+ee See
+
+3. Analyse the data filled in Table 4.1 and choose which of the following
+is true for displacement:
+(@) Itis never zero. in vertical motion (two
+(ii) Its magnitude can be greater than the total distance travelled. separate lines are shown
+(ii) Its magnitude is less than or equal to the total distance travelled. only for clarity; in reality,
+(iv) Its magnitude is less than the total distance travelled in all cases. _ “he object goes up and
+
+Ocm
+
+Fig. 4.5: A ball
+
+falls back in the same
+ll | Pause and Ponder_
+
+1. Inthe example of an athlete running back and forth on a straight track (Fig. 4.4), when
+will the displacement of the athlete be zero? What will be the total distance travelled
+in that case?
+
+2 Fuel used up in a vehicle depends on which of the following? Justify your answer.
+(i) Total distance travelled 40cm
+(i) Displacement 6 cm 20 er
+
+3. A ball rolls down an inclined track as 30cm
+shown in Fig. 4.6. Is its motion, a straight 0
+
+line motion? Assuming the starting point
+
+of the ball (0) to be the origin, can its Fig. 4.6: A bail rolling down an inclined track
+motion from 0 to D be depicted using a horizontal line as shown in Fig. 4.3? Are the
+values of total distance travelled and magnitude of displacement from O equal or
+different at positions A, B, Cand D?

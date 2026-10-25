@@ -1,0 +1,58 @@
+Exploring Mixtures and their Separation
+
+The concentration of a solution can be expressed in several ways, a [ tex
+common one being the percentage which we are discussing here. You will | “t
+learn about other methods in higher grades.
+
+The three main ways to express the concentration of a solution in terms
+of percentage are given below,
+
+A. Mass by mass percentage (% m/m or % w/w)
+This method is commonly used to express the concentration of
+homogeneous mixtures. It tells us how many grams of solute are present
+in 100 grams of the total solution.
+This can be expressed mathematically as,
+Mass of solute
+
+Mass by mass percentage = Madison 100 61)
+
+This method of expressing concentration is also used for heterogeneous
+mixtures, such as milk powder (Fig. 5.4a) and spice mixtures. It is also used
+to label the composition of packaged foods, showing how much salt, sugar,
+or protein is present in them.
+
+Example 5.1: If 10 g of salt is dissolved in 90 g of water, calculate the mass
+by mass percentage of the solution formed.
+Answer: Mass of salt (solute) = 10 ¢
+Mass of water (solvent) = 90 g
+Total mass of solution = Mass of solute + Mass of solvent
+=10g+90g=100¢
+Mass of solute
+Mass by mass percentage = 3 solution 10
+10g
+100 g
+B. Mass by volume percentage (% m/v or % w/v)
+
+This method is used where measuring the volume of a liquid is easier
+than weighing it, for example, in medicines and laboratories. A common
+example is 5% glucose solution (Fig. 5.4b). It tells us how many grams of the
+solute is present in 100 millilitres of the solution,
+Mathematically,
+Mass of solute
+
+Mass by volume percentage = Vohineofwokitiog (5.2)
+
+Example 5.2: If 5 g of glucose is dissolved in water to make 100 mL of
+solution, calculate its concentration in mass by volume percentage.
+Answer: Mass of glucose (solute) = 5 g
+
+Volume of solution = 100 mL of solute
+
+M volume percentage = ————————_« 1
+rare. ial Volume of solution sil
+
+* 100 = 10.% m/m
+
+38 -
+= Tope 100-5 %mvv
+

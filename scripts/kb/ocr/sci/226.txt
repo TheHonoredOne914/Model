@@ -1,0 +1,35 @@
+12.
+
+13.
+
+14.
+
+15.
+
+The speed of sound in air is about 331 m s‘ at 0°C and nearly
+344 m s* at 22°C. Roughly how much extra time will the sound of
+thunder take to travel a distance of 1720 m, if the air temperature
+changes from 22 °C to 0 °C? Assume that all other conditions remain
+unchanged.
+
+The variation of density of medium for a sound wave propagating
+with a speed of 340 m s* is shown in Fig. 10.32. Calculate the
+wavelength and frequency of the sound wave.
+
+Fig. 10.32
+The graphical representation of two sound waves A and B propagating
+at the same speed of 345 m s* is shown in Fig. 10.33. What is the
+wavelength of each of them? Also, calculate their frequencies.
+
+e 25 5. Distance (cm)
+Fig. 10.33
+
+Two identical sound sources are placed at A and B—one in air and
+one submerged in water (Fig. 10.34). Both produce sounds at the same
+time, which travel horizontally to the vertical side of the cliff and
+come back. If the time taken by the sound to return to A is 4.5 times
+than that of B, what is the ratio between the speeds of sound in air
+and water?
+
+Fig. 10.34
+

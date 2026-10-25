@@ -1,0 +1,49 @@
+Note 5. Repeat step 4 with different sources of sounds and observe the effect
+
+ee tion on the grains. You can try increasing or reducing the volume of sound.
+y Frees Try with different grains.
+wave, it is the Do you observe the grains over the sheet move or jump? Why does this
+
+energy that is happen, even though the source of sound is not touching the sheet or the
+transferred. not container? As sound propagates through air, it reaches the sheet and makes
+
+the particlesof _ jt vibrate. This vibration causes the grains to move.
+the medium.
+
+This shows that sound is a form of energy. When the source of sound
+vibrates, it transfers energy to the surrounding medium. As sound waves
+propagate in a medium, the vibration of particles of the medium and their
+collisions with other particles result in the transfer of energy.
+
+® Bridging Science and Society
+Particles in a medium Microphones (Fig. 10.15a) that help
+us capture sound from various
+rt her in sources convert sound energy to
+due to thermal energy. By. Ag again}
+haisstictaccostprai
+passes through
+increases the vibration signal. A a ino
+of these parties. After (Fig. 10.15b) does the opposite; an electrical signal makes a
+tha -seave paeten: tbe cone or diaphragm attached inside the speaker vibrate, which
+particles return to their produces sound. If all components work properly, the sound
+Mea Ealenoa SOO. from the speaker closely matches the originally captured sound.
+ll >| Pause and Ponder
+5. When sound travels from a tuning fork to your ear, which of the
+following actually reaches your ear?
+(i) Air particles near the tuning fork
+
+(ii) Energy carried by sound waves
+(iil) The tuning fork material
+(iv) A continuous stream of compressed air
+
+10.5 Graphical Representation of a Sound Wave
+
+As a sound wave propagates, at any given instant of time the density of
+the medium varies periodically with distance from the source. Fig. 10.16a
+shows the periodic variation of density with distance at any given instant
+of time. The graph corresponding to it is shown in Fig. 10.16b where the
+distance is plotted on the x-axis, while the density of the medium is plotted
+on the y-axis. The average density is marked as a horizontal dashed line.
+The density varies (above and below the average density) with distance at
+a given instant of time.
+

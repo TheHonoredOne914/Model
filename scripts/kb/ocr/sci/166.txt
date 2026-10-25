@@ -1,0 +1,56 @@
+N-shell(n=4) 8.2.3 Bohr’s model of the atom
+Mshell(n-3) Tq explain why atoms are stable, Niels Bohr
+
+ier pate proposed a new model of the atom in 1913.
+shell“) ‘According to Bohr:
+
+eel * Electrons do not move randomly around the
+nucleus but follow fixed circular paths called
+stationary states, orbits, or shells. In each shell,
+an electron has a definite amount of energy, so
+
+these shells are also called energy levels.
+Fig. 8.7: Energy levels in an * These shells are represented by the letters K, L,
+atom M,N, ... or by the numbers n = 1, 2, 3, 4, ... (Fig. 8.7).
+
+* Electrons can revolve only in these allowed shells, and not in between
+them. While moving in a fixed shell, an electron does not lose energy.
+
+MeetaScientist * The first energy level K(n = 1) is the one closest to the nucleus (Fig. 8.7)
+and has the least energy.
+
+* The energy of these levels increases as we move away from the
+nucleus. That is, the energy of an electron in the L-shell (n = 2) is more
+than that of an electron in the K-shell (n = 1), The farther away a shell
+is from the nucleus, the higher is its energy.
+
+* An electron can move to another shell by absorbing or releasing a
+fixed amount of energy equal to the difference between the energies
+of the two levels.
+
+paige * Each shell can hold only a certain number of electrons.
+of physics at You may be wondering, how does Bohr’s model explain stability?
+Copenhagen In Bohr’s model, electrons also move in circular paths around the
+University, positively charged nucleus, as in Rutherford’s model. But why don’t
+Denmark. He they lose energy while doing so? Bohr addressed this by introducing the
+shal becom concept of stationary states as a postulate. In a stationary state, the energy
+poop histones of an electron remains constant, even though it is in motion around the
+the old models nucleus. Bohr’s model could explain many experimental observations
+could not explain and marked a major step in understanding the atomic structure.
+why electrons
+nucleus one eS ee Searles
+
+jut
+collapsing. His Why are Bohr's shells called K, L, M, N... and not, A, B, C, D?
+explanation of the The naming came from early X-ray experiments by the physicist, Charles
+atomic structure Barkla, who called the first observed X-ray line K. He didn’t start naming
+provided more from A to leave room for possible discovery of a series earlier than the
+Seat Asterolta _ _ -Kseries, although none were ever found. Bohr adopted the same notation
+ee Arley | * for atomic shells.
+his work on the
+structure of the
+
+Later, even Bohr’s model was found to have limitations, and yet
+[= another model, the quantum mechanical model, was proposed.
+
+‘st | You will learn about it in higher grades,

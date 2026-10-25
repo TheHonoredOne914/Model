@@ -1,0 +1,67 @@
+Atomic Foundations of Matter
+
+Ionic compounds generally have high melting and boiling points due to
+strong inter-ionic attractions, whereas covalent compounds usually have
+
+low melting and boiling points.
+ll p> | Pause and Ponder
+19. What type of chemical bond is present in a solid compound that does not conduct
+electricity in the solid state but conducts electricity when dissolved in water?
+
+20. Metal M, with two electrons in its valence shell (M shell), reacts with oxygen to
+form a compound that is slightly soluble in water. Predict its:
+
+() formula
+(ii) type of bond
+(iii) electrical conductivity of its aqueous solution.
+
+9.7 Molecular Mass of Covalent Compounds
+
+Since you know the formulae of the covalent compounds, you can find the
+
+masses of their molecules by simply adding up the masses of the atoms
+
+present in them.
+
+Example 9.4
+
+Molecular mass of water (H,O)
+
+Atomic mass — H = 1u;O=16u
+
+Molecular mass of H,O = (1 u* 2) + (16u*1)=18u
+
+Example 9.5
+
+Molecular mass of carbon dioxide (CO,)
+
+Atomic mass —C = 12u;O=16u eo
+
+Molecular Mass of CO, = (12 u = 1)+ (16u*2)=44u
+You have learnt in section 9.4.2 that in ionic compounds, the ions form (b) Naphthalene
+
+3-D crystals, Le., ionic compounds do not form molecules. Fig. 9.17: Covalent
+
+compounds
+
+(>| Pause and Ponder
+
+21. Find the molecular mass of nitri¢ acid (HNO,).
+Atomic mass — H = 1 u; N=14u; O= 16 u.
+
+22. Find the molecularmass of methane (CH,).
+Atomic mass — C= 12u;H=1u.
+
+9.8 Formula Unit Mass of Ionic Compounds
+
+In ionic compounds, the collection of the simplest whole number ratio of
+ions is termed as a formula unit. The mass of a formula unit is called the
+formula unit mass.
+
+Example 9.6
+
+Formula unit mass of sodium oxide (Na,O)
+
+Atomic mass—Na = 23 u;O = 16u
+
+Formula unit mass of Na,O = (23 u~2)+(16u~1)=62u

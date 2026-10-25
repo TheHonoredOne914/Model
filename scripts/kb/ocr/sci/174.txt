@@ -1,0 +1,50 @@
+8.9 A Deeper Look into Atomic Structure
+
+8.9.1 Isotopes
+
+Dalton proposed that all atoms of an element are identical and have
+the same mass. But scientists later discovered that there were atoms of
+the same element that could have the same number of protons (atomic
+number, Z) yet could have different numbers of neutrons, and thus,
+different mass numbers (A = p” + n°). These ‘twin atoms’ with the same
+atomic number but different mass numbers are called isotopes.
+
+Let us take hydrogen as an example. Naturally occurring es
+is a mixture of three different isotopes: }H (protium, ~99. 98%), 2 7H
+(deuterium, ~0.015%), and }H (tritium, in traces) (Fig. 8.12). All of these
+contain one proton each, whereas deuterium contains one neutron, and
+tritium contains two neutrons. Can you guess how many electrons each of
+
+these isotopes have?
+Protium Deuterium
+
+Fig. 8.12: Schematic representation of isotopes ue
+
+— The chemical properties of isotopes are similar. Do you
+_ Ready to Go Beyond know why? It is so because they have the same number of
+electrons and the same electronic configuration. As you have
+
+a neahetie! note hg learnt, chemical properties depend mainly on the number of
+or grams like everyday , -valence electrons, All the isotopes will have the same chemical
+
+objects. Just as itiseasier © Properties although they differ in their physical properties,
+to weigh a grain of wheat for example, boiling and melting points.
+
+in milligrams rather than Similarly, carbon has three isotopes: ‘;C, iC, and “$c
+a aun unit rey pr (Fig. 8.13). Each of these has six protons and six electrons.
+unified atomic mass unit (u) mc is the most abundant isotope in nature. You may note that
+to measure the mass of these three isotopes differ in terms of the number of neutrons
+atoms. This is because in them.
+
+a kilogram is too large
+for such small particles.
+Earlier, atomic mass was”
+expressed in atomic mass
+unit (abbreviated as ‘amu’.
+
+Carbon —12 Carbon - 13 Carbon -14
+
+Fig, 8.13; Schematic representation of isotopes of carbon
+
+Let us learn about the essential uses of some isotopes in our daily lives.
+
