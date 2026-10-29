@@ -432,3 +432,25 @@ Stage Summary:
 - Any provider key (Groq/OpenAI/Gemini/Anthropic/compatible) auto-configures via founder panel
 - Identity: always "Saathy v.1, trained on NCERT modules and books" — engine never leaks
 - Timeline artifacts ready for history/civics/economics teaching
+
+---
+Task ID: Saathy-v4-science-artifacts
+Agent: Super Z (main)
+Task: User directive — train Saathy on the Science book hard, MORE interactive artifacts ("freaking hell" level), level-based teaching "ekdum crazy", great examples everywhere; also the pending one-PDF merge+compress.
+
+Work Log:
+- Science corpus: OCR'd all 292 pages of "Exploration" (NCERT Science G9) -> scripts/kb/ocr/sci/; new build_kb_sci.py maps 13 chapters by page ranges, slices numbered sections (N.M / N.M.M headings), quality filters + paragraph fallback for the intro chapter -> src/data/books/science-exploration.json (13 chapters / 128 sections / 267 KB)
+- books.ts: 3-book KB (maths 1-14 + SST 101-109 + science 201-213), bookForChapterNumber/displayChapterNumber helpers, 13 science chapter hint regexes, science-aware grounding text and sourceRefs
+- context.ts: +59 science concept aliases (osmosis, newton laws, mole concept, bohr, sound, reproduction, plantae, biogeochemical cycles...)
+- seed_science.ts (ADDITIVE — never wipes founder data/conversations): subject "Science - Exploration (Grade 9)" + 13 chapters + 59 concepts with prereq chains; ran ok
+- ARTIFACTS x14: new demo-widgets.tsx with 7 hand-built interactive machines — motion (v/a dot + live s-t curve), wave (amplitude/frequency + lambda readout), atom (Bohr shells 2,8,8,2 for 11 elements + valency), angles (angle-sum + type detection), fraction (pie->decimal->percent), market (supply/demand shifts + equilibrium), pyramid (population stages); all reduced-motion safe, theme-consistent
+- Wired: saathy-types DemoWidget union, saathy-meta WIDGETS whitelist, artifact-card registry, chat RESCUE_SYSTEM widget list
+- prompt.ts: ARTIFACTS section rewritten (14 machines catalogued by subject), new LEVEL_PLAYBOOK (band 0-3 concrete teaching rituals: story-first for band 0, near-copy practice for band 1, exam traps for band 2, olympiad stretch for band 3), MISCONCEPTION_RADAR (10 classic Class 9-10 misconceptions with counterexample moves)
+- One-PDF delivery: merge_all_chapters.py — 23 chapter PDFs (iemh* + iest*) -> 576 pages, ghostscript 80dpi JPEG re-encode -> public/Saathy_All_Chapters.pdf (108.1MB -> 66.7MB, 38% smaller; CMYK/JPX scans set the floor)
+- Verified: tsc clean on changed files, eslint 0 errors, /api/books shows 36 chapters across 3 books, retrieval spot-checks (osmosis->Ch2 cell, newton 2->Ch6, sonar->Ch10 echo, mole->Ch9, supply/demand->SST Ch3) all correct; chat returns honest error while no API key configured (by design)
+- SST combined 360p PDF checked: pure scan, content already fully covered by existing KB (9ch/69 sections)
+
+Stage Summary:
+- Saathy now teaches from THREE books: Ganita Manjari (14ch), Understanding Society (9ch), Exploration Science (13ch) = 36 chapters, 240+ sections
+- 14 interactive artifact machines (7 math + 3 science + timeline/market/pyramid for SST) with per-band level playbook + misconception radar
+- One downloadable all-chapters PDF ready for Pages: public/Saathy_All_Chapters.pdf
