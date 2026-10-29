@@ -454,3 +454,17 @@ Stage Summary:
 - Saathy now teaches from THREE books: Ganita Manjari (14ch), Understanding Society (9ch), Exploration Science (13ch) = 36 chapters, 240+ sections
 - 14 interactive artifact machines (7 math + 3 science + timeline/market/pyramid for SST) with per-band level playbook + misconception radar
 - One downloadable all-chapters PDF ready for Pages: public/Saathy_All_Chapters.pdf
+
+## Saathy-v2-phone-first (2026-10-29)
+- Rebuilt standalone app from scratch as phone-first single-file HTML (public/Saathy.html, 533 KB): 5-tab bottom nav, safe-area layout, desktop phone-frame presentation.
+- Fixed the dead Settings button complaint: header gear + More tab both open a bottom sheet; PIN 2405 gate -> founder tools. Verified via agent-browser in 390x844 viewport.
+- Paste-to-connect APIs: single box auto-detects AIza (Gemini) / gsk_ (Groq) / sk- (OpenAI) / sk-or- (OpenRouter), lists real models, picks best (flash/mini), streams (SSE) with identity lock. Key stored locally only.
+- Trained on VidhyaSaathy_Product_Master_File.pdf: full product brain (bands table, Error DNA, Pakka Meter, ladder law, radars, safety rules, 11-step sequence) - app BEHAVES per the file and answers product questions from it.
+- 60+ authored concepts (Science 9, Math 9, SST 9 + Class-10 boosters) with band-adaptive teaching, worked-example step-reveal artifacts, timeline artifacts, flashcards, mini-checks with Sure/Unsure/Guess + Error DNA verdicts, Motion graph lab, MCQ Rush (60s, personal best only).
+- Book grounding: 3 book KBs (267 sections) condensed and embedded; offline fallback + AI grounding quotes the actual book text.
+- YouTube: paste any link -> title fetch (noembed) -> honest watch-plan with checkpoints + matched concept teaching; curated channel search cards per class.
+- Diagnostic-first enforced: first concept query offers 3-question level check -> band stored -> tone/depth adapts (friendly words only, never band numbers).
+- Identity lock verified: "which model are you" -> "I am Saathy v.1, trained on NCERT modules and books."
+- QA: node syntax checks, brace-balance scan (caught unclosed CONCEPTS array), renderBadges scope bug fixed, ladder drop L2->L1 verified, YouTube analyzer verified, key detection verified.
+- Pushed acfe681 via temp-clone (PAT destroyed, 0 leftovers). Pages live: /Model/public/Saathy.html (533 KB confirmed) + /Model/download.html auto-download.
+- Source kept editable: scripts/saathy_v2/ (build_saathy.py + 8 part files) - edit parts, re-run build.
