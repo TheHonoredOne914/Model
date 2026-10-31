@@ -498,3 +498,14 @@ Work Log:
 Stage Summary:
 - DELIVERABLE: public/Saathy.html + download/Saathy.html (757KB, 3 books embedded: 14+13+9 chapters)
 - All 10 phases live; identity locked; mobile-first verified
+
+## 2026-10-31 — Saathy v3.1: REAL curated video library (user's #1 gap)
+- FULL-CHAT AUDIT vs every user ask: verified settings-opens (fixed in v3), mobile-first layout, Gemini plug-and-play, plan flow diag→slides→quiz→game→flashcards→report, 5 games, 12 labs, Error DNA, parent daily + teacher heatmap reports, 100-file/300MB/1GB caps (standalone + web MAX_DOCS=100), Pages live 754KB -> all PASS. ONLY gap: video kit used channel SEARCH links, not direct links.
+- 6 parallel research agents searched YouTube per subject group (Maths 9/10, Sci 9/10, SST 9/10) -> 276 candidate videos.
+- Verification: innertube API bot-gated (LOGIN_REQUIRED) -> switched to public oEmbed; 268/276 IDs confirmed REAL (fake -> 400). Real titles + channels captured.
+- VIDEO_DB built: 92 concepts x ~3 teachers (primary + alternates, big-teacher preference order) = 268 verified direct links; scripts/v3/part3_videos.js (41KB).
+- Replaced fake-mm:ss WATCH_PLANS with honest AUTO_PLAN relative checkpoints (0:00 hook / ~20% basics / ~50% core / ~75% examples / end recap) + note that the video's own chapters allow precise jumps.
+- New video cards: live ytimg thumbnail, "Watch now — direct link" (primary teacher), 2 alternate-teacher direct links, "find another teacher" search deep-link; emojis stripped from titles; stale "opens the exact search" copy rewritten (268 direct links message).
+- build.py concatenates part3_videos.js; standalone rebuilt 785KB; node --check all parts OK.
+- Browser QA (390x844): boot clean (0 errors), 92 cards + 268 direct links in DOM, filter works ("motion" -> 2 cards), all 8 tabs render, settings opens, MCQ Rush stage opens, parent+teacher reports render, plan picker + loop copy verified.
+- Pushed 60b02d5 (local) + 44ac862 (GitHub) via temp clone, PAT destroyed. download/Saathy.html updated too (gitignored, local only).
