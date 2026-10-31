@@ -334,16 +334,27 @@ function renderVideos(){
   paintVK();
 }
 function vkSearch(q){ go("videos"); vkF={cls:"all",subj:"all",q}; renderVideos(); }
+/* Group VIDEO_DB: primary video first per concept, alternates = "more teachers" */
+const VK_GROUPS={};
+VIDEO_DB.forEach(([bk,cls,concept,vid,author,title])=>{
+  const k=bk+":"+cls+":"+concept;
+  (VK_GROUPS[k]=VK_GROUPS[k]||{bk,cls,concept,vids:[]}).vids.push({vid,author,title});
+});
 function paintVK(){
-  const list=VIDEO_KIT.filter(([bk,cls,concept])=>
-    (vkF.subj==="all"||bk===vkF.subj)&&(vkF.cls==="all"||String(cls)===vkF.cls)&&(!vkF.q||concept.toLowerCase().includes(vkF.q.toLowerCase())));
-  $("#vkList").innerHTML=list.length?list.map(([bk,cls,concept,query])=>{
-    const plan=cls===9?WATCH_PLANS.default:WATCH_PLANS.short;
-    const links=VK_CHANNELS[bk].map(([chName,kw])=>`<a class="vlink" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=${encodeURIComponent(kw+" "+query)}">▶ ${chName}</a>`).join("");
-    return `<div class="vk-card"><span class="v-sub">Class ${cls} · ${bk==="math"?"Maths":bk==="sci"?"Science":"SST"}</span><h4>${concept}</h4>
-      <div class="watch-plan"><div class="wp-t">Watch plan · suggested checkpoints</div>
-      ${plan.map(([t,lab])=>`<div class="vt-row"><b class="t">${t}</b><span>${lab}</span></div>`).join("")}</div>
-      <p class="vt-note">Different teachers explain differently — try Magnet Brains for full chapters, Khan Academy for intuition, PW for energy. Timestamps are typical one-shot structure; the video's own chapters let you jump to each.</p>
-      <div class="vlinks">${links}</div></div>`;
+  const groups=Object.values(VK_GROUPS).filter(g=>
+    (vkF.subj==="all"||g.bk===vkF.subj)&&(vkF.cls==="all"||String(g.cls)===vkF.cls)&&(!vkF.q||g.concept.toLowerCase().includes(vkF.q.toLowerCase())));
+  $("#vkList").innerHTML=groups.length?groups.map(g=>{
+    const [p,...alts]=g.vids;
+    const subj=g.bk==="math"?"Maths":g.bk==="sci"?"Science":"SST";
+    const altLinks=alts.slice(0,2).map(v=>`<a class="vlink" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=${v.vid}">▶ ${v.author}</a>`).join("");
+    const searchMore=`<a class="vlink" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=${encodeURIComponent(g.concept+" class "+g.cls+" full chapter")}">🔍 find another teacher</a>`;
+    return `<div class="vk-card"><span class="v-sub">Class ${g.cls} · ${subj}</span><h4>${g.concept}</h4>
+      <a class="vwatch" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=${p.vid}">
+        <img src="https://i.ytimg.com/vi/${p.vid}/mqdefault.jpg" alt="" loading="lazy" width="160" height="90" style="border-radius:10px;flex:0 0 160px;height:auto;max-height:90px;object-fit:cover">
+        <span class="vw-t"><b>▶ Watch now — direct link</b><span class="vw-author">${p.author}</span><span class="vw-title">${p.title}</span></span>
+      </a>
+      ${alts.length?`<div class="vlinks">${altLinks}${searchMore}</div>`:`<div class="vlinks">${searchMore}</div>`}
+      <div class="watch-plan"><div class="wp-t">Watch plan · auto checkpoints (jump freely — the video's own chapters help)</div>
+      ${AUTO_PLAN.map(([t,lab])=>`<div class="vt-row"><b class="t">${t}</b><span>${lab}</span></div>`).join("")}</div></div>`;
   }).join(""):`<div class="card"><p class="muted">No match — try another keyword (e.g. "motion", "circle", "democracy").</p></div>`;
 }

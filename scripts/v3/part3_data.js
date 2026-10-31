@@ -1,76 +1,15 @@
 /* ================= Saathy v.3 DATA LAYER ================= */
-/* Video Kit: [book, class, concept, query]. Links built at runtime → always-live
-   YouTube deep-links into trusted teacher channels. Watch plans = suggested
-   checkpoints (founder/teacher can fine-tune in app). */
-const VK_CHANNELS = {
-  math: [["Magnet Brains","magnet brains"],["Khan Academy India","khan academy india english"],["Vedantu 9 & 10","vedantu class 9 and 10"]],
-  sci:  [["Magnet Brains","magnet brains"],["Physics Wallah","physics wallah"],["Vedantu 9 & 10","vedantu class 9 and 10"]],
-  sst:  [["Magnet Brains","magnet brains"],["Study IQ","study iq education"],["YouTube — best match","best explanation"]]
-};
-const VK_CATS = ["Class 9","Class 10"];
-const VIDEO_KIT = [
-  /* --- Class 9 Maths --- */
-  ["math",9,"Number Systems","number systems class 9 full chapter"],["math",9,"Polynomials","polynomials class 9 full chapter"],["math",9,"Coordinate Geometry","coordinate geometry class 9 full chapter"],
-  ["math",9,"Linear Equations in Two Variables","linear equations in two variables class 9 full chapter"],["math",9,"Introduction to Euclid's Geometry","euclids geometry class 9 full chapter"],["math",9,"Lines and Angles","lines and angles class 9 full chapter"],
-  ["math",9,"Triangles","triangles class 9 full chapter"],["math",9,"Quadrilaterals","quadrilaterals class 9 full chapter"],["math",9,"Circles","circles class 9 full chapter"],
-  ["math",9,"Heron's Formula","herons formula class 9 full chapter"],["math",9,"Surface Areas and Volumes","surface areas and volumes class 9 full chapter"],["math",9,"Statistics","statistics class 9 full chapter"],
-  ["math",9,"Probability","probability class 9 full chapter"],["math",9,"Sequences and Progressions (Ganita Manjari)","sequences and progressions class 9 ganita manjari"],["math",9,"Algebraic Identities (Ganita Manjari)","algebraic identities class 9 all identities"],
-  ["math",9,"Perimeter and Area (Ganita Manjari)","perimeter and area class 9 heron brahmagupta"],
-  /* --- Class 10 Maths --- */
-  ["math",10,"Real Numbers","real numbers class 10 full chapter"],["math",10,"Pair of Linear Equations","pair of linear equations in two variables class 10"],["math",10,"Quadratic Equations","quadratic equations class 10 full chapter"],
-  ["math",10,"Arithmetic Progressions","arithmetic progressions class 10 full chapter"],["math",10,"Trigonometry","introduction to trigonometry class 10 full chapter"],["math",10,"Applications of Trigonometry","some applications of trigonometry class 10 height and distance"],
-  ["math",10,"Areas Related to Circles","areas related to circles class 10 full chapter"],
-  /* --- Class 9 Science --- */
-  ["sci",9,"Matter in Our Surroundings","matter in our surroundings class 9 full chapter"],["sci",9,"Is Matter Around Us Pure","is matter around us pure class 9 full chapter"],
-  ["sci",9,"Atoms and Molecules","atoms and molecules class 9 full chapter"],["sci",9,"Structure of the Atom","structure of the atom class 9 full chapter"],
-  ["sci",9,"The Fundamental Unit of Life (Cell)","cell the fundamental unit of life class 9 full chapter"],["sci",9,"Tissues","tissues class 9 full chapter"],
-  ["sci",9,"Motion","motion class 9 full chapter one shot"],["sci",9,"Force and Laws of Motion","force and laws of motion class 9 one shot"],
-  ["sci",9,"Gravitation","gravitation class 9 full chapter"],["sci",9,"Work and Energy","work and energy class 9 full chapter"],
-  ["sci",9,"Sound","sound class 9 full chapter"],["sci",9,"Improvement in Food Resources","improvement in food resources class 9 one shot"],
-  /* --- Class 10 Science --- */
-  ["sci",10,"Chemical Reactions and Equations","chemical reactions and equations class 10 full chapter"],["sci",10,"Acids, Bases and Salts","acids bases and salts class 10 full chapter"],
-  ["sci",10,"Metals and Non-metals","metals and non metals class 10 full chapter"],["sci",10,"Carbon and its Compounds","carbon and its compounds class 10 full chapter"],
-  ["sci",10,"Life Processes","life processes class 10 full chapter"],["sci",10,"Control and Coordination","control and coordination class 10 full chapter"],
-  ["sci",10,"How do Organisms Reproduce","how do organisms reproduce class 10 full chapter"],["sci",10,"Light — Reflection and Refraction","light reflection and refraction class 10 full chapter"],
-  ["sci",10,"The Human Eye and the Colourful World","human eye and colourful world class 10 full chapter"],["sci",10,"Electricity","electricity class 10 full chapter"],
-  ["sci",10,"Magnetic Effects of Electric Current","magnetic effects of electric current class 10 full chapter"],["sci",10,"Our Environment","our environment class 10 full chapter"],
-  /* --- Class 9 SST --- */
-  ["sst",9,"The French Revolution","french revolution class 9 full chapter"],["sst",9,"Socialism in Europe and the Russian Revolution","russian revolution class 9 full chapter"],
-  ["sst",9,"Nazism and the Rise of Hitler","nazism and the rise of hitler class 9 full chapter"],["sst",9,"Forest Society and Colonialism","forest society and colonialism class 9"],
-  ["sst",9,"Pastoralists in the Modern World","pastoralists in the modern world class 9"],["sst",9,"India — Size and Location","india size and location class 9"],
-  ["sst",9,"Physical Features of India","physical features of india class 9 full chapter"],["sst",9,"Drainage","drainage class 9 full chapter"],
-  ["sst",9,"Climate","climate class 9 full chapter"],["sst",9,"Natural Vegetation and Wildlife","natural vegetation and wildlife class 9"],
-  ["sst",9,"Population","population class 9 full chapter"],["sst",9,"What is Democracy? Why Democracy?","what is democracy why democracy class 9 full chapter"],
-  ["sst",9,"Constitutional Design","constitutional design class 9 full chapter"],["sst",9,"Electoral Politics","electoral politics class 9 full chapter"],
-  ["sst",9,"Working of Institutions","working of institutions class 9 full chapter"],["sst",9,"Democratic Rights","democratic rights class 9 full chapter"],
-  ["sst",9,"The Story of Village Palampur","story of village palampur class 9 full chapter"],["sst",9,"People as Resource","people as resource class 9 full chapter"],
-  ["sst",9,"Poverty as a Challenge","poverty as a challenge class 9 full chapter"],["sst",9,"Food Security in India","food security in india class 9 full chapter"],
-  /* --- Class 10 SST --- */
-  ["sst",10,"Nationalism in India","nationalism in india class 10 full chapter"],["sst",10,"The Making of a Global World","making of a global world class 10"],
-  ["sst",10,"Print Culture and the Modern World","print culture and the modern world class 10"],["sst",10,"Resources and Development","resources and development class 10 full chapter"],
-  ["sst",10,"Water Resources","water resources class 10 full chapter"],["sst",10,"Agriculture","agriculture class 10 full chapter"],
-  ["sst",10,"Minerals and Energy Resources","minerals and energy resources class 10"],["sst",10,"Manufacturing Industries","manufacturing industries class 10"],
-  ["sst",10,"Lifelines of National Economy","lifelines of national economy class 10"],["sst",10,"Power Sharing","power sharing class 10 full chapter"],
-  ["sst",10,"Federalism","federalism class 10 full chapter"],["sst",10,"Gender, Religion and Caste","gender religion and caste class 10"],
-  ["sst",10,"Political Parties","political parties class 10 full chapter"],["sst",10,"Outcomes of Democracy","outcomes of democracy class 10"],
-  ["sst",10,"Development","development class 10 economics full chapter"],["sst",10,"Sectors of the Indian Economy","sectors of indian economy class 10"],
-  ["sst",10,"Money and Credit","money and credit class 10 full chapter"],["sst",10,"Globalisation and the Indian Economy","globalisation class 10 full chapter"],
-  ["sst",10,"Consumer Rights","consumer rights class 10 full chapter"],
-  /* --- extras to round the kit to 100 --- */
-  ["math",10,"Coordinate Geometry (Class 10)","coordinate geometry class 10 full chapter"],["math",10,"Surface Areas and Volumes (Class 10)","surface areas and volumes class 10 full chapter"],
-  ["math",10,"Statistics (Class 10)","statistics class 10 full chapter"],["math",10,"Probability (Class 10)","probability class 10 full chapter"],
-  ["math",9,"Triangles — Inequalities","triangle inequalities class 9"],["math",9,"Quadrilaterals — Parallelogram Properties","parallelogram properties class 9"],
-  ["sci",9,"Motion — Numericals & PYQs","motion class 9 numericals ncert"],["sci",9,"Gravitation — Numericals","gravitation class 9 numericals ncert"],
-  ["sci",9,"Tissues — Plant vs Animal","plant and animal tissues class 9"],["sci",9,"Why Do We Fall Ill","why do we fall ill class 9 full chapter"],
-  ["sst",9,"French Revolution — Rapid Timeline","french revolution class 9 rapid revision 10 minutes"],["sst",9,"Nazism — The Holocaust","holocaust class 9 nazism explained"],
-  ["sst",9,"Physical Features — Himalayan Mountains","himalayan mountains class 9 physical features"],["sst",9,"Population — Size and Distribution","population size and distribution class 9"]
+/* VIDEO_DB (92 concepts x ~3 teachers, all oEmbed-verified direct links) is
+   loaded from part3_videos.js which is concatenated by build.py before this file. */
+/* Honest auto watch-plan: relative checkpoints (no invented mm:ss) — the video's
+   own YouTube chapters let students jump precisely. */
+const AUTO_PLAN = [
+  ["0:00","Hook & why this matters"],
+  ["~20% in","Basics: the words and the first example"],
+  ["~50% in","Core concept — watch actively, pause + note"],
+  ["~75% in","Worked examples & NCERT questions"],
+  ["end","Recap — then take the Saathy quiz"]
 ];
-
-/* Watch plans (suggested checkpoints; honest label in UI) */
-const WATCH_PLANS = {
-  default:[["0:00","Basics & hook"],["12:00","Core ideas build up"],["35:00","Worked examples"],["1:10:00","NCERT + PYQs"]],
-  short:[["0:00","Rapid revision begins"],["6:00","Key terms & tricks"],["12:00","Exam-style questions"]]
-};
 
 /* Agents (the plan is built by a crew, each step owned by one) */
 const AGENTS = {

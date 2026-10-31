@@ -229,7 +229,7 @@ async function renderFounder(){
   $("#founderBody").innerHTML=`
   <div class="card"><h3>Model status — 10-phase strengthening <span class="chip good">All live</span></h3>
   ${[["1","Knowledge core","3 NCERT books embedded ("+allChapters().length+" chapters)"],["2","Personalisation","4 bands · Error DNA · L1→L3 ladder · learning weights"],
-    ["3","Plan engine","diagnostic → slides → quiz → game → flashcards → report"],["4","Video kit",VIDEO_KIT.length+" concepts, concept-by-concept links + timestamps"],
+    ["3","Plan engine","diagnostic → slides → quiz → game → flashcards → report"],["4","Video kit",VIDEO_CONCEPTS+" concepts · "+VIDEO_DB.length+" verified direct video links (3 teachers each)"],
     ["5","Games","5 arcade games on one question bank"],["6","Artifacts","12 interactive labs (Science · SST · Maths)"],
     ["7","Reports","parent daily + teacher heatmap, printable"],["8","YouTube brain","link understanding + timeline cards + quiz-after"],
     ["9","Corpus","Founder ingestion — "+files.length+"/100 files, ≤300 MB each"],["10","Plug & play AI","Gemini (AIza) / Groq / OpenAI — paste key, one tap"]]

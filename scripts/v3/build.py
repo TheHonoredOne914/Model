@@ -10,7 +10,7 @@ def read(p): return open(p, encoding="utf-8").read()
 
 head  = read(f"{V3}/part1_head.html")
 body  = read(f"{V3}/part2_body.html")
-data  = read(f"{V3}/part3_data.js")
+data  = read(f"{V3}/part3_videos.js") + "\n" + read(f"{V3}/part3_data.js")
 eng   = read(f"{V3}/part4_engine.js")
 feat  = read(f"{V3}/part5_features.js")
 more  = read(f"{V3}/part6_more.js")
