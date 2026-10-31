@@ -219,6 +219,17 @@
 
           <div class="sec-t" id="founderHead" style="display:none">Founder data &amp; tools</div>
           <div id="founderTools" style="display:none">
+            <div class="card" style="padding:13px;margin-bottom:10px">
+              <p style="font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--sub);margin:0 0 4px">Training library — what Saathy learns from</p>
+              <p style="font-size:11.5px;color:var(--sub);margin:0 0 9px;line-height:1.5">PDF / DOCX / MD / TXT (300MB tak). Har trained file yahin se wapas download bhi ho sakti hai. YouTube links bhi knowledge ban jaate hain.</p>
+              <input type="file" id="libFile" multiple accept=".pdf,.docx,.md,.markdown,.txt" style="display:none">
+              <button class="btn block" id="libAddBtn" style="margin:0 0 8px">+ Add documents to my brain</button>
+              <div style="display:flex;gap:6px">
+                <input id="libYtUrl" placeholder="Paste a YouTube link to teach from…" inputmode="url" autocomplete="off" style="flex:1;font-size:13px">
+                <button class="btn sm" id="libYtBtn">Teach</button>
+              </div>
+              <div id="libList" style="margin-top:10px"></div>
+            </div>
             <button class="setrow" id="backupBtn">
               <span class="ic"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 19h16"/></svg></span>
               <div><b>Export learning data</b><small>Download mastery, bands and streaks as JSON</small></div>

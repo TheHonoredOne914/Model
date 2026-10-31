@@ -89,6 +89,8 @@ function systemPrompt(){
 "- Error DNA: classify every mistake — concept gap, careless slip, method error, guess — and serve the matching repair.",
 "- Tone by band: warm & tiny wins (b1), guided examples (b2), application + 'where students slip' (b3), coach-like & brief (b4).",
 "SAFETY (non-negotiable): no fabricated citations or made-up page numbers; say 'I don't know' honestly when unsure; homework mode = Socratic hints, never the direct answer; no fear, no shame, no comparisons with other children; never claim feelings you don't have; keep everything appropriate for a 14-year-old.",
+"YOUTUBE RULES: if the student asks for a video, send them to trusted channels via search links (never invent video IDs/titles/timestamps you have not seen) and give a relative watch-plan (first 10% note the definition, middle 60% pause-and-explain each new point, last 20% re-solve the worked example yourself). If they paste a YouTube link, welcome the pick and build the watch plan around its title — never claim you watched it.",
+"MISCONCEPTION RADAR: when the topic touches classics — distance=displacement, speed=velocity, heavier falls faster, sound in vacuum, 1/8>1/4, tails is due, price is set by shopkeeper — flip the misconception warmly with a 2-line counterexample, never with the word 'wrong'.",
 "Style: short paragraphs, bold key terms, at most 4-6 bullets, one question at a time. Use the student's language: " + langLine,
 "Student context: Class " + s.cls + ". " + bandCtx + (weak.length ? " Misconception-flagged concepts: " + weak.join(", ") + "." : ""),
 "Book grounding: quote/adapt the provided book excerpts when present; if none provided, teach from NCERT knowledge."
@@ -126,16 +128,20 @@ async function ask(q, onDelta){
   if(s.api.key && s.api.provider){
     try{
       const hist = window.curMsgs().slice(-8);
-      // grounding: inject matched book sections + concept card
+      // grounding: matched book sections + concept card + founder library chunks
       const secs = window.findSections(q, 2);
+      const lib = window.libGrounding ? await window.libGrounding(q, 3) : "";
       const ground = (concept ? "CONCEPT CARD: " + concept.t + " | " + concept.one + " | Key: " + (concept.key||[]).join("; ") + (concept.fx? " | Formulas: " + concept.fx.join("; ") : "") : "") +
-        (secs.length ? "\nBOOK EXCERPTS: " + secs.map(x=>"[" + x.ch + " · " + x.t + "] " + x.x).join(" || ") : "");
+        (secs.length ? "\nBOOK EXCERPTS: " + secs.map(x=>"[" + x.ch + " · " + x.t + "] " + x.x).join(" || ") : "") +
+        (lib ? "\n" + lib : "");
       const sys = systemPrompt() + (ground ? "\n\n" + ground : "");
       let full = "";
       for await (const d of genStream(s.api.provider, s.api.key, s.api.model, sys, hist)){ full += d; if(onDelta) onDelta(d); }
       if(full.trim()){
         const arts = [];
         if(concept){ if(concept.qz&&concept.qz.length) arts.push(window.ART.quiz(concept, window.bandOf(concept.id)||2)); if(concept.vid) arts.push(window.ART.video(concept)); if(concept.tl) arts.push(window.ART.tl(concept)); }
+        // video plan: student asked for a video, or the concept is visual
+        if(/(video|youtube|dekho|dikha)/i.test(q) || (concept && /motion|graph|wave|atom|cell|map|diagram|geometry|fraction/i.test(concept.t))){ arts.push(window.ytPlanArts(concept || {t:q.slice(0,40), cls:s.cls})); }
         return {text: full, arts};
       }
     }catch(e){
@@ -214,5 +220,8 @@ $("#connectBtn").addEventListener("click", async ()=>{
   }
   btn.disabled = false; btn.textContent = "Connect";
 });
-$("#modelSel").addEventListener("change", e=>{ const s=S(); s.api.model = e.target.value; SAVE(); });
+(function wireLib(){
+  const yb = $("#libYtBtn"); if(yb) yb.addEventListener("click", ()=>window.libAddYoutube());
+  const lf = $("#libFile"); if(lf) lf.addEventListener("change", e=>{ window.libAddFiles(e.target.files, m=>window.toast(m)); e.target.value=""; });
+})();
 })();

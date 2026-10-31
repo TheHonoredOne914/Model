@@ -62,6 +62,7 @@ def main():
     concepts = read("concepts.js") + read("concepts_part2.js")
     app_core = read("app_core.js")
     app_engine = read("app_engine.js")
+    app_founder = read("app_founder.js")
     app_ai = read("app_ai.js")
     app_views = read("app_views.js")
 
@@ -76,6 +77,7 @@ def main():
     html += "<script>" + concepts + "</script>\n"
     html += "<script>" + app_core + "</script>\n"
     html += "<script>" + app_engine + "</script>\n"
+    html += "<script>" + app_founder + "</script>\n"
     html += "<script>" + app_ai + "</script>\n"
     html += "<script>" + app_views + "</script>\n"
     html += "</body>\n</html>\n"

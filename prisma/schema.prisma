@@ -136,10 +136,12 @@ model DataDoc {
   id        String      @id @default(cuid())
   title     String
   fileName  String
-  kind      String      @default("txt") // pdf | md | txt | docx
+  kind      String      @default("txt") // pdf | md | txt | docx | youtube
   sizeBytes Int         @default(0)
   status    String      @default("parsing") // parsing | ready | failed
   statusMsg String      @default("")
+  url       String?     // source link (YouTube videos added as knowledge)
+  storedName String?    // original file kept in db/library/ so the founder can re-download it
   chunks    DataChunk[]
   createdAt DateTime    @default(now())
 }
