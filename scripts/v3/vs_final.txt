@@ -1,0 +1,3657 @@
+                            Product Blueprint and Application Specification
+
+Complete working document for the VidhyaSaathy app: every role, screen, feature, workflow and open decision.
+
+
+
+
+Sky Blue                  Peach                    Warm White            Navy                      Light Blue
+#7FB3FF                   #FFC8A3                  #FFF9F5               #1E3A8A                   #E6F0FF
+Primary actions, active   Supportive highlights,   Main background,      Headings, text, wordmark Cards, panels, tinted
+learning states           celebrations             comfortable reading                            areas
+
+
+
+
+                   Working draft v1 | For team review | Vikrant University Junior Hackathon 2026
+VIDHYASAATHY         Product Blueprint and Application Specification                               Working draft v1
+
+
+
+
+How to use this document
+VidhyaSaathy is a school-connected learning workspace. Each school class gets an online workspace that
+mirrors the offline class, so the school's support continues after the bell rings. This document describes the
+whole product in one place, so a designer, developer, school stakeholder or new team member can
+understand it without further explanation.
+Every feature has a stable ID such as AUTH-03 or AI-07. Use the IDs in meetings and tickets. IDs and section
+numbers are clickable links throughout the PDF, and the sidebar bookmarks let you jump to any section.
+
+
+ STATUS                   MEANING
+
+          CORE            Required for the central learning loop
+
+          NEXT            Valuable once the core loop works
+
+       ADVANCED           Needs extra engineering, content or validation
+
+        FUTURE            Longer-term possibility, kept for the record
+
+      UNDECIDED           Needs a team decision first
+
+
+Items marked OPEN or [OPEN] are decisions the team has not made. Do not guess them. No feature is marked as
+built, because no working prototype was supplied. Checklists use [ ] for work still to do.
+
+
+
+
+Learn . Grow . Together                                                                                        Page 2
+VIDHYASAATHY         Product Blueprint and Application Specification    Working draft v1
+
+
+
+
+Contents
+ 01          Document overview, sources and source conflicts
+ 02          Product identity and philosophy
+ 03          The core learning loop
+ 04          Brand, logo, mascot and design system
+ 05          User roles and permissions
+ 06          Application map and screen flow
+ 07          School setup and account creation
+ 08          Sign-in, account recovery, shared devices and onboarding
+ 09          Student experience
+ 10          Classes, subjects, chapters and resources
+ 11          Guided self-study sessions
+ 12          Homework, assignments and assessments
+ 13          AI learning engine (core)
+ 14          Advanced and experimental AI features
+ 15          Progress, learning history and motivation
+ 16          Teacher experience
+ 17          Teacher insights and analytics
+ 18          Parent experience
+ 19          School administration
+ 20          Notifications and communication
+ 21          India-specific layer
+ 22          Complete cross-role user journeys
+ 23          Feature dependency map
+ 24          Conceptual data model
+ 25          Security, privacy and responsible AI
+ 26          Screen inventory and interface states
+ 27          Error handling and edge cases
+ 28          Implementation phases and status definitions
+ 29          Acceptance criteria checklist
+ 30          Open decisions and risks
+ 31          Glossary
+ 32          Final product definition
+
+
+
+
+Learn . Grow . Together                                                          Page 3
+VIDHYASAATHY         Product Blueprint and Application Specification                                         Working draft v1
+
+
+
+
+Feature index
+Every feature ID in this document, with its status and the section where it is explained. Click an ID to jump to it.
+
+ ID                 Feature                                                      Status                          Section
+ AUTH-01            School registration                                                     CORE                 07
+ SCH-01             School setup wizard (8 steps)                                           CORE                 07
+ SCH-02             School profile                                                          CORE                 07
+ AUTH-02            Teacher account creation                                                CORE                 07
+ AUTH-03            Student account creation                                                CORE                 07
+ AUTH-04            Student PIN sign-in                                                     CORE                 07
+ AUTH-05            Parent account creation and linking                                     CORE                 07
+ AUTH-06            Admin, teacher and parent sign-in                                       CORE                 07
+ AUTH-07            Session management                                                      CORE                 07
+ AUTH-08            Manual approval fallback                                                NEXT                 07
+ AUTH-09            Profile chooser on shared devices                                       NEXT                 07
+ ONB-01             Student welcome and first-run onboarding                                CORE                 08
+ ONB-02             Teacher onboarding                                                      CORE                 08
+ ONB-03             Parent onboarding                                                       CORE                 08
+ ONB-04             Account recovery                                                        CORE                 08
+ ONB-05             Access-denied and not-yet-available states                              CORE                 08
+ STU-01             Student home screen                                                     CORE                 09
+ STU-02             Today's learning plan                                                   CORE                 09
+ STU-03             Continue card                                                           CORE                 09
+ STU-04             Subjects and chapters                                                   CORE                 09
+ STU-05             Notes and resources view                                                CORE                 09
+ STU-06             Recordings and videos                                                   CORE                 09
+ STU-07             Assignments and quizzes list                                            CORE                 09
+ STU-08             Ask Saathy                                                              CORE                 09
+ STU-09             My progress                                                             CORE                 09
+ STU-10             Profile, language and settings                                          CORE                 09
+ STU-11             Class space                                                             NEXT                 09
+ STU-12             Help and feedback                                                       CORE                 09
+ STU-13             Learning games entry                                                    NEXT                 09
+ LES-01             Class workspace                                                         CORE                 10
+ LES-02             Resource upload                                                         CORE                 10
+ LES-03             Concept-tagged notes                                                    CORE                 10
+ LES-04             Publishing and notifications                                            CORE                 10
+ LES-05             Note publishing from day one                                            CORE                 10
+ LES-06             Chapter history                                                         CORE                 10
+ LES-07             Classroom recordings                                            CORE, if school allows       10
+
+
+
+Learn . Grow . Together                                                                                               Page 4
+VIDHYASAATHY         Product Blueprint and Application Specification                       Working draft v1
+
+
+
+
+ ID                 Feature                                            Status                  Section
+ LES-08             Curated videos (trimmed YouTube)                             CORE          10
+ LES-09             Resource reuse                                                NEXT         10
+ LES-10             Curriculum mapping by board                                   NEXT         10
+ SES-01             Session structure                                            CORE          11
+ SES-02             Session player                                               CORE          11
+ SES-03             Session builder (teacher)                                    CORE          11
+ SES-04             Session completion rules                                     CORE          11
+ SES-05             Timed release                                                CORE          11
+ SES-06             Session reuse across years                                    NEXT         11
+ SES-07             AI-drafted session skeleton                                 ADVANCED       11
+ ASM-01             Student assignments list                                     CORE          12
+ ASM-02             Assignment and homework builder (teacher)                    CORE          12
+ ASM-03             Answering and submission                                     CORE          12
+ ASM-04             Auto-marking                                                 CORE          12
+ ASM-05             Teacher review queue                                         CORE          12
+ ASM-06             Assessments and tests                                        CORE          12
+ ASM-07             Quiz after each session                                      CORE          12
+ ASM-08             Question bank                                                CORE          12
+ ASM-09             Board-format practice                                         NEXT         12
+ ASM-10             Test readiness summary                                        NEXT         12
+ ASM-11             Assignment and session reminders                              NEXT         12
+ AI-01              Context-grounded Ask Saathy                                  CORE          13
+ AI-02              Context retrieval                                            CORE          13
+ AI-03              Concept and prerequisite graph                               CORE          13
+ AI-04              Mistake explanations                                         CORE          13
+ AI-05              Personalised explanation modes                               CORE          13
+ AI-06              Personalised study plan                                      CORE          13
+ AI-07              Prerequisite gap detector                                    CORE          13
+ AI-08              Evidence and mastery estimate                                CORE          13
+ AI-09              Adaptive practice                                            CORE          13
+ AI-10              Hints and scaffolding                                        CORE          13
+ AI-11              Socratic mode                                                CORE          13
+ AI-12              Doubt inbox                                                   NEXT         13
+ AI-13              Concept map (student view)                                   CORE          13
+ AI-15              Honesty layer                                                CORE          13
+ AI-16              Ask Saathy safety settings                                   CORE          13
+ AI-17              Frustration-aware responses                                   NEXT         13
+ AI-18              Warm-up radar (forgetting detector)                         ADVANCED       13
+ AI-19              AI feedback drafts for teachers                              CORE          13
+
+Learn . Grow . Together                                                                             Page 5
+VIDHYASAATHY         Product Blueprint and Application Specification                             Working draft v1
+
+
+
+
+ ID                 Feature                                              Status                      Section
+ AI-20              Natural-language check                                          NEXT             13
+ AI-21              Learning Remix (same concept, new context)                    ADVANCED           14
+                                                                         CORE for drafts, ADVANCED
+ AI-22              AI question and lesson drafts (teacher-approved)                                 14
+                                                                                for lessons
+
+ AI-23              Lesson compiler (one source, many outputs)                    ADVANCED           14
+ AI-24              Concept radar for classes                                     ADVANCED           14
+ AI-25              Targeted reteaching assistant                                 ADVANCED           14
+ AI-26              What-If Machine (simulations)                                 ADVANCED           14
+ AI-27              Mistake Time Machine (solution tracing)                       ADVANCED           14
+ AI-28              Homework autopsy                                              ADVANCED           14
+ AI-29              Mistake DNA (error categories)                                  NEXT             14
+ AI-30              Full-lesson search and AI segmentation                         FUTURE            14
+ AI-31              Chapter-to-comic studio                                        FUTURE            14
+ AI-32              Branching learning adventure                                   FUTURE            14
+ AI-33              Concept court (debate between claims)                          FUTURE            14
+ AI-34              Reverse exam mode (rubric feedback)                           ADVANCED           14
+ AI-35              Viva simulator                                                ADVANCED           14
+ AI-36              Explain-it-back mode (Feynman style)                          ADVANCED           14
+ AI-37              Reality scanner (everyday links)                               FUTURE            14
+ AI-38              Past-and-future reasoning challenge                            FUTURE            14
+ AI-39              Digital twin (predicted next test)                            ADVANCED           14
+ AI-40              Teacher emphasis radar                                        ADVANCED           14
+ AI-41              Mistake autopsy view (class)                                  ADVANCED           14
+ AI-42              Teacher pattern profile ("what tends to be asked")            UNDECIDED          14
+ AI-43              Night recap (audio summary)                                    FUTURE            14
+ AI-44              Big-sibling tutor persona (name UNDECIDED)                    UNDECIDED          14
+ PRG-01             Student progress view                                           CORE             15
+ PRG-02             Learning history                                                CORE             15
+ PRG-03             Achievement milestones                                          NEXT             15
+ PRG-04             Improvement badges (growth, not rank)                           NEXT             15
+ PRG-05             Streaks with freeze                                             NEXT             15
+ PRG-06             Daily five-minute challenge                                     NEXT             15
+ PRG-07             Reflection prompts                                              NEXT             15
+ PRG-08             Parent-facing study prompts                                     NEXT             15
+ MOT-01             MCQ rush                                                        NEXT             15
+ MOT-02             Match the concept                                               NEXT             15
+ MOT-03             Rapid revision                                                  NEXT             15
+ MOT-04             Streak challenge                                                NEXT             15
+ MOT-05             Boss level (chapter unlock)                                     NEXT             15
+
+
+
+Learn . Grow . Together                                                                                   Page 6
+VIDHYASAATHY         Product Blueprint and Application Specification                        Working draft v1
+
+
+
+
+ ID                 Feature                                             Status                  Section
+ TCH-01             Teacher home                                                  CORE          16
+ TCH-02             Class list and class detail                                   CORE          16
+ TCH-03             Roster                                                        CORE          16
+ TCH-04             Publish notes and resources                                   CORE          16
+ TCH-05             Lesson editor                                                 CORE          16
+ TCH-06             Session builder                                               CORE          16
+ TCH-07             Homework and quiz creator                                     CORE          16
+ TCH-08             Auto-marking and review queue                                 CORE          16
+ TCH-09             Class announcements                                           CORE          16
+ TCH-10             Teacher settings                                              CORE          16
+ TCH-11             Class teacher role                                            CORE          16
+ TCH-12             Reteaching decision                                           CORE          16
+ ANA-01             Class completion view                                         CORE          17
+ ANA-02             Concept heat map                                              CORE          17
+ ANA-03             Doubt clustering                                             ADVANCED       17
+ ANA-04             Intervention record and follow-up                            ADVANCED       17
+ ANA-05             Mistake autopsy class view                                   ADVANCED       17
+ ANA-06             Class trend view                                               NEXT         17
+ ANA-07             Students who may need extra support                            NEXT         17
+ ANA-08             Teacher mirror (teaching time versus interaction)            ADVANCED       17
+ PAR-01             Parent home                                                   CORE          18
+ PAR-02             Child view                                                    CORE          18
+ PAR-03             Progress summary (weekly or on event)                         CORE          18
+ PAR-04             Assignments and deadlines                                     CORE          18
+ PAR-05             Support suggestions ("Ask this today")                         NEXT         18
+ PAR-06             Linked children and account settings                          CORE          18
+ PAR-07             Plain-text message fallback (WhatsApp or SMS)                  NEXT         18
+ PAR-08             Privacy boundaries (hard rules)                               CORE          18
+ PAR-09             Parent meeting preparation                                   ADVANCED       18
+ SCH-03             Academic year                                                 CORE          19
+ SCH-04             Classes and sections                                          CORE          19
+ SCH-05             Subjects                                                      CORE          19
+ SCH-06             Teacher assignments                                           CORE          19
+ SCH-07             Student enrolment                                             CORE          19
+ SCH-08             Parent linking management                                     CORE          19
+ SCH-09             Invitations                                                   CORE          19
+ SCH-10             Admin home                                                    CORE          19
+ SCH-11             Content library permissions                                   CORE          19
+ SCH-12             School settings                                               CORE          19
+
+Learn . Grow . Together                                                                              Page 7
+VIDHYASAATHY         Product Blueprint and Application Specification                               Working draft v1
+
+
+
+
+ ID                 Feature                                            Status                          Section
+ SCH-13             Academic reports                                             NEXT                  19
+ SCH-14             Admin activity log                                           CORE                  19
+ COM-01             Student and class notifications                              CORE                  20
+ COM-02             Teacher announcements                                        CORE                  20
+ COM-03             Parent notifications                                         CORE                  20
+ COM-04             Reminders                                                    NEXT                  20
+ COM-05             Quiet hours                                                  CORE                  20
+ COM-06             Delivery failure                                             CORE                  20
+ COM-07             Notification centre                                          CORE                  20
+ COM-08             Direct messaging                                     NOT IN FIRST RELEASE          20
+ IND-01             Offline-first study and sync                        NEXT, access requirement       21
+ IND-02             Data saver and audio-only mode                               NEXT                  21
+ IND-03             Language layers                                     CORE for UI, NEXT for AI       21
+ IND-04             Low-end device support                                       CORE                  21
+ IND-05             Calendar awareness                                           NEXT                  21
+ IND-06             Parent and student shared-device privacy                     CORE                  21
+
+
+
+
+Learn . Grow . Together                                                                                     Page 8
+VIDHYASAATHY         Product Blueprint and Application Specification                                     Working draft v1
+
+
+
+
+     01             Document overview, sources and source conflicts
+
+
+1.1 Purpose
+VidhyaSaathy is a school-connected digital learning workspace. Each school class gets an online workspace that
+mirrors the offline class, so that the school's support continues after the school bell rings. This document turns the
+team's sources into one working specification that a designer, developer, school stakeholder or new team member
+can read without further explanation.
+
+
+1.2 Sources reviewed
+S1 Founder's voice-note transcripts (Hindi and Hinglish). Translated in this document.
+S2 Founder's written master prompt on the product idea and research goals.
+S3 "Team Guide" PDF, team draft v1 dated 13 October 2026. It marks each item as CONFIRMED, PROPOSED or
+OPEN.
+S4 Master working spec with feature numbers VS-01 to VS-100 (the "Krazy features" list), including AI concepts,
+teacher tools, parent tools and India-specific layers.
+S5 Product Vision and Feature document (long-form PRD style), with sections on student, teacher, parent and
+school workflows.
+S6 Brand and theme image: logo, cloud mascot, palette, mascot expressions, a sample poster and a sample phone
+home screen.
+S7 Earlier summary and feature-list PDF prepared for the team in English.
+Not supplied: any working prototype, screenshots of a built app, school data, user research results, or technical test
+results. Nothing in this document is evidence that the product works.
+
+
+1.3 Source conflicts the team must resolve
+C1 Product name. Team Guide says "The name is not final" and the mockup is titled ClassOS. All other sources use
+VidhyaSaathy. Decision: 15 (Section 30).
+C2 Tagline. The logo shows "Learn . Grow . Together". Earlier drafts proposed "Grow at your own pace." Only one
+tagline should appear publicly. Decision: 16.
+C3 Student login. S3 says a roll number alone is not secure. S4 describes a roll-number search, a school-issued
+activation code and a parent-phone OTP. Direction in this document: the roll number identifies the student but never
+logs them in. Method is [OPEN].
+C4 Technology stack. S3 lists options (React or Next.js, or Flutter;
+Node.js or Django; MongoDB or PostgreSQL). S4 names Supabase with PostgreSQL, TypeScript and Tailwind.
+Decision: 14 (Section 30).
+C5 Performance bands. S3 and S5 call them "four internal bands". S4 assigns them to a labelled "Student Progress"
+view in one place. This document follows S3: bands are never shown to students as labels.
+C6 Session completion. S3 proposes that a session is complete only when a quiz or check is attempted. S4
+suggests slides viewed or quiz passed.
+Direction: a quiz or check attempt is required. Decision: 8.
+C7 Teacher-controlled automation. S4 includes AI generation of questions, lessons and a predicted-question feature
+(AI-40). S2 and S5 require teacher approval. This document applies teacher approval everywhere AI content can
+reach students.
+
+
+Learn . Grow . Together                                                                                           Page 9
+VIDHYASAATHY         Product Blueprint and Application Specification                                      Working draft v1
+
+
+
+
+C8 Parent visibility of AI chats. S4 and S5 both say private AI chats are not visible to parents by default. No conflict;
+recorded for clarity.
+
+
+1.4 Conventions used in this document
+• "Student", "teacher", "parent" and "school admin" mean the roles in Section 05.
+• "Class workspace" means the online space for one class (for example Class 9-A).
+• "Session" means a guided self-study session unless stated otherwise.
+• "Evidence" means a recorded learning action (for example, a quiz answer).
+• "Mastery estimate" is a working estimate from evidence. It is never presented as a proven fact.
+
+
+
+
+Learn . Grow . Together                                                                                           Page 10
+VIDHYASAATHY         Product Blueprint and Application Specification                                    Working draft v1
+
+
+
+
+     02             Product identity and philosophy
+
+
+2.1 What VidhyaSaathy is
+• A school-connected learning workspace for each class.
+• A bridge between classroom teaching and home study.
+• A place where teachers publish approved notes, recordings, sessions and homework.
+• A place where students follow a clear next step after school.
+• An AI helper that answers questions in the context of the school's own material.
+• A progress view for teachers (class level) and parents (own child).
+
+
+2.2 What VidhyaSaathy is not
+• It is not a generic AI chatbot. The AI works inside the school's context.
+• It is not a video library. YouTube videos are supporting material only.
+• It is not a file-sharing app or a group chat.
+• It is not a full school ERP. Transport, fees and attendance are out of scope unless the team approves them later.
+• It does not replace teachers. Teachers approve content and make final assessment decisions.
+• It does not claim to remove the need for coaching. The long-term goal is to make school support stronger; the
+  effect is not yet proven.
+
+
+2.3 Founder motivation
+The founder was a strong student who scored above 90% in earlier classes.
+In Class 9, studying became chaotic. The founder did not attend coaching, searched YouTube, asked friends for
+notes (and received conflicting versions), and used AI tools without a clear path. This is one student's experience. It
+is a reason to investigate the problem, not proof that every student faces it.
+
+
+2.4 Product philosophy (ten principles)
+P1 School remains central. The syllabus, teachers and approved resources form the base of the experience.
+P2 AI supports teachers and does not replace them.
+P3 Personalisation follows learning evidence, not labels. Students are never called weak, average or intelligent.
+P4 Understanding matters more than activity. Opening slides is not learning.
+P5 Parents receive useful insight, not only marks and not private chats.
+P6 The product must work for real Indian school conditions: shared devices, several languages, variable connectivity
+and limited teacher time.
+P7 The experience is calm and encouraging. No public shame-based rankings, no manipulative streaks, no
+excessive notifications.
+P8 AI output must be grounded and reviewable. Important content should trace back to school material or another
+identified source.
+P9 Privacy is a product requirement, not an afterthought.
+P10 Every major feature connects to the learning loop: identify a need, take an action, check whether the action
+worked.
+
+
+
+
+Learn . Grow . Together                                                                                         Page 11
+VIDHYASAATHY         Product Blueprint and Application Specification                                   Working draft v1
+
+
+
+
+2.5 Long-term ambition
+Over time the platform should connect the school's curriculum, its resources, its students' evidence and its teachers'
+interventions into one connected system, so that each class's support improves year on year.
+
+
+
+
+Learn . Grow . Together                                                                                        Page 12
+VIDHYASAATHY         Product Blueprint and Application Specification                                   Working draft v1
+
+
+
+
+     03             The core learning loop
+
+The whole product is built around one loop. Every feature in this document serves one or more steps.
+ 1. Teacher teaches the lesson in class.
+ 2. Teacher publishes notes, recording and a guided session to the class workspace (LES-01, LES-05, SES-01).
+ 3. Student studies the session and attempts its checks (SES-02, SES-04).
+ 4. The system records evidence: answers, time, hints, repeated errors (ASM-03, AI-08).
+ 5. The AI identifies a possible gap and proposes one next step (AI-03, AI-06, AI-07).
+ 6. Student receives the next step and tries a fresh question (AI-06, AI-09).
+ 7. The mastery estimate updates (AI-08).
+ 8. Teacher sees class-level patterns (ANA-01, ANA-02).
+ 9. Teacher decides an intervention: reteach, assign practice or move on (ANA-04).
+ 10. Parent receives an approved progress summary (PAR-03).
+ 11. The loop repeats with the next lesson.
+
+Worked example (Class 9 Physics, Motion, illustrative)
+• 10:00 Teacher teaches Motion. Lesson recording is uploaded (LES-07).
+• 14:00 Teacher publishes notes and creates Session 3, opening at 18:00.
+• 18:30 Student A scores 5 of 5 and receives a harder Speed and Velocity set. Student B scores 2 of 5 on
+  Acceleration and receives a simpler explanation with worked examples. Student C missed the lesson and
+  receives a catch-up path.
+• Next morning Teacher sees that most of the class is stuck on Acceleration and spends 10 minutes reteaching it.
+• Evening Parent sees that Session 3 is complete, the quiz result and one suggested next step. The parent does
+  not see Student B's private AI chat.
+Note: names, scores and times are fictional and illustrate the workflow only.
+
+
+
+
+Learn . Grow . Together                                                                                        Page 13
+VIDHYASAATHY          Product Blueprint and Application Specification                                          Working draft v1
+
+
+
+
+     04             Brand, logo, mascot and design system
+
+Brand palette (from the team's theme image)
+
+
+
+
+Sky Blue                   Peach                      Warm White            Navy                      Light Blue
+#7FB3FF                    #FFC8A3                    #FFF9F5               #1E3A8A                   #E6F0FF
+Primary actions, active    Supportive highlights,     Main background,      Headings, text, wordmark Cards, panels, tinted
+learning states            celebrations               comfortable reading                            areas
+
+
+
+
+Mascot expressions supplied by the team: Let's learn!, You got this!, Hmm..., Keep going!, Great job!, Time to rest.
+
+Source: S6 (VidhyaSaathy_Logo_and_Theme.png). The image is the source of truth for the visual identity. Details
+below describe only what is visible or explicitly stated.
+
+
+4.1 Logo
+• Wordmark: "VidhyaSaathy" in a rounded, hand-lettered style, deep navy.
+• Mascot: a friendly sky-blue cloud with a smiling face and peach cheeks, holding an open peach-and-white book.
+  Small peach sparkle lines sit above the cloud.
+• Tagline shown under the wordmark: "Learn . Grow . Together" (with small peach dots). This is the tagline in the
+  logo.
+• An app-icon version shows the cloud mascot on a white rounded square over a light blue background.
+• A standalone "V" mark appears in the sample set: a navy V with a peach leaf or sprout above it. Its use is [OPEN]
+  (see Decision 3 and Section 30).
+Logo rules (proposed, for the design team to confirm):
+[ ] Provide a light-background version, a dark-background version, a monochrome version and a small-size
+    version.
+[ ] Confirm whether the V mark is a secondary icon or an alternative logo.
+[ ] Keep clear space around the wordmark equal to the height of the cloud.
+
+Learn . Grow . Together                                                                                                Page 14
+VIDHYASAATHY         Product Blueprint and Application Specification                                   Working draft v1
+
+
+
+
+4.2 Colour palette (hex values as shown in the supplied image)
+
+     Role                   Name              Hex           Use
+
+
+
+     Primary                Sky Blue          #7FB3FF       Primary actions, active states,
+
+
+key learning states
+
+     Accent                 Peach             #FFC8A3       Supportive highlights, celebrations,
+
+
+mascot book
+
+     Background             Warm White        #FFF9F5       Main background, comfortable reading
+     Text and strong        Navy              #1E3A8A       Headings, main text, logo wordmark
+     Surface                Light Blue        #E6F0FF       Cards, panels, tinted backgrounds
+
+
+Usage ratio (from S6): about 80 percent clean interface, 15 percent soft colour, 5 percent mascot and illustration. Do
+not use the palette equally.
+Accessibility check [ ]: confirm contrast of navy on warm white and navy on light blue meets WCAG AA for body text.
+Confirm sky blue is not used alone for text.
+
+
+4.3 Typography
+Supplied sources do not name fonts. The logo wordmark is a custom rounded style. The UI font is [OPEN].
+Requirement: a clear, readable sans-serif with a comfortable body size on small phones.
+
+
+4.4 Mascot expressions (six supplied states)
+The mascot appears in six supplied expressions. Use them as defined:
+
+* Let's learn!              (waving, sparkle lines) Start of a session or greeting.
+
+     * You got this!        (happy, closed eyes)            Encouragement after progress.
+     * Hmm...               (question mark)                 Thinking or confusion support.
+
+
+* Keep going!               (headphones, music note) Audio or recording activity.
+
+     * Great job!           (small heart)                   Meaningful milestone.
+     * Time to rest         (sleeping, "zZ")                End of day or resting state.
+
+
+Mascot behaviour rules (from S2 and S3):
+ 1. Idle: slow, subtle floating motion only.
+ 2. Greeting: short welcome when the student opens the learning space.
+ 3. Thinking: restrained motion while the AI works.
+ 4. Encouragement: small reaction after meaningful progress.
+ 5. Confusion: appears when the student asks for help or repeatedly gets stuck.
+ 6. Celebration: brief, only after a real milestone.
+ 7. Resting: unobtrusive while the student reads or solves.
+ 8. Error: says something failed, never blames the student.
+ 9. Reduced motion: static image when the device requests reduced motion.
+ 10. Consistency: the same recognisable character everywhere.
+The mascot must never flash constantly, interrupt a lesson, or use emotional pressure to keep a student online. It
+does not control educational logic.
+
+Learn . Grow . Together                                                                                        Page 15
+VIDHYASAATHY         Product Blueprint and Application Specification                                  Working draft v1
+
+
+
+
+Voice, emotion detection and advanced character behaviour are not part of the first release.
+
+
+4.5 Layout and interface style
+• Student screens: clean, large touch targets, one primary action per screen.
+• Teacher screens: denser information, same colours and typography.
+• Parent screens: plain language, few numbers, one suggested action.
+• Admin screens: structured tables and forms.
+• Avoid purple or neon-heavy styling, cartoon-heavy layouts, heavy gradients and crowded cards. The sample
+  home screen (S6) shows the intended level of decoration: three large cards, each with an icon, a title and one
+  subtitle.
+
+
+4.6 Sample home screen (from S6, for reference)
+Greeting "Good morning, Learner!" with a small mascot, a search field ("What would you like to learn today?"), and
+three cards:
+• My Classes: "View your subjects and chapters"
+• Study Sessions: "Guided learning, made simple"
+• Practice and Quizzes: "Test what you know" This is a visual reference, not a finished screen. The real home
+  screen is specified in STU-01.
+
+
+4.7 Empty, loading, success and error states (requirement)
+• Empty: a short line, the mascot in a resting or "Let's learn!" pose, and one action. Example: "No session yet
+  today. Your teacher will publish one soon."
+• Loading: a skeleton of the card layout. Never a blank screen.
+• Success: a short confirmation with a clear next step.
+• Error: plain words, what happened, what the user can do next, and the mascot in "Hmm..." pose. Never blame
+  the student.
+
+
+
+
+Learn . Grow . Together                                                                                       Page 16
+VIDHYASAATHY         Product Blueprint and Application Specification                                     Working draft v1
+
+
+
+
+     05             User roles and permissions
+
+
+5.1 Roles
+Student                     Studies, practises, asks the AI, views own progress.
+Teacher                     Manages assigned classes and subjects, publishes material, creates sessions and
+                            homework, reviews results.
+Class teacher               A teacher with extra rights for one class: class updates, class space management.
+Parent                      Follows one or more verified children. Sees approved progress, not private AI chats.
+School admin                Manages the school's structure: classes, sections, subjects, teacher assignments,
+                            enrolment and parent links.
+Platform admin              Runs the platform itself: security, service health and authorised support. Separate from
+                            the school admin.
+
+
+5.2 Permission principles
+• Access is enforced on the server and in the database, never only hidden in the interface (see SEC-01).
+• Changing a role label in the browser never grants access.
+• A user sees only their school, their classes, their children or their own records.
+• Teachers cannot see classes they are not assigned to.
+• Parents cannot see children they are not linked to.
+• Students cannot open teacher or admin pages by changing the URL.
+• School admins manage structure. They do not see individual AI chats and do not rank students publicly.
+
+
+5.3 Permission matrix (summary)
+Action                      Student Teacher Class T. Parent School A.
+
+     View own progress                         yes        -             -     -         -
+     View own child's progress                  -         -             -    yes        -
+     View assigned class progress               -        yes           yes    -         -
+     Publish notes and sessions                 -        yes           yes    -         -
+     Submit homework                           yes        -             -     -         -
+     Create school structure                    -         -             -     -        yes
+     View private AI chats                      -         -             -     -         -
+     Post class announcement                    -        yes           yes    -         -
+
+
+Note: "View private AI chats" is no for every role by default. Any future exception needs a written school policy and
+is [OPEN] (Decision 7).
+
+
+5.4 Checklist
+[ ] Role table reviewed by the team.
+[ ] Permission matrix tested with the seeded demo accounts (Section 29).
+
+
+
+
+Learn . Grow . Together                                                                                          Page 17
+VIDHYASAATHY         Product Blueprint and Application Specification          Working draft v1
+
+
+
+
+     06             Application map and screen flow
+
+
+6.1 Top-level map
+Public landing page
+
+         |-- Sign in ----------------------> Role check --> Student home
+
+
+|                           \-> Teacher home
+|                           \-> Parent home
+|                           \-> School admin home
+
+         |-- Account recovery
+         |-- Accept invitation -----------> Role-specific onboarding
+         |-- Register a school -----------> School setup wizard (SCH-01)
+
+
+
+
+6.2 Student map
+Student                     home (STU-01)
+
+         |-- Today's plan (STU-02)
+         |-- My classes -> Subject -> Chapter -> Concept
+         |       |-- Notes and resources (LES-03)
+         |       |-- Recordings (LES-07)
+         |       |-- Videos (LES-08)
+
+
+|                           \-- Sessions (SES-01)
+
+         |-- Assignments and quizzes (ASM-01)
+         |-- Ask Saathy (AI-01)
+         |-- Progress (PRG-01)
+         |-- Notifications (COM-01)
+
+
+\-- Profile and settings (STU-10)
+
+
+6.3 Teacher map
+Teacher                     home (TCH-01)
+
+         |-- Class list -> Class detail -> Roster
+         |-- Resource library -> Upload (LES-02) -> Tag (LES-04) -> Publish
+         |-- Session builder (SES-03) -> Schedule -> Publish
+         |-- Assignment builder (ASM-02)
+         |-- Review queue (ASM-05)
+         |-- Class insights (ANA-01 to ANA-04)
+         |-- Announcements (COM-02)
+
+
+\-- Settings (TCH-10)
+
+
+6.4 Parent map
+Parent                      home (PAR-01)
+
+
+
+
+Learn . Grow . Together                                                               Page 18
+VIDHYASAATHY         Product Blueprint and Application Specification                                 Working draft v1
+
+
+
+
+         |-- Child view (PAR-02)
+         |-- Progress summary (PAR-03)
+         |-- Assignments (PAR-04)
+         |-- Support suggestions (PAR-05)
+         |-- Notifications (COM-03)
+
+
+\-- Account and linked children (PAR-06)
+
+
+6.5 School admin map
+Admin home (SCH-10)
+
+         |-- School profile (SCH-02)
+         |-- Academic year (SCH-03)
+         |-- Classes and sections (SCH-04)
+         |-- Subjects (SCH-05)
+         |-- Teacher assignments (SCH-06)
+         |-- Student enrolment (SCH-07)
+         |-- Parent links (SCH-08)
+         |-- Invitations (SCH-09)
+
+
+\-- Content library permissions (SCH-11)
+
+
+6.6 Transition rules
+• After sign-in, the user lands on the home screen for their role only.
+• Every list item opens a detail screen with a single back path.
+• Every screen that contains learning content has one primary action.
+• Session player (SES-02) is a focused full-screen mode. It hides the main navigation until the session ends or is
+  saved and left.
+• Leaving a session mid-way saves progress and returns to the home screen with a "Continue" card (STU-03).
+
+END OF PART A (sections 01 to 06)
+
+
+
+
+Learn . Grow . Together                                                                                      Page 19
+VIDHYASAATHY         Product Blueprint and Application Specification                                  Working draft v1
+
+
+
+
+     07             School setup and account creation
+
+Schools need controlled onboarding because the platform holds student records.
+
+   AUTH-01           School registration                                                               CORE
+
+
+   What: an authorised school representative registers the school.
+   How it works:
+    1. Representative starts registration from the landing page.
+    2. Enters school name, board (for example CBSE, ICSE or state board), city and administrative contact
+       details.
+    3. Platform verifies the representative. Method [OPEN].
+    4. School profile is created. The representative becomes the first school admin.
+   Visible output: a confirmation and the school setup wizard (SCH-01).
+   Failure: duplicate school name in the same city shows a warning and asks the representative to confirm.
+   Unverified representative sees a pending screen; no school data is shown.
+   For the prototype: a preconfigured demo school is used instead (Section 29).
+
+
+
+   SCH-01            School setup wizard (8 steps)                                                     CORE
+
+
+   The wizard runs once, then can be revisited from settings.
+   Step 1 School profile (name, board, city, logo)
+   Step 2 Academic year (start and end dates)
+   Step 3 Classes and sections (for example 9-A, 9-B)
+   Step 4 Subjects per class (for example Physics, Maths)
+   Step 5 Teacher assignments (teacher x subject x class)
+   Step 6 Student list (CSV upload or manual entry; see SCH-07)
+   Step 7 Parent contact details attached to each student Step 8 Activation codes generated; school downloads a
+   distribution sheet; each class workspace goes live Each step saves on its own, so the wizard can be left and
+   resumed.
+   Validation: missing required fields, duplicate roll numbers and invalid phone numbers are listed before the step
+   can be completed.
+
+
+
+   SCH-02            School profile                                                                    CORE
+
+
+   Name, board, address for records, logo and contact. Edited by the school admin only.
+
+
+
+   AUTH-02           Teacher account creation                                                          CORE
+
+
+    1. School admin assigns the teacher to subjects and classes (SCH-06).
+    2. Teacher receives an invitation (SCH-09).
+    3. Teacher opens the invitation, sets a password and confirms identity.
+    4. Teacher completes a short profile.
+    5. Teacher sees only the classes and subjects assigned to them.
+
+
+Learn . Grow . Together                                                                                       Page 20
+VIDHYASAATHY         Product Blueprint and Application Specification                                   Working draft v1
+
+
+
+
+   Rule: a teacher never sees unassigned classes or student records.
+   Failure: expired invitation shows "Ask your school admin to resend."
+
+
+
+   AUTH-03           Student account creation                                                           CORE
+
+
+   Students should not need a consumer-style sign-up if the school has enrolled them.
+    1. School enrols the student (SCH-07) and generates an activation code.
+    2. Student (or a parent helping) enters the school, roll or admission number, class and section.
+    3. System finds the matching enrolment record but does not reveal personal details.
+    4. Student enters the one-time activation code.
+    5. A one-time verification code goes to the parent's registered phone number (see AUTH-05). Method is
+       [OPEN] (Decision 2).
+    6. Student sets a 4-digit PIN for daily sign-in (AUTH-04).
+    7. Student sees the welcome screen (ONB-01).
+   Rules:
+    • An arbitrary person cannot join a class by knowing the class name.
+    • Codes are one-time use and expire after a school-set period [OPEN].
+    • Five wrong code attempts lock the activation for 15 minutes.
+   Fallback: if the parent phone is unreachable, the school admin can approve the student manually (AUTH-08).
+
+
+
+   AUTH-04           Student PIN sign-in                                                                CORE
+
+
+   After activation, the student signs in with their PIN. The roll number is never a password.
+   Rules: three wrong PINs trigger a short wait and a prompt to ask a parent or teacher to reset it. PIN reset
+   requires parent or teacher approval.
+
+
+
+   AUTH-05           Parent account creation and linking                                                CORE
+
+
+    1. The student's enrolment already contains the parent's phone number.
+    2. When the student activates, the parent receives a message: "Your child has joined VidhyaSaathy.
+       Download the app and sign in with this number."
+    3. Parent verifies the phone number with a one-time code.
+    4. Parent confirms the child's name, class and section.
+    5. The link is active. The parent sees only this child's approved data.
+   Multiple children: one parent account can hold several verified links and switch between them (PAR-06).
+   Guardians (uncle, aunt, grandparent) are common in India. The school admin can register a guardian as the
+   parent contact, subject to school policy [OPEN].
+   Rule: a parent cannot connect to a child by searching a name or a list.
+
+
+
+   AUTH-06           Admin, teacher and parent sign-in                                                  CORE
+
+
+   Email or school-issued ID with password for staff and parents. Two-step verification is optional for admins
+   [OPEN]. Password reset sends a time- limited link to the registered email or phone.
+
+
+
+
+Learn . Grow . Together                                                                                          Page 21
+VIDHYASAATHY         Product Blueprint and Application Specification                                  Working draft v1
+
+
+
+
+   AUTH-07           Session management                                                                CORE
+
+
+    • Session expiry returns the user to the sign-in screen with a short message.
+    • Sign out ends the session on that device.
+    • Shared-device reminder: after sign-out on a shared device, the app shows the profile chooser (AUTH-09).
+    • Protected pages reject unauthorised requests on the server.
+
+
+   AUTH-08           Manual approval fallback                                                          NEXT
+
+
+   School admin                reviews a pending student or parent and approves or rejects with a reason. Used
+                               when OTP delivery fails or the school policy requires it.
+
+
+
+   AUTH-09           Profile chooser on shared devices                                                 NEXT
+
+
+   Several family members can share one phone. The chooser lists the profiles on that device. Each profile has its
+   own PIN. Switching takes two taps.
+   An interrupted session resumes where the user left off.
+
+
+
+
+Learn . Grow . Together                                                                                          Page 22
+VIDHYASAATHY         Product Blueprint and Application Specification                                   Working draft v1
+
+
+
+
+     08             Sign-in, account recovery, shared devices and onboarding
+
+   ONB-01            Student welcome and first-run onboarding                                           CORE
+
+
+   Steps:
+    1. Welcome screen with the cloud mascot ("Let's learn!").
+    2. Confirm class and section.
+    3. Choose a preferred explanation language if offered (IND-03).
+    4. Show today's first assigned activity.
+    5. Explain how to ask Saathy a question and how to ask for a different explanation.
+    6. Start learning.
+   The whole flow should take under two minutes.
+
+
+
+   ONB-02            Teacher onboarding                                                                 CORE
+
+
+   Show assigned classes and subjects, a short guide to publishing a resource, a guide to creating a session, and
+   a demo class and demo lesson in demo mode.
+
+
+
+   ONB-03            Parent onboarding                                                                  CORE
+
+
+   Confirm the linked child, explain progress and notifications, explain the difference between progress and
+   private student chats, and show one useful first action.
+
+
+
+   ONB-04            Account recovery                                                                   CORE
+
+
+    • Staff and parents: reset link by email or phone.
+    • Students: PIN reset by a parent or teacher (AUTH-04).
+    • Recovery never reveals whether an account exists to a stranger.
+
+
+   ONB-05            Access-denied and not-yet-available states                                         CORE
+
+
+   Shown when a user opens a page they cannot access. The message says the page is not available for the
+   account, with a button to go home. No student data is shown.
+   Landing page (LAND-01) [CORE]
+   Sections in order: hero with the school-to-home promise; use cases for student, teacher, parent and school; a
+   short explanation of the learning loop; a preview of sessions and AI help; a note on how school material
+   grounds AI answers; privacy and child-safety information; a school contact or onboarding button; sign-in link.
+   The landing page must not claim proven learning results, existing school partnerships or capabilities that are
+   not built.
+
+
+
+
+Learn . Grow . Together                                                                                        Page 23
+VIDHYASAATHY         Product Blueprint and Application Specification                                      Working draft v1
+
+
+
+
+     09             Student experience
+
+The student's question on every screen is: "What do I study now, and what do I do after?"
+
+   STU-01            Student home screen                                                                   CORE
+
+
+   Top to bottom:
+    1. Greeting with the mascot ("Good morning, Learner!" or the student's name).
+    2. Next-action card: one clear task, for example "Session 4, Motion, 15 minutes. Start?" Only one primary
+       action appears here.
+    3. Today's plan (STU-02).
+    4. Continue card: the last activity, one tap to resume (STU-03).
+    5. My concepts map (AI-13 preview), colour-coded.
+    6. Teacher announcements.
+    7. Upcoming assignments and tests.
+   Ordering rule: an item due today or a missed-class recovery moves to the top. The screen never shows more
+   than one primary action.
+   Empty state: "Nothing due today. Explore your subjects." with a subject link.
+
+
+
+   STU-02            Today's learning plan                                                                 CORE
+
+
+   A short list built from teacher-assigned tasks, deadlines and recovery suggestions.
+    • Teacher-assigned items are marked as required.
+    • AI-suggested items are marked as optional.
+    • The AI never changes a teacher's deadline and never removes an assigned lesson.
+   Example: "Required: Session 3 (Motion). Optional: 2 Speed practice questions."
+
+
+
+   STU-03            Continue card                                                                         CORE
+
+
+   Shows the last unfinished item: the session, slide or question the student left. One tap resumes at the same
+   place. Saved progress is stored every few seconds and when the student leaves.
+
+
+
+   STU-04            Subjects and chapters                                                                 CORE
+
+
+   Subject list for the class. Each subject opens to its current chapter, all chapters in order, and a status per
+   chapter: not started, in progress, completed. Past chapters remain open all year (LES-06).
+
+
+
+   STU-05            Notes and resources view                                                              CORE
+
+
+   Shows notes, PDFs, presentations, worksheets and diagrams for a chapter or concept, each labelled with the
+   subject, chapter and source. See LES-03.
+
+
+
+
+Learn . Grow . Together                                                                                             Page 24
+VIDHYASAATHY         Product Blueprint and Application Specification                                Working draft v1
+
+
+
+
+   STU-06            Recordings and videos                                                           CORE
+
+
+   Shows recordings and approved videos attached to a concept. See LES-07 and LES-08.
+
+
+
+   STU-07            Assignments and quizzes list                                                    CORE
+
+
+   Lists assignments with due date, status (not started, submitted, reviewed) and the teacher's name. See
+   ASM-01.
+
+
+
+   STU-08            Ask Saathy                                                                      CORE
+
+
+   The AI question screen. See AI-01 to AI-05.
+
+
+
+   STU-09            My progress                                                                     CORE
+
+
+   Progress by subject and concept, recent improvements and one suggested next step. See PRG-01.
+
+
+
+   STU-10            Profile, language and settings                                                  CORE
+
+
+   Name and photo (school-controlled where needed), preferred language (IND-03), reduced motion setting
+   (UI-04), sign-out and PIN change.
+
+
+
+   STU-11            Class space                                                                     NEXT
+
+
+   A shared page where students and teachers of the same class see each other (names and profile photos only).
+   The class teacher posts updates here.
+   No free chat between students in the first release [OPEN] (see COM-08).
+
+
+
+   STU-12            Help and feedback                                                               CORE
+
+
+   Any screen has a help link. "Ask my teacher" sends a named doubt to the teacher (AI-12). A feedback button
+   sends a short note to the platform team.
+
+
+
+   STU-13            Learning games entry                                                            NEXT
+
+
+   A games card on the home screen lists the games unlocked for the current chapter (MOT-01 to MOT-05,
+   Section 15).
+
+
+
+
+Learn . Grow . Together                                                                                     Page 25
+VIDHYASAATHY         Product Blueprint and Application Specification                                      Working draft v1
+
+
+
+
+     10             Classes, subjects, chapters and resources
+
+The hierarchy used everywhere in the product:
+School > Academic year > Class > Section > Subject > Chapter > Concept > item (note, session, question,
+recording, video).
+
+   LES-01            Class workspace                                                                       CORE
+
+
+   Each class has its own workspace, for example Class 9-A. It contains the subjects taught to that class, the
+   teachers for each subject, the class space (STU-11), and every published item in order of chapter.
+   Example path: Class 9-A > Physics > Motion > Distance and Displacement > Notes, Session 3, Recording
+   segment, Homework, Quiz results.
+   Rule: the workspace is an organised environment, not a group chat or a file folder.
+
+
+
+   LES-02            Resource upload                                                                       CORE
+
+
+   Teacher                     uploads PDF, slides, worksheet, text or an approved link. Steps: 1. Choose class,
+                               subject and chapter. 2. Choose file or paste link. 3. System reads the file and shows
+                               a preview (text extraction status). 4. Teacher confirms the title and visibility. 5.
+                               Publish, or save as draft. Failure: unreadable file is kept as an upload, flagged
+                               "Preview not available," and can still be published (students open the original file).
+                               Limits (size and types) are [OPEN] and depend on the hosting plan.
+
+
+
+   LES-03            Concept-tagged notes                                                                  CORE
+
+
+   The key feature of the notes system is tagging, not uploading. Each note is linked to one or more concepts.
+   When a student opens "Acceleration," the teacher's note for that concept appears in two taps. Students do not
+   need to find the right note among friends' versions.
+   Rule: a note without a concept tag is still visible under its chapter but is not linked to the concept map.
+
+
+
+   LES-04            Publishing and notifications                                                          CORE
+
+
+   Publishing makes the item visible to the authorised class. Students and parents may receive a notification
+   (COM-01). Unpublishing hides the item but keeps student history intact.
+
+
+
+   LES-05            Note publishing from day one                                                          CORE
+
+
+   Teachers can publish notes topic by topic as a chapter is taught, so the class workspace has material from the
+   first day of school. This is the basis of "learning continues after the bell."
+
+
+
+   LES-06            Chapter history                                                                       CORE
+
+
+   Nothing is deleted from the chapter history during the academic year.
+   Students can reopen any earlier chapter, session and quiz. Teachers can archive items but cannot erase what
+   students already completed.
+
+
+
+
+Learn . Grow . Together                                                                                           Page 26
+VIDHYASAATHY         Product Blueprint and Application Specification                                     Working draft v1
+
+
+
+
+   LES-07            Classroom recordings                                                         CORE, if school allows
+
+
+   Teacher                     uploads a recording of the lesson. Requirements: * The school enables recordings
+                               in school settings (SCH-12). Default is off until the school decides. * Recording is
+                               shown only to the class it belongs to. * Teacher can mark concept segments (start
+                               and end time) on the recording. * Students can watch the whole recording or only a
+                               segment. * Audio-only playback is supported (IND-02). Segmentation can be
+                               manual or AI-assisted. AI-assisted segment suggestions must be checked by the
+                               teacher before publishing (AI-30). Consent and privacy rules for recordings that
+                               include students are [OPEN] (Decision 13).
+
+
+
+   LES-08            Curated videos (trimmed YouTube)                                                     CORE
+
+
+   Teacher                     pastes a video link, sets start and end times, tags it to a concept and adds a
+                               one-line reason. Students see the segment, for example "For this concept: 8:20 to
+                               15:40." YouTube is supporting material, not a replacement. Rule: opening or playing
+                               a video does not count as understanding. A check is needed (AI-08).
+
+
+
+   LES-09            Resource reuse                                                                       NEXT
+
+
+   A resource can be reused in a later year or for another class. Reuse copies the link to the original, so updates
+   made by the teacher appear in both places [OPEN: copy or link behaviour].
+
+
+
+   LES-10            Curriculum mapping by board                                                          NEXT
+
+
+   At setup, the school selects its board. The platform offers a starting chapter and concept structure for that
+   board, based on public curriculum listings. Teachers can edit it. The mapping is per board, so the same chapter
+   may have different depth for different boards.
+
+
+
+
+Learn . Grow . Together                                                                                          Page 27
+VIDHYASAATHY         Product Blueprint and Application Specification                                       Working draft v1
+
+
+
+
+     11             Guided self-study sessions
+
+A guided session is the central student activity. It is a school-prepared learning experience, not a long PDF and not
+an unrestricted list of links.
+
+   SES-01            Session structure                                                                     CORE
+
+
+   Each session follows a fixed structure. The teacher can change the questions per class but not the structure.
+    1. Session introduction: what we will learn today.
+    2. Learning objective (one sentence).
+    3. Explanation slides: one small idea per slide.
+    4. Diagram or visual.
+    5. Solved example, step by step.
+    6. Optional recording segment or curated video.
+    7. Practice questions (three or four).
+    8. Mini quiz (about five questions).
+    9. Recap.
+    10. Next step, for example "Speed and Velocity."
+   Example: Session 3, Physics, Motion (fictional).
+   Slide 1: definition of distance (one idea). Slide 2: diagram of a path and a straight line. Slide 3: worked example.
+   Then a 6-minute recording segment, five MCQs, a recap and the next step.
+
+
+
+   SES-02            Session player                                                                        CORE
+
+
+   Student                     flow: 1. Student opens the session when it is available. 2. Intro screen shows
+                               objective and time estimate. 3. Student moves through slides with a Next button. A
+                               progress bar shows position. 4. Questions appear inside the flow. The student must
+                               attempt a question before moving past it. 5. Hints are available (AI-11). Hints do not
+                               reveal the full answer on the first request. 6. Quiz at the end, scored and recorded.
+                               7. Summary screen: what is complete, the score and the next step. Rules: * Slides
+                               unlock one after another (SES-04). * Leaving mid-session saves progress
+                               (STU-03). * Session is complete only after its quiz or check attempt (SES-04).
+
+
+
+   SES-03            Session builder (teacher)                                                             CORE
+
+
+   Teacher                     steps: 1. Create a session from the template in SES-01. 2. Add slides, examples
+                               and questions. Drag to reorder. 3. Attach notes, a recording segment or a curated
+                               video. 4. Set availability: for example "Opens today at 18:00." Set a deadline if
+                               needed. 5. Adjust questions for a specific class or section, keeping the structure. 6.
+                               Preview the student view. 7. Publish. Reuse (SES-06): next year, the teacher
+                               copies the session, updates dates and questions, and publishes.
+
+
+
+
+Learn . Grow . Together                                                                                            Page 28
+VIDHYASAATHY         Product Blueprint and Application Specification                                     Working draft v1
+
+
+
+
+   SES-04            Session completion rules                                                             CORE
+
+
+    • Slides unlock sequentially. A slide's question must be attempted before the next slide opens (teacher can
+      set a lighter rule for a class).
+    • A session is complete only when its quiz or check attempt is recorded.
+   Scrolling through slides does not complete a session.
+    • Completion creates an evidence record (AI-08).
+   Open: whether the teacher can allow completion by slides alone (Decision 8).
+
+
+
+   SES-05            Timed release                                                                        CORE
+
+
+   Teacher                     picks a release date and time. The system stores it in the school's time zone. Before
+                               release the student sees "Opens at 18:00 today." At release the session appears on
+                               the home screen. Deadlines are separate from release time and follow school
+                               policy. Release timing does not block learning arbitrarily. It only controls when the
+                               teacher's assigned work becomes visible.
+
+
+
+   SES-06            Session reuse across years                                                           NEXT
+
+
+   Copy, update dates and questions, publish. Reuse should take about five minutes for an existing session.
+
+
+
+   SES-07            AI-drafted session skeleton                                                        ADVANCED
+
+
+   Teacher                     uploads an existing presentation. The system drafts a session outline: slide breaks,
+                               definitions, practice question drafts. The teacher edits everything and publishes. No
+                               AI draft reaches students without teacher review (AI-22).
+
+
+
+
+Learn . Grow . Together                                                                                          Page 29
+VIDHYASAATHY         Product Blueprint and Application Specification                                     Working draft v1
+
+
+
+
+     12             Homework, assignments and assessments
+
+   ASM-01            Student assignments list                                                             CORE
+
+
+   Each assignment shows its title, subject, due date, status (not started, in progress, submitted, reviewed) and
+   feedback status. Overdue items are shown in calm language, not red alarms.
+
+
+
+   ASM-02            Assignment and homework builder (teacher)                                            CORE
+
+
+   Teacher                     creates an assignment with: * Instructions and optional resource links. * Questions:
+                               multiple choice, multiple select, short answer, numerical, matching, or a question
+                               from the question bank (ASM-08). * Due date and allowed attempts. * Feedback
+                               release rule: immediately, after the due date, or after teacher review. * Assigned
+                               classes (only authorised classes appear). Teachers can also assign homework that
+                               stays on paper. Handwritten work remains valid. The app records only what is
+                               submitted in it.
+
+
+
+   ASM-03            Answering and submission                                                             CORE
+
+
+   Student                     answers each question, reviews, and submits. The system confirms submission
+                               with a time stamp. If the connection fails, the answers stay on the device and submit
+                               when the connection returns (IND-01). A failed submission is never silently lost
+                               (Section 27).
+
+
+
+   ASM-04            Auto-marking                                                                         CORE
+
+
+   Objective questions (MCQ, matching, numerical with a fixed answer) are marked automatically. The student
+   sees their score and, where the teacher allows, the correct answer and an explanation.
+
+
+
+   ASM-05            Teacher review queue                                                                 CORE
+
+
+   Short answers and written work appear in a review queue. Each item shows the student's answer, the marking
+   guide and an optional draft feedback suggestion from AI (AI-19). The teacher edits, approves and publishes
+   feedback. The queue shows borderline items first.
+   Rule: AI feedback is a draft only. The teacher's grade is authoritative.
+
+
+
+   ASM-06            Assessments and tests                                                                CORE
+
+
+   Teacher-created tests in the same system as homework, with timed mode where justified. Teacher controls
+   when answers and feedback become visible.
+   For high-stakes assessments, AI does not decide final grades. Human review is required [OPEN: which
+   assessments count as high-stakes].
+
+
+
+
+Learn . Grow . Together                                                                                          Page 30
+VIDHYASAATHY         Product Blueprint and Application Specification                                   Working draft v1
+
+
+
+
+   ASM-07            Quiz after each session                                                            CORE
+
+
+   Each session ends with a quiz (SES-01 item 8). The quiz results go to the student's concept map (AI-13) and
+   the teacher's class insights (ANA-01).
+
+
+
+   ASM-08            Question bank                                                                      CORE
+
+
+   A school-owned library of approved questions, tagged by class, subject, chapter, concept, difficulty (L1 basic,
+   L2 medium, L3 application) and format (MCQ, assertion-reason, case-based, numerical, short answer). Built
+   from teacher-written questions and approved AI drafts. Grows each year.
+
+
+
+   ASM-09            Board-format practice                                                              NEXT
+
+
+   A practice mode that shows questions in the same format as the board exam.
+   Knowing a concept and practising the exam format are separate skills.
+
+
+
+   ASM-10            Test readiness summary                                                             NEXT
+
+
+   Before a chapter test the student sees a plain summary, for example: "Strong: 4 of 6 concepts. Needs attention:
+   Acceleration. Suggested: 30 minutes of focused revision tonight."
+   Rule: the summary never predicts a score or a grade. It names concepts only.
+
+
+
+   ASM-11            Assignment and session reminders                                                   NEXT
+
+
+   Reminders for due or released work (COM-04).
+
+
+
+
+Learn . Grow . Together                                                                                        Page 31
+VIDHYASAATHY         Product Blueprint and Application Specification                                        Working draft v1
+
+
+
+
+     13             AI learning engine (core)
+
+The AI is the personalisation layer. Its core functions are: answer questions in the school's context, explain in more
+than one way, find the likely gap behind a wrong answer, and suggest one next step. Every AI feature follows the
+grounding and review rules in Section 25.
+Testing rule (from S4): "Could a general chatbot do this on its own?" If yes, the feature is not a differentiator. The
+differentiators are the school's notes, the class's quiz results, the curriculum position and the student's learning
+history. Those exist only inside the platform.
+
+   AI-01             Context-grounded Ask Saathy                                                            CORE
+
+
+   Input the AI receives: the student's class, board, subject, chapter, current lesson, relevant teacher notes, and
+   recent quiz evidence where it helps.
+   Example: the student types "Explain acceleration." The AI answers in the teacher's notation and ends with
+   "This comes from your teacher's notes, Motion, slide 4."
+   Rules:
+    • If the school material does not cover the question, the AI says it is giving a general explanation.
+    • The AI never says "your teacher said" unless the material shows it.
+    • Every answer ends with a short check for understanding.
+   Failure: if the AI service is unavailable, the screen shows the saved notes for that concept and a retry button
+   (Section 27).
+
+
+
+   AI-02             Context retrieval                                                                      CORE
+
+
+   Before answering, the system selects the approved material for the student's class and concept. Only that
+   material plus the question is sent to the AI service. The selection uses the concept tags from LES-03. Full
+   search across all uploads is an advanced upgrade (AI-30).
+
+
+
+   AI-03             Concept and prerequisite graph                                                         CORE
+
+
+   The platform stores which concepts depend on which. Example chain:
+   Distance > Speed and Velocity > Acceleration > Graphs of motion.
+   Teachers can review and correct these links.
+
+
+
+   AI-04             Mistake explanations                                                                   CORE
+
+
+   When a student answers wrongly, the system explains the likely reason in two or three sentences and shows
+   the relevant slide or note. The student can ask for another explanation (AI-05).
+
+
+
+   AI-05             Personalised explanation modes                                                         CORE
+
+
+   The student can ask for the same concept in another form:
+    • Simple language.
+    • Step-by-step.
+    • Everyday analogy.
+    • Worked example.
+
+Learn . Grow . Together                                                                                             Page 32
+VIDHYASAATHY         Product Blueprint and Application Specification                                    Working draft v1
+
+
+
+
+    • Formal textbook wording (the form used in exams).
+    • Bilingual or Hinglish explanation (IND-03).
+   After each explanation the system checks whether understanding improved.
+   If the student is still stuck after two attempts, the system suggests teacher help rather than repeating the same
+   answer.
+
+
+
+   AI-06             Personalised study plan                                                            CORE
+
+
+   Trigger: the student says what is hard, for example "I am not able to understand Coordinate Geometry."
+   Steps the plan can include:
+    1. Revise the prerequisite if the evidence shows a gap (AI-07).
+    2. Read the teacher's note for the concept.
+    3. Watch a recording segment or curated video.
+    4. Study one worked example.
+    5. Solve three easy questions.
+    6. Take a five-question mini check.
+    7. Move to application questions if the check passes; repeat step 2 or 3 if it does not.
+   Each step links to a real school resource. The plan changes after each result. Teacher-assigned work stays
+   visible and takes priority.
+
+
+
+   AI-07             Prerequisite gap detector                                                          CORE
+
+
+   Logic, in plain words: when a student gets a later concept wrong, the system checks the earlier concepts on the
+   chain.
+    • If the earlier concept is solid, the gap is in the later concept.
+   Recommend revision of the later concept.
+    • If the earlier concept is weak, move one step back and check again.
+    • Stop at the first weak link and recommend fixing it, for example: "Acceleration needs velocity first. Spend 10
+      minutes on velocity, then acceleration will feel easier."
+   Guardrail: if there is not enough evidence (for example, velocity was never practised), the system says so and
+   recommends practice or a teacher question. It does not guess.
+   Minimum evidence before a prerequisite gap is suggested: [OPEN] (Decision 4).
+
+
+
+   AI-08             Evidence and mastery estimate                                                      CORE
+
+
+   The system records:
+    • Each attempt: question, answer, correctness, time, hints used.
+    • Each session completion (SES-04).
+    • Teacher-confirmed status where a teacher has reviewed the concept.
+   From these, it keeps a working estimate per concept. Rules:
+    • Estimates are per concept, not one overall score (see Decision 5).
+    • One correct answer does not declare mastery. The estimate needs varied evidence, for example different
+      question formats, spread over time.
+    • The system shows uncertainty. A low-evidence concept is shown as "Not enough practice yet," not as a low
+      score.
+
+
+Learn . Grow . Together                                                                                         Page 33
+VIDHYASAATHY         Product Blueprint and Application Specification                                           Working draft v1
+
+
+
+
+    • Activity, correct answers, concept demonstrated, teacher-verified and AI-inferred difficulty are kept separate
+      (see Section 25.6).
+
+
+
+   AI-09             Adaptive practice                                                                         CORE
+
+
+   Practice difficulty moves between L1, L2 and L3 questions:
+    • Three correct answers in a row move the student up one level.
+    • Two wrong answers in a row move the student down one level and show an explanation.
+   The student stays in the zone where effort is visible. Rules are simple and visible to the teacher. No hidden
+   difficulty tricks.
+
+
+
+   AI-10             Hints and scaffolding                                                                     CORE
+
+
+   Hint sequence for a practice question:
+    1. A pointer to the concept.
+    2. A guiding question.
+    3. The first step.
+    4. A worked example of a similar question.
+    5. The full explanation, when appropriate.
+   Teachers set hint rules separately for practice and for tests. In a formal test, the default is no hints.
+
+
+
+   AI-11             Socratic mode                                                                             CORE
+
+
+   Purpose: the AI guides the student to the answer instead of giving it, to protect learning and reduce copying.
+   Example:
+   Student: "Solve this numerical."
+   AI: "What is given, and what do you need to find?"
+   Student: "Distance and time are given. I need velocity."
+   AI: "Which formula links velocity, distance and time?" A "tell me directly" option exists. Teachers can set
+   Socratic mode as the default for homework-type questions.
+
+
+
+   AI-12             Doubt inbox                                                                                NEXT
+
+
+   If the AI answer does not satisfy the student, a "Ask my teacher" button sends the question to the teacher with
+   the student's name. The teacher replies in the app. The AI filters basic doubts; real problems reach the teacher.
+
+
+
+   AI-13             Concept map (student view)                                                                CORE
+
+
+   A tree of the chapter's concepts. Each node's colour shows the student's current status, using friendly labels:
+    • Mastered (green-tinted node)
+    • Almost there (sky-blue node)
+    • Let's fix this (peach node)
+    • Not started (grey node)
+   Locked concepts (prerequisites not yet solid) show a lock and a short reason. The student can see why
+   something is locked. This supports planning by the student.
+
+
+
+Learn . Grow . Together                                                                                                Page 34
+VIDHYASAATHY         Product Blueprint and Application Specification                                       Working draft v1
+
+
+
+
+AI-14 Four internal performance bands (PROPOSED)
+Internal routing ranges, never shown as labels:
+
+0 to 25 percent             large gaps: simpler explanation, prerequisite revision
+25 to 50 percent            basics partly clear: worked examples, guided practice
+50 to 75 percent            basics clear: application questions, more practice 75 to 100 percent consistent
+                            understanding: next concept, challenges Rules: * Bands are a routing device, not a
+                            measure of intelligence. * Thresholds are not validated and must be tested with real data.
+                            * Tracking is per concept (AI-08). Bands apply to each concept's estimate.
+
+   AI-15             Honesty layer                                                                          CORE
+
+
+   Rules applied to every AI feature:
+    • Cite the source: "your teacher's notes" or "general explanation."
+    • Say "I do not know" or "the material does not cover this" when true.
+    • Do not invent citations, page numbers or teacher statements.
+    • Mark uncertain or sensitive answers for teacher review.
+    • Never give medical, psychological or permanent-ability conclusions.
+
+
+
+   AI-16             Ask Saathy safety settings                                                             CORE
+
+
+   Age-appropriate language, topic limits to the school subject list, and polite redirection for off-topic requests.
+   Details in Section 25.
+
+
+
+   AI-17             Frustration-aware responses                                                            NEXT
+
+
+   The system notices interaction patterns only: the same question asked three times, five wrong answers in a
+   row, or repeated hint requests. When this happens, the reply changes tone and pace, for example: "No
+   problem.
+   This one is tricky. Let's start from the basics. What do you already understand?"
+   Rule: no camera, microphone or biometric input is used. The feature uses interaction data only and is switched
+   off in the student's privacy settings if the school disables it [OPEN].
+
+
+
+   AI-18             Warm-up radar (forgetting detector)                                                 ADVANCED
+
+
+   Before a session the student gets a three-minute warm-up of questions on concepts they are likely to have
+   forgotten. The likelihood comes from the time since the last attempt and the score at that time (a simple
+   spacing rule). Warm-up items come from the question bank and the student's own history. The student does
+   not need a separate revision session.
+
+
+
+   AI-19             AI feedback drafts for teachers                                                        CORE
+
+
+   For written answers the AI drafts feedback, for example "Correct direction, unit missing." The teacher edits and
+   sends. Feedback drafts are never sent to students without teacher approval.
+
+
+
+
+Learn . Grow . Together                                                                                            Page 35
+VIDHYASAATHY         Product Blueprint and Application Specification                               Working draft v1
+
+
+
+
+   AI-20             Natural-language check                                                         NEXT
+
+
+   A question typed in Roman Hindi, Hinglish or English is understood and answered in the language the student
+   chooses (IND-03).
+
+
+
+
+Learn . Grow . Together                                                                                    Page 36
+VIDHYASAATHY         Product Blueprint and Application Specification                                    Working draft v1
+
+
+
+
+     14             Advanced and experimental AI features
+
+Most features in this section are ADVANCED, FUTURE or UNDECIDED (AI-22 is CORE for teacher-approved drafts
+only). None of them is part of the first release unless the team says so (Section 28). Each one needs a validation
+plan before any claim is made about it.
+
+   AI-21             Learning Remix (same concept, new context)                                        ADVANCED
+
+
+   The same concept is rewritten around the student's interests, for example cricket, bikes or cooking. Difficulty,
+   formula and marking stay the same.
+   Example:
+   Standard: "A car goes from 0 to 20 m/s in 5 s. Find acceleration."
+   Remix: "A bowler's delivery goes from 0 to 140 km/h in 0.4 s. Find acceleration. Hint: convert to m/s first."
+   Rules: the teacher approves a sample of remixes (for example one in ten) before they are used. Students can
+   report a remix that feels wrong or off-putting. Interest data is collected only if the student chooses it.
+
+
+                                                                                                   CORE for drafts,
+   AI-22             AI question and lesson drafts (teacher-approved)                            ADVANCED for lessons
+
+   Teacher                     selects notes and asks for ten MCQs. The AI drafts them. The teacher approves,
+                               edits or rejects each one. Approved items enter the question bank (ASM-08). AI
+                               content never goes directly to a student.
+
+
+
+   AI-23             Lesson compiler (one source, many outputs)                                        ADVANCED
+
+
+   From an uploaded lesson the AI proposes a structured lesson, simplified and detailed explanations, a concept
+   map, prerequisite concepts, practice questions, misconception checks, a revision sheet, a session draft and a
+   parent-friendly summary. Each output is a draft. Teacher review is required.
+   Outputs trace to their source where possible.
+
+
+
+   AI-24             Concept radar for classes                                                         ADVANCED
+
+
+   Shared misunderstandings detected from assessment answers. Example: many students confuse distance and
+   displacement, or choose the wrong formula, or calculate correctly but cannot explain the result. The teacher
+   sees a concept-level view with frequencies (ANA-02). Where one wrong answer could have several causes,
+   the view shows uncertainty.
+
+
+
+   AI-25             Targeted reteaching assistant                                                     ADVANCED
+
+
+   When the radar shows a shared gap, the AI drafts a short explanation, a worked example, a diagnostic
+   question and a five-minute activity. The teacher approves and decides whether to use it. A follow-up check
+   tests whether the gap improved.
+
+
+
+   AI-26             What-If Machine (simulations)                                                     ADVANCED
+
+
+   Students change one condition and predict the result before it is shown.
+   Example: "If distance increases but time stays the same, what happens to speed?"
+
+
+Learn . Grow . Together                                                                                            Page 37
+VIDHYASAATHY         Product Blueprint and Application Specification                                       Working draft v1
+
+
+
+
+   Rules:
+    • Numbers come from deterministic formulas, never from free AI text.
+    • Assumptions and simplifications are stated (for example "no friction").
+    • AI explains the result; it does not invent the simulation.
+    • The first version supports a small set of carefully chosen simulations.
+
+
+
+   AI-27             Mistake Time Machine (solution tracing)                                             ADVANCED
+
+
+   The student types or uploads a worked solution. The system:
+    1. Parses the steps it can read confidently.
+    2. Checks each step against the relevant rule.
+    3. Highlights the earliest likely error.
+    4. Explains why that step is likely wrong.
+    5. Gives a similar question for the same skill.
+    6. Checks whether the same error appears again.
+   For unclear handwriting, the system asks the student to confirm its reading of each step before analysing it.
+
+
+
+   AI-28             Homework autopsy                                                                    ADVANCED
+
+
+   Looks at the working, not only the final answer. Possible categories: concept misunderstanding, formula
+   choice, calculation error, sign or unit error, misreading the question, missing prerequisite. Presented as
+   possible explanations, not psychological conclusions.
+
+
+
+   AI-29             Mistake DNA (error categories)                                                         NEXT
+
+
+   Each wrong answer is tagged with a category:
+   Careless                    the concept was known; a sign or calculation slipped
+   Concept                     the idea is not yet clear
+   Speed                       the idea was known; the attempt was rushed
+   Reading                     the question was misread The student sees their category pattern over a month,
+                               with a matching fix (for example a checklist for careless errors, or a timed practice
+                               set). Teachers see class-level counts only by default.
+
+
+
+   AI-30             Full-lesson search and AI segmentation                                                FUTURE
+
+
+   Search across all uploads, and AI suggestions for recording segments.
+   Requires testing for accuracy before any segment reaches students.
+
+
+
+   AI-31             Chapter-to-comic studio                                                               FUTURE
+
+
+   A short, curriculum-grounded comic-style explanation of a concept, in four to six panels with reusable character
+   poses. Science and maths content must be reviewed. The first version uses reusable illustrations and text, not
+   newly generated images for every panel.
+
+
+
+
+Learn . Grow . Together                                                                                             Page 38
+VIDHYASAATHY         Product Blueprint and Application Specification                                      Working draft v1
+
+
+
+
+   AI-32             Branching learning adventure                                                         FUTURE
+
+
+   A story where a student's choices lead to different reasoning steps. Choices are judged by predefined
+   educational rules, not by free AI text. One short, tested adventure is the first target.
+
+
+
+   AI-33             Concept court (debate between claims)                                                FUTURE
+
+
+   Two fictional characters argue competing claims about a concept. The student decides which claim is better
+   supported and which reasoning step is wrong. Answers are checked against approved material before use.
+
+
+
+   AI-34             Reverse exam mode (rubric feedback)                                                ADVANCED
+
+
+   The student writes an answer to a question, receives feedback against a marking guide (missing points,
+   unclear reasoning, terminology), reads a suggested improvement, rewrites, and compares the two versions.
+   Feedback is formative. Teacher grading stays authoritative.
+
+
+
+   AI-35             Viva simulator                                                                     ADVANCED
+
+
+   Conversational oral-exam practice. The AI asks a question, the student answers, the AI asks a follow-up based
+   on the answer, and the session ends with a summary and suggested revision. Start with text. Voice follows only
+   after text works reliably. A text fallback is always present.
+
+
+
+   AI-36             Explain-it-back mode (Feynman style)                                               ADVANCED
+
+
+   The student explains a concept in their own words, typed or spoken. The AI scores the explanation against a
+   rubric: what was correct, what was missed, what was wrong. It then points to the exact timestamp of the
+   teacher's recording or the note section that covers the missed point.
+
+
+
+   AI-37             Reality scanner (everyday links)                                                     FUTURE
+
+
+   The student describes an everyday object or situation, or chooses one from a curated gallery. The system
+   proposes a curriculum-linked activity, for example a bicycle and motion, or a ball and force. Camera-based
+   recognition is a later possibility and is not assumed in the first build.
+
+
+
+   AI-38             Past-and-future reasoning challenge                                                  FUTURE
+
+
+   Starts from the student's earlier explanation. Roles: the student's earlier belief, a challenge to its assumptions,
+   and the student's revised argument supported by evidence. Final conclusions must be grounded in approved
+   content.
+
+
+
+   AI-39             Digital twin (predicted next test)                                                 ADVANCED
+
+
+   From current mastery the system builds a simulated next test and shows the student a predicted range, with
+   the actions that could change it. Example: "Predicted 58 out of 100 at today's level. Two sessions this week
+   may move it toward 71." Rules: the prediction is a range with uncertainty, never a guarantee; it is shown only
+   with the evidence behind it; teachers see it only if the school allows. This feature needs a validation plan before
+   any claim about accuracy.
+
+
+
+
+Learn . Grow . Together                                                                                            Page 39
+VIDHYASAATHY         Product Blueprint and Application Specification                                   Working draft v1
+
+
+
+
+   AI-40             Teacher emphasis radar                                                          ADVANCED
+
+
+   Finds moments in a recording where the teacher signalled importance: explicit phrases such as "this is
+   important, remember it," a point repeated several times, or the topic with the most student doubts. The student
+   sees a short list of key moments for the lesson. Teachers see a mirror: time spent on a topic versus interaction
+   on it. Requires consent rules for recordings (LES-07).
+
+
+
+   AI-41             Mistake autopsy view (class)                                                    ADVANCED
+
+
+   Teacher                     view of a shared logic break, for example "7 of 11 students swapped speed and
+                               velocity." Matched to a documented misconception library (maths and physics). One
+                               five-minute clarification is suggested.
+
+
+
+   AI-42             Teacher pattern profile ("what tends to be asked")                              UNDECIDED
+
+
+   Summarises a teacher's past papers and emphasis signals to show question patterns, for example the share of
+   application questions and the topics stressed. Shown to the teacher for approval before any student sees a
+   priority list. Ethical and fairness review is required before any build.
+   Predictions are not guaranteed exam questions; the feature organises the teacher's own signals.
+
+
+
+   AI-43             Night recap (audio summary)                                                      FUTURE
+
+
+   A short audio summary each evening: what was learned today, one fix for today's mistake, and a preview of
+   tomorrow. Built from the student's own data and language. Audio-only mode is required (IND-02).
+
+
+
+   AI-44             Big-sibling tutor persona (name UNDECIDED)                                      UNDECIDED
+
+
+   A casual, encouraging, voice-friendly tone that sounds like an older sibling who recently took the same class.
+   Tone is a design choice. The AI must not claim real personal experience or use fake human identity. The
+   feature is considered only after the core tutor works.
+
+
+
+
+Learn . Grow . Together                                                                                        Page 40
+VIDHYASAATHY         Product Blueprint and Application Specification                                  Working draft v1
+
+
+
+
+     15             Progress, learning history and motivation
+
+   PRG-01            Student progress view                                                             CORE
+
+
+   Shows, in order:
+    1. One clear next action.
+    2. Concepts mastered, almost there, and needing attention (AI-13 labels).
+    3. Completed and pending work.
+    4. Recent improvements, for example "Acceleration: better this week."
+    5. Assessment history.
+   Language rule: never "weak," "average," "genius," or a rank.
+
+
+
+   PRG-02            Learning history                                                                  CORE
+
+
+   An authorised record of lessons opened, sessions completed, questions attempted, assessment results,
+   repeated error patterns, teacher feedback, and learning plans. Kept for the academic year at minimum.
+   Retention rules are in Section 25.
+
+
+
+   PRG-03            Achievement milestones                                                            NEXT
+
+
+   Milestones for real progress: finishing a recovery path, showing a previously difficult concept, correcting a
+   repeated error, finishing an assigned chapter activity. Not rewarded for time spent, click count or speed.
+
+
+
+   PRG-04            Improvement badges (growth, not rank)                                             NEXT
+
+
+   Badges show growth, for example "Acceleration: 30 to 65 percent." They do not show permanent top or bottom
+   positions. No public leaderboards.
+
+
+
+   PRG-05            Streaks with freeze                                                               NEXT
+
+
+   A daily learning streak. A streak can be paused automatically during school holidays, exam weeks and
+   school-declared closures (IND-05). A missed day does not reset the entire streak to zero. Streaks never create
+   pressure to study late at night; the product does not send notifications after school-set hours.
+
+
+
+   PRG-06            Daily five-minute challenge                                                       NEXT
+
+
+   Each day: two items from today's topic, one revision item from earlier, one prerequisite check and one bonus.
+   The challenge is capped at five minutes.
+
+
+
+   PRG-07            Reflection prompts                                                                NEXT
+
+
+   After selected sessions, a short prompt: What did you understand? What is still confusing? Which step helped?
+   Can you explain it in your own words?
+   Self-reports inform the next step but never count as proof of mastery.
+
+
+
+
+Learn . Grow . Together                                                                                       Page 41
+VIDHYASAATHY         Product Blueprint and Application Specification                               Working draft v1
+
+
+
+
+   PRG-08            Parent-facing study prompts                                                    NEXT
+
+
+   See PAR-05.
+
+
+
+MOTIVATION GAMES (MOT)
+Games support lessons. They do not become the product. Each game uses the teacher's approved questions and
+changes only its wrapper. Points come from correct practice, never from screen time.
+
+   MOT-01            MCQ rush                                                                       NEXT
+
+
+   Timed multiple-choice questions with streaks. Helps speed and recall.
+
+
+
+   MOT-02            Match the concept                                                              NEXT
+
+
+   Match terms to definitions or formulas. Helps vocabulary and formulas.
+
+
+
+   MOT-03            Rapid revision                                                                 NEXT
+
+
+   Five to ten mixed questions from the chapter before a test.
+
+
+
+   MOT-04            Streak challenge                                                               NEXT
+
+
+   A run of correct answers. A wrong answer ends the run without penalty in points beyond the run. Encourages
+   consistency, not speed alone.
+
+
+
+   MOT-05            Boss level (chapter unlock)                                                    NEXT
+
+
+   Mixed questions across the chapter. Passing unlocks the next chapter.
+   Mirrors sequential mastery.
+   Rule after every game: a plain summary, for example "Today: 12 of 15 correct on Acceleration. Tomorrow's
+   target: Match the concept."
+
+
+
+
+Learn . Grow . Together                                                                                    Page 42
+VIDHYASAATHY         Product Blueprint and Application Specification                                     Working draft v1
+
+
+
+
+     16             Teacher experience
+
+The teacher's dashboard must make daily work faster, not add administration.
+The guiding principle is one teaching effort, many uses: notes, recording, session and quiz all come from the same
+lesson.
+
+   TCH-01            Teacher home                                                                         CORE
+
+
+   Shows: today's sessions and their completion; assignments awaiting review; upcoming tests; concept heat
+   map (ANA-02); student questions needing attention; quick actions (upload, create session, assign work).
+
+
+
+   TCH-02            Class list and class detail                                                          CORE
+
+
+   A list of assigned classes. Each class opens to its roster, its subjects, its published items, its review queue and
+   its insights.
+
+
+
+   TCH-03            Roster                                                                               CORE
+
+
+   Students in the class with their enrolment status and activation status.
+   The teacher sees names here. Insights (ANA) use counts by default.
+
+
+
+   TCH-04            Publish notes and resources                                                          CORE
+
+
+   Three taps: class, subject, chapter, concept, publish. A class notification is sent (COM-01). Teachers can
+   publish from day one of the year.
+
+
+
+   TCH-05            Lesson editor                                                                        CORE
+
+
+   Add, delete and reorder sections. Edit text. Add examples and questions.
+   Attach approved resources. Preview the student view. Save drafts.
+   Editing a published lesson does not silently change a student's completed record: the student sees "updated,"
+   and their earlier answers stay as they were.
+
+
+
+   TCH-06            Session builder                                                                      CORE
+
+
+   See SES-03.
+
+
+
+   TCH-07            Homework and quiz creator                                                            CORE
+
+
+   See ASM-02. Uses the question bank (ASM-08) or AI drafts (AI-22).
+
+
+
+   TCH-08            Auto-marking and review queue                                                        CORE
+
+
+   See ASM-04 and ASM-05. The queue prioritises borderline cases so the teacher reviews a small number of
+   answers in depth.
+
+
+
+Learn . Grow . Together                                                                                          Page 43
+VIDHYASAATHY         Product Blueprint and Application Specification                                       Working draft v1
+
+
+
+
+   TCH-09            Class announcements                                                                   CORE
+
+
+   Post an update to the class (for example "Physics test moved to Thursday").
+   Announcements reach only the intended class. Parents receive them only when the school allows (COM-02).
+
+
+
+   TCH-10            Teacher settings                                                                      CORE
+
+
+   Profile, notification preferences, default hint rules, Socratic default (AI-11), and whether the teacher's class
+   uses recordings (SCH-12).
+
+
+
+   TCH-11            Class teacher role                                                                    CORE
+
+
+   Extra rights for one class: manage the class space (STU-11), post class updates, and send the parent
+   progress report for the class (PAR-03).
+   Subject teachers see their own subject only.
+
+
+
+   TCH-12            Reteaching decision                                                                   CORE
+
+
+   The teacher uses insights to choose: reteach now, assign practice, or move on. Each choice can be
+   recorded as an intervention (ANA-04) so its effect can be checked later.
+
+
+
+
+Learn . Grow . Together                                                                                               Page 44
+VIDHYASAATHY         Product Blueprint and Application Specification                                     Working draft v1
+
+
+
+
+     17             Teacher insights and analytics
+
+   ANA-01            Class completion view                                                                CORE
+
+
+   Shows, for the chosen session or assignment: how many students started, finished, and submitted. Names are
+   shown only in the roster. This view shows counts.
+
+
+
+   ANA-02            Concept heat map                                                                     CORE
+
+
+   A grid of concepts against the class. Each cell shows the share of the class answering correctly, coloured
+   green (most correct), peach (mixed) or red (most stuck). A stuck concept is visible before the next test.
+   Example: Acceleration shows red, 60 percent of answers wrong.
+   Note: the colours use the palette in Section 4; red is used only here, for warnings, and is paired with a text
+   label.
+
+
+
+   ANA-03            Doubt clustering                                                                  ADVANCED
+
+
+   Student                     AI questions are tagged to concepts. The teacher sees counts by concept: "17
+                               doubts on Acceleration this week, 3 on Velocity, none on Distance." Default: counts
+                               only. Names are hidden unless the school and teacher choose named mode
+                               [OPEN] (Decision 6). Students should know how doubts are used. Reason: if
+                               students believe the teacher can see who asked, they stop asking.
+
+
+
+   ANA-04            Intervention record and follow-up                                                 ADVANCED
+
+
+   Each intervention (reteach, practice, move on) is logged with its date, its target concept and the follow-up
+   result. Over time this shows which interventions helped. Causation is not claimed from a single case.
+
+
+
+   ANA-05            Mistake autopsy class view                                                        ADVANCED
+
+
+   See AI-41.
+
+
+
+   ANA-06            Class trend view                                                                     NEXT
+
+
+   Completion, assessment distribution and change between assessments, by concept. Shows trends, never
+   public rankings.
+
+
+
+   ANA-07            Students who may need extra support                                                  NEXT
+
+
+   A short list, based on several recent signals (not one test). Shown with reasons, and the teacher decides what
+   to do. Names shown only to the assigned teacher.
+
+
+
+
+Learn . Grow . Together                                                                                             Page 45
+VIDHYASAATHY         Product Blueprint and Application Specification                                   Working draft v1
+
+
+
+
+   ANA-08            Teacher mirror (teaching time versus interaction)                                ADVANCED
+
+
+   Compares teaching time on each topic with student interaction on it. Used for self-reflection by the teacher,
+   never for inspection by the school.
+
+
+
+
+Learn . Grow . Together                                                                                        Page 46
+VIDHYASAATHY         Product Blueprint and Application Specification                                     Working draft v1
+
+
+
+
+     18             Parent experience
+
+Parents should understand their child's learning without becoming the child's teacher, and without constant
+surveillance.
+
+   PAR-01            Parent home                                                                         CORE
+
+
+   Answers five questions: What is my child learning now? What is complete?
+   Where might they need help? What is the teacher doing? What can I do without adding pressure?
+   Shows: child's name, class and school; current learning focus; assigned work with deadlines; completed
+   activities; the latest assessment result; concepts needing practice; teacher updates; one suggested support
+   action.
+
+
+
+   PAR-02            Child view                                                                          CORE
+
+
+   Subjects and chapters, sessions completed or pending, and quiz results in plain form. Data is only for the
+   verified child.
+
+
+
+   PAR-03            Progress summary (weekly or on event)                                               CORE
+
+
+   Written in plain language, for example: "Your child can recall the definitions of speed and velocity. They need
+   more practice applying them to word problems. A short practice session has been assigned."
+   The summary labels its parts: observed result, AI interpretation, teacher confirmed, suggested action. It
+   never presents an inference as a medical, psychological or permanent-ability diagnosis.
+   Frequency is [OPEN] (Decision 10).
+
+
+
+   PAR-04            Assignments and deadlines                                                           CORE
+
+
+   Assignments with status and due dates. Read-only for parents.
+
+
+
+   PAR-05            Support suggestions ("Ask this today")                                               NEXT
+
+
+   One simple suggestion a parent can use without teaching the subject, for example: "Ask Aarav: what is the
+   difference between acceleration and velocity? The person who explains it remembers it best."
+   Rules: suggestions respect the parent's time and the child's independence, and never replace the teacher's
+   plan.
+
+
+
+   PAR-06            Linked children and account settings                                                CORE
+
+
+   Lists all verified children. A parent can switch between them. Shows the verification status of each link and lets
+   the parent request a correction through the school.
+
+
+
+   PAR-07            Plain-text message fallback (WhatsApp or SMS)                                        NEXT
+
+
+   Key updates can be sent by WhatsApp or SMS for parents who do not open the app. Example: "Aarav: Science
+   homework pending (due tomorrow). Quiz 4 of 5. Today's revision: Acceleration, 20 minutes."
+
+
+Learn . Grow . Together                                                                                          Page 47
+VIDHYASAATHY         Product Blueprint and Application Specification                                Working draft v1
+
+
+
+
+   Rule: messages are sent only to the verified parent number and contain the minimum needed. Provider and
+   cost [OPEN].
+
+
+
+   PAR-08            Privacy boundaries (hard rules)                                                 CORE
+
+
+   Parents cannot see:
+    • Private conversations with Saathy (by design, not by setting).
+    • Other students' data.
+    • Public rankings.
+    • Anything about children they are not linked to.
+   Parents can see only the verified child's approved progress and tasks.
+
+
+
+   PAR-09            Parent meeting preparation                                                    ADVANCED
+
+
+   Before a parent-teacher meeting, the parent can review the child's data and practise questions to ask, for
+   example: "Where is my child getting stuck in Acceleration?" The child can also prepare a short, evidence-based
+   account of their progress. Uses only the child's approved data. Teachers are not shown the parent's practice
+   sessions.
+   Note: this is a rehearsal aid. It does not simulate or script the teacher.
+
+
+
+
+Learn . Grow . Together                                                                                     Page 48
+VIDHYASAATHY         Product Blueprint and Application Specification                                    Working draft v1
+
+
+
+
+     19             School administration
+
+   SCH-03            Academic year                                                                       CORE
+
+
+   Create the year, copy the previous year's structure, add new students and dates. Exam weeks, holidays and
+   school closures are entered here and feed the calendar awareness layer (IND-05).
+
+
+
+   SCH-04            Classes and sections                                                                CORE
+
+
+   Create classes and sections such as 9-A and 9-B, and any streams. Two-minute setup through the wizard.
+
+
+
+   SCH-05            Subjects                                                                            CORE
+
+
+   Add subjects per class. Link to the board's chapter structure (LES-10).
+
+
+
+   SCH-06            Teacher assignments                                                                 CORE
+
+
+   Map teacher x subject x class. Mid-year changes are common in India, so reassignment must update access
+   immediately and keep history.
+
+
+
+   SCH-07            Student enrolment                                                                   CORE
+
+
+   CSV upload with validation: duplicate roll numbers, missing parent numbers, wrong class names. Preview
+   before confirming. Generates activation codes and a distribution sheet for the school to hand out.
+   Open: whether the admin, the class teacher or students themselves upload the list (Decision 3).
+
+
+
+   SCH-08            Parent linking management                                                           CORE
+
+
+   Which parent is linked to which child; phone verification status; cases of one parent with several children;
+   guardian cases. Admin can correct a link with a logged reason.
+
+
+
+   SCH-09            Invitations                                                                         CORE
+
+
+   Track which teachers, students and parents have accepted. Resend or cancel an invitation. Expired invitations
+   are marked clearly.
+
+
+
+   SCH-10            Admin home                                                                          CORE
+
+
+   Structure and health: classes, teachers, enrolment counts, activation status, parent-linking status, published
+   resources. No student rankings and no individual AI chats.
+
+
+
+   SCH-11            Content library permissions                                                         CORE
+
+
+   Decide which resources can be shared across classes and which are restricted.
+
+
+
+
+Learn . Grow . Together                                                                                           Page 49
+VIDHYASAATHY         Product Blueprint and Application Specification                                   Working draft v1
+
+
+
+
+   SCH-12            School settings                                                                    CORE
+
+
+   Recording use (on or off); doubt visibility (counts or named); parent update frequency; whether AI is enabled for
+   students; whether competition features are enabled (default: no leaderboards); assessment rules.
+
+
+
+   SCH-13            Academic reports                                                                   NEXT
+
+
+   Completion trends, subject health and resource coverage across the school.
+   Used to support teaching and planning, never to rank or punish.
+
+
+
+   SCH-14            Admin activity log                                                                 CORE
+
+
+   Records sensitive administrative actions: enrolment changes, link changes, permission changes. Viewable
+   by the platform administrator.
+
+
+
+
+Learn . Grow . Together                                                                                        Page 50
+VIDHYASAATHY         Product Blueprint and Application Specification                                        Working draft v1
+
+
+
+
+     20             Notifications and communication
+
+   COM-01            Student and class notifications                                                        CORE
+
+
+   Triggers: new notes or session published; session released; assignment due soon; teacher announcement.
+   Each notification opens the exact item.
+
+
+
+   COM-02            Teacher announcements                                                                  CORE
+
+
+   Covered in TCH-09. Recipients: the class only.
+
+
+
+   COM-03            Parent notifications                                                                   CORE
+
+
+   Triggers: new assignment; upcoming deadline; a published progress summary; an important teacher
+   announcement; a teacher-requested follow-up. Parents can choose frequency within school rules.
+   Avoid alerts for every click, question or minor score change.
+
+
+
+   COM-04            Reminders                                                                               NEXT
+
+
+   One reminder per item, at a school-set time, never after school hours.
+
+
+
+   COM-05            Quiet hours                                                                            CORE
+
+
+   No notifications between the school-set quiet hours. Default quiet hours [OPEN].
+
+
+
+   COM-06            Delivery failure                                                                       CORE
+
+
+   If a notification cannot be delivered, the item still appears in the app's notification centre. Failures are logged
+   without student personal data.
+
+
+
+   COM-07            Notification centre                                                                    CORE
+
+
+   A list of recent notifications for the user. Read and unread state.
+
+
+
+   COM-08            Direct messaging                                                               NOT IN FIRST RELEASE
+
+
+   Full parent-teacher or student-student messaging is not assumed. Teacher replies to doubts (AI-12) and class
+   announcements (TCH-09) cover the first need. A messaging system is [UNDECIDED].
+
+
+
+
+Learn . Grow . Together                                                                                             Page 51
+VIDHYASAATHY         Product Blueprint and Application Specification                                      Working draft v1
+
+
+
+
+     21             India-specific layer
+
+The following features address conditions the sources describe for Tier-2 and Tier-3 cities and schools. The sources
+describe these as hypotheses that still need field research (see Section 30). Tier-1 students also use shared devices
+and unreliable connections; the design should not assume that Tier-2 and Tier-3 students lack all technology.
+
+   IND-01            Offline-first study and sync                                                NEXT, access requirement
+
+
+   The student taps "Download today's session" when connected. Download is text-first, with compressed images
+   and optional low-resolution video, about 2 to 3 MB for a typical session. At home without a connection, the
+   cached session opens. Quiz answers are saved on the device and sent when the connection returns. The
+   teacher dashboard updates after sync.
+   Rules:
+    • Downloading is the student's explicit action; the app does not download large files without asking.
+    • Conflicts are resolved by timestamp: the latest submitted answer for a given question is kept, and the earlier
+      one is logged.
+    • A pending submission shows a visible "waiting to send" status.
+   Note: S4 calls offline access non-negotiable for India; S3 calls it a later idea. Decision 12 covers the
+   first-release scope.
+
+
+
+   IND-02            Data saver and audio-only mode                                                        NEXT
+
+
+   Each resource shows its size ("Session 4: 2 MB"). Recordings offer audio-only playback. Lightweight images
+   and text by default.
+
+
+
+   IND-03            Language layers                                                              CORE for UI, NEXT for AI
+
+
+   Three separate things:
+    1. Interface language: the app's labels and menus (English first; a regional language later [OPEN]).
+    2. AI answer language: the language the student asks in is the language of the reply.
+    3. Bridge explanations: English notes stay as they are, and the student can ask for a Hinglish or regional
+       explanation with the same technical terms in English.
+   Rule: textbook and exam terminology stays accurate. An informal explanation is followed by the standard
+   definition expected in the exam.
+
+
+
+   IND-04            Low-end device support                                                                CORE
+
+
+   Lightweight web app or progressive web app. Target: a usable screen within about two seconds on a mid-range
+   phone with a slow connection. Limited animation.
+   Compressed images. Works on phones with little memory.
+   Measure before claiming a number [OPEN: test devices].
+
+
+
+
+Learn . Grow . Together                                                                                           Page 52
+VIDHYASAATHY         Product Blueprint and Application Specification                                  Working draft v1
+
+
+
+
+   IND-05            Calendar awareness                                                                NEXT
+
+
+   The system knows school holidays, exam weeks and festival dates (from the academic year, SCH-03). Effects:
+   deadlines shift away from holidays; streaks pause (PRG-05); notification timing adjusts. This is a small feature
+   with a large effect on whether the product fits the school calendar.
+
+
+
+   IND-06            Parent and student shared-device privacy                                          CORE
+
+
+   See AUTH-09. Sign out and profile chooser prevent one family member from opening another's account.
+
+
+
+
+Learn . Grow . Together                                                                                       Page 53
+VIDHYASAATHY         Product Blueprint and Application Specification                                  Working draft v1
+
+
+
+
+     22             Complete cross-role user journeys
+
+Each journey lists the steps, the screen, what the user does, what the system does, and the next state. Names and
+data are fictional.
+
+
+  JOURNEY A               School setup to first class (Admin)
+
+ 1. Admin opens the landing page and chooses school registration (AUTH-01).
+ 2. Admin completes the wizard (SCH-01): profile, academic year, classes 9-A and 9-B, subjects, teacher
+    assignments.
+ 3. Admin uploads the student list (SCH-07). The system validates the file and lists two duplicate roll numbers.
+    Admin fixes them and confirms.
+ 4. System generates activation codes and a distribution sheet.
+ 5. Admin invites teachers (SCH-09). Teachers accept.
+State after: the class workspace for 9-A is live.
+
+
+  JOURNEY B               Student activation and first day (Student and parent)
+
+ 1. Student enters school, roll number, class and section (AUTH-03).
+ 2. Student enters the activation code. System rejects a wrong code and shows "Check the code or ask your
+    school."
+ 3. Parent receives a code by phone and verifies it (AUTH-05).
+ 4. Student sets a 4-digit PIN (AUTH-04).
+ 5. Welcome screen (ONB-01). Student sees Motion, Session 3 (scheduled).
+State after: student and parent are linked and active.
+
+
+  JOURNEY C               Teacher publishes a lesson and session (Teacher)
+
+ 1. Teacher uploads the Motion notes (LES-02) and tags them to Distance, Speed and Velocity, and Acceleration
+    (LES-03).
+ 2. Teacher uploads the lesson recording and marks an Acceleration segment (LES-07).
+ 3. Teacher builds Session 3 from the template (SES-03), adds slides and five MCQs, and sets the release for
+    18:00 today.
+ 4. Teacher previews the student view and publishes (TCH-04).
+ 5. Students receive a notification (COM-01).
+State after: Session 3 is scheduled; it appears on student home at 18:00.
+
+
+  JOURNEY D               Student completes a session and gets a next step (Student A)
+
+ 1. Student A sees "Session 3, 15 minutes, start?" on home (STU-01).
+ 2. Completes slides and questions in the player (SES-02).
+ 3. Scores 5 of 5 on the quiz. Summary shows completion and next step.
+ 4. System updates the concept map: Speed and Velocity "Almost there" moves toward mastered; the estimate
+    needs more varied evidence (AI-08).
+ 5. System offers a harder Speed and Velocity set (AI-09).
+State after: Student A has the next step; the teacher sees completion counts.
+
+
+
+Learn . Grow . Together                                                                                       Page 54
+VIDHYASAATHY         Product Blueprint and Application Specification                                       Working draft v1
+
+
+
+
+  JOURNEY E               Student struggles and receives a recovery path (Student B)
+
+ 1. Student B scores 2 of 5. "Why this was wrong" shows the Acceleration explanation and the relevant slide
+    (AI-04).
+ 2. System checks the prerequisite chain (AI-07): velocity questions were answered correctly, so the gap is in
+    Acceleration.
+ 3. Student B taps "Explain another way" and chooses the everyday-analogy mode (AI-05).
+ 4. Student B works three worked examples and three practice questions (AI-06, AI-09). Hints are available (AI-10).
+ 5. Student B asks Saathy a question and receives a grounded answer with source (AI-01).
+ 6. Mini check passes. Estimate updates (AI-08). Next step: application questions.
+Also: the answer error category is recorded (AI-29) as "Concept."
+
+
+  JOURNEY F               Student who missed the class catches up (Student C)
+
+ 1. Home shows the card: "You missed Motion yesterday. Catch up in 20 minutes?"
+ 2. Student opens the 7-minute Acceleration recording segment (LES-07).
+ 3. Reads the notes for the concept (LES-03).
+ 4. Completes a mini session and a five-question check (SES-01).
+ 5. Passes. The card disappears. Class pace is restored.
+Failure path: if the check fails, the system recommends the prerequisite check (AI-07) and a teacher question
+(AI-12).
+
+
+  JOURNEY G               Teacher reviews class patterns and intervenes (Teacher)
+
+ 1. Teacher home shows the concept heat map: Acceleration in red (ANA-02).
+ 2. Teacher sees doubt counts by concept, with names hidden (ANA-03).
+ 3. Teacher opens the mistake autopsy: 7 of 11 students swapped speed and velocity (AI-41).
+ 4. Teacher decides to reteach for 10 minutes and logs the intervention (TCH-12, ANA-04).
+ 5. Next day's check shows Acceleration moved from red to peach.
+State after: intervention recorded with its follow-up result.
+
+
+  JOURNEY H               Parent sees progress and a suggestion (Parent)
+
+ 1. Parent signs in and sees the child's home (PAR-01).
+ 2. Reads the weekly summary (PAR-03): Session 3 complete, quiz 4 of 5, one area to practise.
+ 3. Reads the suggestion "Ask this today" (PAR-05).
+ 4. Parent cannot open the child's AI conversation. The screen says so in plain words (PAR-08).
+ 5. Parent receives a plain-text WhatsApp message if the school enables it (PAR-07).
+State after: parent is informed; no private chat was exposed.
+
+
+  JOURNEY I               Teacher changes a class assignment mid-year (Admin)
+
+ 1. Admin opens teacher assignments (SCH-06) and moves a teacher from 9-B to 9-A for Physics.
+ 2. System updates the teacher's access immediately. Old access is removed.
+ 3. History keeps the earlier assignment for reporting.
+Failure path: if the teacher is editing a draft for 9-B, the draft is kept and the teacher is told that they no longer have
+publishing rights for 9-B.
+
+
+
+Learn . Grow . Together                                                                                            Page 55
+VIDHYASAATHY         Product Blueprint and Application Specification                                Working draft v1
+
+
+
+
+     23             Feature dependency map
+
+A feature cannot work well unless the features it depends on exist.
+
+Feature                     Depends on
+Class workspace             School setup (SCH-01), class and subject structure (SCH-04, SCH-05)
+(LES-01)
+Notes by concept            Resource upload (LES-02), concept structure (LES-10 or teacher-created concepts)
+(LES-03)
+Guided session              Session builder (SES-03), notes and questions, timed release (SES-05)
+(SES-02)
+Quiz results                Session player (SES-02) or assignment (ASM-02)
+Concept map (AI-13)         Evidence (AI-08), concept graph (AI-03)
+Study plan (AI-06)          Evidence, concept graph, notes, recordings
+Prerequisite gap            Concept graph (AI-03), per-concept evidence
+(AI-07)
+Ask Saathy (AI-01)          Concept tags (LES-03), notes, class context
+Heat map (ANA-02)           Quiz and assignment results across the class
+Doubt clustering            Ask Saathy questions tagged to concepts
+(ANA-03)
+
+     Parent     summary (PAR-03)            Approved evidence; teacher approval for
+
+
+any teacher-written comment
+
+Notifications (COM-01) Publishing (LES-04), release (SES-05)
+Offline sync (IND-01)       Session download, local storage, sync queue
+Learning Remix (AI-21) Question bank (ASM-08), teacher sample approval
+Digital twin (AI-39)        Evidence history, question bank, validation
+Key chain (the core):
+Notes (LES-03) > Session (SES-02) > Quiz (ASM-07) > Evidence (AI-08) > Concept map and plan (AI-13, AI-06) >
+Teacher heat map (ANA-02) > Intervention (TCH-12) > Parent summary (PAR-03).
+Cloud mascot dependency: the mascot (Section 4) reacts to events from the player and the AI. It does not decide
+what a student should study. Educational logic lives in Sections 11 to 13.
+
+
+
+
+Learn . Grow . Together                                                                                     Page 56
+VIDHYASAATHY         Product Blueprint and Application Specification                                    Working draft v1
+
+
+
+
+       24           Conceptual data model
+
+This section describes the information the product must keep, in plain terms.
+Exact tables, columns and identifiers are a technical decision (Section 30).
+Entities:
+
+School                      a school; has academic years, classes, staff
+AcademicYear                start and end dates, holidays, exam windows
+Class                       a class (for example 9) within a year
+Section                     a section within a class (for example A)
+Subject                     a subject taught to a class
+TeacherAssignment           teacher x subject x class, with start and end dates
+Membership                  a user's role in a school
+User                        a person with an account (student, teacher, parent, admin)
+StudentProfile              student details tied to a section and roll number
+ParentLink                  parent to child, with verification status
+Chapter                     a chapter of a subject
+Concept                     an idea within a chapter ConceptPrerequisite link from a concept to the concept it
+                            depends on
+Resource                    a note, PDF, slide set, worksheet or link
+ResourceConceptTag          which concepts a resource supports
+Recording                   a lesson recording with concept segments
+Session                     a guided session; has release and deadline times
+SessionSection              one slide or step inside a session
+Assignment                  homework or test
+Question                    a question with difficulty and format
+QuestionOption              answer options for an objective question
+Attempt                     a student's attempt at an assignment or session
+Response                    an answer inside an attempt
+Feedback                    teacher or approved AI feedback on a response
+Evidence                    per-concept record: attempts, hints, time, outcome
+MasteryEstimate             working estimate per student per concept, with uncertainty
+LearningPlan                a plan with steps and status
+Intervention                teacher action with a target concept and follow-up
+Announcement                class-level message
+Notification                message to a user, with delivery status
+ProgressSummary             parent-facing summary, with its approval record
+DoubtRecord                 a student question tagged to a concept, with privacy level
+AuditEvent                  record of a sensitive administrative action
+Relationships in plain words:
+• A school has many academic years, classes and staff memberships.
+• A class has many sections and subjects. A teacher assignment connects a teacher, a subject and a class.
+
+
+Learn . Grow . Together                                                                                          Page 57
+VIDHYASAATHY         Product Blueprint and Application Specification                                   Working draft v1
+
+
+
+
+• A subject has chapters; a chapter has concepts; concepts link to each other through prerequisites.
+• Resources, sessions and questions attach to concepts.
+• A student's attempts create responses, which create evidence per concept.
+• Evidence updates the mastery estimate for that student and concept.
+• A parent link connects one parent user to one or more student profiles.
+• Parent summaries are built only from approved evidence and are stored with the approval record.
+Data rules:
+• Every student record belongs to exactly one school.
+• Every query is filtered by school, and then by role and relationship.
+• Changing a published lesson does not rewrite past responses (TCH-05).
+• Deleting content is not allowed once it has student responses; archive it.
+Checklist:
+[ ] Entity list reviewed by the developer.
+[ ] Relationships checked against Section 23.
+[ ] Retention rules agreed (Decision 11).
+
+
+
+
+Learn . Grow . Together                                                                                        Page 58
+VIDHYASAATHY         Product Blueprint and Application Specification                                    Working draft v1
+
+
+
+
+     25             Security, privacy and responsible AI
+
+
+25.1 Security basics (SEC-01 to SEC-04) [CORE]
+SEC-01 Server-side permission checks on every request. Client-side role labels never grant access.
+SEC-02 Secure password storage, time-limited reset links, rate limits on sign-in and activation attempts (AUTH-03,
+AUTH-04).
+SEC-03 Secure transport for all traffic. Credentials are never placed in browser-visible code. API keys stay on the
+server.
+SEC-04 Error messages reveal no account details. Logs contain no personal student data.
+
+
+25.2 Data minimisation and retention (SEC-05) [CORE]
+Collect only what each feature needs. Define retention periods for learning history, AI interaction logs and
+notifications [OPEN: Decision 11]. Support account correction and deletion requests through the school.
+
+
+25.3 Parent-student access (SEC-06) [CORE]
+A parent sees only verified, linked children. Link changes are logged (SCH-08, SCH-14).
+
+
+25.4 Child-safety and age-appropriate interaction (SEC-07) [CORE]
+• Ask Saathy answers within school subjects and uses age-appropriate language.
+• Off-topic or unsafe questions are redirected politely and, where the content concerns a student's wellbeing,
+  passed to a teacher or a trusted adult, not answered as a learning question.
+• The product does not offer advice on self-harm, substances or other sensitive personal topics; it directs the
+  student to a trusted adult.
+Note: the exact escalation process and staffing for this are a school and policy decision [OPEN].
+
+
+25.5 Responsible AI (SEC-08) [CORE]
+• Ground school answers in approved material where possible (AI-01, AI-02).
+• Show uncertainty. Never invent citations, page numbers or teacher remarks.
+• Keep AI drafts separate from published content. Teacher approval is required for any content that reaches
+  students.
+• Avoid medical or psychological diagnosis and permanent labels.
+• Treat instructions inside uploaded files as untrusted text, not as commands to the AI (prompt injection defence).
+• Provide a fallback when the AI service fails (Section 27).
+• Deterministic calculations for numerical simulations (AI-26).
+
+
+25.6 Evidence integrity (SEC-09) [CORE]
+Keep these separate in the database and in every display:
+
+Activity completed          the student opened or finished something
+Answer correct              a single question was right
+Concept demonstrated evidence across formats and time supports it
+
+
+
+
+Learn . Grow . Together                                                                                         Page 59
+VIDHYASAATHY         Product Blueprint and Application Specification                                    Working draft v1
+
+
+
+
+Teacher-verified            a teacher has confirmed the concept AI-inferred difficulty a system estimate, shown with
+                            uncertainty A weak inference is never shown as a fact.
+
+
+25.7 Features that need a privacy review before build (SEC-10)
+The following features use behavioural or sensitive patterns. Each needs a written privacy and fairness review,
+school consent rules, and a visibility setting that defaults to the most private option:
+• Avoidance radar (STU-A02 below): detects topics a student repeatedly skips.
+• Teacher pattern profile (AI-42).
+• Named doubt visibility (ANA-03).
+• Frustration-aware responses (AI-17).
+• Digital twin predictions (AI-39).
+• Teacher emphasis radar with recording analysis (AI-40).
+Avoidance radar detail (STU-A02): the system watches for repeated skipping, very short time on a concept, or quick
+hint requests on one concept across several weeks. The student sees a gentle note and a small starting task. It is
+never shown to parents, and teachers see it only if the school opts in.
+Status: UNDECIDED.
+
+
+25.8 Camera and microphone (SEC-11)
+Emotion detection from camera or microphone is excluded from scope.
+Voice input for questions (related to AI-35) is a separate feature and is opt-in per session.
+
+
+25.9 Applicable law and school policy
+Compliance with Indian data-protection requirements and school child-data policies must be confirmed by the team
+with qualified advice. No compliance status is claimed in this document.
+
+
+
+
+Learn . Grow . Together                                                                                         Page 60
+VIDHYASAATHY         Product Blueprint and Application Specification                                  Working draft v1
+
+
+
+
+     26             Screen inventory and interface states
+
+Each screen below has: purpose, user, primary action, and states (empty, loading, error, success). Shared states
+follow Section 4.7.
+
+Public and access screens
+
+     SCR-01 Landing page                    visitors            primary: Sign in or Register school
+     SCR-02 School registration             school rep.         primary: Start setup
+     SCR-03 Sign-in                         all users           primary: Sign in
+     SCR-04 Activation                      students            primary: Activate
+     SCR-05 PIN set and sign-in             students            primary: Continue
+     SCR-06 Account recovery                all users           primary: Send reset link
+     SCR-07 Access denied                   any                 primary: Go home
+
+
+SCR-08 Profile              shared devices primary: Pick profile
+chooser
+
+Student screens
+
+     SCR-10 Home                            student             primary: Next action
+     SCR-11 Today's plan                    student             primary: Start item
+     SCR-12 Subject list                    student             primary: Open chapter
+     SCR-13 Chapter and concepts            student             primary: Open concept
+     SCR-14 Concept detail                  student             primary: Study or Ask
+     SCR-15 Session player                  student             primary: Next slide
+     SCR-16 Session summary                 student             primary: Next step
+     SCR-17 Resource viewer                 student             primary: Back to concept
+     SCR-18 Recording player                student             primary: Play segment
+     SCR-19 Assignment list                 student             primary: Open assignment
+     SCR-20 Assignment answer               student             primary: Submit
+     SCR-21 Ask Saathy                      student             primary: Ask
+     SCR-22 Study plan                      student             primary: Start step
+     SCR-23 Concept map                     student             primary: Open concept
+     SCR-24 Progress                        student             primary: Next action
+     SCR-25 Profile and settings            student             primary: Save
+     SCR-26 Notifications                   all users           primary: Open item
+
+
+
+Teacher screens
+
+     SCR-30 Teacher home                    teacher             primary: Create or review
+     SCR-31 Class list and detail           teacher             primary: Open class
+     SCR-32 Roster                          teacher             primary: View student
+     SCR-33 Resource library                teacher             primary: Upload
+     SCR-34 Upload and tag                  teacher             primary: Publish
+     SCR-35 Lesson editor                   teacher             primary: Save or publish
+     SCR-36 Session builder                 teacher             primary: Schedule
+     SCR-37 Assignment builder              teacher             primary: Assign
+     SCR-38 Review queue                    teacher             primary: Open item
+     SCR-39 Heat map                        teacher             primary: Open concept
+     SCR-40 Doubt counts                    teacher             primary: Open concept
+     SCR-41 Interventions                   teacher             primary: Log intervention
+     SCR-42 Announcements                   teacher             primary: Post
+     SCR-43 Teacher settings                teacher             primary: Save
+
+
+
+Parent screens
+
+
+
+
+Learn . Grow . Together                                                                                       Page 61
+VIDHYASAATHY         Product Blueprint and Application Specification                       Working draft v1
+
+
+
+
+     SCR-50 Parent home                     parent              primary: Read summary
+     SCR-51 Child view                      parent              primary: Open subject
+     SCR-52 Progress summary                parent              primary: Read or share
+     SCR-53 Assignments                     parent              primary: Open item
+     SCR-54 Support suggestion              parent              primary: Done
+     SCR-55 Linked children                 parent              primary: Switch child
+     SCR-56 Parent settings                 parent              primary: Save
+
+
+
+School admin screens
+
+     SCR-60 Admin home                      admin               primary: Setup or review
+     SCR-61 School setup wizard             admin               primary: Next step
+     SCR-62 Academic year                   admin               primary: Save
+     SCR-63 Classes and sections            admin               primary: Add class
+     SCR-64 Subjects                        admin               primary: Add subject
+     SCR-65 Teacher assignments             admin               primary: Assign
+     SCR-66 Student enrolment               admin               primary: Upload list
+     SCR-67 Parent links                    admin               primary: Review link
+     SCR-68 Invitations                     admin               primary: Resend
+     SCR-69 School settings                 admin               primary: Save
+
+
+SCR-70 Admin activity admin/platform primary: Filter
+log
+Checklist for each screen (apply before build):
+[ ] Empty state written and reviewed.
+[ ] Loading state uses skeleton, not a blank page.
+[ ] Error state explains what happened and what to do next.
+[ ] Success state has a next step.
+[ ] Permissions tested for each role.
+[ ] Works on a small phone screen.
+
+
+
+
+Learn . Grow . Together                                                                            Page 62
+VIDHYASAATHY         Product Blueprint and Application Specification                                        Working draft v1
+
+
+
+
+     27             Error handling and edge cases
+
+Principle: work is never silently lost. Each failure gives a plain message and a safe next step.
+
+Case                        Expected behaviour
+No session assigned         Empty state: "Nothing assigned today. Explore your subjects."
+today
+
+     Teacher      has not uploaded material           Chapter shows "Notes coming soon" and
+
+
+the teacher's name; no fake content.
+
+Session scheduled,          Shows "Opens at 18:00 today."
+not yet open
+Connection lost during Answers saved on the device; "Waiting to send" status; submits on reconnect.
+a quiz
+Assignment                  Kept on device; retry button; teacher is not told a submission exists until it does.
+submission fails
+File cannot be              Kept as upload; "Preview not available"; can still be published.
+processed
+AI returns invalid or       Discarded; fallback to saved notes; the
+unsupported
+answer                      student sees "I could not check that. Here is your teacher's note."
+AI service unavailable      Saved notes for the concept, retry button, and no error code shown to the student.
+Ambiguous wrong             System says the reason is unclear and offers two possible explanations, not one.
+answer
+Repeated struggle on        Suggests teacher help after two explanation attempts (AI-05).
+one concept
+
+     Parent     invitation expired                    Marked expired; school admin can resend.
+     Parent     linked to wrong student               Parent reports it; admin corrects the link
+
+
+with a logged reason (SCH-08).
+
+     Teacher      opens unauthorised class            Access denied page (SCR-07). No data shown.
+
+
+User opens protected        Server rejects; access-denied page.
+URL directly
+School changes              Access changes immediately; drafts kept and the teacher is told what changed.
+teacher assignment
+Lesson edited after         Student sees "updated"; earlier answers kept as they were (TCH-05).
+students start
+Notification cannot be      Item stays in the notification centre; failure logged without personal data.
+delivered
+
+     Student      signs out on shared device          Profile chooser appears; no data remains
+
+
+visible.
+
+Activation code wrong "Check the code or ask your school." Five failures lock for 15 minutes.
+or reused
+
+
+
+
+Learn . Grow . Together                                                                                             Page 63
+VIDHYASAATHY         Product Blueprint and Application Specification                                   Working draft v1
+
+
+
+
+     Student      forgets PIN                         Parent or teacher approves a reset.
+
+
+Recording upload            Upload resumes from where it stopped if the platform supports it [OPEN: technical].
+interrupted
+Checklist:
+[ ] Each case above has a test (Section 29).
+[ ] No failure path shows a raw technical error to a student.
+
+
+
+
+Learn . Grow . Together                                                                                           Page 64
+VIDHYASAATHY         Product Blueprint and Application Specification                                    Working draft v1
+
+
+
+
+     28             Implementation phases and status definitions
+
+
+28.1 Status definitions
+CORE                        required for the central loop. Without it the product is not the product.
+NEXT                        valuable after the loop works; can follow in the same term.
+ADVANCED                    needs extra engineering, content, validation or review.
+FUTURE                      a longer-term possibility, kept for the record. UNDECIDED needs a team decision before
+                            any build.
+EXISTING                    would mean the feature is demonstrably built. No feature is marked EXISTING in this
+                            document, because no implementation evidence was supplied.
+PROPOSED                    described in the sources but not confirmed.
+
+
+28.2 Phase 1 (six-hour prototype scope, suggested)
+Objective: one complete, convincing loop, not many disconnected screens.
+[ ] Landing and sign-in screen with the logo, palette and mascot (SCR-01, SCR-03).
+[ ] Demo school with Class 9-A, one subject (Physics) and one chapter (Motion).
+[ ] Three role home screens: student, teacher, parent (SCR-10, SCR-30, SCR-50).
+[ ] Teacher publishes one note set and one session (LES-02, LES-03, SES-03).
+[ ] Student plays the session with a five-question quiz (SES-02, ASM-07).
+[ ] Two seeded student profiles with different results (Student A and B).
+[ ] One grounded AI answer with source, plus a fallback (AI-01, AI-15).
+[ ] One prerequisite recommendation from the gap logic (AI-07).
+[ ] Teacher heat map for the class (ANA-02).
+[ ] Parent summary in plain language (PAR-03).
+[ ] Mascot states used in the right places (Section 4.4).
+[ ] End-to-end demo run and recorded.
+Demo data must be labelled as simulated. The demo must not claim real learning results.
+
+
+28.3 Phase 2 (functional pilot)
+Real accounts and activation (AUTH-01 to AUTH-07); school setup (SCH-01 to SCH-09); resource and session
+persistence; assignments and auto-marking; parent linking; teacher review queue; basic notifications;
+teacher-approved AI drafts (AI-22); question bank (ASM-08); basic offline download (IND-01) if the team decides so.
+
+
+28.4 Phase 3 (intelligent layer)
+Concept graph (AI-03); evidence and mastery estimate (AI-08); adaptive practice (AI-09); study plan (AI-06);
+recovery path; concept heat map with intervention records (ANA-04); evidence-based parent summaries (PAR-03).
+
+
+28.5 Phase 4 (signature experiences)
+Remix (AI-21), mistake tracing (AI-27), explain-it-back (AI-36), viva (AI-35), reverse exam (AI-34), reality scanner
+(AI-37), comic studio (AI-31), adventure (AI-32), concept court (AI-33), digital twin (AI-39).
+Prioritise by educational value, cost and reliability, not by novelty.
+
+
+
+Learn . Grow . Together                                                                                         Page 65
+VIDHYASAATHY         Product Blueprint and Application Specification                                  Working draft v1
+
+
+
+
+28.6 Phase 5 (scale and adoption)
+Bulk onboarding; more grades and boards; more languages; low-bandwidth improvements; wider offline;
+school-to-school record transfer with consent; deeper analytics; integrations with school systems where practical.
+
+
+28.7 Build discipline
+• One loop first. Do not start Phase 4 features before the Phase 1 loop works.
+• Each feature ships with its acceptance criteria (Section 29).
+• Any claim about learning results needs real user testing first.
+
+
+
+
+Learn . Grow . Together                                                                                       Page 66
+VIDHYASAATHY         Product Blueprint and Application Specification          Working draft v1
+
+
+
+
+     29             Acceptance criteria checklist
+
+Accounts and permissions
+[ ] A student cannot open a teacher or admin page by changing the URL.
+[ ] A parent sees only children linked and verified to them.
+[ ] A teacher sees only assigned classes and student work.
+[ ] Signing out prevents access to protected pages.
+[ ] Failed sign-in or activation does not reveal account details.
+[ ] A roll number alone never signs a student in.
+
+Learning workflow
+[ ] A teacher can publish notes to the intended class only.
+[ ] An authorised student can open a published session at its release time.
+[ ] The student can answer and submit a supported quiz.
+[ ] The system records the answer and its result.
+[ ] The student sees an appropriate next step.
+[ ] Completing a session requires a quiz or check attempt.
+[ ] The teacher can view class-level results for an assigned class.
+[ ] The parent sees only the permitted summary.
+[ ] The app separates activity completed from concept demonstrated.
+
+AI behaviour
+[ ] Answers use approved school material where available.
+[ ] Unsupported questions do not produce fabricated sources.
+[ ] AI drafts stay unpublished until a teacher approves them.
+[ ] Numerical simulations use deterministic calculations.
+[ ] Unclear handwriting can be confirmed by the student before analysis.
+[ ] AI failure does not lose saved work.
+[ ] No mastery label is shown from one correct answer.
+
+Offline and devices (when IND-01 is in scope)
+[ ] A downloaded session opens without a connection.
+[ ] Answers taken offline are sent once when the connection returns.
+[ ] Conflicting answers keep the latest and log the earlier one.
+
+Experience
+[ ] The primary student action is easy to find on each screen.
+[ ] The teacher can publish a simple session in a few steps.
+[ ] The parent understands the progress summary without help.
+[ ] Text is readable on a small phone; actions give clear feedback.
+[ ] The mascot never blocks a lesson or flashes constantly.
+[ ] Errors say what happened and what to do next.
+[ ] Reduced-motion setting removes mascot animation.
+
+Validation before any claim
+[ ] Students complete a guided session on their own.
+
+Learn . Grow . Together                                                               Page 67
+VIDHYASAATHY         Product Blueprint and Application Specification          Working draft v1
+
+
+
+
+[ ] A personalised explanation improves performance on a fresh question.
+[ ] Teachers spend less time than in their current workflow.
+[ ] Teachers trust AI drafts after review.
+[ ] Parents understand progress summaries.
+[ ] The product works on the devices and connections students actually use.
+[ ] The learning loop does better than sharing a PDF or video alone.
+
+
+
+
+Learn . Grow . Together                                                               Page 68
+VIDHYASAATHY          Product Blueprint and Application Specification                              Working draft v1
+
+
+
+
+     30             Open decisions and risks
+
+
+30.1 Decisions to make (do not guess)
+
+     #    Decision                                      Options                         Status
+
+
+
+     1    Scope of hackathon prototype                  Single loop vs wider            OPEN
+     2    Student login and verification                Activation code, parent OTP,    OPEN
+
+
+admin approval
+
+     3    Who uploads the student list                  Admin, class teacher,           OPEN
+
+
+self-join with code
+
+     4    Minimum evidence before a gap is              Question count and types        OPEN
+
+
+suggested
+
+     5    Mastery tracking                              Overall %, per concept,         Per
+
+
+dynamic (per concept         concept probable
+likely)
+
+     6    Doubt visibility                              Counts only or named            OPEN
+     7    Any parent access to AI chats                 None (current direction) or a   OPEN
+
+
+written school exception
+
+     8    Session completion rule                       Slides viewed, quiz, or both    PROPOSED
+
+
+(quiz)
+
+     9    First pilot school                            Own school, partner, other      OPEN
+     10   Parent update frequency                       Daily, weekly, on event         OPEN
+     11   Data retention and deletion                   Periods and rules               OPEN
+     12   Offline access in first release               Yes or later                    OPEN
+     13   Recording consent rules                       School policy, student and      OPEN
+
+
+guardian consent
+
+     14   Technology stack                              React or Next.js with           OPEN
+
+
+Supabase/PostgreSQL, or other
+
+     15   Product name                                  VidhyaSaathy or ClassOS         OPEN
+     16   Tagline                                       Learn . Grow . Together or      OPEN
+
+
+another
+
+
+
+
+Learn . Grow . Together                                                                                    Page 69
+VIDHYASAATHY         Product Blueprint and Application Specification                                   Working draft v1
+
+
+
+
+     17   Signature AI feature first                   See Section 14                    OPEN
+     18   Persona name for the tutor                   See AI-44                         OPEN
+     19   Interface font                               To choose                         OPEN
+     20   Quiet-hours default                          To set                            OPEN
+
+
+Note on numbering: this table is the numbering used throughout this document.
+The Team Guide (S3) uses different numbers; where the two differ, this table is the working version.
+
+
+30.2 Risks and mitigations
+
+     Risk                                Why it matters                       Mitigation
+
+
+
+     Teachers do not use it              No content, no loop                  Publish in a
+
+
+few taps; reuse last year's notes; measure teacher time in pilot
+
+     Students skip the work              No evidence                          Quiz rule; short
+
+
+sessions; visible next step; teacher visibility
+
+Students open all            Looks like progress, no learning Sequential unlock;
+slides
+at once                      question per slide
+
+     Parents do not engage               Weak home support                    Plain summaries;
+
+
+WhatsApp fallback; one suggestion
+
+     AI gives a wrong answer             Harm to learning and trust           Grounding; source
+
+
+display; teacher approval; honesty layer
+
+     Privacy breach                      Serious harm to children             Server-side
+
+
+permissions; minimal data; audit log; review
+
+     School procurement is slow          Pilot delayed                        Pilot with one
+
+
+school first; clear value summary
+
+     Poor internet and shared            Students cannot use it               Light pages;
+
+
+devices                      offline (IND-01); profile chooser
+
+     Teacher      workload                  Adoption fails                         Reuse; AI drafts
+
+
+for review only
+
+     Gamification becomes a              Time spent, not learning             Games use approved
+
+
+distraction                  questions; no leaderboards
+
+     Students game the system            Fake progress                        Evidence across
+
+
+
+
+Learn . Grow . Together                                                                                        Page 70
+VIDHYASAATHY         Product Blueprint and Application Specification                                    Working draft v1
+
+
+
+
+formats; checks required
+
+     AI dependence                       Students stop thinking              Socratic mode;
+
+
+hints ladder; explain-it-back
+
+     Behavioural features feel           Trust loss, avoidance of the        Privacy review
+     like surveillance                   app                                 (SEC-10); opt-in;
+
+
+counts not names
+
+     Claims outrun evidence              Credibility loss                    Validation
+
+
+before claims (Section 29)
+
+
+30.3 Evidence gaps to close before pitching outcomes
+• No survey data on how often students face fragmented resources. The founder's observations are hypotheses.
+• No field data on Tier-2 and Tier-3 device access, connectivity, teacher digital skill or school purchasing.
+• No validation of the four performance bands or the mastery estimate.
+• No review of recording consent or child-data rules for the pilot school.
+The team should collect these with a small study before claiming any learning effect.
+
+
+
+
+Learn . Grow . Together                                                                                         Page 71
+VIDHYASAATHY         Product Blueprint and Application Specification                            Working draft v1
+
+
+
+
+     31             Glossary
+
+Activation code One-time code a student uses to join their class account.
+Adaptive practice Practice that changes difficulty based on recent answers.
+Ask Saathy The AI question feature for students. Saathy is the AI helper's name in the brand.
+Class workspace The online space for one class, mirroring the offline class.
+Concept One idea inside a chapter (for example, Acceleration).
+Concept map A visual tree of a chapter's concepts with the student's status for each.
+Concept heat map The teacher's grid of concepts against the class.
+Evidence A recorded learning action: an answer, a session completion, a hint request.
+Guided session A school-prepared, fixed-structure learning experience, completed at home.
+Grounding Tying an AI answer to approved school material.
+Hint ladder The ordered hints from a pointer to a full explanation.
+Mastery estimate A working, uncertain estimate of understanding from evidence.
+Prerequisite A concept that must be understood before another.
+Question bank The school's library of approved questions.
+Release time When a session becomes visible to students.
+Socratic mode The AI guides with questions instead of giving the answer.
+Teacher approval The required step before AI content reaches students.
+
+
+
+
+Learn . Grow . Together                                                                                 Page 72
+VIDHYASAATHY         Product Blueprint and Application Specification                                     Working draft v1
+
+
+
+
+     32             Final product definition
+
+VidhyaSaathy is a school-connected learning workspace for each class. It keeps the school's support working after
+the school bell: teachers publish approved notes, recordings, guided sessions and homework; students follow a
+clear next step and ask questions in the context of their own school's material; teachers see class-level patterns and
+decide what to reteach; parents see approved, plain-language progress and one useful way to help.
+Its foundation is not the number of AI features. It is the connection between school-approved content, student
+evidence, a grounded next step and a teacher's decision. The cloud mascot gives the product a friendly face, the
+guided session gives it structure, the AI gives it personalisation, the teacher heat map gives it insight, and the parent
+summary gives it shared understanding.
+Product principle: One classroom. Different learning paths. One connected support system.
+
+END OF DOCUMENT
+
+
+
+
+Learn . Grow . Together                                                                                          Page 73
+

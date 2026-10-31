@@ -1,0 +1,182 @@
+/* ================= Saathy v.3 DATA LAYER ================= */
+/* Video Kit: [book, class, concept, query]. Links built at runtime → always-live
+   YouTube deep-links into trusted teacher channels. Watch plans = suggested
+   checkpoints (founder/teacher can fine-tune in app). */
+const VK_CHANNELS = {
+  math: [["Magnet Brains","magnet brains"],["Khan Academy India","khan academy india english"],["Vedantu 9 & 10","vedantu class 9 and 10"]],
+  sci:  [["Magnet Brains","magnet brains"],["Physics Wallah","physics wallah"],["Vedantu 9 & 10","vedantu class 9 and 10"]],
+  sst:  [["Magnet Brains","magnet brains"],["Study IQ","study iq education"],["YouTube — best match","best explanation"]]
+};
+const VK_CATS = ["Class 9","Class 10"];
+const VIDEO_KIT = [
+  /* --- Class 9 Maths --- */
+  ["math",9,"Number Systems","number systems class 9 full chapter"],["math",9,"Polynomials","polynomials class 9 full chapter"],["math",9,"Coordinate Geometry","coordinate geometry class 9 full chapter"],
+  ["math",9,"Linear Equations in Two Variables","linear equations in two variables class 9 full chapter"],["math",9,"Introduction to Euclid's Geometry","euclids geometry class 9 full chapter"],["math",9,"Lines and Angles","lines and angles class 9 full chapter"],
+  ["math",9,"Triangles","triangles class 9 full chapter"],["math",9,"Quadrilaterals","quadrilaterals class 9 full chapter"],["math",9,"Circles","circles class 9 full chapter"],
+  ["math",9,"Heron's Formula","herons formula class 9 full chapter"],["math",9,"Surface Areas and Volumes","surface areas and volumes class 9 full chapter"],["math",9,"Statistics","statistics class 9 full chapter"],
+  ["math",9,"Probability","probability class 9 full chapter"],["math",9,"Sequences and Progressions (Ganita Manjari)","sequences and progressions class 9 ganita manjari"],["math",9,"Algebraic Identities (Ganita Manjari)","algebraic identities class 9 all identities"],
+  ["math",9,"Perimeter and Area (Ganita Manjari)","perimeter and area class 9 heron brahmagupta"],
+  /* --- Class 10 Maths --- */
+  ["math",10,"Real Numbers","real numbers class 10 full chapter"],["math",10,"Pair of Linear Equations","pair of linear equations in two variables class 10"],["math",10,"Quadratic Equations","quadratic equations class 10 full chapter"],
+  ["math",10,"Arithmetic Progressions","arithmetic progressions class 10 full chapter"],["math",10,"Trigonometry","introduction to trigonometry class 10 full chapter"],["math",10,"Applications of Trigonometry","some applications of trigonometry class 10 height and distance"],
+  ["math",10,"Areas Related to Circles","areas related to circles class 10 full chapter"],
+  /* --- Class 9 Science --- */
+  ["sci",9,"Matter in Our Surroundings","matter in our surroundings class 9 full chapter"],["sci",9,"Is Matter Around Us Pure","is matter around us pure class 9 full chapter"],
+  ["sci",9,"Atoms and Molecules","atoms and molecules class 9 full chapter"],["sci",9,"Structure of the Atom","structure of the atom class 9 full chapter"],
+  ["sci",9,"The Fundamental Unit of Life (Cell)","cell the fundamental unit of life class 9 full chapter"],["sci",9,"Tissues","tissues class 9 full chapter"],
+  ["sci",9,"Motion","motion class 9 full chapter one shot"],["sci",9,"Force and Laws of Motion","force and laws of motion class 9 one shot"],
+  ["sci",9,"Gravitation","gravitation class 9 full chapter"],["sci",9,"Work and Energy","work and energy class 9 full chapter"],
+  ["sci",9,"Sound","sound class 9 full chapter"],["sci",9,"Improvement in Food Resources","improvement in food resources class 9 one shot"],
+  /* --- Class 10 Science --- */
+  ["sci",10,"Chemical Reactions and Equations","chemical reactions and equations class 10 full chapter"],["sci",10,"Acids, Bases and Salts","acids bases and salts class 10 full chapter"],
+  ["sci",10,"Metals and Non-metals","metals and non metals class 10 full chapter"],["sci",10,"Carbon and its Compounds","carbon and its compounds class 10 full chapter"],
+  ["sci",10,"Life Processes","life processes class 10 full chapter"],["sci",10,"Control and Coordination","control and coordination class 10 full chapter"],
+  ["sci",10,"How do Organisms Reproduce","how do organisms reproduce class 10 full chapter"],["sci",10,"Light — Reflection and Refraction","light reflection and refraction class 10 full chapter"],
+  ["sci",10,"The Human Eye and the Colourful World","human eye and colourful world class 10 full chapter"],["sci",10,"Electricity","electricity class 10 full chapter"],
+  ["sci",10,"Magnetic Effects of Electric Current","magnetic effects of electric current class 10 full chapter"],["sci",10,"Our Environment","our environment class 10 full chapter"],
+  /* --- Class 9 SST --- */
+  ["sst",9,"The French Revolution","french revolution class 9 full chapter"],["sst",9,"Socialism in Europe and the Russian Revolution","russian revolution class 9 full chapter"],
+  ["sst",9,"Nazism and the Rise of Hitler","nazism and the rise of hitler class 9 full chapter"],["sst",9,"Forest Society and Colonialism","forest society and colonialism class 9"],
+  ["sst",9,"Pastoralists in the Modern World","pastoralists in the modern world class 9"],["sst",9,"India — Size and Location","india size and location class 9"],
+  ["sst",9,"Physical Features of India","physical features of india class 9 full chapter"],["sst",9,"Drainage","drainage class 9 full chapter"],
+  ["sst",9,"Climate","climate class 9 full chapter"],["sst",9,"Natural Vegetation and Wildlife","natural vegetation and wildlife class 9"],
+  ["sst",9,"Population","population class 9 full chapter"],["sst",9,"What is Democracy? Why Democracy?","what is democracy why democracy class 9 full chapter"],
+  ["sst",9,"Constitutional Design","constitutional design class 9 full chapter"],["sst",9,"Electoral Politics","electoral politics class 9 full chapter"],
+  ["sst",9,"Working of Institutions","working of institutions class 9 full chapter"],["sst",9,"Democratic Rights","democratic rights class 9 full chapter"],
+  ["sst",9,"The Story of Village Palampur","story of village palampur class 9 full chapter"],["sst",9,"People as Resource","people as resource class 9 full chapter"],
+  ["sst",9,"Poverty as a Challenge","poverty as a challenge class 9 full chapter"],["sst",9,"Food Security in India","food security in india class 9 full chapter"],
+  /* --- Class 10 SST --- */
+  ["sst",10,"Nationalism in India","nationalism in india class 10 full chapter"],["sst",10,"The Making of a Global World","making of a global world class 10"],
+  ["sst",10,"Print Culture and the Modern World","print culture and the modern world class 10"],["sst",10,"Resources and Development","resources and development class 10 full chapter"],
+  ["sst",10,"Water Resources","water resources class 10 full chapter"],["sst",10,"Agriculture","agriculture class 10 full chapter"],
+  ["sst",10,"Minerals and Energy Resources","minerals and energy resources class 10"],["sst",10,"Manufacturing Industries","manufacturing industries class 10"],
+  ["sst",10,"Lifelines of National Economy","lifelines of national economy class 10"],["sst",10,"Power Sharing","power sharing class 10 full chapter"],
+  ["sst",10,"Federalism","federalism class 10 full chapter"],["sst",10,"Gender, Religion and Caste","gender religion and caste class 10"],
+  ["sst",10,"Political Parties","political parties class 10 full chapter"],["sst",10,"Outcomes of Democracy","outcomes of democracy class 10"],
+  ["sst",10,"Development","development class 10 economics full chapter"],["sst",10,"Sectors of the Indian Economy","sectors of indian economy class 10"],
+  ["sst",10,"Money and Credit","money and credit class 10 full chapter"],["sst",10,"Globalisation and the Indian Economy","globalisation class 10 full chapter"],
+  ["sst",10,"Consumer Rights","consumer rights class 10 full chapter"],
+  /* --- extras to round the kit to 100 --- */
+  ["math",10,"Coordinate Geometry (Class 10)","coordinate geometry class 10 full chapter"],["math",10,"Surface Areas and Volumes (Class 10)","surface areas and volumes class 10 full chapter"],
+  ["math",10,"Statistics (Class 10)","statistics class 10 full chapter"],["math",10,"Probability (Class 10)","probability class 10 full chapter"],
+  ["math",9,"Triangles — Inequalities","triangle inequalities class 9"],["math",9,"Quadrilaterals — Parallelogram Properties","parallelogram properties class 9"],
+  ["sci",9,"Motion — Numericals & PYQs","motion class 9 numericals ncert"],["sci",9,"Gravitation — Numericals","gravitation class 9 numericals ncert"],
+  ["sci",9,"Tissues — Plant vs Animal","plant and animal tissues class 9"],["sci",9,"Why Do We Fall Ill","why do we fall ill class 9 full chapter"],
+  ["sst",9,"French Revolution — Rapid Timeline","french revolution class 9 rapid revision 10 minutes"],["sst",9,"Nazism — The Holocaust","holocaust class 9 nazism explained"],
+  ["sst",9,"Physical Features — Himalayan Mountains","himalayan mountains class 9 physical features"],["sst",9,"Population — Size and Distribution","population size and distribution class 9"]
+];
+
+/* Watch plans (suggested checkpoints; honest label in UI) */
+const WATCH_PLANS = {
+  default:[["0:00","Basics & hook"],["12:00","Core ideas build up"],["35:00","Worked examples"],["1:10:00","NCERT + PYQs"]],
+  short:[["0:00","Rapid revision begins"],["6:00","Key terms & tricks"],["12:00","Exam-style questions"]]
+};
+
+/* Agents (the plan is built by a crew, each step owned by one) */
+const AGENTS = {
+  diag:{name:"Setu", role:"Diagnostic Agent", line:"Find your level in 3 tiny questions — routing, not judging."},
+  tutor:{name:"Guru", role:"Tutor Agent", line:"Teaches the concept slides at YOUR band depth."},
+  quiz:{name:"Prashn", role:"Quiz Master", line:"Serves questions on the L1→L3 ladder with confidence taps."},
+  game:{name:"Khel", role:"Game Host", line:"Turns the same question bank into play."},
+  flash:{name:"Dohra", role:"Revision Coach", line:"Flashcard sprints so it sticks by morning."},
+  boss:{name:"Bheem", role:"Boss Keeper", line:"Guards the chapter boss — defeat to unlock the next preview."},
+  report:{name:"Sahayak", role:"Reporter Agent", line:"Writes the parent daily note & teacher heatmap from your evidence."}
+};
+
+const PLAN_FLOW = [
+  {id:"diag", agent:"diag",  icon:"S", title:"Level check",   sub:"3 friendly questions"},
+  {id:"slides",agent:"tutor",icon:"G", title:"Concept slides", sub:"teach at your band"},
+  {id:"quiz",  agent:"quiz", icon:"P", title:"Quiz",           sub:"ladder L1→L3"},
+  {id:"game",  agent:"game", icon:"K", title:"Game break",     sub:"5-6 min play"},
+  {id:"flash", agent:"flash",icon:"D", title:"Flashcards",     sub:"2-min sprint"},
+  {id:"report",agent:"report",icon:"R",title:"Report card",    sub:"evidence saved"}
+];
+
+/* Anchor MCQ bank — hand-written, verified against NCERT.
+   [topicKey, L(1-3), question, [4 opts], correctIdx, why] */
+const MCQ_BANK = [
+ ["numsys",1,"Which of these is a rational number?",["√2","0.1010010001…","22/7","π"],"2","22/7 is a ratio of two integers — the definition of rational. √2 and π are irrational."],
+ ["numsys",2,"The decimal expansion of √5 is",["terminating","non-terminating recurring","non-terminating non-recurring","an integer"],"2","√5 is irrational — its decimals never repeat and never end."],
+ ["numsys",2,"Every point on the number line corresponds to",["only rationals","only integers","a unique real number","only naturals"],"2","Number line ↔ real numbers is a one-to-one match."],
+ ["numsys",3,"(3+√2)(3−√2) equals",["7","11","9","1"],"0","Difference of squares: 9−2 = 7."],
+ ["poly",1,"A polynomial of degree 2 is called",["linear","quadratic","cubic","biquadratic"],"1","Degree 2 → quadratic (like x²+3x+2)."],
+ ["poly",2,"If p(x)=x²−5x+6, then p(2) is",["0","2","4","−2"],"0","4−10+6=0, so x=2 is a zero of the polynomial."],
+ ["poly",2,"Degree of the zero polynomial is",["0","1","not defined","any number"],"2","Zero polynomial has every coefficient zero — degree is not defined."],
+ ["poly",3,"Factor of x³−27 among these:",["x−3","x+3","x−9","x+9"],"0","a³−b³=(a−b)(a²+ab+b²) with a=x, b=3."],
+ ["lin2v",2,"The graph of x=3 on the Cartesian plane is",["x-axis","y-axis","a vertical line","a horizontal line"],"2","x is fixed at 3 for every y → vertical line."],
+ ["lin2v",2,"How many solutions does a linear equation in two variables have?",["1","2","Infinitely many","None"],"2","Every point on its line is a solution — infinitely many."],
+ ["coord",1,"The point (0,−4) lies on",["x-axis","y-axis","Q I","Q III"],"1","x=0 → the point sits on the y-axis."],
+ ["coord",2,"Distance of point (6,8) from origin:",["10","14","6","8"],"0","√(6²+8²)=√100=10 — the 6-8-10 triple."],
+ ["coord",3,"If (a,4) is 5 units from origin, a can be",["1","3","±3","9"],"2","a²+16=25 → a²=9 → a=±3."],
+ ["angles",1,"Sum of angles on a straight line is",["90°","180°","270°","360°"],"1","Linear pair — 180°."],
+ ["angles",2,"Two complementary angles differ by 10°. The smaller is",["40°","45°","50°","35°"],"0","x+(x+10)=90 → x=40°."],
+ ["angles",3,"Two supplementary angles are in the ratio 2:7. The larger angle is",["120°","140°","150°","160°"],"1","2x+7x=180 → x=20°, so the larger angle = 7×20 = 140°."],
+ ["tri",1,"Sum of angles of a triangle:",["90°","180°","270°","360°"],"1","Angle sum property — 180° always."],
+ ["tri",2,"Triangles are congruent if",["angles are equal","sides are proportional","SSS, SAS, ASA, RHS hold","areas equal"],"2","Congruence criteria: SSS, SAS, ASA, RHS."],
+ ["tri",2,"In right triangle, hypotenuse² =",["sum of legs","difference of legs","product of legs","twice a leg"],"0","Pythagoras theorem: c²=a²+b²."],
+ ["tri",3,"D and E are midpoints of AB, AC in △ABC. DE =",["½BC","BC","2BC","¼BC"],"0","Midpoint theorem: DE ∥ BC and DE=½BC."],
+ ["circ",1,"A chord passing through the centre is",["radius","diameter","secant","tangent"],"1","Diameter — the longest chord."],
+ ["circ",2,"Equal chords of a circle subtend ___ angles at the centre",["unequal","equal","complementary","supplementary"],"1","Equal chords ⇔ equal central angles."],
+ ["circ",3,"Tangent at a point to a circle is ___ to the radius",["parallel","perpendicular","inclined at 60°","coincident"],"1","Radius ⊥ tangent at point of contact."],
+ ["heron",2,"Heron's formula uses",["base & height","three sides","two angles","radius"],"1","s=(a+b+c)/2, Area=√(s(s−a)(s−b)(s−c))."],
+ ["stats",1,"The most frequent observation is the",["mean","median","mode","range"],"2","Mode = most frequent."],
+ ["stats",2,"For class marks, the class size equals",["upper−lower","upper+lower","(upper+lower)/2","upper×lower"],"0","Class size = upper limit − lower limit."],
+ ["prob",1,"Probability of a sure event is",["0","0.5","1","100"],"2","Sure event → probability 1."],
+ ["prob",2,"A die is rolled once. P(prime number) =",["1/2","1/3","2/3","1/6"],"0","{2,3,5} → 3/6 = 1/2."],
+ ["ident",2,"(a+b)² − (a−b)² equals",["2ab","4ab","a²+b²","0"],"1","(a+b)²−(a−b)² = 4ab — the crown identity's twin."],
+ ["ident",3,"If x+1/x=4 then x²+1/x² =",["14","16","18","12"],"0","Squaring: x²+2+1/x²=16 → x²+1/x²=14."],
+ ["seq",2,"AP with a=3, d=4: the 5th term is",["19","23","15","27"],"0","a₅=3+4×4=19."],
+ ["seq",3,"Which term of AP 5,8,11,… is 62?",["18th","19th","20th","21st"],"2","5+(n−1)3=62 → n=20."],
+ ["motion",1,"Speed with direction is called",["velocity","acceleration","momentum","force"],"0","Velocity = speed + direction (a vector)."],
+ ["motion",1,"SI unit of acceleration:",["m/s","m/s²","km/h","N"],"1","Change in velocity per second → m/s²."],
+ ["motion",2,"A body starts from rest, u=0, a=2 m/s². Distance in 3 s:",["6 m","9 m","18 m","3 m"],"1","s=½at²=½×2×9=9 m."],
+ ["motion",2,"Distance-time graph of uniform motion is",["curved","horizontal","a straight line slanted","vertical"],"2","Uniform speed → straight slanted line."],
+ ["motion",3,"v−t graph area under the curve gives",["acceleration","displacement","force","jerk"],"1","Area under v−t = displacement."],
+ ["motion",3,"A car brakes from 20 m/s to rest in 4 s. Deceleration:",["5 m/s²","−5 m/s²","4 m/s²","80 m/s²"],"1","a=(0−20)/4=−5 m/s² (negative = deceleration)."],
+ ["force",1,"Newton's 1st law is also called the law of",["gravity","inertia","action-reaction","momentum"],"1","No net force → no change in state: inertia."],
+ ["force",2,"F = ?",["mv","ma","m/a","a/m"],"1","Newton's 2nd law: F=ma."],
+ ["force",2,"Action and reaction act on",["same body","different bodies","always cancel on one body","nothing"],"1","They act on two different bodies — hence they never cancel."],
+ ["force",3,"A 2 kg ball at 3 m/s hits a wall and stops in 0.1 s. Force:",["60 N","6 N","0.6 N","20 N"],"0","Δp=2×3=6 kg·m/s; F=Δp/t=6/0.1=60 N."],
+ ["grav",2,"Weight of a 10 kg body on Earth (g=9.8):",["98 N","10 N","9.8 N","1 N"],"0","W=mg=10×9.8=98 N."],
+ ["grav",2,"Free-fall acceleration depends on",["mass of body","shape","neither — it is g","height only"],"2","All bodies fall with the same g (no air)."],
+ ["grav",3,"If distance between two masses doubles, gravitational force becomes",["½","¼","2×","4×"],"1","F∝1/r² → double r → ¼F."],
+ ["work",1,"Work done when force ⊥ displacement:",["maximum","zero","negative","W=Fd"],"1","W=Fd·cos90°=0."],
+ ["work",2,"KE of 4 kg body at 3 m/s:",["18 J","12 J","36 J","24 J"],"0","KE=½mv²=½×4×9=18 J."],
+ ["work",2,"Power of doing 600 J in 20 s:",["30 W","120 W","12 W","3 W"],"0","P=W/t=600/20=30 W."],
+ ["sound",1,"Sound needs",["no medium","a medium","only vacuum","light"],"1","Sound is mechanical — needs a medium."],
+ ["sound",2,"Speed of sound in air ≈",["3×10⁸ m/s","340 m/s","150 m/s","1500 m/s"],"1","≈340 m/s at room temperature."],
+ ["sound",3,"Echo is heard if the obstacle is at least ___ away (~17.2 m)",["1.7 m","17.2 m","172 m","0.17 m"],"1","Persistence of hearing 0.1 s × 344 m/s / 2 ≈ 17.2 m."],
+ ["matter",1,"Which is NOT a state of matter in the chapter sense?",["solid","liquid","plasma wave","gas"],"2","Chapter covers solid/liquid/gas (+ later plasma & BEC)."],
+ ["matter",2,"Evaporation causes",["heating","cooling","no change","freezing"],"1","High-energy particles escape → surface cools."],
+ ["atoms",2,"Molecular mass of H₂O:",["16","18","20","10"],"1","2×1+16=18 u."],
+ ["atoms",2,"Law of constant proportions says a compound always has",["same elements same mass ratio","random ratio","same volume","same state"],"0","Water is always H:O = 1:8 by mass."],
+ ["cell",1,"The control centre of the cell:",["nucleus","vacuole","ribosome","cytoplasm"],"0","Nucleus holds chromosomes and directs the cell."],
+ ["cell",2,"Powerhouse of the cell:",["chloroplast","mitochondria","lysosome","Golgi"],"1","Mitochondria release energy as ATP."],
+ ["cell",2,"Plasma membrane is",["freely permeable","selectively permeable","rigid wall","dead layer"],"1","It lets some molecules pass — selectively permeable."],
+ ["tissue",1,"Parenchyma, collenchyma, sclerenchyma are ___ tissues",["animal","plant permanent","muscle","nervous"],"1","They are simple permanent plant tissues."],
+ ["tissue",2,"Tissue that transports water in plants:",["phloem","xylem","epidermis","cambium"],"1","Xylem carries water & minerals up."],
+ ["tissue",3,"Cardiac muscle is",["voluntary","involuntary, striated, never tires","skeletal","smooth"],"1","Heart muscle: involuntary, striated, fatigue-resistant."],
+ ["food",2,"Crop variety improvement aims at",["higher yield only","yield + resistance + wider adaptation","colour only","none"],"1","It targets yield, quality, biotic/abiotic resistance & adaptability."],
+ ["frenrev",1,"The French Revolution began in",["1789","1799","1750","1815"],"0","Storming of the Bastille — 14 July 1789."],
+ ["frenrev",2,"The three estates in France were",["clergy, nobility, commoners","king, lords, peasants","rich, middle, poor only","soldiers, farmers, traders"],"0","First=clergy, Second=nobility, Third=everyone else."],
+ ["frenrev",2,"'Reign of Terror' refers to the period under",["Louis XVI","Robespierre","Napoleon","Danton"],"1","Robespierre's Committee of Public Safety, 1793-94."],
+ ["russrev",2,"Bolsheviks were led by",["Lenin","Stalin","Tsar Nicholas II","Kerensky"],"0","Vladimir Lenin led the Bolshevik October Revolution 1917."],
+ ["russrev",2,"Russia exited World War I by signing the treaty of",["Versailles","Brest-Litovsk","Vienna","Paris"],"1","March 1918 — Brest-Litovsk with Germany."],
+ ["nazism",2,"Hitler's party was the",["Nazi Party","Weimar Party","Social Democrats","Communist Party"],"0","National Socialist German Workers' (Nazi) Party."],
+ ["nazism",2,"The Enabling Act gave Hitler power to",["rule by decree","only tax","only legislate","share power"],"0","1933: all power to rule without Parliament."],
+ ["democ",1,"In a democracy, final power rests with",["army","the people","the king","judges"],"1","Democracy = rule by the people."],
+ ["democ",2,"Which is a democratic feature?",["one party rule","free & fair elections","hereditary rulers","no voting rights"],"1","Free, fair, regular elections are the heart of democracy."],
+ ["const",2,"The Constituent Assembly finished the Constitution on",["15 Aug 1947","26 Nov 1949","26 Jan 1950","2 Oct 1948"],"1","Adopted 26 Nov 1949; enforced 26 Jan 1950."],
+ ["const",2,"Drafting Committee chairman:",["Nehru","Dr. B. R. Ambedkar","Patel","Prasad"],"1","Dr. B. R. Ambedkar chaired the Drafting Committee."],
+ ["elect",2,"In India, elections are conducted by",["Parliament","Election Commission","Supreme Court","Police"],"1","An independent Election Commission of India."],
+ ["insti",2,"A 'bill' becomes law after",["PM signs","President assents","court orders","vote of people"],"1","Parliament passes it, President gives assent."],
+ ["rights",2,"Right to Constitutional Remedies is called the",["heart and soul","eye","hand","voice of the Constitution"],"0","Dr. Ambedkar: 'heart and soul' of the Constitution."],
+ ["palampur",2,"Non-farm activities in Palampur include",["dairy, small manufacturing, transport, shops","only farming","mining","fishing exports"],"0","Dairy, small-scale manufacturing, transport, shopkeeping."],
+ ["resource",2,"'People as Resource' means",["population is burden","educated healthy people = human capital","only workers count","only children"],"1","Education & health turn population into human capital."],
+ ["poverty",2,"Poverty line is measured mainly by",["income or consumption level","caste","area","language"],"0","Calorie + consumption/income thresholds per person."],
+ ["foodsec",2,"Buffer stock in India is run by",["FCI","SEBI","RBI","NITI"],"0","Food Corporation of India procures & stores."],
+ ["drain",2,"The longest river of India:",["Yamuna","Ganga","Godavari","Brahmaputra"],"1","Ganga — ~2500 km course."],
+ ["climate",2,"Indian monsoon winds blow",["sea→land in summer","land→sea in summer","east→west always","never reverse"],"0","Summer: moisture-laden sea→land; winter reverses."],
+ ["physfeat",2,"The Himalayas were formed by",["volcanoes","plate collision","erosion","deposition"],"1","Indo-Australian plate colliding with Eurasian plate."],
+ ["indiasize",1,"India's latitudinal extent is roughly",["8°N–37°N","8°S–37°S","68°E–97°E","0°–90°"],"0","About 8°4′N to 37°6′N."]
+];

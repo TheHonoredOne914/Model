@@ -1,0 +1,185 @@
+<body>
+<div id="app">
+  <aside id="sidenav" aria-label="Main navigation"></aside>
+  <header id="topbar">
+    <div class="logo" id="logoBtn">
+      <svg class="mascot float" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="clg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#A9CEE8"/><stop offset="1" stop-color="#214F78"/></linearGradient></defs><path fill="url(#clg)" d="M20 46a12 12 0 0 1-2-23.8A16 16 0 0 1 49 26a10 10 0 0 1-3 20z"/><g class="eyes" fill="#fff"><circle cx="26" cy="33" r="3"/><circle cx="40" cy="33" r="3"/></g><path d="M27 41q5 4 10 0" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round"/><rect x="24" y="49" width="17" height="9" rx="2.4" fill="#F6D5C6"/><path d="M24 51.5h17M32.5 49v9" stroke="#C77B1F" stroke-width="1.6"/></svg>
+      <span>Saathy <b>v.3</b></span>
+    </div>
+    <div class="spacer"></div>
+    <span class="chip peach" id="streakChip" title="Daily streak"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 2c1 4-4 6-4 11a4 4 0 0 0 8 0c0-2-1-3.5-2-4.5.2 2.5-2 2.8-2 4.8a1.6 1.6 0 1 0 3.2 0"/></svg><b id="streakN">0</b></span>
+    <span class="chip good" id="aiChip" title="AI connection">AI: Off</span>
+    <button class="icon-btn" id="settingsBtn" aria-label="Settings" title="Settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.56V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1.11-1.56 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.56-1H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.65 8.9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34H9a1.7 1.7 0 0 0 1-1.56V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87V9a1.7 1.7 0 0 0 1.56 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.51 1z"/></svg></button>
+  </header>
+
+  <main id="main">
+    <!-- HOME -->
+    <section class="screen" id="scr-home">
+      <div class="card" id="nextAction">
+        <div class="na-label">Next action</div>
+        <h2 id="naTitle">Loading your plan…</h2>
+        <div class="muted" id="naDesc">Saathy is reading your evidence trail.</div>
+        <div class="row" style="margin-top:14px"><button class="btn peach sm" id="naGo">Start now</button><button class="btn sm" style="background:rgba(255,255,255,.14);color:#fff" id="naSwap">Something else</button></div>
+      </div>
+      <div class="sec-title"><span class="dot"></span>Your mastery map</div>
+      <div class="card"><div id="masteryMap"></div><p class="muted" id="masteryHint" style="margin:10px 0 0">Concepts are labelled — people are never labelled. Levels move as you learn.</p></div>
+      <div class="sec-title"><span class="dot"></span>Tonight at a glance</div>
+      <div class="grid3" id="homeStats"></div>
+      <div class="card" id="welcomeCard" style="background:linear-gradient(135deg,var(--peachmist),#fff)">
+        <h3>Namaste! I am <b>Saathy v.1</b> — trained on NCERT modules and books.</h3>
+        <p class="muted">Tell me your class and subject, take a tiny 3-question check, and I will build tonight's plan: slides → quiz → game → flashcards. I track where you slip and rebuild your basics with better examples — every single time.</p>
+        <button class="btn primary sm" onclick="Saathy.go('plan')">Build my plan</button>
+      </div>
+    </section>
+
+    <!-- CHAT -->
+    <section class="screen" id="scr-chat">
+      <div id="chatWrap">
+        <div id="chatLog"></div>
+        <div class="sugg" id="chatSugg"></div>
+        <div id="chatBar">
+          <textarea id="chatInput" rows="1" placeholder="Ask anything… or paste a YouTube link"></textarea>
+          <button class="send" id="sendBtn" aria-label="Send"><svg viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PLAN -->
+    <section class="screen" id="scr-plan">
+      <div class="sec-title"><span class="dot"></span>Plan maker</div>
+      <div class="card">
+        <h3>What are we mastering tonight?</h3>
+        <p class="muted">Pick a chapter — Saathy runs the full VidhyaSaathy loop: diagnostic → slides → quiz → game → flashcards, each step owned by its own agent.</p>
+        <div class="field" style="margin-top:10px"><label>Subject</label><select id="planSubj"></select></div>
+        <div class="field"><label>Chapter</label><select id="planChap"></select></div>
+        <div class="row"><button class="btn primary" id="planGo">Create my plan</button></div>
+      </div>
+      <div id="planRun"></div>
+    </section>
+
+    <!-- GAMES -->
+    <section class="screen" id="scr-games">
+      <div class="sec-title"><span class="dot"></span>Games arcade <span class="chip" id="gameXp">XP 0</span></div>
+      <p class="muted" style="margin:0 2px 12px">One question bank, five games. Every score feeds your concept mastery — never a leaderboard.</p>
+      <div class="grid3" id="gameTiles"></div>
+      <div id="gameStage"></div>
+    </section>
+
+    <!-- VIDEOS -->
+    <section class="screen" id="scr-videos">
+      <div class="sec-title"><span class="dot"></span>Video kit — concept by concept</div>
+      <p class="muted" style="margin:0 2px 10px">Hand-picked teachers for every concept (Maths · Science · SST) with watch plans and timestamps. Tap a link — it opens the exact search inside a trusted channel, so you never fall in the rabbit hole.</p>
+      <div class="vk-filter" id="vkFilter"></div>
+      <div id="vkList"></div>
+    </section>
+
+    <!-- ARTIFACTS -->
+    <section class="screen" id="scr-artifacts">
+      <div class="sec-title"><span class="dot"></span>Interactive labs &amp; artifacts</div>
+      <p class="muted" style="margin:0 2px 12px">Touch it, move it, break it, get it. Science labs, SST explorers, Maths builders — one tap each.</p>
+      <div class="grid3" id="artTiles"></div>
+      <div id="artStage"></div>
+    </section>
+
+    <!-- REPORTS -->
+    <section class="screen" id="scr-reports">
+      <div class="sec-title"><span class="dot"></span>Reports — family &amp; teachers</div>
+      <div class="tabs-mini" id="repTabs">
+        <button class="tm on" data-r="parent">Parent — Daily report</button>
+        <button class="tm" data-r="teacher">Teacher — Class view</button>
+      </div>
+      <div id="repBody"></div>
+    </section>
+
+    <!-- FOUNDER -->
+    <section class="screen" id="scr-founder">
+      <div class="sec-title"><span class="dot"></span>Founder section <span class="chip navy">PIN protected</span></div>
+      <div id="founderGate" class="card">
+        <h3>Enter founder PIN</h3>
+        <p class="muted">This area holds the API keys, the training corpus and the model plan.</p>
+        <div class="founder-pin">
+          <input class="fp-digit" id="fp1" inputmode="numeric" maxlength="1" aria-label="PIN digit 1">
+          <input class="fp-digit" id="fp2" inputmode="numeric" maxlength="1" aria-label="PIN digit 2">
+          <input class="fp-digit" id="fp3" inputmode="numeric" maxlength="1" aria-label="PIN digit 3">
+          <input class="fp-digit" id="fp4" inputmode="numeric" maxlength="1" aria-label="PIN digit 4">
+        </div>
+        <div id="fpErr" class="err-banner hidden">Wrong PIN — try again.</div>
+        <div class="row" style="justify-content:center"><button class="btn primary" id="fpGo">Unlock</button></div>
+      </div>
+      <div id="founderBody" class="hidden"></div>
+    </section>
+  </main>
+
+  <nav id="tabbar" aria-label="Main tabs"></nav>
+</div>
+
+<!-- Settings sheet -->
+<div class="sheet-wrap hidden" id="settingsWrap">
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="Settings">
+    <div class="grab"></div>
+    <div class="row" style="justify-content:space-between"><h2>Settings</h2><button class="icon-btn" id="closeSet" aria-label="Close settings"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="tabs-mini" id="setTabs">
+      <button class="tm on" data-s="chat">AI &amp; API</button>
+      <button class="tm" data-s="student">Student</button>
+      <button class="tm" data-s="about">About</button>
+    </div>
+    <div id="setChat">
+      <div class="field">
+        <label>Paste your API key — that's it</label>
+        <input type="password" id="apiKey" placeholder="Gemini (AIza…) · Groq (gsk_…) · OpenAI (sk-…)">
+        <div class="hint" id="keyHint">Saathy auto-detects the provider: <b>AIza</b> → Google Gemini · <b>gsk_</b> → Groq · <b>sk-</b> → OpenAI. One paste, one tap, done.</div>
+      </div>
+      <div class="field" id="modelField">
+        <label>Model</label>
+        <select id="apiModel"></select>
+      </div>
+      <div class="row">
+        <button class="btn primary" id="connectBtn">Connect</button>
+        <span class="ok-dot" id="connState"><i></i><span>Not connected</span></span>
+      </div>
+      <div class="card" style="margin-top:14px;background:var(--cream)">
+        <b style="font-size:13.5px">No key? Saathy still teaches.</b>
+        <p class="muted" style="margin:6px 0 0">The built-in NCERT brain (books, quizzes, games, plans, reports) runs fully offline. A key unlocks free-form doubt chat with the exact same honesty rules.</p>
+      </div>
+    </div>
+    <div id="setStudent" class="hidden">
+      <div class="field"><label>Your name</label><input id="stName" placeholder="e.g. Aarav"></div>
+      <div class="field"><label>Class</label><select id="stClass"><option>Class 9</option><option>Class 10</option></select></div>
+      <div class="field"><label>Language for explanations</label>
+        <div class="pill-row" id="langPills">
+          <button class="pill" data-l="English">English</button>
+          <button class="pill" data-l="Hinglish">Hinglish</button>
+          <button class="pill" data-l="Hindi">Hindi</button>
+        </div>
+      </div>
+      <div class="field"><label>Tonight's study budget</label>
+        <div class="pill-row" id="timePills">
+          <button class="pill" data-m="15">15 min</button>
+          <button class="pill" data-m="25">25 min</button>
+          <button class="pill" data-m="40">40 min</button>
+        </div>
+      </div>
+      <button class="btn primary" id="saveStudent">Save</button>
+    </div>
+    <div id="setAbout" class="hidden">
+      <div class="card" style="background:var(--cream)">
+        <h3 style="font-size:15px">Saathy v.3 — the VidhyaSaathy companion</h3>
+        <p class="muted" style="margin-top:6px">Built on the Product Master File: four bands, Error DNA, the five-station loop, five games, curated video kit, parent &amp; teacher reports. Identity: <b>"I am Saathy v.1, trained on NCERT modules and books."</b></p>
+        <p class="muted" id="phaseLine" style="margin-top:8px"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Generic stage sheet (quiz / game / artifact / plan step) -->
+<div class="sheet-wrap hidden" id="stageWrap">
+  <div class="sheet" role="dialog" aria-modal="true">
+    <div class="grab"></div>
+    <div class="row" style="justify-content:space-between;margin-bottom:6px"><h2 id="stageTitle">Stage</h2><button class="icon-btn" id="closeStage" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div id="stageAgent" style="margin-bottom:10px"></div>
+    <div id="stageBody"></div>
+  </div>
+</div>
+
+<div id="toast" role="status"></div>
+<input type="file" id="filePick" multiple class="hidden" accept=".pdf,.txt,.md,.doc,.docx,.csv,.json">

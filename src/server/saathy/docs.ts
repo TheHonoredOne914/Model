@@ -13,7 +13,7 @@ import { tokenize } from './books';
 
 const pexec = promisify(execFile);
 
-export const MAX_DOCS = 40;
+export const MAX_DOCS = 100;
 export const MAX_TOTAL_BYTES = 1024 * 1024 * 1024; // 1 GB across all docs — the founder trains big
 export const MAX_PER_FILE = 300 * 1024 * 1024; // 300 MB single files, no stress
 const OCR_PAGE_CAP = 400; // safety valve for giant scans

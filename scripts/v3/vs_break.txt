@@ -1,0 +1,2907 @@
+VidhyaSaathy
+Y O U R C O M PA N I O N I N L E A R N I N G
+
+
+
+
+C O M P L E T E A P P L I C AT I O N D O C U M E N TAT I O N · B R E A K T H R O U G H
+EDITION
+
+
+
+
+VidhyaSaathy
+“Your school, online, after the bell rings.”
+
+The complete, consolidated documentation of the VidhyaSaathy platform —
+an AI-powered School-to-Home Learning Continuity Platform built for Indian
+schools. Every mode, feature, workflow and dashboard for students, teachers,
+parents and school administrators, from sign-up and sign-in through the full
+learning loop: all 100 numbered features (VS-01 to VS-100), the AI engine, the
+India layer, end-to-end flows, architecture, build order and acceptance criteria
+— nothing invented, nothing important omitted.
+
+B UI LT F O R F O UR CO N N ECT ED R O L ES
+
+   Students              Teachers           Parents      School Admins
+
+
+
+
+101                             100                       18                        5
+F E AT U R E S · O N E LO O P   V S F E AT U R E I D S    D O C U M E N TAT I O N   SOURCE D OCUM E NTS
+                                                          PA R T S
+
+
+
+
+Version 1.0 Final · 19 October 2026 · Classes 9–10 prototype, designed to expand across grades
+Vikrant University Junior Hackathon 2026 team workspace · Consolidated from five source documents
+(see Part 18.4)
+V I D H YA S A AT H Y · B R E A K T H R O U G H E D I T I O N
+
+
+Contents
+01     Product Foundation The core learning                 1       02   Brand, Theme and the Cloud                           6
+       loop · the problem · ten principles · roles ·                     Companion Mascot & expressions · the
+       boundaries · the moat                                             official palette · interface rules · logo ·
+                                                                         companion states
+
+
+03     Entry System: Sign-Up, Sign-In,                      8       04   The Class Workspace VS-09–14 ·                      13
+       Onboarding VS-01–08 · onboarding wizard ·                         structured class home · tagged notes ·
+       accounts for every role · RBAC · screen map                       segmented recordings · chapter history
+
+
+05     Student World: Dashboard and                        15       06   The AI Engine VS-28–59 + Blueprint AI ·             21
+       Learning VS-15–27 · guided self-study                             honesty layer · Socratic mode · gap detector ·
+       sessions · homework · quizzes · recovery path                     Syllabus GPS
+       · concept map
+
+
+07     Teacher World VS-60–72 · dashboard ·                32       08   Parent World VS-73–78 · plain-language              35
+       heat-map · session builder · auto-grading · AI-                   dashboard · summaries · ask-this · WhatsApp ·
+       drafted sessions                                                  privacy rules
+
+
+09     School Admin World VS-79–87 ·                       38       10   The India Layer VS-88–92 · offline +                40
+       structure not surveillance · calendar · CSV                       smart sync · data saver · language layers ·
+       enrolment · question bank                                         festival calendar
+
+
+11     Motivation, Games and Learning                      41       12   End-to-End Flows: The Whole                         43
+       Design VS-93–100 · streaks with freeze ·                          System in Motion A day in Class 9-A
+       improvement badges · daily challenge · five                       minute by minute · the Motion worked example
+       games                                                             · the loop in practice
+
+
+13     Data, Security and Responsible AI                   45       14   Technical Architecture Starting stack ·             46
+       Permission enforcement · data protection · AI                     37 data entities · AI request workflow · failure
+       safety · evidence integrity                                       and fallback
+
+
+15     Build Order, Phases and Deliberate                  47       16   Acceptance Criteria and QA                          49
+       Cuts Master Spec phases 1–4 · Blueprint                           Checklists Account & permission · learning
+       priorities 1–5 · deliberate cuts · one-line truth                 workflow · AI reliability · UX · validation tests
+
+
+17     Feature Registry and Cross-                         50       18   Glossary, Team Workspace and                        57
+       References VS-01–100 index · role ×                               Closing Product vocabulary · team protocol
+       feature matrix · Blueprint modules · open                         · final definition · sources · fidelity note
+       decisions · chains
+
+
+
+
+                                                                i
+  H O W T O N AV I G AT E T H I S D O C U M E N T
+  Feature IDs — VS-01 to VS-100                                    Status tags
+  Every feature carries its permanent ID from the Master            CORE founder-confirmed · PROPOSED specified,
+  Working Spec, so the team can discuss “How does VS-              awaiting approval · OPEN explicitly undecided · P1–
+  42 work?” without ambiguity. The full index is in Part 17.       P4 build phase · ★ source emphasis (★
+                                                                   highlighted, ★★ flagship, ★★★ highest).
+
+  Cross-references                                                 Checklists
+  Features reference each other as VS-30 , sections as             Every part ends with an implementation checklist. The
+  (Section 7.2), and Blueprint PRD modules as (S5 §53). Six        master acceptance checklists are consolidated in Part 16.
+  key workflow chains are mapped in Section 17.5.                  Undecided items stay
+                                                                   OPEN
+                                                                   exactly as in the sources.
+
+
+  PA R T 1 · F O U N D AT I O N
+
+
+Product Foundation
+What VidhyaSaathy is, the single loop every feature orbits, the problem it solves, the principles that
+govern every design decision, and the boundary between what the product is and is not.
+
+  1.1 What VidhyaSaathy Is
+VidhyaSaathy is a school-connected learning platform — an online copy of each school class.
+Whatever happens in the offline classroom (notes, homework, tests, lesson recordings) also appears
+online in that class’s workspace, so the school keeps helping the student at home. It is formally
+defined in the Blueprint as an AI-powered School-to-Home Learning Continuity Platform.
+A school already provides teachers, textbooks, explanations, notes, assignments, tests and guidance
+— but once students return home, they must independently decide what to study, which resources to
+trust, how to understand difficult topics and how to recover when they fall behind. Students switch
+between YouTube videos, PDFs, friends’ notes, websites and separate AI tools without knowing which
+explanation matches their school’s teaching. VidhyaSaathy connects these disconnected activities
+into one system:
+   One workspace per class (for example Class 9-A). Students, teachers and parents are all
+   connected to it.
+   The teacher leads the class: they publish notes, homework, recordings and guided self-study
+   sessions.
+   Self-study sessions are fixed, structured units. The school makes them available; the teacher
+   decides the day they open.
+   An AI helper answers questions in the context of the subject, class and the teacher’s own material,
+   and builds a study plan that points to the right school note, recording or video.
+   Parents see what the child is studying and what is completed — not every private conversation.
+
+
+
+
+                                                               1
+  Te one-line thesis of the whole product: “Why should the school’s support end when the bell rings?” —
+  the school speaks again after the bell rings.
+
+Students should be able to answer four questions at any moment: What should I study today? What
+do I still not understand? How do I practise it? What should I do next?
+
+  1.2 The Core Learning Loop — the App’s Soul
+The entire app runs a single loop; all ~101 features orbit around it:
+
+                                      TEACHER TEACHES IN CLASS
+                                                    ↓
+                                    NOTES / SESSION ARE PUBLISHED
+                                           VS-11 · VS-62 · VS-63
+
+                                                    ↓
+                                       STUDENT STUDIES AT HOME
+                                               VS-15 · VS-16
+
+                                                    ↓
+                                           STUDENT PRACTISES
+                                               VS-17 · VS-18
+
+                                                    ↓
+                                         EVIDENCE IS COLLECTED
+                                           VS-27 · VS-39–VS-42
+
+                                                    ↓
+                                      AI SUGGESTS THE NEXT STEP
+                                            VS-28–VS-31 · VS-58
+
+                                                    ↓
+                                   TEACHER SEES CLASS-LEVEL GAPS
+                                           VS-60 · VS-61 · VS-37
+
+                                                    ↓
+                                NEXT CLASS IS BETTER → LOOP REPEATS
+
+The extended version from the Blueprint adds the parent: the teacher sees class-level patterns → the
+parent receives a meaningful progress update ( VS-69 , VS-74 ) → the student continues learning.
+
+  DES I G N P R I N CI P L E
+  The teacher’s effort is applied once; the system reuses it again and again; the AI adds school context;
+  evidence decides the next step. The product becomes more useful every time the loop repeats, because
+  it uses reliable evidence from previous sessions.
+
+
+
+
+                                                     2
+  1.3 The Problem Being Solved
+The problem is not that learning material is missing. The problem is that there is too much of it, and
+no path that says what to do next.
+
+ Problem                      What it looks like for a student                                   Source
+
+ Too many sources             YouTube, PDFs, friends’ notes, AI tools, coaching notes —          Founder
+                              different versions, no way to know which matches the school        observation
+                              syllabus.
+ No clear direction           “Okay, I have to study Physics tonight. What do I even do?”        Founder
+                                                                                                 observation
+ No check of                  An hour of study does not show whether the concept was             Founder
+ understanding                understood.                                                        observation
+ Missed lessons               A missed class or weak prerequisite creates gaps that grow         Reasoned, needs
+                              later.                                                             testing
+ Coaching gap                 Students with coaching get a second structure; students            Hypothesis, needs
+                              without it manage alone.                                           research
+ Repetitive writing           Much class time goes to copying notes from the board, for          Founder
+                              students and teachers.                                             observation
+ Parents in the dark          Parents see marks, not what the child studies or where they        Hypothesis, needs
+                              are stuck.                                                         research
+ Distraction                  Students open many slides at once, switch apps, or skip the        Founder
+                              test.                                                              observation
+
+These are the founder’s observations and hypotheses, not yet backed by surveys or published research. Validation is
+tracked in the team workspace (Part 18) and the open-decisions register (Section 17.4).
+
+  1.4 Where the Idea Came From
+The founder was a strong student, scoring above 90% in earlier classes. In Class 9, studying became
+chaotic. There was no coaching, so when a topic like Biology or Physics was hard, the founder
+searched YouTube, asked friends for notes, and used AI tools. Friends’ “perfect notes” were all
+different, and the founder had to decide what to trust. The lesson carried into the product: the
+problem was not that nothing was available — it was that nothing came together into one coherent
+path. This is one student’s experience, not proof that every student faces the same problem, which is
+why the sources mark market claims as hypotheses to validate. The first target is schools in Indian
+Tier-2 and Tier-3 cities, as an initial interest rather than a validated market.
+
+  1.5 The Ten Product Principles
+From the Blueprint (S5 §2) — these govern every design decision in this document:
+
+  1 · School remains central                                     2 · AI supports teachers, never replaces them
+  The school’s syllabus, teachers and approved                   Teachers remain responsible for curriculum
+  learning resources form the foundation of the                  decisions, important assessments and interventions.
+  experience.
+
+
+                                                           3
+3 · Personalisation is based on evidence                    4 · Understanding beats activity counts
+The app responds to demonstrated difficulties; it           Completing ten activities is not equivalent to
+never permanently labels students as weak or                mastering a concept.
+intelligent.
+
+
+5 · Parents receive insights, not just marks                6 · Works for real Indian contexts
+They should understand what the child has learned           Shared devices, different languages, variable
+and how they can help.                                      connectivity, limited teacher time.
+
+
+7 · Calm and encouraging                                    8 · AI output is grounded and reviewable
+No shame-based rankings, manipulative streaks or            Traceable to school material or another identified
+excessive notifications.                                    source.
+
+
+9 · Privacy is a product requirement                        10 · Every feature connects to the loop
+A child’s private questions do not automatically            Identify a learning need, take an action, check
+become a parent-facing transcript.                          whether the action worked.
+
+
+1.6 Users and Roles
+Role             How they join                      What they do & see
+
+ Student         Roll/admission number +            Reads notes, does self-study, homework and quizzes, asks
+                 class, section + activation        the AI helper. Sees own class workspace, own study plan, own
+                 code + parent-phone OTP            progress only.
+                 ( VS-04 )
+ Teacher         Staff ID + temporary               Publishes notes, creates and times sessions, sets homework
+                 password from admin                and quizzes, shares recordings. Sees assigned classes,
+                 ( VS-03 )                          completion, concepts many students miss.
+ Class           A teacher with extra rights for    Manages the class workspace, broadcasts class updates.
+ teacher         one class ( VS-72 )                Whole-class view plus class-space management.
+ Parent          Linked to a verified child via     Follows progress and tasks. Own child only — never private AI
+                 OTP ( VS-05 )                      chats.
+ School          School owner account               Creates classes, sections, teacher assignments and
+ admin           ( VS-02 )                          enrolments. School-wide structure — never student rankings.
+ Platform        Platform operations staff          Security, service health, authorised support. Only access
+ admin           (distinct from school admin)       required for legitimate operations.
+
+
+
+
+                                                        4
+  1.7 Product Boundaries — What It Is / Is Not
+  VidhyaSaathy IS                                          VidhyaSaathy IS NOT
+  A school-connected learning ecosystem · a bridge         A generic AI chatbot · a homework-answer generator
+  between classroom and home study · a structure for       · a replacement for teachers · a repository of PDFs
+  teacher-guided self-learning · a way to link             and videos · a video-conferencing or attendance app
+  resources to assessments · a tool to show where          · an immediate elimination of private coaching.
+  support is needed · a way to keep families and
+  schools connected.
+
+
+  1.8 Feature IDs, Statuses and the Long-Term Moat
+Feature IDs. The Master Working Spec (S4) assigns every feature a permanent ID from VS-01 to
+ VS-100 so the team can discuss “How is VS-42?” without ambiguity. The spec describes the
+catalogue as 101 features (the numbering plus the core loop). This document preserves those IDs
+exactly and adds Blueprint-only modules with their PRD citations (Section 17.3).
+Statuses. Source documents mark commitment levels: CONFIRMED items are part of the idea as the
+founder described it; PROPOSED items are specifications to discuss; OPEN items are explicitly
+undecided. This document shows them as CORE , PROPOSED and OPEN , plus build-phase tags P1–
+P4 from the build order (Part 15).
+
+Long-term moat (S5 §79). No individual feature guarantees a moat. The defensible advantage may
+emerge from the combination of: (1) school-specific content and curriculum mapping, (2) teacher
+workflows and adoption, (3) longitudinal, evidence-backed concept histories, (4) misconception
+patterns connected to actual student responses, (5) intervention history and follow-up outcomes, (6)
+low-friction school onboarding, (7) parent-teacher-student continuity, and (8) reliable performance on
+ordinary devices and constrained connections. These are hypotheses to validate through real use —
+not advantages that can be claimed before implementation.
+
+  1.9 Foundation Checklist
+    Team can state the core loop from memory (it drives every screen)
+    Every designed screen maps to at least one loop step
+    No feature labels students (weak / average / smart) anywhere in the UI
+    AI features can name their school-context fuel (notes, quiz results, curriculum position, behaviour log)
+    — otherwise they fail the moat test
+    Claims about markets and outcomes stay marked as hypotheses until validated (Section 16.5)
+    Product boundaries table (1.7) respected in all pitches and demos
+
+
+
+
+                                                       5
+  PA R T 2 · B R A N D
+
+
+Brand, Theme and the Cloud Companion
+The selected direction, confirmed by the brand board (S3): a friendly cloud mascot hugging a book —
+soft, modern, approachable. This is the visual language of every screen in the app.
+
+  2.1 Brand Identity and Mascot
+The mascot is a cute blue cloud hugging a book and reading, sitting on stacks of books in the poster
+art, under the message “Small steps make big progress.” The brand must feel:
+   Trustworthy enough for schools and parents.
+   Friendly enough for students to enjoy using daily.
+   Modern enough to feel like a new AI learning product.
+   Calm rather than visually noisy.
+   Distinctive without copying Duolingo, Chikoo or another existing brand.
+Tagline options discussed in the sources (one must be chosen — Section 17.4): “Learn • Grow •
+Together.” (shown on the brand board) · “Grow at your own pace.” · “Your school, online, after the bell
+rings.” (the product one-liner).
+The mascot has six named expressions on the brand board, mapped to product moments:
+
+  1 “Let’s learn!”                                           2 “You got this!”
+  Session start / learning begins.                           Encouragement before a difficult question.
+
+
+  3 “Hmm…”                                                   4 “Keep going!”
+  AI thinking / working on an answer.                        Mid-session persistence.
+
+
+  5 “Great job!”                                             6 “Time to rest”
+  Milestone / quiz success.                                  End of day, healthy usage boundary.
+
+The phone UI in the brand board greets the student with “Good morning, Learner!” and shows the three core modules —
+My Courses, Study Sessions, Practice & Quizzes — matching the dashboard structure in Part 5.
+
+  2.2 Colour Palette
+Five brand colours — the current direction, not a requirement to use every colour equally:
+
+
+
+
+                                                         6
+  Sky Blue                  Soft Peach                Warm White                 Deep Navy            Light Blue
+  #7FB3FF                   #FFC8A3                   #FFF9F5                    #1E3A8A              #E6F0FF
+  Primary actions,          Supportive                Comfortable reading        All readable text.   Cards, soft fills,
+  important learning        highlights,               surfaces.                                       hover states.
+  states, links.            celebrations.
+
+The heat-map feature ( VS-61 ) reuses palette semantics: green = secure, peach = mixed, red = stuck.
+
+  2.3 Interface Rules
+
+≈80% clean, functional interface   ≈15% soft colour   ≈5% playful mascot & illustration
+
+   Use blue for primary actions and important learning states; peach for supportive highlights and
+   celebrations; warm white for comfortable reading; deep navy for text.
+   Avoid purple/neon-heavy styling, overly cartoonish interfaces and excessive gradients.
+   Teacher dashboards may be more information-dense than student screens while preserving the
+   same visual identity.
+   Use accessible contrast, readable typography, clear focus states and responsive layouts.
+
+  2.4 Logo Requirements
+The final logo must have: (1) a recognisable cloud mascot or cloud-based mark — the “V” cloud mark
+on the brand board is the working direction; (2) a wordmark reading “VidhyaSaathy”; (3) a
+standalone icon for app favicons and small screens; (4) a monochrome version; (5) a version that
+works on light and dark backgrounds; (6) a simplified version that remains legible at small sizes. The
+exact final artwork, font and tagline remain to be approved (Open — Section 17.4). The team mockup
+is titled ClassOS and the product name itself is still OPEN — the idea matters more than the name.
+
+  2.5 Cloud Companion Behaviour States
+The cloud is a friendly guide throughout the student experience — not an intrusive chatbot that
+constantly interrupts:
+
+ State                             Behaviour
+
+ Idle                              Subtle floating animation.
+ Greeting                          Brief welcoming animation when the student opens the learning space.
+ Thinking                          Restrained animation while the AI processes a question.
+ Encouragement                     Small positive reaction after meaningful progress.
+ Confusion support                 Offers help when the student requests it or gets stuck.
+ Celebration                       Brief animation after completing a meaningful milestone.
+ Resting                           Remains unobtrusive while the student reads or solves.
+ Error                             Communicates that something failed without blaming the student.
+
+
+                                                                7
+ Reduced motion           Static or minimal animation when requested by device settings.
+ Consistency              The mascot’s appearance stays recognisable everywhere.
+
+  HA R D R UL E
+  The cloud must not distract students during lessons, flash constantly, or use emotional pressure to
+  keep them online. Voice interaction, emotion detection and advanced animated character behaviour are
+  NOT assumed in the first release — and emotion detection via camera/microphone is deliberately cut
+  forever (Part 15.3).
+
+
+  2.6 Brand Checklist
+    Palette tokens implemented (#7FB3FF / #FFC8A3 / #FFF9F5 / #1E3A8A / #E6F0FF) and 80/15/5 balance
+    respected
+    All six mascot expressions available to the UI state system
+    Mascot never animates distractingly during question-solving
+    Reduced-motion setting honoured globally
+    Logo set (wordmark, icon, mono, dark-bg, small-size) produced and approved
+    One tagline chosen and applied consistently
+
+  PA R T 3 · EN T R Y
+
+
+Entry System: Sign-Up, Sign-In, Onboarding
+How every user — school, admin, teacher, student, parent — gets into the system. The school’s existing
+structure (classes, roll numbers, staff IDs) is the app’s backbone: the app is a mirror of the school, not a
+new system.
+
+ V S - 01 – V S - 08
+
+  3.1 Public Landing Page
+The landing page explains what VidhyaSaathy does before asking anyone to create an account. Its
+sections (S5 §7): (1) a hero explaining the school-to-home learning promise; (2) student, teacher,
+parent and school use cases; (3) a visual explanation of the learning loop; (4) a preview of guided
+learning sessions; (5) a preview of AI-assisted learning and teacher insights; (6) how school material
+supports AI responses; (7) privacy and child-safety information; (8) school onboarding or contact
+option; (9) sign-in and account-access links.
+
+  G UA R DR A IL
+  The landing page must not claim proven learning improvements, existing school partnerships, or
+  advanced capabilities that have not been validated.
+
+
+   VS-01      School Onboarding Wizard                                                        CORE     P1
+
+  The complete setup that brings a school onto the platform — an 8-step wizard run by the school
+  admin:
+
+                                                       8
+ 1   Admin registers the school on VidhyaSaathy.
+ 2   School profile — name, board (CBSE / ICSE / State), city.
+ 3   Academic year is set.
+ 4   Classes and sections are created (e.g. 9-A and 9-B).
+ 5   Subjects are added.
+ 6   Teachers are assigned to class + subject combinations.
+ 7   Student list uploaded via CSV — name, roll number, class, parent phone number.
+ 8   Activation codes generated for every student; the school distributes the codes; parents verify via
+     OTP; accounts go live.
+Why this way: the school’s existing structure is the backbone. App-internal verification of the
+representative and staged rollout can come later; the first prototype may use a preconfigured demo
+school. Cross-ref: extended by VS-08 (board mapping at step 2), VS-83 (enrolment detail), VS-84
+(parent linking), Section 9.5 (CSV validation).
+
+
+ VS-02    School Admin Account & Login                                                       CORE    P1
+
+The admin is the school’s owner account, created during registration. Login with staff ID/email +
+password; two-step verification optional. The admin sees the full school structure and NO student
+marks — “structure, not surveillance.” Admin capabilities are documented in Part 9 ( VS-79 to VS-
+87 ).
+The Blueprint’s school registration adds: an authorised representative starts registration → the platform
+verifies the representative → the school profile is created → admins set up classes → teachers are
+invited → students are created/invited → parents are linked → subjects configured → first material
+published (S5 §8).
+
+
+ VS-03    Teacher Account & Login                                                            CORE    P1
+
+ 1   The admin assigns the teacher (subject + class).
+ 2   The teacher receives a staff ID + temporary password.
+ 3   On first login the teacher sets a PIN/password and completes the profile.
+ 4   The dashboard shows ONLY that teacher’s assigned classes.
+ 5   Class-teacher role = extra rights for one class (updates, class-space management — VS-72 ).
+
+Creation flow (S5 §10): admin invites or creates the account → teacher verifies invitation → signs in →
+completes profile → sees assigned classes and subjects → confirms teaching assignments → can
+upload/create material for authorised classes → sees a short setup guide for the first guided session.
+Teachers must never automatically see unrelated classes or student records outside their
+responsibilities.
+
+
+
+
+                                                    9
+ VS-04    Student Verification & Login — critical security flow                       CORE     P1      ★
+
+
+The principle: students are IDENTIFIED by roll number, but roll number alone is NEVER the login. Roll
+numbers are public — the whole class knows them. This is children’s data; this layer cannot be
+skipped.
+ 1   Student opens the app → “Select your school.”
+ 2   Enters roll/admission number.
+ 3   System finds the record but does not let the user in yet.
+ 4   System asks for the school-issued activation code (one-time use).
+ 5   An OTP is sent to the parent’s registered phone number.
+ 6   Both must match.
+ 7   Student sets a personal 4-digit PIN.
+ 8   On every later login: school + roll number + PIN only.
+
+Fallback: if the parent’s OTP cannot arrive (feature-phone offline, etc.), the admin manually approves
+the student. Why it matters: a student should never see records merely because someone knows a
+roll number — and registration must not allow an arbitrary user to join a private school class just by
+knowing its name (S5 §9). Which exact verification combination is default remains OPEN (Section 17.4).
+
+
+ VS-05    Parent Account Linking                                                             CORE   P1
+
+ 1   The student CSV already carries the parent’s phone number.
+ 2   When the student verifies ( VS-04 ), the OTP goes to exactly that number.
+ 3   The parent receives an automatic message: “Your child has joined VidhyaSaathy. Download the
+     app and log in with this number.”
+ 4   The parent creates their account with OTP verification.
+ 5   The parent sees data for ONLY their verified children.
+ 6   Two children? Both are linked; one account, quick switch.
+
+Hard rule: a parent must not be able to connect to a child simply by entering a name or searching a
+public directory. Guardian cases (uncle, grandfather, etc. — common in India) are handled by VS-84 .
+
+
+ VS-06    PIN-Based Shared Device Profiles                                            PROPOSED      P3
+
+Multiple profiles on ONE phone — because in India one phone often serves the whole family. On
+opening the app, a “Who are you?” screen lists the profiles. Each profile has its own PIN; switching
+takes two taps. If the phone is taken away mid-session, progress is saved — “continue from where
+you left off.”
+Cross-ref: connects to VS-88 (offline sync must respect per-profile data) and the shared-device
+sign-out reminders in Section 3.10.
+
+
+
+
+                                                   10
+    VS-07       Role-Based Access Control (RBAC)                                                CORE   P1
+
+  One platform, four doors — each role sees only its own work:
+    Role               Sees / can do
+
+      Student          Own class workspace, own study plan, own progress.
+      Teacher          Only assigned classes; subject teachers only their subject workspace.
+      Parent           Only their verified child’s permitted data.
+      Admin            School structure only — never student ranking.
+
+  Principle: privacy’s first door is BLOCKED IN THE DESIGN, not patched later. Enforcement must be
+  server-side (Section 3.10 rule 10; Part 13.1). Changing a client-side role label must never grant
+  additional access.
+
+
+    VS-08       Board-Wise Curriculum Mapping                                                   CORE   P1
+
+  During onboarding the school selects its board (CBSE / ICSE / State). The platform provides that
+  board’s chapter-concept structure ready-made (NCERT listings are public data), so teachers never
+  build structure from zero. “Motion” exists in both CBSE and UP Board syllabi, but at different depths.
+  This mapping is the product’s lifeblood — it makes tagging ( VS-11 ), gap detection ( VS-30 ) and
+  syllabus GPS ( VS-58 ) possible.
+
+  3.10 Sign-In and Session Management Rules
+Required behaviours for ALL roles (S5 §12):
+ 1. Email, username or school-issued identifier may be used, according to the chosen authentication
+    configuration.
+ 2. Password-based authentication where appropriate (plus PINs per VS-04 / VS-06 for students).
+ 3. Secure account recovery must be available.
+ 4. Users are routed to their authorised dashboard after authentication.
+ 5. Student accounts must not be able to open teacher or admin routes by changing a URL.
+ 6. Expired sessions return users to a secure sign-in state.
+ 7. Sign-out must end the relevant session.
+ 8. Error messages explain the issue WITHOUT revealing sensitive account information.
+ 9. Shared-device users are reminded to sign out when appropriate.
+10. Authentication and permissions are enforced on the SERVER, not only hidden in the interface.
+
+   CR I T I CA L
+   The role selected on a login screen is never treated as proof that the user has that role.
+
+
+  3.11 First-Time Onboarding for Every Role
+Onboarding is short and useful — it ends with the user’s first real action.
+
+                                                         11
+    Student                                                        Teacher
+  Welcome to the school learning space (cloud                     Show assigned classes and subjects · explain how to
+  companion greeting) · confirm class and section ·               publish a resource · how to create a guided self-
+  select preferred language if offered ( VS-90 ) · show           study session · how to review student responses ·
+  today’s assigned learning activity immediately ·                offer a sample class and sample lesson in demo
+  explain how to ask a question or request a different            mode.
+  explanation · let the student start learning
+  immediately.
+
+
+    Parent
+  Confirm the linked student · explain progress, assignments and notifications · explain the difference between
+  learning progress and private student conversations ( VS-78 ) · show the first useful action the parent can take.
+
+
+  3.12 Entry-System Screen Connection Map
+              LANDING PAGE → SIGN IN → ROLE-AWARE ROUTING → CORRECT DASHBOARD
+                                                  ↓ school path
+                                       SCHOOL REGISTRATION → WIZARD
+                                                    VS-01 · 8 steps
+
+                                                           ↓
+                                                ADMIN DASHBOARD
+                          invite teacher VS-03 → teacher verifies → sets PIN → dashboard
+
+                                                           ↓
+                          UPLOAD STUDENT CSV → ACTIVATION CODES GENERATED
+                                                          VS-83
+
+                                                           ↓
+                           STUDENT: school → roll no → code → parent OTP → set PIN
+                                         VS-04 → Student Dashboard (Part 5)
+
+                                                           ↓
+                                         PARENT: auto-invite SMS → OTP
+                                         VS-05 → Parent Dashboard (Part 8)
+
+Shared device: the “Who are you?” profile picker ( VS-06 ) → profile PIN → role dashboard. Progress resumes where left
+off.
+
+  3.13 Entry-System Checklist
+    Wizard VS-01 runs end-to-end: register → profile → year → classes → subjects → teachers → CSV →
+    activation codes → OTP → live
+    Roll-number-only login is IMPOSSIBLE (activation code + OTP required)
+    Admin manual-approval fallback works when OTP fails
+    Parent sees only verified children; multi-child switch works
+    Shared-device profiles each have independent PINs
+
+                                                           12
+    URL manipulation cannot reach another role’s routes (tested in 16.1)
+    Board selected at onboarding pre-loads chapter-concept structure
+    Onboarding for all three roles ends in a real first action
+    Error messages never leak account existence or details
+
+  PA R T 4 · W O R K S PA C E
+
+
+The Class Workspace
+Every class has a persistent digital home — a mirror of the real classroom where notes, sessions,
+recordings, homework and quiz results live side by side, organised by curriculum, not chaos.
+
+ V S - 09 – V S - 1 4
+
+    VS-09       Structured Class Workspace                                                   CORE     P1
+
+  Every class has a persistent digital home — a mirror of the real classroom:
+
+          CLASS 9-A → PHYSICS → MOTION (chapter) → DISTANCE & DISPLACEMENT (concept)
+                                         ↓ everything hangs here
+                                                     NOTES
+                                                      VS-11
+                                                  · SESSION 3
+                                                      VS-16
+                                        · RECORDING (6-min segment)
+                                                      VS-12
+                                                 · HOMEWORK
+                                                      VS-17
+                                                · QUIZ RESULTS
+                                                      VS-18
+
+
+  Payoff: “Where do I find the notes?” always has the same answer: your class → subject → chapter →
+  right there. A student in March can still open a February chapter. Not a group chat, not a file dump —
+  an organised learning environment. The intended navigation path from the vision document: School →
+  Class 9-A → Physics → Motion → Lesson → Practice → Assessment → Next learning step.
+  The workspace organises subjects, chapters, concepts, lessons, notes, recordings, selected external
+  videos, assignments, practice questions, quizzes, study sessions and progress. External resources (a
+  chosen YouTube video) can be attached to a lesson. The platform organises useful resources around
+  the curriculum — it does not try to replace every content platform.
+
+
+    VS-10      Class Space — Same-Class Visibility                                                  CORE
+
+  Students and teachers of the same class can see one another — names and profiles — with no chat
+  spam. The class teacher shares class updates here: “Tomorrow’s Physics test has been rescheduled.”
+  The class teacher manages the space ( VS-72 ); subject teachers work in their subject workspaces
+  only.
+
+
+
+                                                        13
+   VS-11   Concept-Tagged Teacher Notes                                                        CORE     P1
+
+   1   Teacher uploads a PDF/PPT.
+   2   At upload time, tagging takes a few taps: Class → Subject → Chapter → Concept.
+   3   Publish → the class gets a notification.
+   4   Notes are available from day one of the chapter.
+
+  The real feature is the tagging, not the upload: when Student B is studying “Acceleration” in March,
+  the teacher’s definition is two taps away — no waiting for a friend’s “perfect notes.” Tagging is what
+  later powers VS-28 (context answers), VS-30 (gap detection) and VS-61 (heat-maps).
+
+
+   VS-12   Segmented Classroom Recordings                                                       PROPOSED
+
+   1   The lesson is recorded (with school permission — a school-level setting, VS-85 ).
+   2   The teacher uploads the recording.
+   3   It is cut into concept segments — manual or AI-assisted (e.g. “Acceleration: 12:40–19:30”).
+   4   Each segment is tagged to its concept.
+
+  Payoff: Student C needs “Acceleration” and gets “Acceleration — 7 minutes”, not a 45-minute
+  monolith. The recording’s value is in segmentation, not in its existence.
+
+
+   VS-13   Trimmed, Curated YouTube Links                                                       PROPOSED
+
+  Teacher pastes a link → sets start/end times (e.g. “watch 8:20–15:40 for this concept”) → tags the
+  concept → publishes. Principle: YouTube is not the enemy — discovery is the problem. What the
+  teacher chooses is correct for the syllabus. Each video resource shows a title and an explanation of
+  why it is relevant. Watching is never counted as mastery (Section 5.16).
+
+
+   VS-14    Persistent Chapter History                                                                CORE
+
+  Whatever was taught is never deleted — a record of the whole year. After half-yearly exams: “Forgot
+  acceleration?” — reopen it in March: same notes, same session, same quiz. Payoff: the school’s entire
+  year becomes rewindable — the revision-material job that coaching institutes charge for, included.
+
+  4.7 School Content Library and Resource Model
+Organisation hierarchy (S5 §16): School → Academic year → Class → Subject → Chapter → Concept
+→ Lesson / resource / activity. A resource record can include: title and description; subject and
+chapter; intended class and section; resource type; teacher or source; upload date and revision
+information; publication status; approval status where required; access permissions; related concepts;
+and source references.
+The same resource may be reused across authorised classes rather than uploaded repeatedly. AI-
+generated resources are clearly identified as AI-assisted rather than presented as original teacher
+material.
+
+
+                                                     14
+  4.8 Workspace Navigation Map
+  Student path: Student home ( VS-15 ) → My Classes → Class 9-A workspace ( VS-09 ) → Subject
+  (Physics) → Chapter (Motion) → Concept list → Concept page: notes, session, recording, quiz.
+  Chapter resources: notes ( VS-11 ), recording segments ( VS-12 ), curated video ( VS-13 ), history
+  ( VS-14 ).
+  Also from home: Class Space ( VS-10 ) · Homework list ( VS-17 ) → submission screen · Concept
+  map view ( VS-21 ) of the chapter.
+  Teacher path: Teacher dashboard ( VS-60 ) → Class → Chapter workspace → publish/manage
+  resources ( VS-62 , VS-63 , VS-65 ).
+
+  4.9 Workspace Checklist
+    Every resource requires concept tags before publish (VS-11)
+    Recording upload asks for segments; school permission honoured (VS-12)
+    YouTube links store start/end timestamps (VS-13)
+    Chapter content from day one is reachable all year (VS-14)
+    Resource records carry source, status and permissions metadata
+    Class Space has updates but NO free-form student chat
+
+  PA R T 5 · S T U D EN T
+
+
+Student World: Dashboard and Learning
+The student opens the app and sees one question answered above all others: what do I study now, and
+what do I do after?
+
+ VS-15 – VS-27
+
+   VS-15    Student Dashboard — “What Do I Study Today?”                                    CORE     P1
+
+  Screen layout, top to bottom:
+   1   NEXT ACTION CARD (topmost, exactly one thing): “Session 4 — Motion, 15 minutes. Start?” The
+       dashboard’s job is to give DIRECTION, not guilt.
+   2   TODAY’S WORK: homework due, available sessions, tomorrow’s quiz.
+   3   CONTINUE CARD: resume exactly where the student left off — one tap.
+   4   MY CONCEPTS: a small concept map ( VS-21 ) — what is green, what is red.
+   5   PRIORITY-AWARE REORDERING: deadline today? That card rises to the top. Missed class? The
+       recovery card ( VS-20 ) takes the top slot. The dashboard is always dynamic, never crowded.
+  Blueprint dashboard sections (S5 §18) add: cloud companion personal welcome; upcoming
+  assignments and tests; active guided sessions; continue-learning card; recently studied lessons;
+  teacher announcements; learning progress by subject or concept; recommended practice; recent
+  achievements or milestones; and a help/question-asking entry point. The dashboard prioritises actual
+  learning tasks over decorative statistics.
+
+
+                                                    15
+  OPEN: should the dashboard show all subjects at once, or only the subject with the nearest deadline? (Section 17.4)
+
+
+  5.2 Today’s Learning Plan
+A short, understandable plan built from school-assigned tasks, deadlines and available learning
+evidence. A plan may contain: (1) a teacher-assigned session (mandatory); (2) a short concept review;
+(3) a practice activity; (4) an unfinished assignment; (5) a suggested recovery activity where
+evidence indicates a gap ( VS-20 ).
+
+  R UL ES
+  The app must visibly distinguish mandatory teacher-assigned tasks from optional AI recommendations.
+  The AI must never silently change a teacher’s deadline or replace an assigned lesson.
+
+
+   VS-16     Guided Self-Study Sessions — the heart of the product                                  CORE   P1   ★★
+
+
+  A guided session is a teacher-created, structured learning package — not a PDF, not a video,
+  something in between. Fixed session structure — 10 steps:
+
+    1 · Session intro                                          2 · Learning objective
+    “What we will learn today”.                                Stated plainly, before content.
+
+
+    3 · Explanation slides                                     4 · Diagram / visual
+    ONE slide = ONE small idea.                                See the concept, not just read it.
+
+
+    5 · Solved example                                         6 · Media (optional)
+    Step by step, in the teacher’s method.                     Recording segment ( VS-12 ) or trimmed YouTube
+                                                               ( VS-13 ).
+
+
+    7 · Practice questions                                     8 · Mini quiz
+    3–4, inside the session.                                   5 MCQs — the completion gate ( VS-26 ).
+
+
+    9 · Recap                                                  10 · Next step
+    What was covered, compressed.                              E.g. Speed & Velocity — where to go next.
+
+  Student flow: the session opens at the teacher-set time (e.g. 6 PM) → slides presented one at a time
+  → questions INSIDE the session must be answered before moving on (no skipping ahead) → quiz →
+  score recorded → next-step recommendation.
+  Teacher flow: Create Session → fill the template (or start from an AI-drafted skeleton, VS-67 ) → set
+  “Available: today 6 PM” → publish → next year, press “Reuse” ( VS-68 ): update dates, swap
+  questions, done.
+
+
+
+
+                                                          16
+     T HR EE N O N - N EG O T I A B L E DES I G N R UL ES
+     1 · Completion happens ONLY when the quiz is attempted — scrolling is not completion ( VS-26 ).
+     2 · One idea per slide. 3 · Sessions run 15–20 minutes — evening time is limited.
+
+The session player also records progress as the student works, allows clarification requests where
+enabled, and never inserts artificial timers just to inflate screen time.
+
+5.4 Time-Controlled Lesson Release
+Teacher configures the release date and time; the system stores the correct timezone.
+Before release, the student sees a clear “upcoming” status.
+At release, the session becomes available to authorised students.
+Deadlines are configured separately from release times.
+Late access or extension rules follow school policy.
+
+ VS-17       In-App Homework & the Assignment Workflow                                      CORE     P1
+
+Teacher side: creates homework (MCQ / short answer / practice set) → sets deadline → assigns →
+students solve inside the app → MCQs auto-grade → teacher gets the list: who did it, who did not,
+who was late.
+Student workflow (S5 §24): open the assignment → read instructions → review the relevant material
+→ submit answers/work → receive submission confirmation → review feedback once released →
+complete corrections or follow-up if assigned.
+Assignments can include: instructions; questions; supporting resources; due date; submission type;
+marks or rubric; allowed attempts; feedback and review status.
+
+     I M P O R TA N T B O U N D A R Y
+     Writing does not end. Derivations, diagrams and handwriting remain pedagogically necessary. Only
+     repetitive, checkable work goes digital — the TEACHER decides what is online vs in the notebook.
+     Assignment completion and concept mastery are recorded as SEPARATE things.
+
+
+
+ VS-18       Post-Session Quiz + “Why Was It Wrong?” Feedback                               CORE     P1
+
+ 1      Student submits the quiz — e.g. 4/5.
+ 2      Question 3 was wrong → feedback: “Question 3 was about the concept of Acceleration.”
+ 3      A button appears: “Reopen the explanation.”
+ 4      The student re-reads that exact slide.
+ 5      “Try again” presents a SIMILAR NEW question (not the same one).
+
+Why it is a real feature: normally a quiz result goes nowhere — marks are received and forgotten.
+This closes the loop: mistake → reason → fix → retry. Assessment exists to decide what happens next,
+not only to assign marks (S5 §4).
+
+
+
+                                                            17
+ VS-19    Two-Line Summarizer                                                                    PROPOSED
+
+A button on any teacher material: the AI summarises THAT material into 2–3 simple lines, with the
+option to go deeper. The source is the teacher’s material, not the internet — this is what makes it
+different from ChatGPT. Best for orientation: “What is this topic about?”
+
+
+ VS-20     Missed-Class Recovery Path                                                     CORE    P2      ★
+
+
+Triggers: the student was absent (school record), or missed a deadline, or failed a prerequisite check.
+The recovery path is assembled from EXISTING teacher material — no new content is created:
+ 1   Dashboard card: “You were not in class yesterday. Catch up in 20 minutes?”
+ 2   The 7-minute recording segment of the missed concept ( VS-12 ).
+ 3   Teacher’s notes ( VS-11 ).
+ 4   A mini session ( VS-16 structure).
+ 5   A 5-question check.
+ 6   PASS → back at class pace. FAIL → the Gap Detector ( VS-30 ) searches for the root cause, one
+     prerequisite level deeper.
+Why it is emotional: a missed class becomes a small, fixable event instead of a silently accumulating
+gap. The founder’s own story broke on exactly this cascade — this feature stops it. The Blueprint calls
+this the Learning Recovery Engine (S5 §52) and specifies it must help students catch up WITHOUT
+repeating an entire chapter unnecessarily; the teacher can see recovery progress where appropriate.
+
+
+ VS-21    Visual Concept Map                                                                     PROPOSED
+
+A tree view of the chapter. Nodes are concepts; colour = the student’s status: Distance OK —
+Velocity OK — Acceleration ATTENTION — Graphs LOCKED. The student sees for themselves:
+“Acceleration is red — and everything after it depends on this. Fix this first.” This is metacognition:
+seeing your own map and planning from it. Locked nodes unlock as prerequisites are demonstrated
+(linked to VS-100 Boss Level).
+
+
+ VS-22     Four Performance Bands — internal only                                                PROPOSED
+
+ Band             Internal meaning (never shown as a label)             Support offered
+
+ 0–25%            Large gaps                                            Simplest explanation,
+                                                                        prerequisite revision
+ 25–50%           Basics partly clear                                   Worked examples, guided
+                                                                        practice
+ 50–75%           Basics clear                                          Application questions, more
+                                                                        practice
+ 75–100%          Consistent understanding                              Next concept, harder challenges
+
+Two non-negotiable rules: (1) bands are NEVER shown to students as labels — students see friendly
+language: “Mastered”, “Almost there”, “Let’s fix this”. (2) Bands are a ROUTING MECHANISM, not a
+
+                                                    18
+scientifically validated measure. People are not labelled — CONCEPTS are: “Rahul — Distance: 82%,
+Acceleration: 30%.” A single overall percentage hides WHICH concept is weak; per-concept tracking
+is probably better, and thresholds are not validated (OPEN — Section 17.4).
+
+
+ VS-23    Adaptive Difficulty Engine                                                            PROPOSED
+
+Every question carries a difficulty tag: L1 basic, L2 medium, L3 application. Rules: student starts at L2 →
+3 consecutive correct → move up to L3 → 2 wrong → drop back to L1 with an explanation. Simple
+rules, no magic. Payoff: the student is neither bored nor crushed — they stay in the zone where effort
+is visible. This engine underlies the practice engine ( VS-46 ) and both games and quizzes.
+
+
+ VS-24    Exam-Format Practice                                                                  PROPOSED
+
+Every question in the bank carries a FORMAT tag: MCQ, Assertion-Reason, Case-Based, Numerical,
+Short Answer — the real board exam patterns. Before exams, a “Board-format practice” mode shows
+exactly what will appear in the exam. Knowing a concept and practising it in board format are two
+different skills.
+
+
+ VS-25    Test Readiness Signal                                                                 PROPOSED
+
+Before a chapter test: “Strong: 4/6 concepts. Attention: Acceleration. Suggested: 30 minutes of
+focused revision tonight.” Computed as a weighted average of per-concept scores and recent history
+— simple math. What it is NOT: it never predicts marks (“You will score 62%”) — predicting marks
+would be a claim of determinism. Only “these areas are weak.”
+
+
+ VS-26    Session Completion Rules                                                             CORE    P1
+
+   Slides unlock sequentially, one at a time.
+   A session is complete ONLY when its quiz/check is attempted (the teacher sets this rule).
+   Opening a slide is NOT learning — a check is mandatory.
+   Addresses the known failure modes: opening all slides at once (looks like progress, learns
+   nothing), skipping the test (no evidence of understanding), closing the app mid-work (short
+   sessions, saved progress, gentle reminders).
+
+
+ VS-27    Student Progress View & Learning History                                             CORE    P1
+
+Progress view: what is complete, what is pending, mastered concepts, this week’s improvement
+(“+15% on Acceleration!”), streak ( VS-93 ) — and above all ONE clear next action. The dashboard
+gives direction, not guilt.
+Progress dashboard sections (S5 §26): progress by subject; chapters studied; concepts
+demonstrated; concepts needing more practice; assignment status; assessment history; recent
+improvements; recommended next steps; teacher feedback; learning passport or skill evidence where
+enabled. The student is never reduced to a permanent label.
+Learning history (S5 §27): lessons opened and completed; questions attempted; assessment results;
+repeated error patterns; teacher feedback; learning plans and interventions; evidence of improvement
+
+
+
+                                                    19
+  over time. Only information needed for educational purposes is retained, with access and retention
+  controls (Part 13).
+
+  5.16 Notes, Videos, Assessments and Language Preference
+  Notes & resources (S5 §22): students access teacher notes, school PDFs, worksheets,
+  presentations, diagrams, recorded lessons where available, approved external resources, and AI-
+  generated study material when enabled and reviewed per school policy. Every resource shows
+  title, subject, chapter and source. AI-generated resources are clearly identified.
+  Video learning (S5 §23): teacher attaches a video with a relevance explanation → student
+  watches → completes a short check tied to the learning objective → the app records the activity
+  separately from verified mastery. Opening a video is never counted as understanding.
+  Assessments (S5 §25): multiple-choice; multiple-select; short-answer; numerical; matching;
+  teacher-created question sets; timed tests where educationally justified; answer explanations;
+  rubric-based evaluation. Teachers control when correct answers/feedback become visible. For
+  high-stakes assessments, AI output never independently determines final grades without human
+  review.
+  Language preference (S5 §28): English, Hindi, or Hinglish-style explanations ( VS-90 ). Curriculum
+  and examination terminology must remain accurate: an informal explanation can be followed by the
+  standard scientific definition expected in the exam.
+
+  5.17 Student Screen Connection Map
+Blueprint student screens (S5 §87), in workflow order: Home dashboard → Today’s plan → Class &
+subject view → Chapter & concept view → Guided session player → Resource viewer / Video page →
+Assignment details → Assignment submission → Quiz & assessment player → AI question interface →
+Personalised learning plan → Learning Remix → What-If simulation → Mistake analysis → Progress
+dashboard → Learning history → Learning Passport → Notification centre → Profile & preferences.
+(The last screens belong to the advanced roadmap rather than the initial prototype.)
+
+  DEEP - L IN K R UL E
+  EVERY red/attention state anywhere in the app leads to the screen that fixes it — the concept map node
+  taps into the session; the quiz feedback button reopens the explanation slide ( VS-18 ); the recovery
+  card starts the recovery path ( VS-20 ).
+
+
+  5.18 Student-World Checklist
+   Dashboard always shows exactly ONE next action, dynamically reordered
+   Sessions follow the 10-step structure; one idea per slide
+   In-session questions block progression until answered
+   Quiz attempted = completion; scroll-only never completes (VS-26)
+   Wrong answers route: reason → reopen explanation → new similar question (VS-18)
+   Recovery card appears automatically on absence/deadline-miss triggers
+   Bands never visible as student-facing labels
+   Difficulty engine routes L1/L2/L3 per 3-up/2-down rules
+   Mandatory teacher work visually distinguished from AI suggestions
+
+                                                   20
+    Video watching and activity completion recorded separately from demonstrated mastery
+
+  PA R T 6 · A I EN G I N E
+
+
+The AI Engine
+Every AI feature here is checked against one question: “Can ChatGPT already do this?” If yes — it is
+not a moat. The features below pass the test because their fuel is data only a school-connected platform
+has: the teacher’s notes + the class’s quiz results + the curriculum position + the student’s behaviour log.
+
+ V S - 2 8 – V S - 5 9 + B L U EP R I N T A I M OD U L ES
+
+  6.1 AI Foundations: Grounding and the Honesty Layer
+   VS-32       AI Honesty Layer — rules above every AI feature                                        CORE
+
+   1. CITE THE SOURCE: answers distinguish “from your teacher’s notes” vs “general explanation.”
+   2. ADMIT THE UNKNOWN: when the AI does not know, it says so — no confidence theatre.
+   3. CAUTION OUTSIDE MATERIAL: factual claims beyond the teacher’s material are flagged as general
+      knowledge, not school answers.
+   4. SENSITIVE TOPICS: the AI does not reply; it routes the student to the teacher.
+   5. NO INVENTED AUTHORITY: the AI never says “your teacher said” when it does not know.
+  Trust is the AI’s foundation — for the child AND the teacher. The Blueprint (S5 §78) formalises this as
+  the Teacher-Approved Knowledge Layer: prefer relevant school-approved sources; identify the
+  source used; distinguish source-supported facts from generated explanation; say when an answer is
+  not supported by available material; allow teacher corrections to flow back into approved content.
+
+  6.2 Core Intelligence (VS-28 to VS-34)
+   VS-28       Context-Grounded Ask-Me-Anything                                          CORE    P2     ★
+
+
+  The student asks “explain acceleration” and the AI already knows the context: Class 9-A, CBSE,
+  Motion chapter in progress, THESE teacher notes exist, this student got Acceleration wrong on
+  yesterday’s quiz. The answer is delivered in the TEACHER’S OWN NOTATION, ending with the
+  source: “This is from your teacher’s notes — Motion, slide 4.” Guardrail: if the material does not
+  contain the answer, the AI says “I’ll give you a general explanation” — so the student always knows
+  what is school-backed and what is not. The AI never claims to have read something that was never
+  uploaded (S5 §46). Why it passes the moat test: ChatGPT claims to know everything. This AI lives
+  inside the school’s reality.
+
+
+   VS-29       Socratic Mode — the homework-copy killer                                  CORE    P2     ★
+
+
+  The problem: “The child will just make ChatGPT do the homework” — a legitimate fear. The design-
+  level answer:
+
+
+
+
+                                                            21
+  S T UDEN T
+  “Solve this numerical for me.”
+  AI
+  “First tell me — what is given, and what must be found?”
+  S T UDEN T
+  “Distance and time are given; velocity must be found.”
+  AI
+  “What is the formula for velocity?”
+  S T UDEN T
+  “…displacement by time?”
+  AI
+  “So what do you need for displacement?”
+
+The AI asks only path-guiding questions; the STUDENT arrives at the answer alone. A “just explain it
+directly” toggle also exists; homework-type questions can default to Socratic mode (teacher setting).
+One feature answers the entire “AI makes students dumb” criticism.
+
+
+ VS-30     Prerequisite Gap Detector                                                      CORE     P2    ★★
+
+
+What a good teacher does: when a child gets acceleration wrong, first checks “is speed-velocity okay
+though?” This feature puts that teacher-logic into code. Mechanics: the syllabus carries a concept
+map: Distance → Speed/Velocity → Acceleration. Student B gets acceleration wrong → system checks:
+were the velocity questions answered correctly? YES → acceleration revision. NO → step one level
+back → velocity also wrong → step back again → all the way to Distance if needed. Wherever the chain
+broke, it stops there: “Velocity is a little weak before acceleration. Fix it in 10 minutes? Acceleration will
+feel easier afterwards.”
+Guardrail: if evidence is missing (the student never attempted velocity questions), the system does
+NOT guess: “Practise, or ask the teacher.” An honest “I don’t know” is also a feature. This is the real
+work of coaching/tuition — going backwards to find the root problem; the feature scales the teacher’s
+clinical thinking. (How many questions of which types are enough evidence before suggesting a
+prerequisite gap is OPEN — Section 17.4.)
+
+
+ VS-31    Study Plan Generator                                                                   CORE     P2
+
+Input: the student says “I can’t understand Coordinate Geometry.” The system checks the student’s
+results, then builds: (1) prerequisite check → (2) the teacher’s notes — these specifically → (3) the 6-
+minute recording segment on plotting points → (4) one solved example → (5) 3 easy questions → (6) a
+5-question check → (7) pass = application questions; fail = return to step 3. What is special: every
+step links to the school’s ACTUAL resources — not a generic timetable but a path that runs through
+school material and re-routes on results. Teacher-assigned work stays visible and takes precedence
+(S5 §51).
+
+
+ VS-33    Frustration-Aware AI                                                              PROPOSED      P2
+
+What it is NOT: no camera/microphone emotion detection — creepy with children, a privacy nightmare,
+deliberately cut from the design. What it IS: behaviour signals — the same question asked 3 times, 5
+
+                                                      22
+wrong answers, then the same question again → the pattern shows the student is stuck → the
+response changes: “It’s okay — this one is a bit tricky. Let’s start from absolute zero, the very basics.
+Tell me, what have you understood so far?” Tone changes, pace changes. No biometrics — only
+interaction patterns.
+
+
+ VS-34    Warmup Radar — the Forgetting Detector                                                PROPOSED
+
+Before every session, a 3-minute warmup — not random questions: the AI picks exactly the concepts
+THIS student is about to forget. Every concept has a record: last attempted when, score how much →
+simple forgetting-curve math → score + time-since-seen → “this is due for recall now” → warmup
+queue. Payoff: spaced repetition for free from the school’s own quiz data — the student never has to
+schedule revision separately; it is baked into warmups.
+
+6.3 Doubt Engine (VS-35 to VS-38)
+ VS-35    Voice Doubt Asking                                                              PROPOSED     P2
+
+Press the microphone, speak in Hindi or Hinglish, hear the answer. Speech-to-text → the normal AI
+flow ( VS-28 ) → answer as text + optional audio. Why India-critical: many students — Tier-2/3,
+younger ones — cannot type fluently. Typing Roman Hindi feels awkward; English typing is hard.
+Speaking takes 3 seconds; typing takes 30 seconds plus embarrassment.
+
+
+ VS-36    SnapDoubt — Ask by Photo                                                        PROPOSED     P2
+
+The student photographs a notebook page → the Vision API recognises “this is an Acceleration
+numerical (Motion, Ch.2)” → teacher’s notes enter the context → Socratic questioning begins ( VS-
+29 ). Three API calls, that’s all. Different from ChatGPT: (a) it uses the TEACHER’S method — the one
+that earns step marks in the exam; (b) it knows the student’s history; (c) Socratic mode is the default.
+Exam-scoring answers, not just correct answers. Fallback: a “type it instead” button — younger
+children’s handwriting can be rough.
+
+
+ VS-37    Doubt Clustering — the teacher’s secret weapon                             PROPOSED     P2    ★
+
+
+Scene: at night, 17 children asked about acceleration in 17 different wordings. Every AI question is
+auto-tagged with its concept → the teacher’s dashboard next morning reads: “This week: 17 students
+asked doubts on Acceleration. 3 on Velocity. Zero on Distance.” Guardrail: NAMES ARE NOT SHOWN
+BY DEFAULT — counts only. If children learn the teacher can see WHO asked, they stop asking
+doubts, and the entire AI layer becomes useless. Doubt privacy = doubt volume. Zero extra teacher
+effort, pure insight — from the doubts that were flowing anyway. (Names vs counts-only is OPEN —
+Section 17.4; the default is anonymous.)
+
+
+ VS-38    Doubt Inbox — opt-in, named                                                           PROPOSED
+
+Student not satisfied with the AI’s answer → “Ask the teacher” button → the doubt lands in the
+teacher’s inbox WITH the student’s name → the teacher prioritises and answers. Principle: the AI does
+not replace the teacher — it FILTERS for the teacher. Basic doubts are absorbed by the AI; real
+problems reach the teacher.
+
+
+
+                                                    23
+6.4 Psychology Engine (VS-39 to VS-42)
+ VS-39      Confidence Meter (“Pakka Meter”)                                            PROPOSED      P2     ★★
+
+
+Before every question, three buttons: “Sure” / “I think” / “Guess”. The system remembers the
+confidence AND the outcome. Two patterns nobody tracks:
+
+  SURE + WRONG = OVERCONFIDENT                              GUESS + RIGHT = UNDERCONFIDENT
+  The most dangerous silent gap. “You were sure —           The child knows, but is afraid. “You actually know
+  and it was wrong. Revise Acceleration seriously.”         this! Relax, don’t panic.”
+
+Weekly: “You are overconfident in 6 concepts, underconfident in 2.” The teacher also sees who is
+quietly getting things wrong. Why: metacognition — knowing your own mind — is one of the most
+validated skills in learning, and this market space is literally empty. Implementation: one extra field +
+one query. (Guardrail: self-reported confidence is never treated as proof of mastery — S5 §69.)
+
+
+ VS-40      Mistake DNA (“Galti DNA” — error fingerprinting)                              PROPOSED      P2       ★
+
+
+Principle: “It was wrong” is information. “WHY it was wrong” is gold. The AI classifies every wrong
+answer:
+ Type                Meaning                                                Fix
+
+ Careless            Concept known; sign/calculation slip                   Slow-down checklist
+ Concept             Understanding missing                                  Reopen notes; prerequisite check
+                                                                            ( VS-30 )
+ Speed               Knew it; rushed                                        Timed practice
+ Reading             Misread the question                                   Underline habit
+
+Monthly DNA report: “60% of your mistakes are CARELESS — you don’t need more study, you need a
+HABIT fix. Here is a 30-second checklist.” This answers the parents’ #1 confusion (“why are the marks
+low?”): “It’s not a concept problem, it’s a focus problem.” Two different problems, two different
+solutions — which until now look identical to every parent. The Blueprint’s Homework Autopsy (S5
+§62) lists the same classification set — each treated as a possible explanation, not a diagnosis.
+
+
+ VS-41      Rote-Learning Detector (“Ratta Detector”)                                           PROPOSED         ★
+
+
+India’s biggest silent learning disease: definition perfect, marks arrive, application = zero. Detection
+uses CROSS-FORM questioning: (1) “Define acceleration” — rote can pass this; (2) “A cycle is braking
+— what is the sign of acceleration?” — rote cannot pass this; (3) “Compare the acceleration of a fast
+bowler’s ball vs a school bus” — reverse direction. Score mismatch = rote flag: “Definition 5/5,
+application 1/5 — this looks like rote learning. Let’s reopen the concept, 7 minutes.” Teacher view: “14
+students have perfect definitions; 9 have weak application — this is the ‘everyone understood’ illusion
+that a normal test report never catches.”
+
+
+
+
+                                                      24
+ VS-42      Avoidance Radar (“Darr Ka Map” — the fear map)                                        PROPOSED        ★★
+
+
+The deepest insight in the spec: a child who cannot understand a concept does not answer it wrong
+— they AVOID it. No app tracks this, because no app keeps this data. VidhyaSaathy keeps it: least time
+spent on Acceleration questions (40% less than others); 6 skips on that concept in 4 weeks; instantly
+requests hints on it, but not on other concepts; attempts the quiz but never voluntarily reopens that
+chapter.
+
+  A I I N T E R P R E TAT I O N
+  “The data suggests you’ve been avoiding Acceleration — for 3 weeks. Completely normal:
+  everyone has 1–2 feared concepts. Today’s deal: just 3 questions, no hints. I’m with you.” —
+  normalise, never shame. Everyone tracks “wrong answers” — nobody tracks “avoidance patterns
+  across weeks”, because it needs both a behaviour log AND school context. This is the silent killer
+  that explodes two weeks before the exam; the system catches it months earlier.
+
+
+
+6.5 Practice Engine (VS-43 to VS-46)
+ VS-43      AI Question Generation — teacher-approved drafts                                      PROPOSED        P2
+
+Teacher selects their own Motion notes → “Generate 10 MCQs” → AI drafts → teacher approves 7,
+edits 2, rejects 1 → approved items enter the school’s question bank ( VS-87 ). Non-negotiable: AI-
+generated content NEVER reaches a student directly. AI can produce a wrong question or answer key,
+and wrong facts are expensive for children. AI = assistant; teacher = authority.
+
+
+ VS-44      Interest Remix                                                                   PROPOSED      P2      ★
+
+
+During onboarding the student picks interests — cricket, bikes, cooking, K-pop. The AI remixes
+questions: SAME concept, SAME difficulty, SAME marking scheme, only the wrapper changes:
+
+  N O RMA L
+  “A car accelerates from 0 to 20 m/s in 5 s. Find the acceleration.”
+
+  R E M I X — C R I C K E T FA N
+  “A fast bowler’s ball goes from 0 to 140 km/h in 0.4 s. Find the acceleration. (Hint: convert to m/s first.)”
+
+The physics is the same, the formula is the same, the exam will ask the same thing — but the child
+practises inside their own world, and shares screenshots (free marketing by the students
+themselves). Safety: teacher sample-check flow (spot-check 1 in 10) — full per-question approval
+would exhaust the teacher. A report button exists for weird or embarrassing remixes.
+
+
+ VS-45      Personal Enemy Questions (“Dushman Sawaal”)                                            PROPOSED        ★
+
+
+A new question arrives → embedding similarity check → “STOP. This is your enemy. You got this
+exact type wrong on 14 October.” → battle mode: enemy list (“You have 5 enemy questions — defeat
+2 today”); defeat an enemy by answering it correctly 3 TIMES IN DIFFERENT FORMS → confetti,
+badge, strike-through. The list updates after every quiz — new enemies appear, defeated ones are
+crossed off. Why it works: no child keeps a record of their own repeated mistakes — but everyone
+remembers their ENEMY LIST. Spaced repetition turned into a personal war.
+
+                                                         25
+ VS-46     Adaptive Difficulty — practice link                                                     PROPOSED
+
+The routing core from VS-23 (L1 → L2 → L3, 3-correct-up / 2-wrong-down). The Interest Remix and
+Personal Enemy systems both run on top of it. The Blueprint’s adaptive practice (S5 §66) adds the
+action menu: another example of the same skill; a changed question representation; a return to a
+prerequisite; a harder problem; a hint; or teacher support — with recommendations explained when
+useful.
+
+6.6 Explanation & Companionship (VS-47 to VS-50)
+ VS-47     Hinglish Bridge — English notes → Hinglish understanding                    PROPOSED      P3       ★
+
+
+India’s age-old tension: notes are in English (textbook/board English), but the child THINKS in
+Hindi/Hinglish. That gap is the real wall to understanding. A toggle on any English material — “Explain
+in Hinglish” — the AI re-explains the SAME content with technical terms kept in English:
+  HI N GL I SH B RI D GE SA MPL E
+  “Here’s the scene — Displacement means your STRAIGHT-LINE distance from start to end, including
+  direction. Distance means everything you travelled, the total path. Simply: if you moved around, distance
+  grew, displacement stayed the same.”
+
+What coaching really sells is not content — it is TRANSLATION. “The same textbook thing, in your
+language.” This feature delivers that bridge without coaching, from the teacher’s own material — same
+notation, same method that earns exam marks.
+
+
+ VS-48     “Show You Understand” Mode (Feynman, “Samjha Ke Dikhao”)                           PROPOSED        ★
+
+
+“Explain acceleration as if to a friend.” The student speaks (voice) or writes → the AI plays teacher and
+listens: “Three things right. One missing: the role of direction. You said negative acceleration means
+the opposite direction — not quite. Look at this: the teacher’s recording, 2:10–2:50, just 40 seconds —
+then try again.” Inside: speech-to-text → LLM rubric grading of the explanation → the exact recording
+segment + timestamp from the concept map. A generic AI can do Feynman practice; only VidhyaSaathy
+can point to WHERE in the teacher’s recording THAT point lives. The protege effect: what you teach
+someone else is your most durable learning.
+
+
+ VS-49     Night Recap (“Raat Ka Recap” — personal 5-minute podcast)                         PROPOSED         P4
+
+The day’s data becomes a 9 PM notification: “Today’s recap is ready — 5 minutes. Listen, then sleep.”
+Conversational Hinglish audio: “So today you learned distance vs displacement. 4/5 correct? The one
+wrong was acceleration — once more: acceleration means the change in velocity per second…”
+Content is exactly three things — what was learned today + the fix for today’s mistake + a 30-second
+preview of tomorrow. Personalised: the student’s own quiz numbers, own mistakes, own language.
+“The school’s own radio channel, just for you.” On a shared family device, the parent overhears it too
+— indirect parent awareness.
+
+
+ VS-50     AI Big Brother / Big Sister (“AI Bhaiya-Didi”)                                   PROPOSED      ★★
+
+
+Insight: India’s most common tutor is not a teacher — it is the elder sibling who passed through the
+same board, same school, same stress two years ago. The AI sibling is exactly that: voice-based,
+
+                                                      26
+casual, a “been-there” tone:
+
+  S T UDEN T
+  “Chemistry just isn’t going into my head at all…”
+  A I DIDI
+  “Yeah, Class 9 chemistry feels the most boring at first. I almost cried over it too. Know what I did?
+  Come on, today just 20 minutes — only periodic trends. I’m with you. Tomorrow I’ll tell your mom you
+  started.”
+
+It knows the Confidence Meter results and the Enemy List — but speaks like an elder sibling, never
+like a teacher or an AI. The TONE is the trust. Weekly parent nudge: “Aarav completed 4 sessions this
+week. Wonderful. Give him a small treat on Sunday — tell him I sent this message.” A family-
+communication layer no other product has.
+
+6.7 Simulator Lab (VS-51 to VS-54)
+ VS-51       At-Home Viva (AI oral exam, “Ghar Baithe Viva”)                         PROPOSED    P4    ★
+
+
+India-specific: viva examinations are real — practicals, boards, internals. Viva fear is its own category:
+students can write but cannot SPEAK, and there is nowhere to practise. No teacher can conduct 60
+individual vivas. “Viva Mode” → the AI becomes a teacher (voice):
+
+  AI
+  “Define acceleration.”
+  S T UDEN T
+  “Change in velocity… per unit time.”
+  AI
+  “Correct. And what does negative acceleration mean?” ← the follow-up: THIS is the real viva
+
+End: “Viva score 6/8. Theory is solid; definitions stumble — check the flashcards, 2 minutes.”
+Questions come from teacher material + board viva patterns. A text fallback must exist so a live demo
+never fails on stage.
+
+
+ VS-52       Exam Hall Simulator — the pressure vaccine                              PROPOSED    P4    ★
+
+
+What no edtech addresses: the concept is known — but in the hall it vanishes. Blank mind, trembling
+hands, clock panic. That is not a knowledge problem, it is a PSYCHOLOGY problem. Athletes get
+simulation training; why not students? Full sensory exam experience: real board-paper format + a
+ticking 3-hour clock + background audio (paper rustling, bells, the invigilator: “Fifteen minutes
+remaining”) + RANDOM BLANK-MOMENT EVENTS → “That feeling is coming? Breathe 4-7-8. 30
+seconds. Come back.” — practising the recovery protocol itself. Report: time-block analysis — “Only 2
+questions in the first 30 minutes: panic pattern. Strategy: pick easy targets first.” The parent line:
+“74% in the simulated hall, 85% at a calm table — 11 marks lost purely to pressure. THIS is what we
+train.”
+
+
+
+
+                                                      27
+ VS-53    Reverse Class — the AI plays the weak student                                 PROPOSED      ★★
+
+
+The world makes AI the student’s tutor. HERE THE AI PLAYS THE STUDENT — and deliberately makes
+REAL mistakes:
+
+  AI
+  “Sir, acceleration means speed increases, right? So if the car is slowing down, acceleration must be
+  zero?” ← wrong — the child must catch it
+  S T UDEN T
+  “No! Slowing down means acceleration is NEGATIVE—”
+  AI
+  “Oh?! So the car stops the instant brakes are applied? How long does negative acceleration last?”
+
+The AI’s errors are real: they are the same misconceptions found by the class-level autopsy ( VS-70 ).
+Whatever misconception is spreading in the class gets planted inside the AI student for the child to
+catch — catching the AI’s error removes the misconception from the child’s own head. Children ENJOY
+this — the pleasure of correcting someone. (Blueprint territory: “AI Debate Between Past and Future
+Thinking”, S5 §61 — using the student’s earlier wrong reasoning as the thing to argue against.)
+
+
+ VS-54    Digital Twin — tomorrow’s result, today                                 PROPOSED     P4     ★★
+
+
+From the student’s current mastery, the AI composes a SIMULATED next test paper — the “Twin” —
+and lets the student attempt it today: “Twin Result: 58/100 — at today’s level. Acceleration will betray
+you (62% chance of wrong). Now the choice is yours: 2 sessions tonight → 71. Skip them → 58.” The
+motivation cheat code: “Study or else…” never works — it is abstract. “58 vs 71, in your hands” is
+concrete, personal, immediate — consequences time-travelled into the present. Parent version:
+“Simulated 58. Potential 71. The gap comes down to 1 concept — being fixed tonight.”
+
+6.8 Time-Machine Layer (VS-55 to VS-59)
+ VS-55    “Teacher Said So” Radar (“Sir Ne Bola Tha”)                                   PROPOSED      ★★
+
+
+India’s most powerful unspoken phrase: every topper’s secret is knowing WHAT THE TEACHER
+STRESSED. “This WILL be asked” — that sentence wins classrooms. Until now, only the students who
+sat attentively had it. Recording uploaded → the AI hunts EMPHASIS MOMENTS: where the teacher
+said “this is important, remember, I will ask from this”; where ONE thing was repeated 3 times; where
+the most doubts came; even where a joke landed (humorous things are remembered). Student feed:
+“6 gem moments from yesterday’s class: (1) ‘uniform motion’ stressed 4 times; (2) ‘careful with sign
+convention’ — a direct warning; (3) 3 children had the same doubt about negative acceleration…”
+Teacher Mirror ( VS-71 ): “You spent 12 minutes on acceleration, interaction only 2 minutes.
+Yesterday’s quiz missed that concept the most. Connection?” Uncopyable: the recording the SCHOOL
+uploaded + that teacher’s voice.
+
+
+ VS-56    Mistake Autopsy — thinking-path reconstruction                                  PROPOSED       ★
+
+
+Every app says “it was wrong.” This feature finds the exact moment the thinking broke — detective,
+crime-scene style: “Let’s look: Step 1: correct formula chosen — OK (concept known). Step 2: ‘12’
+
+
+
+                                                    28
+side of the Blueprint’s Mistake Time Machine, S5 §54: parse the steps the system can confidently
+interpret → compare each step with the relevant rules → highlight the EARLIEST likely incorrect step →
+explain why → give a similar question → check the fix. Ambiguous handwriting triggers a confirmation
+question, never a guess.)
+
+
+ VS-57      Teacher DNA — the data science of “what will be asked”                          PROPOSED      ★★
+
+
+Every school’s ritual: ask a senior — “what does this teacher ask?” The seniors hold a 3-year pattern
+in pure gut feel. India’s oldest prediction system becomes data science here. The teacher’s 3–5 years
+of papers + this year’s quizzes + emphasis signals from recordings → a Teacher DNA profile: “Mrs.
+Sharma’s 5-year pattern: 68% application questions; definitions never above 1 mark. Graph-based
+questions every year (5/5). ‘Uniform motion’ stressed 4x in recordings. This time HIGH priority:
+graphs, uniform/non-uniform motion, numericals.”
+
+  E T H I C S L I N E ( D E L I B E R AT E )
+  This is NOT a guess-paper. It organises the teacher’s OWN emphasis signals. THE TEACHER SEES
+  AND APPROVES THE PROFILE FIRST: “This is your pattern — show students this priority?” Only
+  when the teacher says yes. The teacher’s wisdom, structured — nobody else has a teacher’s 5
+  years of papers.
+
+
+
+ VS-58      Syllabus GPS                                                                      PROPOSED        ★
+
+
+The Google-Maps feeling: LOCATION — Class 9-A is here: Speed & Velocity. YOU — you are here:
+Distance & Displacement (2 back). DESTINATION — Board exam: 14 chapters | 6 months. AI route:
+“You are 2 concepts behind. The route: Acceleration recording (7 min) + 10 questions + 1 revision —
+20 minutes/day, level in 4 days. The traffic jam is at Acceleration — that’s exactly where you kept
+skipping.” EVERY QUIZ RECALCULATES THE ETA — like Maps rerouting after a wrong turn. Class
+position + student position + exam date: this triangulation needs a school-connected platform. The
+pitch’s hero visual: “Google Maps, but for the syllabus.”
+
+
+ VS-59      PTM Time Machine                                                              PROPOSED       ★★★
+
+
+The PTM — India’s most awkward 6-minute ritual. The parent hears “needs improvement,” goes
+home, scolds the child. Nobody gains. THIS FEATURE REHEARSES THE MEETING BEFORE IT
+HAPPENS. Parent mode: “PTM is tomorrow. Practise?” → a simulated teacher built from the CHILD’S
+REAL DATA:
+
+  A I ( A S T E A CHE R )
+  “Aarav is a little behind in Physics…”
+  PA R E N T
+  “What should I do?”
+  AI
+  “That was instinct. Try instead: ‘Where exactly is he getting stuck in acceleration?’ — ask specifically,
+  and the teacher will answer specifically.”
+
+The parent is trained to ask EXACTLY 3 data-backed questions. Student mode: the child watches the
+simulation — “Tomorrow Ma’am will say: quiz 2/5. Your response?” — and prepares: “Ma’am, I did the
+
+                                                      29
+  recovery session; now it’s 4/5 — shall I show you?” The student walks into the PTM with their own
+  growth story, defended with evidence. Not defensive — evidence-based. Nobody in the world has
+  made the PTM a product feature.
+
+  6.9 Blueprint AI Modules (beyond the VS feature list)
+The Blueprint (S5 Part 8) specifies additional AI modules, preserved with their citations:
+
+ Module        What it specifies
+
+  BP-§47       Personalised Explanation Engine — the AI switches representation: simple language; step-by-
+               step; everyday analogy; visual walkthrough; worked example; formal textbook explanation;
+               exam-answer format; bilingual. After explaining, the system CHECKS whether understanding
+               improved; if not, it tries another approach or recommends the teacher — never endlessly
+               rephrases.
+  BP-§48       Learning Remix — the same concept as mystery, counterexample, everyday analogy, visual,
+               challenge, guided example, or short story — always linked to the learning objective and school-
+               approved knowledge.
+  BP-§49       Student Learning-State Model — per concept: introduced or not; evidence from attempts;
+               accuracy across question types; repeated error patterns; recency of practice; confidence in the
+               system’s own estimate; teacher-confirmed status; recommended next action. A working
+               educational estimate — never a measure of intelligence.
+  BP-§50       Concept & Prerequisite Graph — concept chains (arithmetic → rearranging equations →
+               substitution → speed → acceleration), prerequisite checks when a later concept struggles;
+               teachers can review or correct curriculum relationships.
+  BP-§53       What-If Machine — interactive scenarios (“What happens to speed if distance increases but time
+               stays constant?”) with DETERMINISTIC calculations for numbers; stated assumptions and limits; AI
+               only EXPLAINS results, never invents the simulation; students PREDICT before the reveal; ends
+               with a check question.
+  BP-§55       Chapter-to-Comic Studio — an approved concept becomes a 4–6 panel illustrated explanation:
+               curriculum-grounded story, dialogue + concept notes, reusable character poses, science verified,
+               concept check at the end.
+  BP-§56       Infinite Textbook Adventure — a branching learning story on a curriculum concept; correctness
+               decided by predefined educational rules; scoring never decided by unconstrained AI text; ends
+               with summary + practice. Initial scope: ONE short, carefully tested adventure.
+  BP-§57       Concept Court — two fictional characters argue competing claims about a school concept; the
+               student decides which claim is better supported, which reasoning step is wrong, what evidence
+               settles it, and how to state the conclusion.
+  BP-§58       Reverse Exam Mode — the student writes an answer, receives rubric-based feedback, reviews a
+               suggested improvement, REWRITES, and compares original vs revised. AI feedback is formative;
+               teacher grading stays authoritative.
+  BP-§60       Reality Scanner — connects curriculum concepts to everyday objects: a bicycle → motion; a
+               kitchen measurement → ratios; a plant → biological structures. Camera recognition is a LATER
+               possibility, not assumed.
+  BP-§63       Parent Translator — converts learning evidence into parent-facing language (see Section 8.2).
+
+
+
+
+                                                       30
+     BP-§64    Learning Passport — a record of demonstrated skills with evidence, teacher verification, status +
+               next step; could later support school-to-school moves with permission. Never an unchangeable
+               profile of a child’s ability.
+
+     6.10 AI Request Workflow, Governance and Safety Rules
+A typical school-related AI request follows this server-side sequence (S5 §93):
+ 1     Authenticate the user.
+ 2     Verify the user’s permissions.
+ 3     Identify the relevant school, class, subject and concept.
+ 4     Retrieve relevant approved resources.
+ 5     Include only the necessary learning context.
+ 6     Send the request to the configured AI service.
+ 7     Validate the returned structure and content where possible.
+ 8     Attach source references when supported.
+ 9     Save only the information required for the learning workflow.
+10     Return the response to the user.
+11     Record the educational outcome if a follow-up activity is completed.
+
+AI responses are never trusted merely because they are well written.
+
+     A I S A FETY R UL ES (S 5 § 8 3 )
+     Ground school answers in approved sources where possible · show uncertainty when evidence is
+     insufficient · never fabricate citations · keep AI suggestions visually separate from teacher-approved
+     content · no medical or psychological diagnoses, no permanent student labels · safe, age-appropriate
+     explanations · protect student data from unnecessary disclosure · treat prompt injection inside uploaded
+     documents as untrusted input · provide a fallback whenever the AI service is unavailable.
+
+     6.11 AI Engine Checklist
+      Every AI answer carries a source tag: teacher material vs general
+      “I don’t know” paths implemented (VS-30 evidence-missing case)
+      Socratic mode default on homework-type questions (teacher setting)
+      Confidence buttons logged with every answer (VS-39)
+      Mistake classification taxonomy (4-type DNA) wired into feedback
+      Doubt clustering anonymous by default; names only via VS-38 opt-in
+      AI question drafts ALWAYS pass through teacher review (VS-43)
+      Interest remix respects: same concept, same difficulty, same marks
+      Simulations use deterministic math, AI only explains (What-If rule)
+      Fallback responses exist for every AI-dependent screen
+
+
+
+
+                                                          31
+  PA R T 7 · T EA C H ER
+
+
+Teacher World
+One teaching effort, many uses — notes + recording + session + quiz from the same lesson. Teachers
+stay in control of content and assessment; the interface fits existing teaching habits and reduces work,
+never adds an administrative burden.
+
+ V S - 6 0 – V S - 72
+
+    VS-60      Teacher Dashboard — the morning class-plan decider                           CORE     P1
+
+  On screen: last night’s session completion %, quiz score distribution, the Concept Heat-Map ( VS-61 ),
+  and the list of students who have not started. The real magic — the insight-to-action loop:
+  “Acceleration is red, 60% of the class got it wrong” → teach a 10-minute reteach segment today →
+  retest → heat-map turns green. Reactive teaching becomes proactive.
+  Blueprint dashboard sections (S5 §29) add: assigned classes and subjects; today’s teaching and self-
+  study sessions; draft and published lessons; assignments awaiting review; upcoming tests; class-level
+  concept understanding; student questions requiring attention; common misconceptions; recent
+  student progress; and quick actions (upload material, create a session, assign work).
+
+
+    VS-61      Concept Heat-Map & the Classroom Concept Radar                               CORE     P1
+
+  Heat-map: every concept of the class in one grid; colour = the % of the class that answered correctly
+  — green (secure) / peach (mixed) / red (stuck). Acceleration red → the teacher understands instantly.
+  The second loop — catching it BEFORE class: doubt clustering ( VS-37 ) + quiz data show the gap
+  before the next lesson. This is the data version of coaching’s “personal attention” selling point.
+  Classroom Concept Radar (S5 §36): (1) students complete a diagnostic activity; (2) the system maps
+  responses to known answer patterns / misconceptions (many confuse distance and displacement;
+  some pick the wrong formula; others calculate correctly but cannot explain the result); (3) the
+  dashboard shows the FREQUENCY of each pattern — concept-level view, not a class average; (4) the
+  teacher reviews the evidence; (5) the teacher chooses: reteach, assign practice, or move on; (6) a
+  follow-up check tests whether understanding improved. The radar must show uncertainty where a
+  wrong answer could have several explanations.
+
+
+    VS-62      Publishing Notes & Resources                                                 CORE     P1
+
+  Concept-tagged upload ( VS-11 ): a few taps — class → subject → chapter → concept → publish →
+  notification to the class. Rule: notes published from DAY ONE of the chapter — students get the app
+  aligned to the syllabus from the start, not months later. A teacher can also attach curated external
+  videos ( VS-13 ) and recordings ( VS-12 ) where permitted.
+
+  7.4 Lesson Creation and the Lesson Editor
+Lesson creation from existing material (S5 §30): supported inputs include PDF notes, text
+documents, presentation files, worksheets, typed lesson text, approved external links, and teacher-
+created questions. Workflow: (1) teacher uploads or selects material; (2) the system extracts
+
+                                                    32
+supported content; (3) teacher confirms class, subject, chapter and learning objectives; (4) AI
+proposes a structured lesson; (5) teacher previews and edits; (6) teacher reviews generated
+questions and explanations; (7) teacher publishes, or saves as draft. If extraction fails, the system
+explains the problem and preserves the original file.
+Lesson editor capabilities (S5 §31): add/delete/reorder lesson sections; edit text; add examples and
+questions; attach approved resources; preview the student experience; save drafts; publish/unpublish
+per permissions; revise a lesson WITHOUT silently changing completed student records.
+
+   VS-63    Session Builder                                                                  CORE     P1
+
+  Teacher selects: class and subject → chapter or concept → learning objectives → source material →
+  release time (if required) → deadline → questions and completion criteria. The system can propose a
+  lesson sequence; the teacher reviews and publishes. Per-class question swap: the STRUCTURE
+  stays fixed, the QUESTIONS change per class — reuse across sections without duplication.
+
+
+   VS-64    Recording Upload & Segmentation                                                   PROPOSED
+
+  Recording upload → cut into concept segments (manual or AI-assisted) → concept tags. Governed by
+  the school-level permission setting ( VS-85 ); the school decides whether recordings exist at all.
+  Teachers should never be REQUIRED to record lessons (S5 §3).
+
+
+   VS-65    Homework & Quiz Creator                                                          CORE     P1
+
+  Create MCQ / short-answer / practice sets → deadline → assign → completion list generated
+  automatically. Two question routes: the school question bank ( VS-87 ) or AI drafts ( VS-43 ) — both
+  flow through teacher review. AI-generated questions are always reviewed before consequential use
+  (S5 §34).
+
+
+   VS-66    Auto-Grading + Review Queue                                                       PROPOSED
+
+  MCQs auto-grade instantly. Short answers enter a review queue where the AI optionally drafts
+  feedback — “The answer is in the right direction, the unit is missing” — which the teacher edits
+  before sending. Payoff: instead of 60 copies, the teacher handles only borderline cases. Teacher time
+  returns. The review interface always distinguishes AI suggestions from teacher-approved grades (S5
+  §35: review submissions; inspect written answers; apply rubrics; edit AI-proposed feedback; override
+  automated suggestions; publish final feedback; assign follow-up work).
+
+
+   VS-67    AI-Drafted Sessions & the School Knowledge Compiler                          PROPOSED    P2
+
+  The teacher uploads an EXISTING presentation → the AI drafts the session skeleton (slide breakdown,
+  extracted definitions, drafted practice questions) → the teacher reviews and edits (about 20 minutes)
+  → publish. Two hours of work becomes thirty. Old PPTs become living sessions — no new content or
+  recording needed. Non-negotiable: the draft always passes through the teacher’s hands — AI output
+  never goes directly to a student.
+  The AI School Knowledge Compiler (S5 §32) is the expanded version: from one uploaded lesson, the
+  AI may propose (1) a structured lesson, (2) a simplified explanation, (3) a detailed explanation, (4) a
+  concept map, (5) prerequisite concepts, (6) practice questions, (7) misconception checks, (8) a short
+
+                                                    33
+revision sheet, (9) a guided self-study session, (10) a parent-friendly learning summary, (11)
+differentiated practice paths, (12) teacher review notes. Critical rule: generated material is traceable to
+its source; the teacher can review and reject unsupported content.
+
+
+ VS-68     Year-over-Year Content Reuse                                                          PROPOSED
+
+The “Reuse” button: dates update, questions swap, publish. First year is labour; from the second year
+it is an asset. Content compounds every year — after two years VidhyaSaathy becomes the workload-
+reducer it was not at the start. This compounding effect is the retention story.
+
+
+ VS-69     One-Tap Parent Updates                                                                PROPOSED
+
+  SYST E M D RA F T — T E A CHE R RE A D S, E D I T S, SE N D S
+  “Aarav completed Session 3, quiz 4/5. Speed-velocity strong. Acceleration needs practice — a 20-minute
+  revision is ready in the app.”
+
+ONE teacher, 60 parents, 10 minutes. Tone design: always constructive — “practice is assigned” —
+never “your child is behind” and never comparisons. The goal is parent SUPPORT, not a scolding
+excuse. (Blueprint S5 §73: a teacher seeing repeated difficulty may send a short update with one
+practical suggestion; access stays limited to each parent’s own verified child.)
+
+
+ VS-70     Class-Level Mistake Autopsy & Analytics                                         PROPOSED      ★
+
+
+Autopsy (teacher side of VS-56 ): “7 of 11 students have the SAME logic-break — they all
+interchanged velocity and speed. One misconception, one 5-minute clarification.” Matches against a
+misconception library — the documented misconceptions of physics/maths.
+Class-level analytics (S5 §37): assignment completion; assessment distributions; concept-level
+performance; repeated errors; changes between assessments; participation in assigned activities;
+students who may benefit from extra support; outcomes after an intervention. Analytics support
+teaching decisions — never public rankings or conclusions about intelligence.
+Targeted Reteaching Assistant (S5 §38): when the radar finds a shared gap, the AI drafts a short
+explanation, a worked example, a new diagnostic question, a 5-minute reteaching activity, extra
+practice, and a follow-up assessment. The teacher approves the plan and decides whether to use it.
+Teacher Workload Assistant (S5 §39): drafting lesson structures from existing material; drafting
+feedback comments; generating question variations; summarising class-level gaps; preparing revision
+activities; creating parent-friendly progress summaries; organising resources by chapter and concept
+— reducing repetitive work while preserving teacher judgement and written practice.
+
+
+ VS-71    Teacher Mirror & Teacher DNA                                                           PROPOSED
+
+Teacher Mirror (teacher side of VS-55 ): the teacher’s own class held up to them — “You spent 12
+minutes on acceleration, interaction 2 minutes. The quiz missed that concept the most. Connection?”
+The teacher improves their own teaching from evidence — an insight even coaching institutes do not
+give their own teachers. Teacher DNA ( VS-57 , detailed in Section 6.8) surfaces to teachers as a
+profile they must approve before students see any priority hints derived from it.
+
+
+
+
+                                                           34
+   VS-72      Class Teacher Role & Announcements                                                 CORE
+
+  Class teacher: extra rights for ONE class — broadcast class updates, manage the Class Space ( VS-
+  10 ), handle small disputes. Subject teachers work only inside their own subject workspaces. Teacher
+  announcements (S5 §40) reach only the intended classes and users: upcoming sessions, assignment
+  reminders, test dates, revision instructions, changes to learning resources. Assignment and session
+  reminders go to students; parents receive selected reminders per their preferences and school policy
+  (S5 §71).
+
+  7.15 Teacher Screen Connection Map
+Blueprint teacher screens (S5 §88), in workflow order: Teacher home dashboard → Class list → Class
+detail → Student roster → Subject & chapter view → Resource library → Upload resource → AI-
+generated lesson preview → Lesson editor → Guided session builder → Session scheduler →
+Assignment builder → Question library → Assessment review → Student work review → Concept radar
+→ Class analytics → Targeted reteaching assistant → Announcement composer → Teacher profile &
+preferences.
+
+  D A I LY L O O P CO N N E CT I O N
+  Dashboard heat-map (red concept) → reteaching assistant (draft plan) → approve → assign follow-up
+  quiz → next morning heat-map recheck. The insight-to-action loop is never more than 3 taps deep.
+
+
+  7.16 Teacher-World Checklist
+    Dashboard leads with class-level gaps, not vanity metrics
+    Publishing a note takes the tagged few-tap flow (VS-62)
+    Session builder enforces the 10-step structure + release time
+    Per-class question swap preserves structure
+    Short-answer review queue separates AI drafts from teacher grades
+    AI session skeletons always require explicit teacher approval
+    “Reuse” button reproduces last year’s session with new dates
+    Parent update drafts are constructive-only by template design
+    Class insights anonymous by default (pending the OPEN decision)
+    Mid-year teacher reassignment handled without data loss (VS-82)
+
+  PA R T 8 · PA R EN T
+
+
+Parent World
+Parents know what the child is studying, so the child is not lost in “YouTube chaos” at home. Parents do
+not become the child’s teacher — their role is SUPPORT, not replacing school teaching.
+
+ V S - 73 – V S - 78
+
+
+
+
+                                                     35
+ VS-73      Parent Dashboard — plain language by design                                                                  CORE
+
+
+  What parents SEE                                                        What parents NEVER see
+  What the child is studying (subject + chapter) ·                        Anything about other children · leaderboards or
+  what is due, and what is completed · quiz results in                    rankings · what the child discussed with the AI —
+  simple framing · where extra practice is needed ·                       private by design ( VS-78 ).
+  teacher updates for the class · actionable “do this”
+  suggestions.
+
+Design insight: the parent is not a data expert. “Concept mastery 63%” means nothing to them. What
+must appear is: “Biology strong, one chapter weak in Physics — revision is ready in the app.” DATA
+MUST BECOME A DECISION, NOT A DISPLAY. The Blueprint parent dashboard (S5 §41) answers five
+questions — What is my child currently learning? What has been completed? Where might they need
+help? What is the teacher doing about it? How can I help without adding pressure?
+
+
+ VS-74      Weekly Progress Summary & Parent Reports                                                                PROPOSED
+
+Weekly digest: what was completed, what improved, what is coming next week. Frequency (daily /
+weekly / on-event) is an OPEN team decision — Section 17.4.
+
+  PA R E N T P R O G R E S S R E P O R T S A M P L E ( S 5 § 4 2 )
+  “Your child can recall the definitions of speed and velocity but needs more practice applying them to word
+  problems. The teacher has assigned a short practice session for this concept.”
+
+The report distinguishes: directly observed results / AI-generated interpretations / teacher-confirmed
+conclusions / suggested actions — and never presents an inference as a medical, psychological or
+permanent ability diagnosis. Parent Translator (S5 §63), the engine behind these reports: explains
+what the evidence shows; identifies uncertainty; mentions the teacher’s plan; suggests ONE realistic
+support action; avoids alarming language and labels.
+
+
+ VS-75      “Ask This” Parent Prompts                                                                               PROPOSED
+
+  O N E S I M P L E D A I LY / W E E K LY S U G G E S T I O N
+  “Today, ask Aarav: what is the difference between acceleration and velocity? Whoever explains it,
+  remembers it better.”
+
+The quiet genius: what you teach someone else is your most durable learning (the protege effect).
+The parent does not need to know the subject — only how to ask the question. Blueprint S5 §43 adds
+the recommendation menu: ask the child to explain one concept in their own words; review an
+assigned example together; encourage completing a teacher-assigned session; contact the teacher if
+a difficulty persists; recognise improvement rather than comparing marks.
+
+
+
+
+                                                                     36
+   VS-76      WhatsApp/SMS Fallback                                                         PROPOSED        P3
+
+
+    N O A P P ? K E Y U P D AT E S S T I L L A R R I V E
+    “Aarav — Science homework pending (last day tomorrow). Quiz 4/5. Today’s revision: Acceleration, 20
+    minutes.”
+
+  Why India-critical: not every parent is app-savvy, especially in Tier-2/3 cities. WhatsApp Business API
+  is ubiquitous in India. Parent engagement has a ceiling without this — roughly 30% of parents will
+  never open the app; for them, the fallback decides whether the parent layer exists at all.
+
+
+   VS-77      PTM Time Machine — Parent Mode                                                      PROPOSED
+
+  The parent side of VS-59 (Section 6.8): simulated PTM practice with three trained, data-backed
+  questions, so the real 6-minute meeting is confident and specific instead of awkward and generic.
+  The student mode lets the child rehearse an evidence-based growth story.
+
+
+   VS-78      Parent Privacy Boundaries — hard rules                                                      CORE
+
+     Parent-child AI conversations are NEVER automatically visible — not even through a setting. By
+     design.
+     Parents see ONLY their own verified child.
+     Private student-teacher notes are never shown to parents.
+     Sensitive learning details appear only through transparent school policy, age-appropriate
+     safeguards and applicable legal requirements (S5 §45).
+     These rules are not marketing — they are baked into the architecture (RBAC, VS-07 ; Part 13).
+  Parent notifications (S5 §44) — allowed types: new assignment; upcoming deadline; important
+  teacher announcement; published progress report; significant learning milestone; teacher-requested
+  follow-up. Preferences and school rules are configurable; the app avoids alerting on every click,
+  question or minor score change.
+
+  8.7 Parent Screen Connection Map
+Blueprint parent screens (S5 §89): Parent home dashboard → Linked-child view → Learning progress
+→ Assignment list → Assessment history → Parent-friendly learning summary → Teacher-approved
+progress notes → Notification settings → Account & relationship settings. Entry: OTP verification ( VS-
+05 ) or WhatsApp fallback ( VS-76 ) for non-app-users.
+
+  8.8 Parent-World Checklist
+    Every parent-facing sentence passes the “would a non-expert parent act on this?” test
+    Zero access to other children’s data, rankings, or AI chats
+    Weekly digest template + frequency decision recorded
+    “Ask this” prompt engine fed by real learning evidence
+    WhatsApp fallback delivers the 3 core message types
+    PTM practice mode reads from the child’s actual data
+    Notification defaults calm (no per-click alerts)
+
+
+                                                           37
+  PA R T 9 · A D M I N
+
+
+School Admin World
+Structure, not surveillance. The admin sees the school’s organisation and health — never student marks,
+never teacher league tables.
+
+ V S - 79 – V S - 8 7
+
+    VS-79      Admin Dashboard                                                                 CORE     P1
+
+  The school’s structure in one place: classes, teachers, enrolment statistics, parent-linking status,
+  resource organisation. NO student ranking, NO teacher surveillance — structure and health only.
+  Blueprint additions (S5 §17): configured classes and sections; active teachers and enrolled students;
+  account invitation status; subjects and teaching assignments; published learning resources; general
+  platform activity and operational issues; basic adoption indicators.
+
+
+    VS-80       Academic Year & Calendar Management                                                   CORE
+
+  A new year = roll over the old structure + new students + new dates. This is where VS-92 (Calendar
+  Awareness) is fed from: exams, holidays, festivals. Academic year configuration is one of the 15
+  school-profile capabilities in S5 §14 (see 9.7).
+
+
+    VS-81      Class & Section Creation                                                               CORE
+
+  9-A, 9-B, sections, streams — a mirror of the school’s real structure. Wizard work measured in
+  minutes. Grade/class and section creation, subject creation and roster management are all admin
+  functions (S5 §14).
+
+
+    VS-82      Teacher Assignment                                                                     CORE
+
+  Teacher × subject × class mapping. Changing it must be EASY — mid-year teacher changes happen
+  constantly in India; the app has to handle them without breaking workspaces, sessions or histories.
+
+
+    VS-83      Student Enrolment — CSV + Activation Codes                                      CORE     P1
+
+  How: CSV upload → validation (duplicates, missing parents, malformed rows) → activation codes
+  generated → distribution sheet downloads → school distributes codes → parents verify by OTP →
+  accounts live. Mid-year admission takes about 2 minutes end-to-end. CSV columns: name, roll
+  number, class, parent phone number ( VS-01 ).
+  Open decision: who adds students — admin upload, class teacher, or student self-join with a code?
+  All three sources leave this undecided (Section 17.4). The Blueprint’s bulk import (S5 §15) specifies:
+  import from a validated spreadsheet; import teacher and class assignments; detect missing required
+  fields; detect duplicate or conflicting records; preview changes before confirming; report failed rows
+  with understandable reasons; generate school-approved invitations or credentials; allow authorised
+  corrections after import. Bulk import is a scale-up feature; the first prototype ships with seeded users.
+
+
+                                                     38
+   VS-84     Parent Linking Management                                                                CORE
+
+  Tracks: which parent is linked to which child, phone verification status, two-parents-one-child cases,
+  and GUARDIAN cases (uncle, grandfather — common in India; a reality generic products miss). Parent-
+  student relationship management is an admin capability (S5 §14).
+
+
+   VS-85     Permissions & Access Control                                                             CORE
+
+  The ROLE MATRIX: who can see what. School-level settings include: Are classroom recordings
+  allowed at all? ( VS-12 ) · Doubt clustering anonymous or named? ( VS-37 ) · Parent update frequency
+  ( VS-74 ) · Resource and lesson ownership; publication and approval statuses; school-level settings;
+  role and permission management; account suspension or deactivation where authorised (S5 §14).
+  Principle: the school gets control; the platform provides guardrails.
+
+
+   VS-86     School-Level Academic Reports                                                      PROPOSED
+
+  Completion trends, subject health, resource coverage — FOR improving learning and supporting
+  teachers, never for ranking or punishing students or staff. School reports mirror the platform’s
+  “structure, not surveillance” stance.
+
+
+   VS-87    The School’s Own Question Bank                                                 PROPOSED     ★
+
+
+  Every quiz, homework and approved AI draft ( VS-43 ) feeds the bank: Year 1: ~200 questions. Year
+  2: ~500 — all in the school’s syllabus, notation and teacher style. After three years: the school’s most
+  valuable digital asset.
+
+    S T R AT E G I C VA L U E
+    Features can be copied — this bank cannot. Every year of use makes leaving VidhyaSaathy harder.
+    The realistic path to becoming defensible.
+
+
+
+  9.10 Admin Screen Connection Map
+Blueprint admin screens (S5 §90): School dashboard → School profile → Academic year settings →
+Class & section management → Subject management → Teacher management → Student
+management → Parent linking → Bulk import → Invitation status → Resource permissions → School
+settings → Audit / administrative activity view (where appropriate).
+
+  9.11 Admin-World Checklist
+   New-year rollover preserves histories and re-links assignments
+   CSV validation reports every failed row with a human reason
+   Activation codes are one-time use and expiring
+   Guardian relationships modelled beyond mother/father
+   Role matrix editable per school; defaults safe
+   Recording permission default follows school decision, not platform
+   Reports contain zero student rankings and zero teacher league tables
+   Admin cannot view student marks or AI conversations anywhere
+                                                     39
+  PA R T 1 0 · I N D I A L AY E R
+
+
+The India Layer
+These features exist because the product is built FOR India, not “about” India from research. Design
+must consider uneven internet quality, shared family phones, mobile-first use, teachers with little time,
+multiple languages, varied digital literacy and different school budgets.
+
+ VS-88 – VS-92
+
+   VS-88     Offline Mode + Smart Sync                                              PROPOSED     P3    ★
+
+
+  Mechanics: at school the internet is good → the student presses “Download today’s session” → text-
+  first + compressed images + optional low-res video → about 2–3 MB → at home with no internet, the
+  cached session runs → the quiz is attempted OFFLINE → answers saved locally → internet returns →
+  SYNC → data reaches the teacher dashboard. Design rules: the download button is EXPLICIT — the
+  child decides when to spend data. Conflict rules are simple: timestamps, last-write wins. Why non-
+  negotiable: in India this is not a feature — it is an ACCESS requirement. (The Blueprint phrases offline
+  as a possible future capability for the first pilot — S5 §84 — while the Master Spec schedules it in
+  Phase 3; the team must decide if the pilot needs it — Section 17.4.)
+
+
+   VS-89     Data Saver + Audio-Only Mode                                                      PROPOSED
+
+  Every resource shows its size (“Session 4: 2 MB”). Recordings have an AUDIO-ONLY mode — on the
+  bus, out of data? Listen to the recording like a podcast. 90% of an explanation video’s value is in its
+  audio. Small feature, adoption-level difference.
+
+
+   VS-90     Language Layers — three separate things                                           PROPOSED
+
+   1. UI LAYER — the interface itself in Hindi/regional languages.
+   2. AI LAYER — ask in any language, answered in that language ( VS-35 ).
+   3. BRIDGE LAYER ( VS-47 ) — English notes stay English (they are board English); the
+      Hinglish/regional EXPLANATION toggle is the real differentiator. “Textbook in English,
+      understanding in your language.”
+  Layers 1–2 anyone can build. Layer 3 — grounded in the teacher’s own material — nobody else is
+  doing.
+
+
+   VS-91     Low-End Device Optimization                                                       PROPOSED
+
+  PWA or lightweight app. Smooth on a 2GB-RAM budget Android. No heavy animations, WebP images,
+  and a hard target: EVERY SCREEN LOADS IN 2 SECONDS. The phone a student studies on already
+  runs 15 other apps.
+
+
+
+
+                                                     40
+    VS-92      Academic + Festival Calendar Awareness                                        PROPOSED
+
+  The system KNOWS today is Diwali, or that it is exam week. Session deadlines never land on holidays;
+  streaks freeze automatically during exam week ( VS-93 ); “next class” calculations are calendar-aware.
+  A small feature that signals whether the product was built for India or merely about it.
+
+  10.6 Accessibility & Connectivity Requirements (S5 §84)
+Usable on low-bandwidth connections and ordinary devices; readable typography; keyboard and
+screen-reader support where feasible; clear focus states; captions or transcripts for audio/video
+where feasible; no reliance on colour alone to convey state. The India layer checklist:
+    Offline session download + sync works end-to-end on a real low-end phone
+    Audio-only mode plays recordings as podcasts
+    UI language + AI language + explanation bridge independently set
+    App usable on 2GB-RAM Android; screens ≤ 2s on 3G-class networks
+    Calendar blocks deadlines on holidays; freezes streaks in exam week
+
+  PA R T 1 1 · M O T I VAT I O N
+
+
+Motivation, Games and Learning Design
+Growth, not rank. The goal is habit-building, not addiction — no public leaderboards, no shame-based
+competition, anywhere in the product.
+
+ V S - 9 3 – V S - 1 00
+
+    VS-93      Streaks with Freeze                                                      PROPOSED       P4
+
+  Daily study streaks — but automatically FROZEN during illness, exam week and holidays (fed by VS-
+  92 ). Returning resumes the streak where it was. Why: normal streak design punishes — one missed
+  day resets everything. In India, load-shedding, shared devices and family events are NORMAL. The
+  goal is habit-building, not addiction.
+
+
+    VS-94       Improvement Badges — growth, not rank                                        PROPOSED
+
+
+     NO                                                    YES
+     “Topper badge — 95%” (the already-strong child        “Acceleration: 30% → 65% — GROWTH BADGE!”
+     wins every time)                                      (goes to whoever needed it most)
+
+  A child who climbed from weak to average worked harder than the topper — without reward, they quit
+  the app. No public leaderboards, no unhealthy competition — a rule running through every source
+  document. Blueprint achievements (S5 §68): completing a learning recovery path; demonstrating a
+  previously difficult concept; improving an explanation; correcting a repeated error; finishing an
+  assigned chapter activity. Never reward time spent, click counts or raw speed.
+
+
+
+
+                                                      41
+      VS-95   Daily 5-Minute Challenge                                                                     PROPOSED
+
+  Every day, five questions: 2 from today’s topic + 1 revision (earlier material) + 1 prerequisite check + 1
+  bonus. The daily loop stays alive without overload — spaced repetition, simply baked in. A child who
+  gives even 5 minutes daily stays in the chapter’s flow all week.
+
+  11.4 VS-96 to VS-100 — The Five Games (One Question Bank)
+Games demand NO separate content — they run on the teacher’s approved questions ( VS-87 ); only
+the wrapper changes:
+
+ ID              Game                         What it does                                      Helps
+
+  VS-96          MCQ Rush                     Rapid questions against a timer, streaks.         Speed + recall
+  VS-97          Match-the-Concept            Match terms to formulas/definitions.              Vocabulary, formulas
+  VS-98          Rapid Revision               10 mixed questions from the chapter.              Pre-test revision
+  VS-99          Streak Challenge             One wrong answer resets the streak.               Consistency
+  VS-100         Boss Level                   All concepts mixed; pass = next chapter           Sequential mastery
+                                              unlocks.
+
+   T HE R UL E
+   Games SUPPORT lessons — they never become the product. Points reward meaningful practice, never
+   screen time. After every game: “Today you answered 15 Acceleration questions — 12 correct.
+   Tomorrow’s target: the Match game.”
+
+The Team Guide’s earlier illustrative game set maps onto these five formats — the list was always illustrative, 4–5 games
+that shift slightly per chapter.
+
+  11.5 Activities, Adaptive Practice, Hints, Reflection
+   Chapter activity system (S5 §65): reusable activity types — multiple-choice challenges; matching
+   concepts; order-the-steps; identify-the-error; prediction questions; scenario-based problems; short
+   explanation prompts. Activities are chosen by learning objective — never to make the interface
+   look entertaining.
+   Adaptive practice (S5 §66): see VS-23 / VS-46 ; the action menu includes another example,
+   changed representation, prerequisite return, harder problem, hint, or teacher support, with
+   recommendations explained.
+   Hints and scaffolded help (S5 §67): the hint ladder reveals enough to move forward without giving
+   away the answer: (1) point to the relevant concept; (2) ask a guiding question; (3) show the first
+   step; (4) offer a worked example; (5) reveal a full explanation when appropriate. Teachers set
+   different help rules for practice vs formal assessments.
+   Reflection (S5 §69): after selected activities — What did you understand? What is still confusing?
+   Which step helped? Can you explain it in your own words? Reflections inform the next step — but
+   self-reported confidence is never treated as proof of mastery.
+
+
+
+
+                                                           42
+  11.6 Motivation Checklist
+    Streak freezes on illness / exam-week / holiday automatically
+    Badge engine triggers on DELTA, not absolute score
+    Zero public leaderboards anywhere in the product
+    All five games pull only approved questions
+    Hint ladder configurable per assessment type
+    Reflection answers feed next-step logic, never mastery flags
+
+  PA R T 1 2 · F L O W S
+
+
+End-to-End Flows: The Whole System in Motion
+All students, scores and times are fictional. Consolidated from the Master Spec (S4 Part 10) and the
+Team Guide’s “A day in Class 9-A”.
+
+  12.1 A Day in Class 9-A, Minute by Minute
+     07:00           A new mid-year admission arrives: add to CSV → activation code → parent OTP →
+     A D M IN
+                     account live. Two minutes of work. VS-83 · VS-04 · VS-05
+
+     10:00           Sharma Ma’am teaches Motion — Distance, Speed-Velocity, Acceleration. The class is
+   S CHO O L ·
+   P HY S ICS
+                     recorded (school permitting). VS-12
+    P E R IO D
+
+
+     14:00           Ma’am opens the app: uploads the recording (AI suggests segments — “Acceleration:
+   T E A CHE R ·
+ S TA F F R O O M
+                     12:40–19:30”) → publishes concept-tagged notes → creates SESSION 3 from an AI-
+                     drafted skeleton based on her old PPT, edited in 20 minutes → “Opens: 6 PM tonight,
+                     due: tomorrow morning” → publish → class notification. VS-64 · VS-62 · VS-67 · VS-63 · VS-
+                     16
+
+     18:00           The time-controlled release rule fires; Session 3 becomes available to the class. VS-16 ·
+ T HE S E S S IO N
+                     Section 5.4
+     O P EN S
+
+
+     18:30           Dashboard next action: “Session 3 — 15 minutes.” Slides → in-session questions → QUIZ
+ S T UD E N T A —
+     STRONG
+                     5/5 → Confidence Meter: was “Sure”, and correct → the system recommends a HARDER
+                     Speed-Velocity problem set (L3) and unlocks Boss Level. VS-15 · VS-39 · VS-23 · VS-100
+
+     18:30           QUIZ 2/5 — Acceleration wrong. Opens the “Why was it wrong?” feedback → re-reads
+ S T UD E N T B —
+  S T R UGGL IN G
+                     the explanation slide → GAP DETECTOR checks: the velocity questions WERE answered
+                     correctly → the problem is Acceleration itself → recommendation: simpler explanation + 3
+                     worked examples + targeted practice. Plus MISTAKE DNA: “2 concept mistakes, 1
+                     careless (sign)” — separate fix routes. VS-18 · VS-30 · VS-40
+
+     18:30           Top dashboard card: “You weren’t in class yesterday. Catch up in 20 minutes?” → the 7-
+ S T UD E N T C —
+ WA S A B S E N T
+                     minute Acceleration recording segment → notes → mini session → 5-question check →
+                     pass → back at class pace. VS-20 · VS-12 · VS-11 · VS-16
+
+                                                        43
+      21:00              All three get personalised audio: A gets tomorrow’s preview; B gets the fix for today’s
+ N IGHT R E CA P
+                         acceleration mistake; C gets “catch-up complete, ready for tomorrow’s class.” VS-49
+
+      21:30              “Session 3 complete, quiz 2/5. Acceleration practice is assigned — 20 minutes, ready in
+  PA R E N T O F
+ S T UD E N T B ·
+                         the app. Today, ask: what’s the difference between acceleration and velocity?” — plain
+  W HAT S A P P          language, with a next step. VS-76 · VS-75
+
+      07:30              Heat-map: ACCELERATION IS RED — 60% of the class wrong. Doubt clustering: 17
+N E X T M O R N IN G
+   · T E A CHE R
+                         students asked Acceleration doubts overnight, anonymously. Mistake autopsy: 7 of 11
+                         share the same confusion — velocity/speed interchange. Ma’am reteaches Acceleration
+                         for 10 minutes and clarifies exactly that misconception → retest → heat-map turns green.
+                         THE LOOP IS COMPLETE — and the next class is built on this evidence. This is the whole
+                         app: after the bell rings, the school speaks again. VS-61 · VS-37 · VS-70
+
+  12.2 The Motion Chapter Worked Example (13 Steps, S5 §80)
+Class 9, Physics, Motion; concepts: distance & displacement, speed & velocity, acceleration. Fictional
+Indian school.
+
+ Step          Who               What happens in VidhyaSaathy
+
+ 1             Teacher           Organises the Motion lesson material; links a recording and a chosen video to the
+                                 chapter.
+ 2             AI                Prepares a draft package: structured lesson, definitions and examples, concept
+                                 map, practice questions, diagnostic check, guided self-study session.
+ 3             Teacher           Reviews and corrects the material, approves the questions, schedules the session.
+ 4             Students          Receive the session on their dashboards.
+ 5             Student           A completes the diagnostic with strong results; receives a more challenging practice
+                                 activity.
+ 6             Student           B confuses speed and velocity in a scenario question.
+ 7             AI                Links the answer to the concept; offers a different explanation with an everyday
+                                 example.
+ 8             Student           B tries again on a new question testing the same distinction in a different context.
+ 9             System            Updates its estimate: the new response is additional evidence about understanding.
+ 10            Teacher           Sees class-level patterns — is the confusion isolated or common?
+ 11            Teacher           Publishes a short reteaching activity if several students share the difficulty.
+ 12            Parent            Sees the assigned activity and progress summary — never the private AI chat
+                                 transcript.
+ 13            ALL               A later assessment checks whether the concept is now understood. THE LOOP
+                                 REPEATS.
+
+This is the central VidhyaSaathy experience: one classroom lesson leading to different, evidence-
+based learning paths, with the teacher and parent appropriately informed. (The Vision document’s
+variant adds that the next lesson begins with a brief acceleration recap built on this evidence.)
+
+                                                              44
+  12.3 The Loop in Practice — Design Rule
+                     LEARN — the teacher’s lesson, notes, recording or chosen resource
+                                                    ↓
+                                PRACTISE — questions and worked examples
+                                                    ↓
+                       UNDERSTAND — assessment shows which concepts are secure
+                                                    ↓
+           PROGRESS — the next step: revision, prerequisite work, more practice, or a challenge
+
+Assessment exists to decide WHAT HAPPENS NEXT, not only to assign marks. Progress is tracked
+per concept, not only per test.
+
+  12.4 Flow Checklist
+    The full-day demo (12.1) runs end-to-end without manual data patching
+    Each of the three student archetypes reaches a distinct next step
+    Teacher’s morning dashboard reflects the previous night’s evidence
+    Parent message generated automatically, constructive tone
+    Reteach → retest → heat-map colour change demonstrable in one cycle
+
+  PA R T 1 3 · S EC U R I T Y
+
+
+Data, Security and Responsible AI
+Privacy is a product requirement, not a patch. Permissions are enforced at the data and server layers —
+a client-side role label is never proof of anything.
+
+  13.1 Roles and Permissions Enforcement (S5 §81)
+   Students access their own learning records and authorised class resources only.
+   Teachers access assigned classes and authorised student work only.
+   Parents access only correctly linked children and permitted progress information.
+   School administrators manage their school’s authorised users and structure.
+   Platform administrators receive only the access required for legitimate platform operations.
+
+  IR O N R UL E
+  Changing a client-side role label must NEVER grant additional access.
+
+  13.2 Student Data Protection (S5 §82)
+The system should: collect only necessary information; protect account credentials; restrict access to
+student records; use secure transport and appropriately protected storage; keep audit records for
+sensitive administrative actions where appropriate; provide processes for account correction and
+
+                                                    45
+deletion; define retention rules; protect backups and exported records; and avoid exposing sensitive
+data in logs or error messages.
+The implementation must follow applicable Indian privacy and child-data requirements, with
+appropriate school and guardian processes. Privacy principles from the vision document: verified
+student and parent access; role-based permissions; protection of records; minimal data collection;
+teacher oversight of important educational decisions; transparent use of learning data; responsible
+handling of recordings; age-appropriate design. The platform must never use invasive monitoring,
+public rankings of struggling students, or unrestricted sharing of academic information.
+
+  13.3 AI Safety and Reliability (S5 §83)
+Consolidated with VS-32 in Section 6.10 — the full rule list: grounding in approved sources; visible
+uncertainty; no fabricated citations; AI suggestions separated from teacher-approved content; no
+medical/psychological diagnoses; no permanent labels; age-appropriate explanations; student data
+protected from unnecessary disclosure; prompt injection in uploaded documents treated as untrusted
+input; graceful fallback when the AI service is unavailable.
+
+  13.4 Evidence and Analytics Integrity (S5 §85)
+  F I V E S TAT E S T H AT A R E N O T I N T E R C H A N G E A B L E
+  1 · Activity completed 2 · Question answered correctly 3 · Concept demonstrated 4 · Teacher-
+  verified mastery 5 · AI-inferred possible difficulty.
+
+The app must never manufacture precision or present a weak inference as a fact. This rule is why
+video-watching, slide-opening and session completion are recorded separately from mastery
+throughout Part 5.
+
+  PA R T 1 4 · A R C H I T EC T U R E
+
+
+Technical Architecture
+A pragmatic starting stack, the data model the product implies, and the failure behaviour every screen
+must honour.
+
+  14.1 Recommended Starting Stack (S5 §91 + Team Guide S1 §13)
+ Layer                        Blueprint recommendation
+
+ Frontend / app               TypeScript; React or Next.js; responsive web; Tailwind CSS or equivalent styling.
+ Backend / data               Supabase with PostgreSQL: authentication, database access policies, file storage for
+                              approved uploads, server-side functions for privileged operations.
+ AI layer                     Server-side AI integration; retrieval of relevant approved school content; structured
+                              outputs where useful; source tracking and validation; deterministic calculations for
+                              simulations; fallback responses for failed API calls.
+ Deployment                   Suitable web hosting; environment variables for credentials; separate dev/prod
+                              configuration; error logging that avoids unnecessary student data.
+
+
+                                                                 46
+   IR O N R UL E
+   API keys must NEVER be placed in browser-visible code; use only services actually configured by the
+   team.
+
+Team Guide options (equally valid, pick what the team knows best): frontend React/Next.js or Flutter (mobile-first matters
+for students); backend Node.js or Django; database MongoDB or PostgreSQL (relational fits classes, sessions and
+progress); AI via OpenAI-style API with custom context. AR/VR classrooms remain cut (Part 15.3).
+
+  14.2 Core Data Entities (S5 §92) — 37
+  People & structure (1–14)                                         Content & learning (15–24)
+  1 Users · 2 Schools · 3 School memberships · 4 Student            15 Resources · 16 Resource versions · 17 Lessons ·
+  profiles · 5 Teacher profiles · 6 Parent-student relations        18 Guided sessions · 19 Session sections · 20 Session
+  · 7 Academic years · 8 Classes · 9 Sections ·                     enrolments/assignments · 21 Assignments ·
+  10 Subjects · 11 Teacher assignments · 12 Chapters ·              22 Questions · 23 Question options · 24 Assessment
+  13 Concepts · 14 Concept prerequisites                            attempts
+
+
+  Evidence & communication (25–34)                                  AI & audit (35–37)
+  25 Student responses · 26 Feedback · 27 Concept                   35 AI interaction metadata (per privacy policy) ·
+  evidence · 28 Learning plans · 29 Learning-plan steps ·           36 Learning Passport entries · 37 Administrative audit
+  30 Student progress events · 31 Teacher interventions ·           events
+  32 Announcements · 33 Notifications · 34 Parent
+  progress summaries
+
+Not every entity must exist in the first prototype; design the production schema carefully before adding complex
+analytics.
+
+  14.3 AI Request Workflow
+See Section 6.10 — the 11-step server-side sequence from authentication through source-attachment
+to outcome recording.
+
+  14.4 Failure and Fallback Behaviour (S5 §94)
+The application must handle: AI service unavailable; invalid AI response; failed file upload;
+unsupported document format; interrupted network request; expired session; permission denied;
+missing school content; failed assessment submission; database or storage error. In every case the
+user receives an understandable message and a safe next step; unsent work is preserved or a
+retry is offered where appropriate.
+
+  PA R T 1 5 · B U I L D O R D ER
+
+
+Build Order, Phases and Deliberate Cuts
+The loop must exist first; delight comes after. Scope discipline is what saves the product.
+
+
+
+
+                                                               47
+    15.1 Master Spec Build Order (S4 Part 12)
+1     PHASE 1 (RED) — CORE LOOP. Without it the product does not exist: VS-01 to VS-09, VS-16, VS-17, VS-
+      18, VS-27, VS-60/VS-61. One school, one chapter, one session, one quiz, one teacher insight — the
+      whole loop runs.
+2     PHASE 2 (ORANGE) — AI BRAIN (differentiation + pitch): VS-28/29/30 (context AI, Socratic, gap
+      detector), VS-31, VS-37, VS-39 (Confidence Meter), VS-44 (Interest Remix), VS-36 (SnapDoubt), VS-40
+      (Mistake DNA). Demo story: “we don’t just grade — we understand the STUDENT’S THINKING.”
+3     PHASE 3 (YELLOW) — INDIA LAYER (adoption): VS-88 (offline), VS-89 (data saver), VS-47 (Hinglish
+      bridge), VS-76 (WhatsApp), VS-06 (shared profiles). The layer that scales.
+4     PHASE 4 (GREEN) — ENGAGEMENT + SIGNATURE: Streaks, badges, games, Recap, Viva, Digital Twin,
+      Reverse Class, PTM Time Machine.
+
+    15.2 Blueprint Build Priorities (S5 Part 16)
+    Phase 1 — six-hour hackathon prototype: one complete, convincing learning loop, not many
+    disconnected screens — polished landing/sign-in; seeded demo school and Class 9-A; three role
+    dashboards; a published Motion lesson; one guided session; a short diagnostic quiz; two seeded
+    student profiles with different results; a personalised explanation or recovery path; a simple
+    concept-level teacher dashboard; a parent-friendly progress summary; a working database
+    connection where feasible; a deterministic AI fallback; a polished cloud mascot and consistent
+    theme; a tested end-to-end demo. Sample student data must be clearly labelled as simulated —
+    no claims of improved real outcomes.
+    Phase 2 — functional school pilot: real authentication; school/class setup; secure teacher/student
+    permissions; resource uploads; lesson creation and publishing; guided session scheduling;
+    assignments and assessments; persisted responses; basic parent-student linking; teacher-
+    reviewed AI content; reliable progress tracking; basic admin tools.
+    Phase 3 — intelligent learning system: concept/prerequisite graph; learning-state model;
+    misconception detection; Learning Recovery Engine; adaptive practice; AI-generated lesson
+    packages; classroom concept radar; reteaching assistant; evidence-based parent summaries;
+    Learning Passport.
+    Phase 4 — signature AI experiences: What-If Machine; Mistake Time Machine with supported
+    handwriting analysis; Chapter-to-Comic Studio; Infinite Textbook Adventure; Concept Court;
+    Reverse Exam Mode; Viva Simulator; Reality Scanner; Learning Remix; AI Debate. Prioritise by user
+    testing, educational value, cost and reliability — not impressiveness.
+    Phase 5 — scale and school adoption: bulk onboarding; more grades and curricula; additional
+    Indian languages; improved low-bandwidth behaviour; optional offline learning and sync; school-
+    to-school portability of permitted records; more sophisticated analytics; practical integrations with
+    existing school systems.
+
+    15.3 Features Deliberately Cut — the Discipline List (S4 Part 11)
+Cut                                  Why
+
+Coaching-institute integration       Directly clashes with the mission: coaching dependence should
+                                     DECREASE, not be integrated.
+
+
+                                                    48
+ Camera/mic emotion detection     Privacy nightmare with children; the behaviour-based VS-33 is its safe
+                                  version.
+ Public class leaderboards        The documents’ own rule: no unhealthy competition. Improvement badges (VS-
+                                  94) replace them.
+ Transport / fees / ERP modules   The documents are explicit: this is not an ERP. Scope discipline saves the
+                                  product.
+ AR/VR, study groups, peer        Good ideas, outside the MVP — Phase 3+ material.
+ teaching
+
+  15.4 The One-Line Truth (S4 Closing)
+  101 features, one single thread: the teacher’s effort is applied once → the system reuses it again and again
+  → the AI adds the school’s context → evidence decides the next step → and that 10-minute reteach
+  Ma’am does tomorrow morning is driven by data the night itself generated.
+
+
+  PA R T 1 6 · Q A
+
+
+Acceptance Criteria and QA Checklists
+The master checklists from the Blueprint (S5 Part 17) — the definition of “working” for this product.
+
+  16.1 Account and Permission Tests
+    A student cannot open teacher-only functions by changing the URL.
+    A parent can see only the child or children correctly linked.
+    A teacher can access only authorised classes and student work.
+    Signing out prevents access to protected pages.
+    Failed authentication does not reveal sensitive account information.
+
+  16.2 Learning Workflow Tests
+    A teacher can publish a lesson to the intended class.
+    An authorised student can open the lesson.
+    The student can submit a supported answer.
+    The system records the answer and its result.
+    The student receives the appropriate next step.
+    The teacher can view authorised class-level results.
+    The parent sees the permitted progress summary.
+    The app distinguishes activity completion from demonstrated mastery.
+
+  16.3 AI Reliability Tests
+    AI explanations use relevant approved content where available.
+    Unsupported questions never trigger fabricated source claims.
+    AI-generated lesson drafts are reviewable before publication.
+
+                                                       49
+      Numerical simulations use deterministic calculations.
+      Uncertain handwriting/solution parsing is confirmed by the student.
+      The system handles AI failure without losing completed work.
+
+  16.4 User Experience Tests
+      The primary student action is easy to find.
+      The teacher can publish a simple session without unnecessary steps.
+      The parent understands the progress report.
+      The interface works on common phone and laptop screen sizes.
+      Text remains readable and actions have clear feedback.
+      The cloud companion does not obstruct learning.
+      Errors explain what happened and what the user can do next.
+
+  16.5 Product Validation Tests — before claiming improved learning
+      Can students complete a guided session independently?
+      Does a personalised explanation improve performance on a fresh question?
+      Do teachers save time compared with their existing workflow?
+      Do teachers trust the generated content after review?
+      Do parents understand the progress summaries?
+      Does the product work reliably on the devices and connections students actually use?
+      Does the learning loop produce better outcomes than simply sharing a PDF or video?
+
+  PA R T 1 7 · R EG I S T R Y
+
+
+Feature Registry and Cross-References
+The complete VS-01–VS-100 index, the role × feature matrix, the Blueprint-only modules, the open
+decisions register, and the six key workflow chains.
+
+  17.1 Complete VS Feature Index (VS-01 to VS-100)
+Tags: C = Core (founder-confirmed) · P = Proposed · build phase per the Master Spec order · ★ = source emphasis (★
+highlighted, ★★ flagship, ★★★ highest).
+
+ ID                Feature name                                                   Part          Tag
+
+  VS-01            School Onboarding Wizard                                       3.2           C · P1
+  VS-02            School Admin Account & Login                                   3.3           C · P1
+  VS-03            Teacher Account & Login                                        3.4           C · P1
+  VS-04            Student Verification & Login ★                                 3.5           C · P1
+  VS-05            Parent Account Linking                                         3.6           C · P1
+  VS-06            PIN Shared-Device Profiles                                     3.7           P · P3
+  VS-07            Role-Based Access Control                                      3.8           C · P1
+
+                                                          50
+VS-08   Board-Wise Curriculum Mapping              3.9    C · P1
+VS-09   Structured Class Workspace                 4.1    C · P1
+VS-10   Class Space (Same-Class Visibility)        4.2    C
+VS-11   Concept-Tagged Teacher Notes               4.3    C · P1
+VS-12   Segmented Classroom Recordings             4.4    P
+VS-13   Trimmed Curated YouTube                    4.5    P
+VS-14   Persistent Chapter History                 4.6    C
+VS-15   Student Dashboard                          5.1    C · P1
+VS-16   Guided Self-Study Sessions ★★              5.3    C · P1
+VS-17   In-App Homework                            5.5    C · P1
+VS-18   Post-Session Quiz + Why-Wrong Feedback     5.6    C · P1
+VS-19   Two-Line Summarizer                        5.7    P
+VS-20   Missed-Class Recovery Path ★               5.8    C · P2
+VS-21   Visual Concept Map                         5.9    P
+VS-22   Four Performance Bands (internal)          5.10   P
+VS-23   Adaptive Difficulty Engine                 5.11   P
+VS-24   Exam-Format Practice                       5.12   P
+VS-25   Test Readiness Signal                      5.13   P
+VS-26   Session Completion Rules                   5.14   C · P1
+VS-27   Student Progress View                      5.15   C · P1
+VS-28   Context-Grounded Ask-Me-Anything ★         6.2    C · P2
+VS-29   Socratic Mode ★                            6.2    C · P2
+VS-30   Prerequisite Gap Detector ★★               6.2    C · P2
+VS-31   Study Plan Generator                       6.2    C · P2
+VS-32   AI Honesty Layer                           6.1    C
+VS-33   Frustration-Aware AI                       6.2    P · P2
+VS-34   Warmup Radar (Forgetting Detector)         6.2    P
+VS-35   Voice Doubt Asking                         6.3    P · P2
+VS-36   SnapDoubt (Ask by Photo)                   6.3    P · P2
+VS-37   Doubt Clustering ★                         6.3    P · P2
+VS-38   Doubt Inbox (Opt-In Named)                 6.3    P
+VS-39   Confidence Meter (“Pakka Meter”) ★★        6.4    P · P2
+
+
+                                              51
+VS-40   Mistake DNA (“Galti DNA”) ★                6.4    P · P2
+VS-41   Rote-Learning Detector (“Ratta”) ★         6.4    P
+VS-42   Avoidance Radar (“Darr Ka Map”) ★★         6.4    P
+VS-43   AI Question Generation (Drafts)            6.5    P · P2
+VS-44   Interest Remix ★                           6.5    P · P2
+VS-45   Personal Enemy Questions (“Dushman”) ★     6.5    P
+VS-46   Adaptive Difficulty (Practice link)        6.5    P
+VS-47   Hinglish Bridge ★                          6.6    P · P3
+VS-48   “Show You Understand” (Feynman) ★          6.6    P
+VS-49   Night Recap (5-Min Podcast)                6.6    P · P4
+VS-50   AI Big Brother/Sister (“Bhaiya-Didi”) ★★   6.6    P
+VS-51   At-Home Viva (AI Oral Exam) ★              6.7    P · P4
+VS-52   Exam Hall Simulator ★                      6.7    P · P4
+VS-53   Reverse Class (AI as Weak Student) ★★      6.7    P
+VS-54   Digital Twin (Tomorrow’s Result) ★★        6.7    P · P4
+VS-55   “Teacher Said So” Emphasis Radar ★★        6.8    P
+VS-56   Mistake Autopsy (Thinking Path) ★          6.8    P
+VS-57   Teacher DNA ★★                             6.8    P
+VS-58   Syllabus GPS ★                             6.8    P
+VS-59   PTM Time Machine ★★★                       6.8    P
+VS-60   Teacher Dashboard                          7.1    C · P1
+VS-61   Concept Heat-Map                           7.2    C · P1
+VS-62   Publishing Notes & Resources               7.3    C · P1
+VS-63   Session Builder                            7.5    C · P1
+VS-64   Recording Upload & Segmentation            7.6    P
+VS-65   Homework & Quiz Creator                    7.7    C · P1
+VS-66   Auto-Grading + Review Queue                7.8    P
+VS-67   AI-Drafted Sessions                        7.9    P · P2
+VS-68   Year-over-Year Reuse                       7.10   P
+VS-69   One-Tap Parent Updates                     7.11   P
+VS-70   Class-Level Mistake Autopsy ★              7.12   P
+VS-71   Teacher Mirror                             7.13   P
+
+
+                                              52
+  VS-72                Class Teacher Role                                                 7.14          C
+  VS-73                Parent Dashboard                                                   8.1           C
+  VS-74                Weekly Progress Summary                                            8.2           P
+  VS-75                “Ask This” Parent Prompts                                          8.3           P
+  VS-76                WhatsApp/SMS Fallback                                              8.4           P · P3
+  VS-77                PTM Time Machine (Parent Mode)                                     8.5           P
+  VS-78                Parent Privacy Boundaries                                          8.6           C
+  VS-79                Admin Dashboard                                                    9.1           C · P1
+  VS-80                Academic Year & Calendar                                           9.2           C
+  VS-81                Class & Section Creation                                           9.3           C
+  VS-82                Teacher Assignment                                                 9.4           C
+  VS-83                Student Enrolment (CSV + Codes)                                    9.5           C · P1
+  VS-84                Parent Linking Management                                          9.6           C
+  VS-85                Permissions & Access Control                                       9.7           C
+  VS-86                School-Level Academic Reports                                      9.8           P
+  VS-87                School’s Own Question Bank ★                                       9.9           P
+  VS-88                Offline Mode + Smart Sync ★                                        10.1          P · P3
+  VS-89                Data Saver + Audio-Only Mode                                       10.2          P
+  VS-90                Language Layers (3 layers)                                         10.3          P
+  VS-91                Low-End Device Optimization                                        10.4          P
+  VS-92                Academic + Festival Calendar                                       10.5          P
+  VS-93                Streaks with Freeze                                                11.1          P · P4
+  VS-94                Improvement Badges                                                 11.2          P
+  VS-95                Daily 5-Minute Challenge                                           11.3          P
+  VS-96                Game: MCQ Rush                                                     11.4          P
+  VS-97                Game: Match-the-Concept                                            11.4          P
+  VS-98                Game: Rapid Revision                                               11.4          P
+  VS-99                Game: Streak Challenge                                             11.4          P
+  VS-100               Game: Boss Level                                                   11.4          P
+
+The spec header describes the catalogue as “101 features, VS-01 to VS-101” — the numbering defines VS-01..VS-100 and
+counts the core loop as the unifying 101st element. No feature has been invented to fill the gap; see Section 17.3 for
+Blueprint modules beyond this list.
+
+
+
+
+                                                          53
+  17.2 Role × Feature Matrix
+Primary ownership per feature group (X = primary, x = secondary; (c) = class teacher; (t) = teacher view of student data;
+(p) = parent mode; (r) = recipient).
+
+ Feature group                                              Student         Teacher         Parent          Admin
+
+ Entry VS-01, VS-08                                                                         x               X
+ Entry VS-02, VS-83–85                                                                                      X
+ Entry VS-03, VS-82                                                         X                               x
+ Entry VS-04–VS-06                                          X                                               x
+ Entry VS-07 (all roles)                                    x               x               x               x
+ Workspace VS-09, VS-14                                     X               X
+ Workspace VS-10                                            X               X (c)
+ Workspace VS-11–13                                         X               X
+ Student VS-15–27                                           X               x (t)
+ AI VS-28–31, 33–36                                         X
+ AI VS-32 (governance)                                      x               x                               x
+ AI VS-37, VS-38                                                            X               x
+ AI VS-39–42                                                X               x (t)
+ AI VS-43–46                                                X               X (c)
+ AI VS-47–50                                                X               x
+ AI VS-51–54                                                X
+ AI VS-55–57                                                                X               x
+ AI VS-58, VS-59                                            X               X               X (p)
+ Teacher VS-60–66                                                           X
+ Teacher VS-67, VS-68                                                       X
+ Teacher VS-69                                                              X               X (r)
+ Teacher VS-70, VS-71                                                       X
+ Teacher VS-72                                                              X (c)
+ Parent VS-73–78                                                                            X
+ Admin VS-79–87                                                                                             X
+ India VS-88–92                                             X               X               X               X
+ Motivation VS-93–100                                       X               x
+
+
+
+
+                                                            54
+  17.3 Blueprint-Only Feature List (beyond the VS numbering)
+The Blueprint (S5) specifies these modules without VS IDs. They are part of the documented product;
+cite them as BP-§section:
+
+  BP-§47 Personalised Explanation Engine (8                    BP-§56 Infinite Textbook Adventure (branching
+  representation modes) · BP-§48 Learning Remix                curriculum story) · BP-§57 Concept Court (two
+  (mystery / counterexample / story formats) · BP-§49          characters argue, student judges) · BP-§58 Reverse
+  Student Learning-State Model (per-concept, revisable)        Exam Mode (rubric feedback, rewrite, compare) · BP-
+  · BP-§50 Concept & Prerequisite Graph (teacher-              §60 Reality Scanner (curriculum concepts via everyday
+  correctable) · BP-§53 What-If Machine (deterministic         objects) · BP-§61 AI Debate Between Past and Future
+  simulation + AI explanation) · BP-§55 Chapter-to-            Thinking · BP-§63 Parent Translator (evidence → plain
+  Comic Studio (4–6 panel illustrated explanations)            parent language)
+
+
+  BP-§64 Learning Passport (portable evidence of               BP-§21 Time-Controlled Lesson Release (timezone-
+  demonstrated skills) · BP-§32 AI School Knowledge            correct) · BP-§67 Hints & Scaffolded Help (5-step
+  Compiler (12 outputs from one source) · BP-§36               ladder) · BP-§69 Reflection prompts (4 questions, post-
+  Classroom Concept Radar (misconception frequency             activity)
+  view) · BP-§38 Targeted Reteaching Assistant · BP-§39
+  Teacher Workload Assistant (7 drafting functions)
+
+
+  17.4 Open Decisions Register (all sources, consolidated)
+Do NOT guess on these; leave open until the team agrees. Sources: Team Guide §14 [S1], Blueprint
+Part 18 [S5], Vision open questions [S2], Master Spec inline notes [S4].
+
+ #       Decision                                              Options / note                            Src
+
+ 1       Product name (idea matters more than the name)        VidhyaSaathy / ClassOS / other            S1
+ 2       Student login & verification method                   Activation code / parent phone /          S1,S2,S4,S5
+                                                               admin approval (never roll number
+                                                               alone)
+ 3       Who adds students                                     Admin upload / class teacher / self-      S1,S4
+                                                               join
+ 4       Minimum evidence before a prerequisite gap is         Question count + types undecided          S1,S2
+         suggested
+ 5       Band thresholds vs per-concept tracking               Per-concept probably better; not          S1
+                                                               validated
+ 6       Class insights show names or counts only?             Counts-only is the working default        S1,S2,S4
+ 7       How parents receive updates                           Daily / weekly / on-event                 S1
+ 8       How a session becomes complete                        Slides viewed + quiz (PROPOSED:           S1
+                                                               check mandatory)
+ 9       Target school for the first pilot                     Own / partner / other                     S1
+ 10      Final logo artwork, font, icon set                    6-part logo spec §2.4                     S5,S3
+ 11      Final tagline (choose ONE)                            “Learn Grow Together” / “Grow at          S3,S5
+                                                               your own pace.”
+
+                                                          55
+12   Initial curriculum                                                     First class, subjects, chapters     S5
+13   AI provider, deployment, budget                                        Not selected                        S5
+14   Who may approve AI-generated lessons/explanations                      Approval rules undecided            S5
+15   Exact parent-visible fields                                            To finalise                         S5
+16   When AI feedback is allowed vs mandatory teacher review                Assessment rules undecided          S5
+17   Languages in the first release                                         English/Hindi/Hinglish+?            S5
+18   Which events trigger notifications                                     To define                           S5
+19   Data retention / deletion / export rules                               To define                           S5
+20   Offline capability in the first pilot                                  Needed or not                       S5,S4
+21   First “signature AI feature” after the core loop works                 To select                           S5
+22   Success metrics for usefulness evidence                                To define                           S5
+23   Dashboard shows all subjects or nearest deadline only                  OPEN                                S5
+24   School-level teacher tooling vs single teacher account                 Assumption to validate              S2
+25   Whether schools allow classroom recordings                             Assumption to validate              S2
+26   Whether students use after-school sessions regularly                   Assumption to validate              S2
+27   Whether fragmentation/coaching dependence is as described              Hypothesis — needs research         S2
+
+17.5 Cross-Reference Map of Key Workflows
+The core loop                                                  Recovery chain (absent student)
+VS-60/61 → VS-62/63 → VS-15/16 → VS-17/18 → VS-                trigger → VS-20 → VS-12 (segment) → VS-11 (notes) →
+27/39-42 → VS-28-31/58 → VS-60/61 (repeats; see                VS-16 (mini session) → VS-18 (5-question check) →
+Section 1.2)                                                   pass = class pace / fail = VS-30 (root cause) → VS-31
+                                                               (plan)
+
+
+Doubt chain (night questions → morning                         Publishing chain (one effort → reusable asset)
+insight)                                                       VS-67 (AI skeleton) → VS-63 (builder) → VS-62/64/65
+VS-35/VS-36 (voice/photo) → VS-29/VS-28                        (notes, recording, homework) → VS-66 (grading) → VS-
+(Socratic/context answer) → VS-37 (anonymous                   68 (next-year reuse) → VS-87 (question bank grows)
+clustering) → optional VS-38 (named teacher inbox) →
+VS-60/VS-61 (morning dashboard)
+
+
+Parent chain (evidence → support)                              Personalisation chain (evidence → next step)
+VS-66/VS-18 results → VS-69 (one-tap update) / BP-             VS-18 → VS-39 (confidence) + VS-40 (DNA) + VS-42
+§63 (translator) → VS-73 (dashboard) → VS-74 (digest) /        (avoidance) → VS-30 (gap) → VS-31 (plan) → VS-23
+VS-75 (ask-this prompt) / VS-76 (WhatsApp) → VS-               (difficulty) → VS-44 (remix) / VS-45 (enemy questions)
+59/VS-77 (PTM rehearsal)                                       → VS-100 (boss unlock)
+
+
+
+
+                                                          56
+  P S Y C H O L O G Y - S A F E T Y C H A I N — R U L E S T H AT G U A R D E V E R Y A I F E AT U R E
+  VS-32 (honesty) + VS-33 (frustration-aware, no biometrics) + VS-07 (RBAC) + VS-78 (parent
+  boundaries) + Part 13 rules.
+
+
+  PA R T 1 8 · C L O S I N G
+
+
+Glossary, Team Workspace and Closing
+The product’s vocabulary, the working process around it, and the final definition.
+
+  18.1 Glossary
+ Activation Code — one-time school-            Emphasis Moment — a point in a                Moat Test — “Can ChatGPT already
+ issued code that lets a verified              recording where the teacher                   do this?” — the gate every AI feature
+ student unlock their account (VS-04).         stressed, repeated or warned (VS-             must fail to be worth building.
+ Avoidance Pattern — weeks of                  55).                                          Prerequisite — an earlier concept
+ skipping one concept; the fear signal         Enemy Question — a previously-                needed to understand a later one.
+ tracked by VS-42.                             missed type that returns for defeat           Question Bank — the school’s own,
+ Band — internal 0-25 / 25-50 / 50-75          — 3 correct in different forms                ever-growing approved question
+ / 75-100 routing tier (VS-22); never          (“Dushman Sawaal”, VS-45).                    asset (VS-87).
+ shown as a label.                             Guided Session — teacher-created,             Rote Detection — cross-form
+ Boss Level — game mixing all                  time-controlled study unit with the           questioning exposing definition-vs-
+ chapter concepts; pass unlocks the            fixed 10-step shape (VS-16).                  application mismatch (“Ratta
+ next chapter (VS-100).                        Hinglish Bridge — English material            Detector”, VS-41).
+ Concept — a single idea within a              explained in Hinglish, technical terms        Socratic Mode — the AI guides the
+ chapter, e.g. acceleration.                   kept in English (VS-47).                      student to the answer themselves
+ Concept Heat-Map — class grid                 Learning Passport — portable                  (VS-29).
+ coloured by % of students correct             record of demonstrated skills with            Streak Freeze — automatic streak
+ (VS-61).                                      evidence (BP-§64).                            preservation during illness, exams,
+ Confidence Meter — pre-question               Learning Recovery Path —                      holidays (VS-93).
+ “Sure / I think / Guess” capture              structured catch-up sequence after a          Syllabus GPS — class-position vs
+ paired with outcomes (“Pakka                  missed lesson (VS-20 / BP-§52).               self-position vs exam-date
+ Meter”, VS-39).                               Learning-State Model — per-                   triangulation with re-routing (VS-58).
+ Digital Twin — a simulated next test          concept, revisable estimate of                Teacher DNA — the data profile of a
+ composed from current mastery (VS-            understanding (BP-§49).                       teacher’s emphasis and question
+ 54).                                          Mastery Estimate — a per-concept              patterns, teacher-approved (VS-57).
+ Distance vs Displacement — the                estimate based on evidence, always            Viva — oral examination practice
+ canonical Motion-chapter example              open to revision.                             against a voice AI (VS-51).
+ used across the sources.                      Mistake DNA — classification of
+                                               errors into careless / concept / speed
+                                               / reading (“Galti DNA”, VS-40).
+
+  18.2 Team Workspace Protocol (S1 §15, S2 Part 12)
+This section is the working process around the product — none of it is approved feature scope until
+the team marks it approved.
+   Idea backlog (one row per idea): Idea ID / feature or idea / what it is / problem it solves / who
+   benefits / why it might help / Priority (High, Medium, Low, Undecided) / Status (New, To Discuss,
+   Approved, Rejected, In Development, Done) / team notes.
+   Feature deep-dive sheet (copy per idea worth understanding): feature name; date added;
+   proposed by; problem being solved; target user; how it would work; step-by-step user journey;
+   what the user provides or does; what the system does; expected result; connection to existing
+   workflows; dependencies; possible technical requirements; challenges and risks; how to test it;
+   team comments; final decision and decision date.
+                                                                 57
+   Open questions sheet: decision required / why it matters / options / current thinking / final
+   decision / owner / status. (Working content consolidated in Section 17.4.)
+   Validation sheet: assumption / who can help validate / how to test / what was learned / what
+   changes as a result.
+   Roadmap stages: current concept (this documentation) → approved for first prototype (NONE yet
+   — team to decide) → considered for later versions → long-term possibilities.
+   Action tracker: task / why it matters / owner / priority / deadline / status / notes. Next meeting:
+   date, main topics, decisions made, questions remaining, actions before the next meeting. Change
+   log: date / what changed / why / who approved.
+   Standing homework from the Team Guide: before the next meeting, each member writes ONE
+   thing they would change about the idea and ONE thing they think is missing, and brings both to
+   the call.
+  18.3 Final Product Definition (S5 Closing)
+VidhyaSaathy is an AI-powered, school-connected learning platform that helps students continue
+learning at home, gives teachers actionable insight into student understanding, and helps parents
+support progress through clear, evidence-based updates. Its foundation is not the number of AI
+features. It is the connection between school-approved knowledge, student learning evidence,
+personalised next steps and teacher intervention.
+The cloud companion provides a friendly identity. The guided self-study system provides structure.
+The AI learning engine provides personalisation. The teacher dashboard provides actionable insight.
+The parent dashboard provides shared understanding. The long-term ambition: a student does not
+merely receive an answer, but gets help identifying what they do not understand, learning it in a
+suitable way, checking whether they improved, and continuing with the right next step.
+
+  PRODUCT PRINCIPLE: One classroom. Different learning paths. One connected support system.
+
+  18.4 Source Documents & Fidelity Note
+   [S1] VidhyaSaathy_Team_Guide.pdf — “Your school, online, after the bell rings.” Team draft v1, 13 October 2026,
+   Vikrant University Junior Hackathon 2026. Vision, workflows, open decisions, team workspace. (The team mockup
+   inside is titled ClassOS; the name is not final.)
+   [S2] VidhyaSaathy — Product Vision & Team Workspace.pdf — Oct 13, 2026. Executive summary, product vision,
+   users, Motion example, responsible design, glossary, team workspace templates.
+   [S3] VidhyaSaathy brand & theme board (image) — cloud mascot reading a book; palette #7FB3FF / #FFC8A3 /
+   #FFF9F5 / #1E3A8A / #E6F0FF; six mascot expressions; “Small steps make big progress”; app UI mock.
+   [S4] VidhyaSaathy Master Working Spec — features VS-01 to VS-100 across 12 parts, the minute-by-minute day,
+   deliberate cuts, build order.
+   [S5] VidhyaSaathy Complete Product Blueprint / PRD — Parts 1-18: foundation, brand, entry, dashboards, AI engine,
+   activities, communication, learning graph, end-to-end example, data & security, screens checklists, architecture,
+   build priorities, acceptance criteria, decisions to finalise.
+
+
+
+
+                                                          58
+       One classroom.
+  Different learning paths.
+One connected support system.
+        “Why should the school’s support end when the bell rings?”
+             The school speaks again — after the bell rings.
+
+
+
+
+                                    VidhyaSaathy
+    BREA KTHROU GH ED ITION · V ERSION 1.0 FINA L · 19 OC TOBER 2 02 6
+
+
+
+
+Fidelity note: every feature, workflow, rule, example and open question in this document traces to the five
+     source documents (Part 18.4). Hindi/Hinglish passages were translated to clear English; product
+ vocabulary from the original language is preserved in parentheses. Where sources disagreed on scope,
+                              both positions are recorded rather than resolved.
+

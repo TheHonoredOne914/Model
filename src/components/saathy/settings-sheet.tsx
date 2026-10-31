@@ -156,7 +156,7 @@ function DataSection({ pin }: { pin: string }) {
     setMsg(null);
     let done = 0;
     let lastErr = '';
-    for (const f of Array.from(files).slice(0, 40)) {
+    for (const f of Array.from(files).slice(0, 100)) {
       try {
         let res: Response;
         if (f.size >= 8 * 1024 * 1024) {

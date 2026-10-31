@@ -1,0 +1,453 @@
+TEAM DOCUMENT
+
+
+
+
+VidhyaSaathy
+Your school, online, after the bell rings.
+
+A one-read guide to the idea, the workflows, the open decisions and the team
+workspace.
+
+
+
+
+Team draft v1 | 13 October 2026 | Vikrant University Junior Hackathon 2026
+
+The name is not final. The team mockup is titled ClassOS. The idea matters more than the name.
+Contents
+Tap any line to jump to that section. Bookmarks are also available in your PDF viewer's sidebar.
+
+1. The idea in one minute
+2. The problem we are solving
+3. Where the idea came from
+4. Who uses it and what they do
+5. How a school joins
+6. The student experience
+7. The teacher experience
+8. Personalised study plans
+9. Games and formats
+10. The parent view
+11. A day in Class 9-A
+12. Problems we still must solve
+13. The team mockup and tech ideas
+14. Decisions before we build
+15. Team workspace
+
+
+
+  How to read this: Items marked CONFIRMED are part of the idea as the founder described it. Items
+  marked PROPOSED are suggestions to discuss. Items marked OPEN are not decided.
+
+
+
+
+VidhyaSaathy | Product Vision & Team Workspace | Team draft v1 | 13 Oct 2026                       Page 2
+1. The idea in one minute
+  VidhyaSaathy is an online copy of each school class. Whatever happens in the offline class
+  (notes, homework, tests, lesson recordings) also appears online in that class's workspace, so the
+  school keeps helping the student at home.
+
+
+• One workspace per class, for example Class 9-A. Students, teachers and parents are connected to it.
+• The teacher leads the class. Teachers publish notes, homework, recordings and self-study sessions.
+• Self-study sessions are fixed. The school makes them. The teacher decides the day they open.
+• An AI helper answers questions and builds a study plan that points to the right school note, recording
+   or video.
+• Parents see what the child is studying and what is done, not every private conversation.
+
+The core loop
+
+                       Notes and
+                                           Student studies                         AI suggests next    Teacher sees
+ Teacher teaches       session                                  Quiz / check
+                                           and practises                           step                class gaps
+                       published
+
+Then the loop repeats the next day, with the teacher's next class.
+
+The one-line thesis
+
+  Why should the school's support end when the bell rings?
+
+
+2. The problem we are solving
+The problem is not that learning material is missing. The problem is that there is too much of it, and no
+path that says what to do next.
+
+ Problem                  What it looks like for a student                                         Status
+
+ Too many sources         YouTube, PDFs, friends' notes, AI tools, coaching notes. Different       Founder observation
+                          versions, no way to know which matches the school syllabus.
+
+ No clear direction       "Okay, I have to study Physics tonight. What do I even do?"              Founder observation
+
+ No check of              An hour of study does not show whether the concept was                   Founder observation
+ understanding            understood.
+
+ Missed lessons           A missed class or a weak prerequisite creates gaps that grow later.      Reasoned, needs
+                                                                                                   testing
+
+ Coaching gap             Students with coaching get a second structure. Students without it       Hypothesis, needs
+                          manage alone.                                                            research
+
+ Repetitive writing       Much class time goes to copying notes from the board, for students       Founder observation
+                          and teachers.
+
+ Parents in the dark      Parents see marks, not what the child studies or where they are          Hypothesis, needs
+                          stuck.                                                                   research
+
+ Distraction              Students open many slides at once, switch apps, or skip the test.        Founder observation
+
+Note: these are the founder's observations and hypotheses. They are not yet backed by surveys or published research.
+Validation is listed in Section 14.
+
+
+
+
+VidhyaSaathy | Product Vision & Team Workspace | Team draft v1 | 13 Oct 2026                                           Page 3
+3. Where the idea came from
+The founder was a strong student, scoring above 90% in earlier classes. In Class 9, studying became
+chaotic. There was no coaching, so when a topic like Biology or Physics was hard, the founder searched
+YouTube, asked friends for notes, and used AI tools. Friends' "perfect notes" were all different, and the
+founder had to decide what to trust.
+
+  Lesson from this: the problem was not that nothing was available. It was that nothing came
+  together into one coherent path. This is one student's experience, not proof that every student faces
+  the same problem.
+
+
+4. Who uses it and what they do
+ Role            How they join                     What they do                         What they see
+
+ Student         Roll no. or admission no.,        Read notes, do self-study,           Own class workspace, own
+                 class, section (+ verification,   homework and quizzes, ask the AI     study plan, own progress
+                 OPEN)                             helper
+
+ Teacher         Staff ID, assigned classes and    Publish notes, create and time       Class completion, concepts
+                 subjects                          sessions, set homework and           many students miss
+                                                   quizzes, share recordings
+
+ Class teacher   Teacher with extra rights for     Manages the class workspace and      Whole class view
+                 one class                         shares class updates
+
+ Parent          Linked to a verified child        Follows progress and tasks           Own child only. Not private AI
+                                                                                        chats
+
+ School admin    School account                    Creates classes, sections, teacher   School-wide structure, not
+                                                   assignments and enrolments           student ranking
+
+
+5. How a school joins
+1. School is registered on VidhyaSaathy.
+2. Classes and sections are created (for example 9-A and 9-B).
+3. Teachers are assigned to their subject and class.
+4. Students are added to their class.
+5. Parents are linked to their verified child.
+6. Syllabus, chapters and notes are organised by subject.
+7. Each class workspace goes live. Notes from day one can be published.
+
+  OPEN: Who adds the student list? The school admin uploads it, the class teacher adds students, or
+  students self-join with a code. Login needs more than a roll number, because a roll number alone is
+  not secure. Options: school-issued activation code, verified parent phone, or admin approval.
+
+
+
+
+VidhyaSaathy | Product Vision & Team Workspace | Team draft v1 | 13 Oct 2026                                     Page 4
+6. The student experience
+The student opens the app and sees one question answered: what do I study now, and what do I do
+after?
+
+ Feature                   What it does                                                        Status
+
+ Notes from day one        Teacher publishes notes topic by topic as the chapter is taught.    CONFIRMED
+
+ Online homework           Exercise is solved in the app, not copied into a notebook.          CONFIRMED
+
+ Self-study session        Fixed set of slides, one small topic per slide. Teacher picks the   CONFIRMED
+                           day it opens.
+
+ Classroom recording       Teacher's lesson uploaded so the student can replay the topic.      CONFIRMED (if school
+                                                                                               allows)
+
+ Class space               Students and teachers of the same class are visible together in     CONFIRMED
+                           one group.
+
+ Ask-me-anything AI        Answers questions in the context of the subject and class.          CONFIRMED
+
+ AI study plan             Student says what is hard. The AI builds steps and points to        CONFIRMED
+                           resources.
+
+ Suggested videos          Plan can point to a YouTube video or a classroom recording.         CONFIRMED
+
+ Quiz after session        Teacher's quiz checks what the student understood.                  CONFIRMED
+
+
+Example: a self-study session
+
+  Self-Study Session 3, Physics, Motion (fictional example)
+  1. Learning goal: understand distance and displacement.
+  2. Slide 1: definition, one idea only. Slide 2: diagram. Slide 3: worked example.
+  3. Classroom recording for the same topic (optional).
+  4. Five short MCQs.
+  5. Recap and "next step": Speed and Velocity.
+
+
+
+Example: AI study plan
+Student says: "I am not able to understand Coordinate Geometry." The plan (proposed) could look like
+this:
+• Step 1: Revise the coordinate basics note from school.
+• Step 2: Watch the 6-minute classroom recording segment on plotting points.
+• Step 3: Study one worked example.
+• Step 4: Solve 3 easy questions.
+• Step 5: Take a 5-question mini-check.
+• Step 6: Move to application questions if the check is good.
+
+
+
+
+VidhyaSaathy | Product Vision & Team Workspace | Team draft v1 | 13 Oct 2026                                     Page 5
+7. The teacher experience
+• Less copying. Notes are published once and reused each year. Students do not spend class time
+  copying.
+• Sessions are reusable. Teacher can change questions per class. The session structure stays fixed.
+• Timed release. "Complete Self-Study Session 3 tonight." The session opens on the chosen day.
+• Quiz as a check. Teacher sees who completed the work and who did not.
+• Class-level view. Teacher sees which concept many students missed (for example Acceleration).
+
+  Principle: one teaching effort, many uses. Notes + recording + session + quiz from the same lesson.
+  Teachers stay in control of content and assessment.
+
+
+8. Personalised study plans
+The AI does not just answer. It asks what the student needs next, based on the class work and the
+student's results.
+
+Four internal performance bands (PROPOSED)
+ Band                    Internal meaning (never shown as a                Possible support
+                         label)
+
+ 0 to 25%                Large gaps                                        Simpler explanation, prerequisite revision
+
+ 25 to 50%               Basics partly clear                               Worked examples, guided practice
+
+ 50 to 75%               Basics clear                                      Application questions, more practice
+
+ 75 to 100%              Consistent understanding                          Next concept, harder challenges
+
+
+  Team caution: students must not be called weak, average or smart. A single overall percentage
+  hides which concept is weak. Tracking per concept is probably better, and the thresholds are not
+  validated. OPEN.
+
+
+Different ways to learn (PROPOSED)
+Some students learn by practising, some by listening, some by visuals, and some by games. VidhyaSaathy
+can offer all of these for the same topic. It should not lock a student into one "learning style", because
+strong evidence for fixed learning styles does not exist.
+
+
+9. Games and formats
+Lightweight games tied to the chapter. Illustrative list, not final. The founder's idea is 4 to 5 games that
+change slightly for each chapter.
+
+ Game format                            How it works                                      Helps with
+
+ Timed concept challenge                Answer quick questions before the timer ends      Recall of definitions
+
+ MCQ rush                               Chapter MCQs with streaks                         Practice and speed
+
+ Match the concept                      Match terms to definitions or formulas            Vocabulary and formulas
+
+ Quick revision quiz                    Five random questions from the chapter            Revision before a test
+
+ Chapter progress challenge             Unlock the next level after mastering a concept   Sequential progress
+
+Rule: games must reward understanding and correct practice, not just time spent on screen.
+
+
+
+
+VidhyaSaathy | Product Vision & Team Workspace | Team draft v1 | 13 Oct 2026                                        Page 6
+10. The parent view
+ Parents CAN see                                                 Parents CANNOT see (by default)
+
+ Subjects and current chapter                                    Private conversations with the AI helper
+
+ Homework and tasks done / pending                               Full learning history of other students
+
+ Self-study session completed or not                             Anything about other children
+
+ Quiz results for their own child                                Public rankings
+
+ Areas needing extra practice
+
+ Teacher updates for the class
+
+
+  Goal: parents know what the child is studying, so the child is not lost in "YouTube chaos" at home.
+  Parents do not become the child's teacher. OPEN: how often parents receive updates.
+
+
+11. A day in Class 9-A
+All students, scores and times below are fictional, to show the workflow.
+
+ When                Who               What happens in VidhyaSaathy
+
+ 10:00, school       Teacher           Teaches Motion. Lesson recording is uploaded to the class workspace.
+
+ 14:00               Teacher           Publishes notes on Motion. Sets Self-Study Session 3 to open at 18:00 tonight.
+
+ 18:30               Student A         Completes the session. Quiz score 5/5. Gets a harder speed and velocity problem
+                                       set.
+
+ 18:30               Student B         Quiz score 2/5, struggles with Acceleration. Gets a simpler explanation, worked
+                                       examples and 3 practice questions.
+
+ 18:30               Student C         Missed the class. Catches up with the notes, the recording, and the session.
+
+ Next morning        Teacher           Sees that most of the class is stuck on Acceleration. Spends 10 minutes
+                                       reteaching it.
+
+ Evening             Parent            Sees that Session 3 is done, the quiz score, and the next step.
+
+
+12. Problems we still must solve
+These problems were raised by the founder. The ideas on the right are first thoughts to test, not decisions.
+
+ Problem                            Why it matters                          First idea (PROPOSED)
+
+ Student opens all slides at        Looks like progress, but nothing is     Slides unlock one after another. Each topic
+ once                               learned                                 ends with one question.
+
+ Student skips the test             No evidence of understanding            Session is complete only after its check.
+                                                                            Teacher sets this rule.
+
+ Student closes the app             Work is left half done                  Short sessions, saved progress, gentle
+                                                                            reminders.
+
+ Distraction from other apps        Study time becomes YouTube              Session mode with progress bar. Clear next
+                                    time                                    step on exit.
+
+ Teacher workload                   Teachers will not use a                 Reuse last year's notes. Publishing in a few
+                                    complicated tool                        clicks.
+
+ AI gives wrong answers             Wrong explanations hurt students        AI answers only from teacher material and
+                                                                            shows the source. Teacher review.
+
+ Child privacy                      Records of minors                       Verified login, parent sees only own child,
+                                                                            minimal data.
+
+
+
+
+VidhyaSaathy | Product Vision & Team Workspace | Team draft v1 | 13 Oct 2026                                              Page 7
+ Problem                          Why it matters                        First idea (PROPOSED)
+
+ Shared phones, weak internet     Many students may not have a          Mobile-first, light pages, compressed resources.
+                                  private device                        Offline is a later idea.
+
+
+  Key point: opening a slide or spending time in the app is not learning. Each session should end with a
+  check of understanding.
+
+
+13. The team mockup and tech ideas
+The team's mockup (titled ClassOS) shows a possible look: role-based login, student dashboard, AI study
+plan, quiz, classroom recording and parent view. These are concepts, not built screens.
+
+
+
+
+Team mockup. Labels and layout are for discussion.
+
+Suggested stack (PROPOSED, not decided)
+ Layer                 Options from the mockup                             Note
+
+ Frontend              React / Next.js, or Flutter                         Mobile-first matters for students
+
+ Backend               Node.js or Django                                   Pick what the team knows best
+
+ Database              MongoDB or PostgreSQL                               Relational fits classes, sessions and progress
+
+ AI                    OpenAI API with custom context                      Answers grounded in school material
+
+Future ideas from the mockup (not in scope now): voice-based learning, multi-language support, AR/VR classrooms, offline
+sync.
+
+
+
+
+VidhyaSaathy | Product Vision & Team Workspace | Team draft v1 | 13 Oct 2026                                        Page 8
+14. Decisions before we build
+Leave these open until the team agrees. Do not guess.
+
+ #     Decision                         Options                        Current thinking              Status
+
+ 1     Product name                     VidhyaSaathy, ClassOS, other   Idea matters more than        OPEN
+                                                                       name
+
+ 2     Student login and verification   Activation code, parent        Not roll number alone         OPEN
+                                        phone, admin approval
+
+ 3     Who adds students?               Admin upload, class teacher,                                 OPEN
+                                        self-join
+
+ 4     Min. evidence before a           Question count, question                                     OPEN
+       prerequisite gap is suggested    types
+
+ 5     Band thresholds vs               Overall %, per-concept,        Per-concept probably better   OPEN
+       per-concept tracking             dynamic
+
+ 6     Class insights show names or     Names, counts only                                           OPEN
+       only counts?
+
+ 7     How parents get updates          Daily, weekly, on event                                      OPEN
+
+ 8     How a session becomes            Slides viewed, quiz passed,    Quiz or check must be         PROPOSED
+       complete                         both                           included
+
+ 9     Target school for first pilot    Own school, partner school,                                  OPEN
+                                        other
+
+
+
+
+VidhyaSaathy | Product Vision & Team Workspace | Team draft v1 | 13 Oct 2026                                  Page 9
+15. Team workspace
+Use this section during team meetings. Ideas here are not approved features until the team marks them
+approved.
+
+A. Ideas and features
+ #      Idea                    Problem it solves           Who (S/T/P/     Priority     Status         Notes
+                                                            School)
+
+
+
+
+Priority: High / Medium / Low / Undecided. Status: New / To discuss / Approved / Rejected / In development / Done.
+
+
+B. Questions and pending decisions
+ #      Question or decision             Options                  What we think            Owner          Status
+
+
+
+
+C. Team notes, feedback and changes
+ Date             Feedback, improvement or idea to revisit                               Change to the vision? Who
+                                                                                         agreed?
+
+
+
+
+  Before the next meeting: each member writes one thing they would change about the idea, and
+  one thing they think is missing. Bring them to the next call.
+
+
+
+
+VidhyaSaathy | Product Vision & Team Workspace | Team draft v1 | 13 Oct 2026                                         Page 10
+
