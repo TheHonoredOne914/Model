@@ -10,6 +10,7 @@ import { QuickCheckCard } from './quick-check';
 import { LevelCheckCard } from './level-check';
 import { ArtifactCard } from './artifacts/artifact-card';
 import { YoutubeCard } from './youtube-card';
+import { VideoKitCard } from './video-kit-card';
 import type { ChatMeta, MasterySnapshot } from '@/lib/saathy-types';
 
 export interface UiMessage {
@@ -154,6 +155,9 @@ export function MessageBubble({
 
           {/* YouTube — inline player / honest search links + watch plan */}
           {meta?.youtube && !message.streaming ? <YoutubeCard plan={meta.youtube} /> : null}
+
+          {/* Curated video kit — verified direct links, concept-matched */}
+          {meta?.videos && !message.streaming ? <VideoKitCard kit={meta.videos} /> : null}
         </div>
 
         {/* Follow-up chips */}

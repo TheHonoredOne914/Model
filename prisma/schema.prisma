@@ -117,6 +117,21 @@ model Message {
   createdAt      DateTime     @default(now())
 }
 
+// Structured learning plan (slide → quiz → game → flashcards pipeline with checkpoints).
+// steps JSON: [{ id, title, agent, kind, status, payload? }] — status: pending|active|done
+model LearningPlan {
+  id           String   @id @default(cuid())
+  book         String // "gm" | "us" | "sc"
+  chapterNumber Int
+  title        String
+  band         Int      @default(1) // 0-3 level-check band at plan creation
+  steps        String   @default("[]")
+  currentStep  Int      @default(0)
+  checkpoint   String   @default("{}") // JSON: per-step results { [stepId]: { score, weak: [concept], at } }
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
 // Singleton settings row. Founder PIN gates provider/model configuration.
 model AppSettings {
   id             String    @id @default("main")

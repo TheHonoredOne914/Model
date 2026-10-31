@@ -11,6 +11,7 @@ import { searchFounderDocs, docsGroundingBlock } from '@/server/saathy/docs';
 import { buildSystemPrompt, buildHintPrompt, buildWhyPrompt } from '@/server/saathy/prompt';
 import { streamChat, completeOnce } from '@/server/saathy/providers';
 import { parseSaathyMeta, repairJson } from '@/lib/saathy-meta';
+import { videoGroundingBlock, matchVideos, watchUrl } from '@/data/videos';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 120;
@@ -168,6 +169,10 @@ export async function POST(req: NextRequest) {
     const libChunks = await searchFounderDocs(content, 3);
     const library = docsGroundingBlock(libChunks);
 
+    // Curated video kit — concept-matched DIRECT video links (all oEmbed-verified).
+    // Server-side, model-independent: the card renders even if the model forgets.
+    const videoHit = videoGroundingBlock(content, profile.className.includes('10') ? 10 : 9);
+
     // YouTube: if the student pasted a link, resolve the id + title so Saathy can
     // talk about the actual video (honest: guide HOW to watch, never claim to have watched).
     const pastedVideoId = ytIdFrom(content);
@@ -195,6 +200,7 @@ export async function POST(req: NextRequest) {
         book,
         library,
         youtubeContext,
+        videoKit: videoHit,
       });
     }
 
@@ -236,10 +242,25 @@ export async function POST(req: NextRequest) {
             if (rescued) finalMeta = rescued as typeof finalMeta;
           }
 
+          // Verified video kit: attach the matched concept's DIRECT links to the
+          // meta so the chat renders the video card (server-side, always accurate).
+          if (videoHit && mode !== 'chat') {
+            const kit = matchVideos(videoHit.concept, { limit: 1 })[0];
+            if (kit) {
+              (finalMeta as Record<string, unknown>).videos = {
+                concept: kit.concept,
+                subjectName: kit.subjectName,
+                cls: kit.cls,
+                primary: { ...kit.primary, url: watchUrl(kit.primary.vid) },
+                alternates: kit.alternates.map((a) => ({ ...a, url: watchUrl(a.vid) })),
+              };
+            }
+          }
+
           // If the student pasted a video and the model's youtube plan lacks the
           // id (or missed the plan entirely), attach it so the inline player renders.
           if (pastedVideoId) {
-            const y = (finalMeta as { youtube?: { videoId?: string | null } }).youtube;
+            const y = (finalMeta as { youtube?: { videoId?: string | null; title?: string } }).youtube;
             if (!y) {
               (finalMeta as Record<string, unknown>).youtube = { videoId: pastedVideoId, title: pastedVideoTitle || undefined, topic: focusConcept?.name ?? hits[0]?.conceptName ?? undefined, searches: [], timeline: [] };
             } else if (!y.videoId) {

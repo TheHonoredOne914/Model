@@ -237,6 +237,21 @@ export interface YoutubePlan {
   timeline?: YoutubeStep[];
 }
 
+export interface VideoKitEntry {
+  vid: string;
+  author: string;
+  title: string;
+  url: string;
+}
+
+export interface VideoKitMeta {
+  concept: string;
+  subjectName: string;
+  cls: number;
+  primary: VideoKitEntry;
+  alternates: VideoKitEntry[];
+}
+
 export interface ChatMeta {
   mode?: ChatMode;
   followups?: string[];
@@ -245,6 +260,7 @@ export interface ChatMeta {
   levelcheck?: LevelCheckPlan | null;
   artifact?: Artifact | null;
   youtube?: YoutubePlan | null;
+  videos?: VideoKitMeta | null;
   focusConcept?: string | null;
 }
 
