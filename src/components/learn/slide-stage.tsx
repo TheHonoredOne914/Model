@@ -36,9 +36,10 @@ export function SlideStage({ chapter, onDone, onExit }: { chapter: ChapterArtifa
 
       {/* slide body */}
       <div className="flex min-h-0 flex-1 items-start justify-center overflow-y-auto px-4 py-5 sm:items-center sm:px-8">
-        <div className="w-full max-w-3xl" key={s.id}>
+        <div className="slide-glide w-full max-w-3xl" key={s.id}>
           <div className="relative paper-sheet rounded-2xl px-5 py-6 shadow-[0_18px_44px_rgba(16,43,76,0.14)] sm:px-8 sm:py-8">
             <div className="tape left-6 top-[-12px]" aria-hidden />
+            <div className="page-curl" aria-hidden />
             <div className="paper-body">
               <p className="scribble text-[15px] font-semibold">{s.kicker}</p>
               <h2 className="font-hand mt-0.5 text-[30px] font-bold leading-tight text-[#16305b] sm:text-[38px]">{s.title}</h2>
@@ -67,11 +68,11 @@ export function SlideStage({ chapter, onDone, onExit }: { chapter: ChapterArtifa
 
       {/* bottom nav */}
       <div className="flex items-center justify-between gap-3 border-t border-[#e4e9f1] bg-white/85 px-4 py-3 backdrop-blur">
-        <button type="button" onClick={prev} disabled={i === 0} className="rounded-full border border-[#d8dde7] bg-white px-5 py-2 text-[13px] font-extrabold text-[#17324f] transition enabled:hover:bg-[#f2f7fd] disabled:opacity-40">← Pichle</button>
+        <button type="button" onClick={prev} disabled={i === 0} className="press rounded-full border border-[#d8dde7] bg-white px-5 py-2 text-[13px] font-extrabold text-[#17324f] transition enabled:hover:bg-[#f2f7fd] disabled:opacity-40">← Pichle</button>
         <p className="hidden text-[11.5px] font-semibold text-[#8a94a8] md:block">keyboard: ← → space · esc to exit</p>
         {i === n - 1
-          ? <button type="button" onClick={finish} className="rounded-full bg-[#16305b] px-6 py-2 text-[13px] font-extrabold text-white shadow-[0_6px_16px_rgba(22,48,91,0.35)] transition hover:bg-[#214F78]">Quiz pe chalo →</button>
-          : <button type="button" onClick={next} className="rounded-full bg-[#16305b] px-6 py-2 text-[13px] font-extrabold text-white shadow-[0_6px_16px_rgba(22,48,91,0.35)] transition hover:bg-[#214F78]">Agla →</button>}
+          ? <button type="button" onClick={finish} className="press rounded-full bg-[#16305b] px-6 py-2 text-[13px] font-extrabold text-white shadow-[0_6px_16px_rgba(22,48,91,0.35)] transition hover:bg-[#214F78]">Quiz pe chalo →</button>
+          : <button type="button" onClick={next} className="press rounded-full bg-[#16305b] px-6 py-2 text-[13px] font-extrabold text-white shadow-[0_6px_16px_rgba(22,48,91,0.35)] transition hover:bg-[#214F78]">Agla →</button>}
       </div>
     </div>
   );

@@ -37,8 +37,9 @@ export default function LearnHub() {
         </div>
       </div>
 
-      {/* books */}
-      <div className="mx-auto max-w-6xl px-4 py-8">
+      {/* books — spread on the study desk */}
+      <div className="desk-bg min-h-[60vh]">
+        <div className="mx-auto max-w-6xl px-4 py-8">
         {BOOKS.map(book => {
           const chapters = chaptersOf(book.key);
           return (
@@ -53,10 +54,11 @@ export default function LearnHub() {
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
                 {chapters.map(c => (
                   <Link key={c.chapter} href={`/learn/${book.key}/${c.chapter}`}
-                    className="group relative overflow-hidden rounded-2xl border border-[#e4e9f1] bg-white p-4 shadow-[0_4px_14px_rgba(16,43,76,0.06)] transition-all hover:-translate-y-1 hover:shadow-[0_14px_30px_rgba(16,43,76,0.13)]">
-                    <div className="absolute right-0 top-0 h-10 w-10 rounded-bl-2xl" style={{ background: book.cover, opacity: 0.92 }} aria-hidden>
+                    className="press group relative overflow-hidden rounded-2xl border border-[#e4e9f1] bg-white p-4 shadow-[0_4px_14px_rgba(16,43,76,0.06)] transition-all hover:-translate-y-1 hover:border-[#c9d9ea] hover:shadow-[0_16px_32px_rgba(16,43,76,0.14)]">
+                    <div className="absolute right-0 top-0 h-10 w-10 rounded-bl-2xl transition-all group-hover:h-12 group-hover:w-12" style={{ background: book.cover, opacity: 0.92 }} aria-hidden>
                       <span className="absolute right-2 top-1.5 font-hand text-[15px] font-bold text-white">{c.chapter}</span>
                     </div>
+                    <div className="tape left-1/2 top-[-10px] h-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden style={{ width: 64 }} />
                     <p className="scribble text-[13px]">{book.subject}</p>
                     <h3 className="mt-0.5 line-clamp-2 min-h-[42px] text-[14px] font-extrabold leading-snug text-[#16305b]">{c.title}</h3>
                     <div className="mt-2.5 flex flex-wrap gap-1.5 text-[10.5px] font-extrabold text-[#637c96]">
@@ -64,13 +66,14 @@ export default function LearnHub() {
                       <span className="rounded-full bg-[#fff3ea] px-2 py-0.5">{c.flashcards.length} cards</span>
                       <span className="rounded-full bg-[#eef8f0] px-2 py-0.5">{c.quiz.length} quiz</span>
                     </div>
-                    <p className="mt-2.5 text-[11.5px] font-extrabold text-[#2a5298] opacity-0 transition group-hover:opacity-100">Kholo → flow shuru</p>
+                    <p className="mt-2.5 text-[11.5px] font-extrabold text-[#2a5298] opacity-60 transition group-hover:translate-x-0.5 group-hover:opacity-100">Kholo → flow shuru</p>
                   </Link>
                 ))}
               </div>
             </section>
           );
         })}
+        </div>
       </div>
     </main>
   );

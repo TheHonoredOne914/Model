@@ -65,19 +65,19 @@ export function FlashcardDeck({ chapter, onDone, onExit }: { chapter: ChapterArt
         <p className="shrink-0 rounded-full bg-[#eef4fb] px-3 py-1 text-[12px] font-extrabold text-[#2a5298]">{i + 1} / {cards.length}</p>
       </div>
 
-      <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-5 overflow-y-auto px-4 py-6">
+      <div className="rise-in flex min-h-0 flex-1 flex-col items-center justify-center gap-5 overflow-y-auto px-4 py-6">
         <div className="flex gap-4 text-[12px] font-extrabold text-[#637c96]">
           <span className="rounded-full bg-[#eef8f0] px-3 py-1 text-[#3e7d4d]">✓ {known.length}</span>
           <span className="rounded-full bg-[#fdf0ea] px-3 py-1 text-[#b0552f]">↻ {notYet.length}</span>
         </div>
 
-        {/* the flip card */}
-        <div className="flip-scene w-full max-w-lg" style={{ minHeight: 300 }}>
+        {/* the flip card — a small stack of index cards taped to the desk */}
+        <div className="card-stack flip-scene w-full max-w-lg" style={{ minHeight: 300 }}>
           <button
             type="button"
             aria-label={flipped ? "Show question side" : "Reveal answer"}
             onClick={() => setFlipped(f => !f)}
-            className={`flip-inner block h-full w-full text-left ${flipped ? "flipped" : ""}`}
+            className={`flip-inner block h-full w-full text-left transition-shadow hover:shadow-[0_24px_54px_rgba(16,43,76,0.20)] ${flipped ? "flipped" : ""}`}
             style={{ minHeight: 300 }}
           >
             {/* FRONT — the question */}
@@ -106,8 +106,8 @@ export function FlashcardDeck({ chapter, onDone, onExit }: { chapter: ChapterArt
 
         {/* know / again */}
         <div className="flex w-full max-w-lg gap-3">
-          <button type="button" onClick={() => mark(false)} disabled={!flipped} className="flex-1 rounded-2xl border-2 border-[#f0c9b4] bg-[#fff3ea] px-4 py-3 font-hand text-[19px] font-bold text-[#b0552f] shadow-[0_2px_8px_rgba(176,85,47,0.10)] transition enabled:hover:bg-[#ffe9da] disabled:opacity-40">↻ Dobara paltoonga</button>
-          <button type="button" onClick={() => mark(true)} disabled={!flipped} className="flex-1 rounded-2xl border-2 border-[#b7ddbe] bg-[#eef8f0] px-4 py-3 font-hand text-[19px] font-bold text-[#3e7d4d] shadow-[0_2px_8px_rgba(62,125,77,0.10)] transition enabled:hover:bg-[#e2f3e5] disabled:opacity-40">✓ Yaad hai!</button>
+          <button type="button" onClick={() => mark(false)} disabled={!flipped} className="press flex-1 rounded-2xl border-2 border-[#f0c9b4] bg-[#fff3ea] px-4 py-3 font-hand text-[19px] font-bold text-[#b0552f] shadow-[0_2px_8px_rgba(176,85,47,0.10)] transition enabled:hover:bg-[#ffe9da] disabled:opacity-40">↻ Dobara paltoonga</button>
+          <button type="button" onClick={() => mark(true)} disabled={!flipped} className="press flex-1 rounded-2xl border-2 border-[#b7ddbe] bg-[#eef8f0] px-4 py-3 font-hand text-[19px] font-bold text-[#3e7d4d] shadow-[0_2px_8px_rgba(62,125,77,0.10)] transition enabled:hover:bg-[#e2f3e5] disabled:opacity-40">✓ Yaad hai!</button>
         </div>
         <p className="text-[11.5px] font-semibold text-[#8a94a8]">pehle socho, phir flip karo — wahi asli revision hai</p>
       </div>

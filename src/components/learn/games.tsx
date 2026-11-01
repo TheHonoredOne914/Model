@@ -55,9 +55,9 @@ export function GameHub({ chapter, onExit, onXp }: { chapter: ChapterArtifacts; 
           <div className="grid w-full max-w-3xl grid-cols-1 gap-4 sm:grid-cols-2">
             {GAMES.map(g => (
               <button key={g.key} type="button" onClick={() => setGame(g.key)}
-                className="group relative overflow-hidden rounded-2xl border-2 border-[#e4e9f1] bg-white p-5 text-left shadow-[0_10px_24px_rgba(16,43,76,0.10)] transition-all hover:-translate-y-1 hover:border-[#f0b490] hover:shadow-[0_16px_34px_rgba(16,43,76,0.16)]">
-                <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-[#fff1e7] transition-transform group-hover:scale-125" aria-hidden />
-                <p className="text-[26px] leading-none">{g.icon}</p>
+                className="press group relative overflow-hidden rounded-2xl border-2 border-[#e4e9f1] bg-white p-5 text-left shadow-[0_10px_24px_rgba(16,43,76,0.10)] transition-all hover:-translate-y-1 hover:border-[#f0b490] hover:shadow-[0_16px_34px_rgba(16,43,76,0.16)]">
+                <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-[#fff1e7] transition-transform duration-300 group-hover:scale-125" aria-hidden />
+                <p className="text-[26px] leading-none transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6">{g.icon}</p>
                 <p className="font-hand mt-2 text-[22px] font-bold text-[#16305b]">{g.name}</p>
                 <p className="mt-0.5 text-[12.5px] font-semibold leading-snug text-[#637c96]">{g.desc}</p>
                 <p className="mt-2 text-[11.5px] font-extrabold text-[#b0552f]">best: {best[g.key] ?? 0}</p>

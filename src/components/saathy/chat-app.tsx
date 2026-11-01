@@ -578,7 +578,7 @@ export function ChatApp() {
           <button
             type="button"
             onClick={() => setMobileSidebar(true)}
-            className="tap-target rounded-xl p-2.5 text-[#5c6f8a] hover:bg-[#e6f0ff] active:bg-[#dcebff] md:hidden"
+            className="tap-target press rounded-xl p-2.5 text-[#5c6f8a] hover:bg-[#e6f0ff] active:bg-[#dcebff] md:hidden"
             aria-label="Open sidebar"
           >
             <Menu className="h-5 w-5" />
@@ -586,7 +586,7 @@ export function ChatApp() {
           <button
             type="button"
             onClick={() => setCollapsed((v) => !v)}
-            className="hidden rounded-xl p-2 text-[#5c6f8a] hover:bg-[#e6f0ff] md:block"
+            className="press hidden rounded-xl p-2 text-[#5c6f8a] hover:bg-[#e6f0ff] md:block"
             aria-label={collapsed ? 'Show sidebar' : 'Hide sidebar'}
           >
             {collapsed ? <PanelLeftOpen className="h-5 w-5" /> : <PanelLeftClose className="h-5 w-5" />}
@@ -620,12 +620,12 @@ export function ChatApp() {
           {/* Reference-image pills: streak + XP (live from games, quiz, quick checks) */}
           <div className="ml-auto flex items-center gap-1.5">
             {streak > 0 ? (
-              <span className="flex items-center gap-1 rounded-full border border-[#ffd9bd] bg-[#fff3ea] px-2.5 py-1 text-[11px] font-extrabold text-[#a05c2e]" title={`${streak}-day practice streak`}>
+              <span className="flex items-center gap-1 rounded-full border border-[#ffd9bd] bg-[#fff3ea] px-2.5 py-1 text-[11px] font-extrabold text-[#a05c2e] shadow-[0_1px_4px_rgba(224,122,47,0.14)]" title={`${streak}-day practice streak`}>
                 <Flame className="h-3.5 w-3.5 text-[#e5762f]" />
                 {streak} streak
               </span>
             ) : null}
-            <span className="flex items-center gap-1 rounded-full border border-[#d8e6f4] bg-[#f3f9ff] px-2.5 py-1 text-[11px] font-extrabold text-[#2a5298]" title={`${xpTotal} XP earned`}>
+            <span className="flex items-center gap-1 rounded-full border border-[#d8e6f4] bg-[#f3f9ff] px-2.5 py-1 text-[11px] font-extrabold text-[#2a5298] shadow-[0_1px_4px_rgba(42,82,152,0.12)]" title={`${xpTotal} XP earned`}>
               <Sparkles className="h-3.5 w-3.5 text-[#5E97F0]" />
               {xpTotal} XP
             </span>
@@ -666,8 +666,8 @@ export function ChatApp() {
           </button>
         </header>
 
-        {/* Messages */}
-        <div ref={scrollRef} onScroll={onScroll} className="chat-scroll min-h-0 flex-1 overflow-y-auto px-3 sm:px-5">
+        {/* Messages — on faint ruled notebook paper, like the back page of a school copy */}
+        <div ref={scrollRef} onScroll={onScroll} className="chat-scroll notebook-lines min-h-0 flex-1 overflow-y-auto px-3 sm:px-5">
           <div className="mx-auto flex max-w-3xl flex-col gap-4 pb-6 pt-4">
             {showWelcome ? (
               <div className="flex flex-col items-center pt-6 text-center sm:pt-10">
@@ -710,7 +710,7 @@ export function ChatApp() {
                       key={chip.label}
                       type="button"
                       onClick={chip.act}
-                      className="chip-in group rounded-2xl border border-[#ece7e0] bg-white/85 px-4 py-3 text-left shadow-[0_1px_6px_rgba(30,58,138,0.05)] transition-all hover:-translate-y-0.5 hover:border-[#7fb3ff] hover:shadow-[0_6px_16px_rgba(127,179,255,0.25)]"
+                      className="chip-in press group rounded-2xl border border-[#ece7e0] bg-white/90 px-4 py-3 text-left shadow-[0_1px_6px_rgba(30,58,138,0.05)] transition-all hover:-translate-y-0.5 hover:border-[#7fb3ff] hover:shadow-[0_8px_18px_rgba(127,179,255,0.28)]"
                       style={{ animationDelay: `${i * 80}ms` }}
                     >
                       <p className="text-[13.5px] font-extrabold text-[#16305b]">{chip.label}</p>
@@ -720,7 +720,8 @@ export function ChatApp() {
                 </div>
 
                 {/* How Saathy works — the one instructions block (features live in the backend, reachable from the chat) */}
-                <div className="mt-5 w-full max-w-xl rounded-2xl border border-[#ece7e0] bg-white/85 px-5 py-4 text-left shadow-[0_1px_6px_rgba(30,58,138,0.05)]">
+                <div className="rise-in relative mt-5 w-full max-w-xl rounded-2xl border border-[#ece7e0] bg-white/90 px-5 py-4 text-left shadow-[0_1px_6px_rgba(30,58,138,0.05)]">
+                  <div className="tape left-6 top-[-11px]" aria-hidden />
                   <p className="flex items-center gap-1.5 text-[10.5px] font-extrabold uppercase tracking-wider text-[#2a5298]">
                     <Sparkles className="h-3.5 w-3.5" />
                     How Saathy works

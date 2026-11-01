@@ -1,6 +1,6 @@
 "use client";
 // QuizPaper — a real worksheet on school paper: pick an answer, instant honest feedback.
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { ChapterArtifacts, QuizQ } from "@/lib/learn/artifacts";
 
 function shuffle<T>(arr: T[]): T[] {
@@ -18,15 +18,32 @@ export function QuizPaper({ chapter, onDone, onExit }: { chapter: ChapterArtifac
   const [weak, setWeak] = useState<Set<string>>(new Set());
   const [finished, setFinished] = useState(false);
 
+  // confetti on the result sheet when the student really earned it
+  const confetti = useMemo(() => (finished
+    ? Array.from({ length: 26 }, (_, i) => ({
+        left: `${4 + Math.random() * 92}%`,
+        delay: `${Math.random() * 1.2}s`,
+        color: ["#b0552f", "#7fb3ff", "#f6b04e", "#5fae6f", "#b58cc9"][i % 5],
+        size: 6 + Math.round(Math.random() * 5),
+      }))
+    : []), [finished]);
+
   if (finished) {
     const pct = Math.round((correct / qs.length) * 100);
     const band = pct >= 75 ? 3 : pct >= 50 ? 2 : pct >= 25 ? 1 : 0;
     const verdict = pct >= 75 ? "Shabaash! Chapter pakka ho gaya." : pct >= 50 ? "Solid base hai — flashcards se polish karo." : pct >= 25 ? "Thoda aur mehnat — flashcards + dobara slides." : "Koi baat nahi — slides se shuru karte hain,ekdum basic se.";
     return (
       <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto slide-stage px-4 py-8 sm:items-center">
-        <div className="w-full max-w-lg">
+        <div className="rise-in w-full max-w-lg">
           <div className="relative paper-sheet rounded-2xl px-6 py-8 text-center shadow-[0_18px_44px_rgba(16,43,76,0.14)]">
             <div className="tape left-1/2 top-[-12px]" aria-hidden />
+            {pct >= 50 && (
+              <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+                {confetti.map((cf, k) => (
+                  <span key={k} className="confetti-piece" style={{ left: cf.left, animationDelay: cf.delay, background: cf.color, width: cf.size, height: cf.size }} />
+                ))}
+              </div>
+            )}
             <div className="paper-body !pl-0">
               <p className="scribble text-[16px]">checked by Saathy ✎</p>
               <div className="font-hand text-[64px] font-bold leading-none text-[#16305b]">{pct}%</div>
@@ -81,7 +98,7 @@ export function QuizPaper({ chapter, onDone, onExit }: { chapter: ChapterArtifac
                   return (
                     <button key={k} type="button" onClick={() => pick(k)} disabled={show}
                       className={`flex w-full items-start gap-2.5 rounded-xl border-2 px-3.5 py-2.5 text-left transition-all
-                        ${show && isRight ? "border-[#5fae6f] bg-[#eef8f0]" : show && isPicked ? "border-[#d96a4a] bg-[#fdf0ea]" : "border-[#e4d9c8] bg-white/85 hover:border-[#7fb3ff] hover:bg-[#f6fbff]"} ${show ? "cursor-default" : "cursor-pointer"}`}>
+                        ${show && isRight ? "pop-good border-[#5fae6f] bg-[#eef8f0]" : show && isPicked ? "shake border-[#d96a4a] bg-[#fdf0ea]" : "border-[#e4d9c8] bg-white/85 hover:border-[#7fb3ff] hover:bg-[#f6fbff] hover:-translate-y-px"} ${show ? "cursor-default" : "cursor-pointer"}`}>
                       <span className={`font-hand mt-[1px] flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 text-[15px] font-bold ${show && isRight ? "border-[#5fae6f] text-[#3e7d4d]" : show && isPicked ? "border-[#d96a4a] text-[#b0552f]" : "border-[#c9bfa8] text-[#7a6a4a]"}`}>{"ABCD"[k]}</span>
                       <span className="font-note text-[15.5px] leading-snug text-[#2b3a67]">{o}</span>
                       {show && isRight && <span className="scribble ml-auto shrink-0 text-[17px]">✓</span>}

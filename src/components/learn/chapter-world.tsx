@@ -71,9 +71,9 @@ export function ChapterWorld({ chapter }: { chapter: ChapterArtifacts }) {
 
   /* ---------- OVERLAYS ---------- */
   return (
-    <div className="min-h-screen bg-[#f6f9fc]">
+    <div className="desk-bg min-h-screen">
       {/* ======== page header ======== */}
-      <div className="sticky top-0 z-30 border-b border-[#e4e9f1] bg-white/90 backdrop-blur">
+      <div className="sticky top-0 z-30 border-b border-[#e4e9f1] bg-white/92 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3">
           <Link href="/learn" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#d8dde7] bg-white text-[15px] font-extrabold text-[#17324f] hover:bg-[#f2f7fd]" aria-label="All books">←</Link>
           <div className="min-w-0 flex-1">
@@ -99,7 +99,7 @@ export function ChapterWorld({ chapter }: { chapter: ChapterArtifacts }) {
                     if (s.key === "play") setOverlay("games");
                     if (s.key === "master") setTab("map");
                   }}
-                    className={`flex items-center gap-1.5 rounded-full border-2 px-3 py-1.5 text-[12px] font-extrabold transition ${isDone ? "border-[#9fd8a8] bg-[#eef8f0] text-[#3e7d4d]" : isNext ? "border-[#f0b490] bg-[#fff1e7] text-[#b0552f]" : "border-[#e4e9f1] bg-white text-[#637c96] hover:border-[#c9d6e4]"}`}>
+                    className={`press flex items-center gap-1.5 rounded-full border-2 px-3 py-1.5 text-[12px] font-extrabold transition ${isDone ? "border-[#9fd8a8] bg-[#eef8f0] text-[#3e7d4d]" : isNext ? "border-[#f0b490] bg-[#fff1e7] text-[#b0552f] shadow-[0_2px_8px_rgba(176,85,47,0.14)]" : "border-[#e4e9f1] bg-white text-[#637c96] hover:border-[#c9d6e4]"}`}>
                     <span>{s.icon}</span>{s.label}{isDone && " ✓"}
                   </button>
                   {i < STEPS.length - 1 && <span aria-hidden className="font-hand text-[15px] text-[#b0552f] opacity-70">→</span>}
@@ -120,8 +120,8 @@ export function ChapterWorld({ chapter }: { chapter: ChapterArtifacts }) {
           <HeroCard icon="⭐" title={`${prog.xp} XP`} sub="game station se" />
         </div>
 
-        {/* explore: concept map + flowchart */}
-        <div className="rounded-3xl border border-[#e4e9f1] bg-white p-4 shadow-[0_10px_28px_rgba(16,43,76,0.07)] sm:p-6">
+        {/* explore: concept map + flowchart — the notebook page */}
+        <div className="rise-in grain rounded-3xl border border-[#e4e9f1] bg-white p-4 shadow-[0_10px_28px_rgba(16,43,76,0.07)] sm:p-6">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
             <div>
               <h2 className="font-hand text-[26px] font-bold leading-tight text-[#16305b]">{chapter.conceptMap ? chapter.conceptMap.center : chapter.title} — ka naksha</h2>
@@ -147,10 +147,10 @@ export function ChapterWorld({ chapter }: { chapter: ChapterArtifacts }) {
 
           {/* CTA row */}
           <div className="mt-6 flex flex-wrap items-center gap-2.5 border-t border-[#eef2f7] pt-5">
-            <button type="button" onClick={() => setOverlay("slides")} className="rounded-full bg-[#16305b] px-6 py-2.5 text-[13.5px] font-extrabold text-white shadow-[0_6px_16px_rgba(22,48,91,0.35)] hover:bg-[#214F78]">📖 Slides se seekho →</button>
-            <button type="button" onClick={() => setOverlay("quiz")} className="rounded-full border-2 border-[#16305b] bg-white px-5 py-2 text-[13px] font-extrabold text-[#16305b] hover:bg-[#f2f7fd]">✍️ Seedha quiz</button>
-            <button type="button" onClick={() => setOverlay("flash")} className="rounded-full border-2 border-[#e4d9c8] bg-white px-5 py-2 text-[13px] font-extrabold text-[#7a5a2e] hover:bg-[#fffaf0]">🔁 Flashcards</button>
-            <button type="button" onClick={() => setOverlay("games")} className="rounded-full border-2 border-[#e4d9c8] bg-white px-5 py-2 text-[13px] font-extrabold text-[#7a5a2e] hover:bg-[#fffaf0]">🎮 Games</button>
+            <button type="button" onClick={() => setOverlay("slides")} className="press rounded-full bg-[#16305b] px-6 py-2.5 text-[13.5px] font-extrabold text-white shadow-[0_6px_16px_rgba(22,48,91,0.35)] hover:bg-[#214F78]">📖 Slides se seekho →</button>
+            <button type="button" onClick={() => setOverlay("quiz")} className="press rounded-full border-2 border-[#16305b] bg-white px-5 py-2 text-[13px] font-extrabold text-[#16305b] hover:bg-[#f2f7fd]">✍️ Seedha quiz</button>
+            <button type="button" onClick={() => setOverlay("flash")} className="press rounded-full border-2 border-[#e4d9c8] bg-white px-5 py-2 text-[13px] font-extrabold text-[#7a5a2e] hover:bg-[#fffaf0]">🔁 Flashcards</button>
+            <button type="button" onClick={() => setOverlay("games")} className="press rounded-full border-2 border-[#e4d9c8] bg-white px-5 py-2 text-[13px] font-extrabold text-[#7a5a2e] hover:bg-[#fffaf0]">🎮 Games</button>
           </div>
 
           {/* honest recommendation */}
@@ -193,7 +193,7 @@ export function ChapterWorld({ chapter }: { chapter: ChapterArtifacts }) {
 
 function HeroCard({ icon, title, sub }: { icon: string; title: string; sub: string }) {
   return (
-    <div className="rounded-2xl border border-[#e4e9f1] bg-white px-4 py-3.5 shadow-[0_4px_14px_rgba(16,43,76,0.06)]">
+    <div className="rise-in relative rounded-2xl border border-[#e4e9f1] bg-white px-4 py-3.5 shadow-[0_4px_14px_rgba(16,43,76,0.06)] transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_22px_rgba(16,43,76,0.12)]">
       <p className="text-[18px] leading-none">{icon}</p>
       <p className="font-hand mt-1 text-[24px] font-bold leading-none text-[#16305b]">{title}</p>
       <p className="mt-1 text-[11.5px] font-bold text-[#637c96]">{sub}</p>
@@ -228,8 +228,8 @@ function LevelGate({ chapter, onDone }: { chapter: ChapterArtifacts; onDone: (ba
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-[#f6f9fc] px-4 py-8 sm:items-center">
-      <div className="w-full max-w-xl">
+    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto desk-bg px-4 py-8 sm:items-center">
+      <div className="rise-in w-full max-w-xl">
         <div className="relative paper-sheet rounded-2xl px-5 py-7 shadow-[0_18px_44px_rgba(16,43,76,0.16)] sm:px-8">
           <div className="tape left-8 top-[-12px]" aria-hidden />
           <div className="paper-body">
@@ -245,7 +245,7 @@ function LevelGate({ chapter, onDone }: { chapter: ChapterArtifacts; onDone: (ba
                 <div className="mt-3 space-y-2">
                   {q.options.map((o, k) => (
                     <button key={k} type="button" onClick={() => pick(k)} disabled={picked !== null}
-                      className={`w-full rounded-xl border-2 px-3.5 py-2.5 text-left font-note text-[15px] font-semibold transition ${picked !== null && k === q.answer ? "border-[#5fae6f] bg-[#eef8f0]" : picked === k ? "border-[#d96a4a] bg-[#fdf0ea]" : "border-[#e4d9c8] bg-white/85 hover:border-[#7fb3ff]"}`}>{o}</button>
+                      className={`press w-full rounded-xl border-2 px-3.5 py-2.5 text-left font-note text-[15px] font-semibold transition ${picked !== null && k === q.answer ? "pop-good border-[#5fae6f] bg-[#eef8f0]" : picked === k ? "shake border-[#d96a4a] bg-[#fdf0ea]" : "border-[#e4d9c8] bg-white/85 hover:-translate-y-px hover:border-[#7fb3ff]"}`}>{o}</button>
                   ))}
                 </div>
               </div>

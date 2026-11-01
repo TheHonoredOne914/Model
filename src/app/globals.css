@@ -187,7 +187,8 @@
 /* reduced motion: honour globally (mascot behaviour rule 9) */
 @media (prefers-reduced-motion: reduce) {
   .mascot-float, .mascot-thinking, .mascot-pop, .msg-in, .chip-in, .shake, .typing-dot,
-  .lc-card, .lc-opt, .lc-confetti, .chart-line, .chart-bar, .chart-dot, .mascot-sparkle, .mascot-bubble {
+  .lc-card, .lc-opt, .lc-confetti, .chart-line, .chart-bar, .chart-dot, .mascot-sparkle, .mascot-bubble,
+  .rise-in, .slide-glide, .pop-good, .confetti-piece, .sketch-line {
     animation: none !important;
   }
 }
@@ -468,3 +469,111 @@
 
 /* notebook margin scribble */
 .scribble { font-family: var(--font-hand), cursive; color: #b0552f; transform: rotate(-1.2deg); }
+
+/* ===== POLISH LAYER — notebook atmosphere + buttery motion ===== */
+
+/* soft ruled-paper backdrop for the chat canvas (very faint — bubbles still pop) */
+.notebook-lines {
+  background-image:
+    linear-gradient(to bottom, transparent 31px, rgba(127, 179, 255, 0.11) 31px, rgba(127, 179, 255, 0.11) 32px, transparent 32px);
+  background-size: 100% 32px;
+}
+
+/* desk surface: quiet dot grid on powder blue, like a study desk mat */
+.desk-bg {
+  background-color: #f3f7fb;
+  background-image: radial-gradient(rgba(42, 82, 152, 0.085) 1.2px, transparent 1.3px);
+  background-size: 22px 22px;
+}
+
+/* fine paper grain — layered gradients, zero image weight */
+.grain {
+  background-image:
+    radial-gradient(rgba(43, 58, 103, 0.035) 1px, transparent 1.1px),
+    radial-gradient(rgba(43, 58, 103, 0.02) 1px, transparent 1.2px);
+  background-size: 9px 9px, 13px 13px;
+  background-position: 0 0, 4px 6px;
+}
+
+/* entrance: gentle rise with soft settle (cards, panels) */
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(14px) scale(0.99); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.rise-in { animation: riseIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* slide stage: new slide glides in from the right, like turning a page */
+@keyframes slideGlide {
+  from { opacity: 0; transform: translateX(42px) rotate(0.4deg); }
+  to { opacity: 1; transform: translateX(0) rotate(0); }
+}
+.slide-glide { animation: slideGlide 0.42s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* answer feedback: proud pop for correct */
+@keyframes popGood {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.035); }
+  100% { transform: scale(1); }
+}
+.pop-good { animation: popGood 0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* flashcard stack: next cards peek from behind the active one */
+.card-stack { position: relative; }
+.card-stack::before,
+.card-stack::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 1rem;
+  background: #fbf7ec;
+  border: 1px solid #e8e0cf;
+  box-shadow: 0 10px 22px rgba(16, 43, 76, 0.10);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+.card-stack::before { transform: rotate(1.6deg) translateY(5px) scale(0.985); z-index: -1; }
+.card-stack::after { transform: rotate(-2.2deg) translateY(10px) scale(0.965); z-index: -2; }
+.card-stack:hover::before { transform: rotate(2.4deg) translateY(8px) scale(0.99); }
+.card-stack:hover::after { transform: rotate(-3deg) translateY(14px) scale(0.97); }
+
+/* washi tape, upgraded: jagged torn ends + softer sheen */
+.tape {
+  background: linear-gradient(105deg, rgba(255, 233, 168, 0.94) 0%, rgba(255, 240, 190, 0.9) 45%, rgba(250, 224, 150, 0.94) 100%);
+  box-shadow: 0 2px 5px rgba(43, 58, 103, 0.14), inset 0 0 12px rgba(255, 255, 255, 0.5);
+  -webkit-mask-image: linear-gradient(to right, transparent 0 2px, black 4px calc(100% - 4px), transparent calc(100% - 2px));
+  mask-image: linear-gradient(to right, transparent 0 2px, black 4px calc(100% - 4px), transparent calc(100% - 2px));
+}
+
+/* tactile buttons: press-in feel everywhere */
+.press { transition: transform 0.16s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.16s ease, background-color 0.16s ease, border-color 0.16s ease; }
+.press:active { transform: scale(0.965); }
+
+/* page-turn book corner for the slide sheet */
+.page-curl {
+  position: absolute;
+  right: 0; bottom: 0;
+  width: 34px; height: 34px;
+  background: linear-gradient(315deg, #efe8d8 0%, #f7f1e3 48%, transparent 50%);
+  border-radius: 0 0 1rem 0;
+  box-shadow: -3px -3px 6px rgba(43, 58, 103, 0.06);
+  pointer-events: none;
+}
+
+/* hand-drawn underline for headings */
+.squiggle-under {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='7' viewBox='0 0 120 7'%3E%3Cpath d='M2 4.5 Q 12 1.5, 22 4 T 42 4 T 62 4 T 82 4 T 102 4 T 122 4' fill='none' stroke='%23b0552f' stroke-width='2.2' stroke-linecap='round' opacity='0.55'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: 120px 7px;
+  padding-bottom: 10px;
+}
+
+/* confetti — reuse lc-confetti motion with more colours */
+.confetti-piece {
+  position: absolute;
+  top: -14px;
+  width: 8px;
+  height: 8px;
+  border-radius: 2.5px;
+  animation: lcConfetti 2.6s ease-in both;
+}

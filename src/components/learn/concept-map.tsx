@@ -21,10 +21,11 @@ export function ConceptMapView({ map }: { map: ConceptMap }) {
       const base = (gi / Math.max(1, groups.length)) * Math.PI * 2 - Math.PI / 2;
       gAngles.push(base);
       const nodes = byGroup.get(g.id) ?? [];
-      const spread = Math.min(0.9, 0.34 * nodes.length);
+      // wider fan + 3 radius rings so sibling labels never overlap
+      const spread = Math.min(1.2, 0.46 * nodes.length);
       nodes.forEach((n, ni) => {
         const a = base + (nodes.length === 1 ? 0 : (ni / (nodes.length - 1) - 0.5) * spread);
-        const r = 175 + (ni % 2) * 55;
+        const r = 168 + (ni % 3) * 64;
         positions.set(n.id, { x: CX + Math.cos(a) * r * 1.25, y: CY + Math.sin(a) * r * 0.92 });
       });
     });
