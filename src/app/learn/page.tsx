@@ -58,7 +58,7 @@ export default function LearnHub() {
                     <div className="absolute right-0 top-0 h-10 w-10 rounded-bl-2xl transition-all group-hover:h-12 group-hover:w-12" style={{ background: book.cover, opacity: 0.92 }} aria-hidden>
                       <span className="absolute right-2 top-1.5 font-hand text-[15px] font-bold text-white">{c.chapter}</span>
                     </div>
-                    <div className="tape left-1/2 top-[-10px] h-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden style={{ width: 64 }} />
+                    <div className="tape tape-sm left-6 top-2" aria-hidden />
                     <p className="scribble text-[13px]">{book.subject}</p>
                     <h3 className="mt-0.5 line-clamp-2 min-h-[42px] text-[14px] font-extrabold leading-snug text-[#16305b]">{c.title}</h3>
                     <div className="mt-2.5 flex flex-wrap gap-1.5 text-[10.5px] font-extrabold text-[#637c96]">
