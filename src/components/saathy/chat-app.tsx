@@ -3,7 +3,7 @@
 // Saathy — the chat experience. Orchestrates context, streaming, the mastery
 // loop, and the three-panel layout (sidebar / chat / settings).
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Menu, PanelLeftClose, PanelLeftOpen, Settings as SettingsIcon, Sparkles, Download, FileDown, Flame, Lightbulb } from 'lucide-react';
+import { Menu, PanelLeftClose, PanelLeftOpen, Settings as SettingsIcon, Sparkles, Download, FileDown, Flame, Lightbulb, BookOpen, PenLine, ListChecks, Youtube, StickyNote, Map, Layers, NotebookPen } from 'lucide-react';
 import { Sheet, SheetContent, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { useToast } from '@/hooks/use-toast';
 import { Mascot, type MascotPose } from './mascot';
@@ -532,6 +532,8 @@ export function ChatApp() {
             activeId={activeId}
             focusConceptId={ctx?.profile.focusConceptId ?? null}
             animationsEnabled={animations}
+            streak={streak}
+            xpTotal={xpTotal}
             onSelect={loadConversation}
             onNew={newChat}
             onDelete={deleteConversation}
@@ -555,6 +557,8 @@ export function ChatApp() {
             activeId={activeId}
             focusConceptId={ctx?.profile.focusConceptId ?? null}
             animationsEnabled={animations}
+            streak={streak}
+            xpTotal={xpTotal}
             onSelect={(id) => {
               setMobileSidebar(false);
               loadConversation(id);
@@ -698,25 +702,51 @@ export function ChatApp() {
 
                 <div className="mt-6 grid w-full max-w-xl grid-cols-1 gap-2 sm:grid-cols-2">
                   {[
-                    { label: 'Samjha do', desc: 'step by step, your book, your pace', act: () => chipPrefill(`Explain ${focusConcept?.name ?? currentChapterInfo?.chapter.name ?? 'a concept'} `) },
-                    { label: 'Yeh solve karo', desc: 'guided — no copy-paste answers', act: () => chipPrefill('Solve this: ') },
-                    { label: 'Test me', desc: 'quick questions at my level', act: () => chipSend(`Start a practice round on ${currentChapterInfo?.chapter.name ?? 'my current chapter'}`, 'practise') },
-                    { label: 'Video se dekho', desc: 'YouTube plan + watch timeline', act: () => chipSend(`Give me a YouTube video plan for ${currentChapterInfo?.chapter.name ?? focusConcept?.name ?? 'my current topic'} with a watch timeline`, 'explain') },
-                    { label: 'Notes bhar do', desc: 'teacher material, compressed', act: () => chipSend(`Summarise my teacher's notes for ${currentChapterInfo?.chapter.name ?? 'the current chapter'}`, 'summarise') },
-                    { label: 'Meri position', desc: 'what to revise, what is strong', act: () => chipSend('Give me my honest position across my chapters — what to revise first', 'chat') },
-                    { label: 'Learning modules', desc: 'slides, quiz, cards, games — full flow', act: () => { window.location.href = '/learn'; } },
+                    { label: 'Samjha do', desc: 'step by step, your book, your pace', Icon: BookOpen, act: () => chipPrefill(`Explain ${focusConcept?.name ?? currentChapterInfo?.chapter.name ?? 'a concept'} `) },
+                    { label: 'Yeh solve karo', desc: 'guided — no copy-paste answers', Icon: PenLine, act: () => chipPrefill('Solve this: ') },
+                    { label: 'Test me', desc: 'quick questions at my level', Icon: ListChecks, act: () => chipSend(`Start a practice round on ${currentChapterInfo?.chapter.name ?? 'my current chapter'}`, 'practise') },
+                    { label: 'Video se dekho', desc: 'YouTube plan + watch timeline', Icon: Youtube, act: () => chipSend(`Give me a YouTube video plan for ${currentChapterInfo?.chapter.name ?? focusConcept?.name ?? 'my current topic'} with a watch timeline`, 'explain') },
+                    { label: 'Notes bhar do', desc: 'teacher material, compressed', Icon: StickyNote, act: () => chipSend(`Summarise my teacher's notes for ${currentChapterInfo?.chapter.name ?? 'the current chapter'}`, 'summarise') },
+                    { label: 'Meri position', desc: 'what to revise, what is strong', Icon: Map, act: () => chipSend('Give me my honest position across my chapters — what to revise first', 'chat') },
                   ].map((chip, i) => (
                     <button
                       key={chip.label}
                       type="button"
                       onClick={chip.act}
-                      className="chip-in press group rounded-2xl border border-[#ece7e0] bg-white/90 px-4 py-3 text-left shadow-[0_1px_6px_rgba(30,58,138,0.05)] transition-all hover:-translate-y-0.5 hover:border-[#7fb3ff] hover:shadow-[0_8px_18px_rgba(127,179,255,0.28)]"
-                      style={{ animationDelay: `${i * 80}ms` }}
+                      className="chip-in press group flex items-start gap-3 rounded-2xl border border-[#ece7e0] bg-white/90 px-4 py-3 text-left shadow-[0_1px_6px_rgba(30,58,138,0.05)] transition-all hover:-translate-y-0.5 hover:border-[#7fb3ff] hover:shadow-[0_8px_18px_rgba(127,179,255,0.28)]"
+                      style={{ animationDelay: `${i * 70}ms` }}
                     >
-                      <p className="text-[13.5px] font-extrabold text-[#16305b]">{chip.label}</p>
-                      <p className="mt-0.5 text-[11.5px] font-semibold text-[#8a94a8]">{chip.desc}</p>
+                      <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#eaf3ff] text-[#2a5298] transition-colors group-hover:bg-[#dcebff]">
+                        <chip.Icon className="h-4 w-4" />
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block text-[13.5px] font-extrabold text-[#16305b]">{chip.label}</span>
+                        <span className="mt-0.5 block text-[11.5px] font-semibold text-[#8a94a8]">{chip.desc}</span>
+                      </span>
                     </button>
                   ))}
+                </div>
+
+                {/* separate modules — each with its own identity */}
+                <div className="mt-3 grid w-full max-w-xl grid-cols-2 gap-2">
+                  <a href="/learn" className="mod-card mod-learn chip-in group flex items-start gap-3 rounded-2xl border border-[#cfe8d6] bg-[#f0faf3] px-4 py-3 text-left shadow-[0_1px_6px_rgba(30,58,138,0.05)]">
+                    <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-white text-[#3e7d4d] shadow-[0_1px_4px_rgba(16,43,76,0.10)]">
+                      <Layers className="h-4 w-4" />
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block text-[13.5px] font-extrabold text-[#16305b]">Learn module</span>
+                      <span className="mt-0.5 block text-[11.5px] font-semibold text-[#8a94a8]">slides · quiz · cards · games</span>
+                    </span>
+                  </a>
+                  <a href="/revision" className="mod-card mod-revision chip-in group flex items-start gap-3 rounded-2xl border border-[#f0dcc8] bg-[#fff6ec] px-4 py-3 text-left shadow-[0_1px_6px_rgba(30,58,138,0.05)]">
+                    <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-white text-[#b0552f] shadow-[0_1px_4px_rgba(16,43,76,0.10)]">
+                      <NotebookPen className="h-4 w-4" />
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block text-[13.5px] font-extrabold text-[#16305b]">Revision module</span>
+                      <span className="mt-0.5 block text-[11.5px] font-semibold text-[#8a94a8]">Mission 80/80 · IMP Qs · MCQ drill</span>
+                    </span>
+                  </a>
                 </div>
 
                 {/* How Saathy works — the one instructions block (features live in the backend, reachable from the chat) */}
@@ -813,10 +843,17 @@ export function ChatApp() {
           </ul>
         </div>
 
-        <a href="/learn" className="group rounded-2xl border border-[#d8e6f4] bg-gradient-to-br from-[#f3f9ff] to-[#eaf3fb] px-4 py-3.5 shadow-[0_1px_8px_rgba(30,58,138,0.06)] transition hover:-translate-y-0.5 hover:shadow-[0_8px_20px_rgba(30,58,138,0.12)]">
-          <p className="text-[12.5px] font-extrabold text-[#16305b]">📚 Learning modules</p>
+        {/* Modules — separate shelves on the desk */}
+        <p className="px-1 text-[10.5px] font-extrabold uppercase tracking-wider text-[#2a5298]">Aapke modules</p>
+        <a href="/learn" className="mod-card mod-learn group rounded-2xl border border-[#cfe8d6] bg-gradient-to-br from-[#f3fbf5] to-[#e6f5ea] px-4 py-3.5 shadow-[0_1px_8px_rgba(30,58,138,0.06)]">
+          <p className="flex items-center gap-1.5 text-[12.5px] font-extrabold text-[#16305b]"><Layers className="h-4 w-4 text-[#3e7d4d]" /> Learn modules</p>
           <p className="mt-0.5 text-[11px] font-semibold leading-snug text-[#637c96]">3,353 artifacts across 36 chapters — slides, quiz, flashcards, games, reports.</p>
-          <p className="mt-1 text-[11px] font-extrabold text-[#2a5298] group-hover:underline">Kholo →</p>
+          <p className="mod-goto mt-1 text-[11px] font-extrabold text-[#3e7d4d]">Kholo →</p>
+        </a>
+        <a href="/revision" className="mod-card mod-revision group rounded-2xl border border-[#f0dcc8] bg-gradient-to-br from-[#fff8f2] to-[#ffeadb] px-4 py-3.5 shadow-[0_1px_8px_rgba(30,58,138,0.06)]">
+          <p className="flex items-center gap-1.5 text-[12.5px] font-extrabold text-[#16305b]"><NotebookPen className="h-4 w-4 text-[#b0552f]" /> Revision · Mission 80/80</p>
+          <p className="mt-0.5 text-[11px] font-semibold leading-snug text-[#637c96]">Ganita Manjari final revision — concepts, IMP Qs, MCQ drill, exam-morning page.</p>
+          <p className="mod-goto mt-1 text-[11px] font-extrabold text-[#b0552f]">Kholo →</p>
         </a>
 
         {/* Recent doubts (reference-image right panel) */}

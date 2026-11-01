@@ -584,4 +584,155 @@
   animation: lcConfetti 2.6s ease-in both;
 }
 
-/* tape-sm recompile nudge */
+/* ===== NOTEBOOK DESIGN SYSTEM v2 — the whole app on one study desk ===== */
+
+/* a richer desk: warm wood-tinted paper mat with a soft vignette, cards sit on it */
+.notebook-desk {
+  background-color: #f2ede3;
+  background-image:
+    radial-gradient(1200px 600px at 80% -10%, rgba(127, 179, 255, 0.16), transparent 55%),
+    radial-gradient(900px 500px at -10% 110%, rgba(246, 213, 198, 0.28), transparent 55%),
+    repeating-linear-gradient(90deg, rgba(43, 58, 103, 0.028) 0 2px, transparent 2px 118px),
+    radial-gradient(rgba(43, 58, 103, 0.05) 1px, transparent 1.2px);
+  background-size: auto, auto, 120px 100%, 26px 26px;
+}
+
+/* squared maths paper — for Explore panels and diagrams */
+.doodle-paper {
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(to right, rgba(111, 154, 202, 0.16) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(111, 154, 202, 0.16) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+
+/* index card: pale blue header rule + faint lines, like a real revision card */
+.index-card {
+  background-color: #fffef9;
+  background-image:
+    linear-gradient(to bottom, transparent 44px, rgba(214, 120, 110, 0.5) 44px, rgba(214, 120, 110, 0.5) 45.5px, transparent 45.5px),
+    linear-gradient(to bottom, transparent 63px, rgba(127, 164, 211, 0.28) 63px, rgba(127, 164, 211, 0.28) 64px, transparent 64px),
+    linear-gradient(to bottom, transparent 84px, rgba(127, 164, 211, 0.28) 84px, rgba(127, 164, 211, 0.28) 85px, transparent 85px);
+  background-repeat: no-repeat;
+}
+
+/* spiral binding edge — punch a row of rings along the top */
+.spiral-top {
+  position: relative;
+}
+.spiral-top::before {
+  content: "";
+  position: absolute;
+  top: -9px; left: 0; right: 0;
+  height: 18px;
+  background-image: radial-gradient(circle 4.5px at 50% 50%, transparent 3.2px, #5e7ba6 3.2px, #8fa7c9 4.4px, transparent 4.6px);
+  background-size: 26px 18px;
+  background-repeat: repeat-x;
+  background-position: 13px 0;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* ruled writing sheet without margin line (used inside cards where holes/margin are too much) */
+.paper-lite {
+  background-color: var(--paper);
+  background-image: linear-gradient(to bottom, transparent 27px, rgba(127, 164, 211, 0.24) 27px, rgba(127, 164, 211, 0.24) 28px, transparent 28px);
+  background-size: 100% 28px;
+  color: var(--ink);
+}
+
+/* sticky notes — three moods */
+.sticky-note {
+  position: relative;
+  border-radius: 4px 14px 6px 12px / 12px 6px 14px 5px;
+  box-shadow: 0 8px 18px rgba(43, 58, 103, 0.16), 0 1px 3px rgba(43, 58, 103, 0.10);
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+}
+.sticky-note:hover { transform: rotate(0deg) translateY(-3px) !important; box-shadow: 0 14px 26px rgba(43, 58, 103, 0.20); }
+.sticky-peach { background: linear-gradient(178deg, #fff3ea 0%, #ffe4d3 90%); }
+.sticky-sky   { background: linear-gradient(178deg, #f5faff 0%, #ddeefb 90%); }
+.sticky-mint  { background: linear-gradient(178deg, #f2faf3 0%, #d9f2dd 90%); }
+.sticky-lemon { background: linear-gradient(178deg, #fffbea 0%, #fff0bd 90%); }
+
+/* folded corner (bottom-right) for paper cards */
+.dog-ear {
+  position: relative;
+  overflow: hidden;
+}
+.dog-ear::after {
+  content: "";
+  position: absolute;
+  right: 0; bottom: 0;
+  width: 22px; height: 22px;
+  background: linear-gradient(315deg, transparent 49%, rgba(43, 58, 103, 0.10) 50%, #f4ead6 51%);
+  filter: drop-shadow(-1px -1px 1px rgba(43, 58, 103, 0.08));
+  pointer-events: none;
+}
+
+/* page stack — side edges of a thick notebook */
+.page-stack { position: relative; }
+.page-stack::after {
+  content: "";
+  position: absolute;
+  top: 5px; bottom: -6px; left: 6px; right: -6px;
+  border-radius: inherit;
+  background: repeating-linear-gradient(180deg, #f7f2e6 0 2px, #e9e2d0 2px 3px);
+  transform: rotate(0.5deg);
+  z-index: -1;
+  opacity: 0.9;
+}
+
+/* washi tape colourways */
+.tape-sky  { background: linear-gradient(105deg, rgba(186, 222, 251, 0.92) 0%, rgba(214, 236, 253, 0.88) 45%, rgba(167, 209, 244, 0.92) 100%); }
+.tape-mint { background: linear-gradient(105deg, rgba(199, 240, 205, 0.92) 0%, rgba(224, 248, 226, 0.88) 45%, rgba(184, 232, 192, 0.92) 100%); }
+.tape-pink { background: linear-gradient(105deg, rgba(255, 214, 224, 0.92) 0%, rgba(255, 231, 238, 0.88) 45%, rgba(255, 202, 216, 0.92) 100%); }
+
+/* module identities — one accent per module, consistent everywhere */
+.mod-chat     { --mod: #7fb3ff; --mod-ink: #2a5298; --mod-soft: #eaf3ff; }
+.mod-learn    { --mod: #8fd0a5; --mod-ink: #3e7d4d; --mod-soft: #eef8f0; }
+.mod-revision { --mod: #f0b490; --mod-ink: #b0552f; --mod-soft: #fff1e7; }
+.mod-card {
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.22s ease, border-color 0.22s ease;
+}
+.mod-card:hover {
+  transform: translateY(-3px) rotate(-0.4deg);
+  border-color: var(--mod);
+  box-shadow: 0 14px 28px rgba(16, 43, 76, 0.14);
+}
+.mod-card:hover .mod-goto { transform: translateX(3px); opacity: 1; }
+.mod-goto { transition: transform 0.22s ease, opacity 0.22s ease; opacity: 0.65; }
+
+/* motion — new entrances */
+@keyframes swayIn {
+  from { opacity: 0; transform: translateY(16px) rotate(1.6deg); }
+  to { opacity: 1; transform: translateY(0) rotate(0deg); }
+}
+.sway-in { animation: swayIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+@keyframes flipInCard {
+  from { opacity: 0; transform: perspective(900px) rotateX(7deg) translateY(10px); }
+  to { opacity: 1; transform: perspective(900px) rotateX(0deg) translateY(0); }
+}
+.flip-in { animation: flipInCard 0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+@keyframes drawCheck {
+  from { stroke-dashoffset: 26; }
+  to { stroke-dashoffset: 0; }
+}
+.draw-check { stroke-dasharray: 26; animation: drawCheck 0.45s ease-out both; }
+
+/* XP ring shimmer */
+@keyframes shimmer {
+  0% { background-position: -160px 0; }
+  100% { background-position: 160px 0; }
+}
+.shimmer-line {
+  background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, 0.75) 50%, transparent 70%);
+  background-size: 200px 100%;
+  animation: shimmer 2.6s ease-in-out infinite;
+}
+
+/* honour reduced motion for the new pieces */
+@media (prefers-reduced-motion: reduce) {
+  .sway-in, .flip-in, .draw-check, .shimmer-line, .mod-card, .sticky-note, .mod-goto { animation: none !important; transition: none !important; }
+}

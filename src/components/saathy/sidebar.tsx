@@ -1,10 +1,11 @@
 'use client';
 
-// Sidebar — brand, New chat, searchable history, the concept mastery panel
+// Sidebar — brand, module shelf (Chat / Learn / Revision, each with its own
+// identity), New chat, searchable history, the concept mastery panel
 // (heat-map colours: green=secure, peach=mixed, red=stuck — VS-61 semantics,
 // student-friendly labels only), and the student/settings footer.
 import { useMemo, useState } from 'react';
-import { MessageSquarePlus, Search, Trash2, Settings, Target, BookOpen } from 'lucide-react';
+import { MessageSquarePlus, Search, Trash2, Settings, Target, BookOpen, NotebookPen, Layers, Flame, Sparkles } from 'lucide-react';
 import { Mascot } from './mascot';
 import { Button } from '@/components/ui/button';
 import type { ConceptCtx, ProfileCtx, SubjectCtx } from '@/lib/saathy-types';
@@ -23,6 +24,8 @@ export interface SidebarProps {
   activeId: string | null;
   focusConceptId: string | null;
   animationsEnabled: boolean;
+  streak?: number;
+  xpTotal?: number;
   onSelect: (id: string) => void;
   onNew: () => void;
   onDelete: (id: string) => void;
@@ -37,6 +40,8 @@ export function SidebarContent({
   activeId,
   focusConceptId,
   animationsEnabled,
+  streak = 0,
+  xpTotal = 0,
   onSelect,
   onNew,
   onDelete,
@@ -70,7 +75,29 @@ export function SidebarContent({
         </div>
       </div>
 
-      <div className="px-3">
+      {/* Modules shelf — three separate modules, each with its own identity */}
+      <div className="px-3 pt-3">
+        <p className="px-1 pb-1.5 text-[10px] font-extrabold uppercase tracking-widest text-[#9aa8bf]">Modules</p>
+        <div className="grid grid-cols-3 gap-1.5">
+          <a href="/" aria-current="page" className="mod-card mod-chat flex flex-col items-center gap-1 rounded-xl border-2 border-[#7fb3ff] bg-[#eaf3ff] px-1 py-2 text-center">
+            <MessageSquarePlus className="h-4 w-4 text-[#2a5298]" />
+            <span className="text-[10px] font-extrabold text-[#2a5298]">Chat</span>
+            <span className="text-[8.5px] font-bold leading-none text-[#7a8db0]">active</span>
+          </a>
+          <a href="/learn" className="mod-card mod-learn flex flex-col items-center gap-1 rounded-xl border border-[#e0e8f2] bg-white px-1 py-2 text-center">
+            <Layers className="h-4 w-4 text-[#3e7d4d]" />
+            <span className="text-[10px] font-extrabold text-[#17324f]">Learn</span>
+            <span className="text-[8.5px] font-bold leading-none text-[#9aa8bf]">slides · quiz</span>
+          </a>
+          <a href="/revision" className="mod-card mod-revision flex flex-col items-center gap-1 rounded-xl border border-[#e0e8f2] bg-white px-1 py-2 text-center">
+            <NotebookPen className="h-4 w-4 text-[#b0552f]" />
+            <span className="text-[10px] font-extrabold text-[#17324f]">Revision</span>
+            <span className="text-[8.5px] font-bold leading-none text-[#9aa8bf]">80/80</span>
+          </a>
+        </div>
+      </div>
+
+      <div className="px-3 pt-2.5">
         <Button
           onClick={onNew}
           className="h-10 w-full justify-start gap-2 rounded-xl bg-gradient-to-r from-[#7fb3ff] to-[#5e97f0] px-3 text-[13.5px] font-extrabold text-[#0e2a5e] shadow-[0_2px_10px_rgba(127,179,255,0.45)] hover:brightness-105"
@@ -171,8 +198,22 @@ export function SidebarContent({
         </div>
       ) : null}
 
-      {/* Student + settings */}
+      {/* Student + settings — personalised footer */}
       <div className="border-t border-[#f0e4d8] p-3">
+        {(streak > 0 || xpTotal > 0) && (
+          <div className="mb-2 flex items-center gap-1.5">
+            {streak > 0 ? (
+              <span className="flex flex-1 items-center justify-center gap-1 rounded-lg border border-[#ffd9bd] bg-[#fff3ea] px-2 py-1 text-[10.5px] font-extrabold text-[#a05c2e]" title={`${streak}-day practice streak`}>
+                <Flame className="h-3 w-3 text-[#e5762f]" /> {streak}-day streak
+              </span>
+            ) : null}
+            {xpTotal > 0 ? (
+              <span className="flex flex-1 items-center justify-center gap-1 rounded-lg border border-[#d8e6f4] bg-[#f3f9ff] px-2 py-1 text-[10.5px] font-extrabold text-[#2a5298]" title={`${xpTotal} XP earned`}>
+                <Sparkles className="h-3 w-3 text-[#5E97F0]" /> {xpTotal} XP
+              </span>
+            ) : null}
+          </div>
+        )}
         <div className="flex items-center gap-2.5 rounded-xl bg-white/70 p-2.5">
           <Mascot pose={profile?.name ? 'wink' : 'idle'} size={38} animationsEnabled={animationsEnabled} />
           <div className="min-w-0 flex-1">

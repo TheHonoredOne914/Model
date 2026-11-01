@@ -27,6 +27,7 @@ import {
   Check,
   X,
   GraduationCap,
+  Lightbulb,
 } from "lucide-react";
 
 type Mode = "learn" | "imp" | "mcq";
@@ -131,11 +132,12 @@ export function ChapterView({
 
   return (
     <div className="mx-auto w-full max-w-lg px-4 pb-32 pt-4 sm:max-w-2xl">
-      {/* header */}
+      {/* header — notebook margin note */}
       <div className="flex items-center gap-3">
         <button
+          type="button"
           onClick={onBack}
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900 text-zinc-300 transition-colors hover:border-zinc-600"
+          className="press flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#d8dde7] bg-white text-[#17324f] transition-colors hover:border-[#b9d4ea]"
           aria-label="Back to chapters"
         >
           <ChevronLeft className="h-5 w-5" />
@@ -143,45 +145,46 @@ export function ChapterView({
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
             <span
-              className={`flex h-7 w-7 items-center justify-center rounded-lg text-xs font-black ${
-                chapter.star ? "bg-amber-400 text-zinc-950" : "bg-zinc-800 text-zinc-300"
+              className={`flex h-7 w-7 items-center justify-center rounded-lg font-hand text-[15px] font-bold ${
+                chapter.star ? "bg-[#f0b490] text-[#7a3a12]" : "bg-[#eef4fb] text-[#2a5298]"
               }`}
             >
               {chapter.num}
             </span>
-            <p className="truncate text-sm font-bold text-zinc-100">{chapter.short}</p>
-            {chapter.star && <Chip className="bg-amber-400/15 text-amber-300">★</Chip>}
+            <p className="truncate text-[14px] font-extrabold text-[#16305b]">{chapter.short}</p>
+            {chapter.star && <Chip className="text-[#b0552f]">★</Chip>}
           </div>
           <div className="mt-1.5 flex items-center gap-2">
             <ProgressBar value={total ? (doneCount / total) * 100 : 0} className="h-1" />
-            <span className="shrink-0 text-[10px] font-bold text-zinc-500">
+            <span className="shrink-0 font-hand text-[13px] font-bold text-[#8a94a8]">
               {doneCount}/{total}
             </span>
           </div>
         </div>
         <button
+          type="button"
           onClick={toggleStar}
-          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border transition-colors ${
+          className={`press flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border transition-colors ${
             starred
-              ? "border-amber-400/50 bg-amber-400/15 text-amber-300"
-              : "border-zinc-800 bg-zinc-900 text-zinc-500 hover:text-amber-300"
+              ? "border-[#f0b490] bg-[#fff1e7] text-[#b0552f]"
+              : "border-[#d8dde7] bg-white text-[#8a94a8] hover:text-[#b0552f]"
           }`}
           aria-label={starred ? "Remove star" : "Star for later"}
         >
-          <Star className={`h-5 w-5 ${starred ? "fill-amber-300" : ""}`} />
+          <Star className={`h-5 w-5 ${starred ? "fill-[#f0b490]" : ""}`} />
         </button>
       </div>
 
-      {/* mode tabs */}
-      <div className="mt-4 grid grid-cols-3 gap-1 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-1">
+      {/* mode tabs — paper folder tabs */}
+      <div className="mt-4 grid grid-cols-3 gap-1 rounded-2xl border border-[#e4d9c8] bg-[#fffaf0] p-1">
         {tabs.map((t) => (
           <button
             key={t.id}
             onClick={() => setMode(t.id)}
-            className={`flex min-h-[40px] items-center justify-center gap-1.5 rounded-xl text-xs font-bold transition-all ${
+            className={`press flex min-h-[40px] items-center justify-center gap-1.5 rounded-xl font-hand text-[14px] font-bold transition-all ${
               mode === t.id
-                ? "bg-amber-400 text-zinc-950"
-                : "text-zinc-400 hover:text-zinc-200"
+                ? "bg-[#16305b] text-white shadow-[0_2px_8px_rgba(22,48,91,0.30)]"
+                : "text-[#7a6a4a] hover:bg-white/70"
             }`}
           >
             {t.icon}
@@ -231,32 +234,34 @@ export function ChapterView({
         )}
       </div>
 
-      {/* nav bar */}
-      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-zinc-800/80 bg-zinc-950/90 backdrop-blur">
-        <div className="mx-auto flex max-w-lg items-center gap-2 px-4 py-3 sm:max-w-2xl">
+      {/* nav bar — a paper strip pinned to the bottom */}
+      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-[#e8e0cf] bg-[#f4efe4]/95 backdrop-blur">
+        <div className="composer-safe mx-auto flex max-w-lg items-center gap-2 px-4 py-3 sm:max-w-2xl">
           <button
+            type="button"
             onClick={() => go(-1)}
             disabled={
               (mode === "learn" && learnIdx === 0) ||
               (mode === "imp" && impIdx === 0) ||
               (mode === "mcq" && mcqIdx === 0)
             }
-            className="flex min-h-[44px] flex-1 items-center justify-center gap-1 rounded-xl border border-zinc-800 bg-zinc-900 text-sm font-bold text-zinc-300 transition-all enabled:hover:border-zinc-600 disabled:opacity-30"
+            className="press flex min-h-[44px] flex-1 items-center justify-center gap-1 rounded-xl border border-[#d8dde7] bg-white text-[13px] font-extrabold text-[#17324f] transition-all enabled:hover:bg-[#f2f7fd] disabled:opacity-30"
           >
             <ChevronLeft className="h-4 w-4" /> Pichhla
           </button>
-          <span className="shrink-0 text-xs font-black text-zinc-500">
+          <span className="shrink-0 font-hand text-[14px] font-bold text-[#637c96]">
             {mode === "learn" ? learnIdx + 1 : mode === "imp" ? impIdx + 1 : mcqIdx + 1} /{" "}
             {total}
           </span>
           <button
+            type="button"
             onClick={() => go(1)}
             disabled={
               (mode === "learn" && learnIdx === deck.length - 1) ||
               (mode === "imp" && impIdx === chapter.imps.length - 1) ||
               (mode === "mcq" && mcqIdx === chapter.mcqs.length - 1)
             }
-            className="flex min-h-[44px] flex-1 items-center justify-center gap-1 rounded-xl bg-amber-400 text-sm font-black text-zinc-950 transition-all enabled:hover:bg-amber-300 disabled:opacity-30"
+            className="press flex min-h-[44px] flex-1 items-center justify-center gap-1 rounded-xl bg-[#16305b] text-[13px] font-extrabold text-white shadow-[0_4px_12px_rgba(22,48,91,0.30)] transition-all enabled:hover:bg-[#214F78] disabled:opacity-30"
           >
             {mode === "learn" && learnIdx === deck.length - 2
               ? "Almost done!"
@@ -271,7 +276,7 @@ export function ChapterView({
   );
 }
 
-/* ================= LEARN (one concept at a time) ================= */
+/* ================= LEARN (one concept at a time — index cards) ================= */
 
 function LearnCardView({
   chapter,
@@ -286,106 +291,107 @@ function LearnCardView({
 }) {
   const key = `${chapter.num}-${card.kind}-${"idx" in card ? card.idx : "i"}`;
   return (
-    <div key={key} className="card-in rounded-3xl border border-zinc-800 bg-zinc-900/60 p-5 sm:p-6">
-      {card.kind === "intro" && (
-        <>
-          <Chip className="bg-violet-400/10 text-violet-300">
-            <GraduationCap className="h-3 w-3" /> Chapter intro
-          </Chip>
-          <p className="mt-3 text-lg font-bold leading-snug text-zinc-100">
-            {chapter.short} — ek line mein
-          </p>
-          <p className="mt-2 text-sm leading-relaxed text-zinc-400">
-            <Html html={chapter.intro} />
-          </p>
-          <div className="mt-4 grid grid-cols-3 gap-2 text-center">
-            {[
-              { n: chapter.formulas.length, l: "Formulas" },
-              { n: chapter.checks.length, l: "Concept rules" },
-              { n: chapter.tricks.length, l: "Speed tricks" },
-            ].map((x) => (
-              <div key={x.l} className="rounded-xl bg-zinc-950/60 p-2.5">
-                <p className="text-lg font-black text-amber-300">{x.n}</p>
-                <p className="text-[10px] font-bold uppercase tracking-wide text-zinc-500">
-                  {x.l}
-                </p>
-              </div>
-            ))}
-          </div>
-        </>
-      )}
+    <div key={key} className="flip-in relative paper-sheet dog-ear rounded-2xl px-5 py-5 shadow-[0_12px_30px_rgba(16,43,76,0.13)] sm:px-7 sm:py-6">
+      <div className="tape tape-sky left-6 top-[-11px]" aria-hidden />
+      <div className="paper-body">
+        {card.kind === "intro" && (
+          <>
+            <Chip className="rotate-[-1deg] text-[#2a5298]">
+              <GraduationCap className="h-3.5 w-3.5" /> Chapter intro
+            </Chip>
+            <p className="mt-3 font-hand text-[22px] font-bold leading-snug text-[#16305b]">
+              {chapter.short} — ek line mein
+            </p>
+            <p className="mt-2 font-note text-[14px] leading-relaxed text-[#3f4d6b]">
+              <Html html={chapter.intro} />
+            </p>
+            <div className="mt-4 grid grid-cols-3 gap-2 text-center">
+              {[
+                { n: chapter.formulas.length, l: "Formulas" },
+                { n: chapter.checks.length, l: "Concept rules" },
+                { n: chapter.tricks.length, l: "Speed tricks" },
+              ].map((x) => (
+                <div key={x.l} className="rounded-xl border border-[#e4d9c8] bg-white/80 p-2.5">
+                  <p className="font-hand text-[22px] font-bold leading-none text-[#b0552f]">{x.n}</p>
+                  <p className="mt-1 font-note text-[10px] font-bold uppercase tracking-wide text-[#8a94a8]">
+                    {x.l}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
 
-      {card.kind === "formula" && (
-        <>
-          <div className="flex items-center justify-between">
-            <Chip className="bg-amber-400/15 text-amber-300">
+        {card.kind === "formula" && (
+          <>
+            <Chip className="rotate-[-1deg] text-[#b0552f]">
               Formula {card.idx + 1}/{chapter.formulas.length}
             </Chip>
-          </div>
-          <div className="mt-3 rounded-2xl border border-amber-400/20 bg-amber-400/5 p-4">
-            <p className="text-lg font-black leading-relaxed tracking-tight text-amber-200 sm:text-xl">
-              <Html html={chapter.formulas[card.idx].f} />
+            <div className="doodle-paper mt-3 rounded-2xl border border-[#dbe4f0] p-4">
+              <p className="font-hand text-[22px] font-bold leading-relaxed text-[#16305b] sm:text-[26px]">
+                <Html html={chapter.formulas[card.idx].f} />
+              </p>
+            </div>
+            <p className="mt-4 font-note text-[14px] leading-relaxed text-[#3f4d6b]">
+              <Html html={chapter.formulas[card.idx].meaning} />
             </p>
-          </div>
-          <p className="mt-4 text-sm leading-relaxed text-zinc-300">
-            <Html html={chapter.formulas[card.idx].meaning} />
-          </p>
-          <div className="mt-3 rounded-xl bg-zinc-950/70 p-3">
-            <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500">
-              Tiny example
-            </p>
-            <p className="mt-1 text-sm font-semibold text-emerald-300">
-              <Html html={chapter.formulas[card.idx].ex} />
-            </p>
-          </div>
-        </>
-      )}
+            <div className="mt-3 rounded-xl border border-[#cfe8d6] bg-[#f0faf3] p-3">
+              <p className="font-hand text-[13.5px] font-bold uppercase tracking-wide text-[#3e7d4d]">
+                Tiny example
+              </p>
+              <p className="mt-1 font-note text-[13.5px] font-semibold text-[#3e7d4d]">
+                <Html html={chapter.formulas[card.idx].ex} />
+              </p>
+            </div>
+          </>
+        )}
 
-      {card.kind === "check" && (
-        <>
-          <Chip className="bg-emerald-400/10 text-emerald-300">
-            <Check className="h-3 w-3" /> Concept rule {card.idx + 1}/{chapter.checks.length}
-          </Chip>
-          <p className="mt-4 text-base font-semibold leading-relaxed text-zinc-200">
-            <Html html={chapter.checks[card.idx]} />
-          </p>
-        </>
-      )}
+        {card.kind === "check" && (
+          <>
+            <Chip className="rotate-[-1deg] text-[#3e7d4d]">
+              <Check className="h-3.5 w-3.5" /> Concept rule {card.idx + 1}/{chapter.checks.length}
+            </Chip>
+            <p className="mt-4 font-note text-[15.5px] font-semibold leading-relaxed text-[#16305b]">
+              <Html html={chapter.checks[card.idx]} />
+            </p>
+          </>
+        )}
 
-      {card.kind === "trick" && (
-        <>
-          <Chip className="bg-fuchsia-400/10 text-fuchsia-300">
-            <Zap className="h-3 w-3" /> Speed trick {card.idx + 1}/{chapter.tricks.length}
-          </Chip>
-          <div className="mt-3 rounded-2xl border border-fuchsia-400/20 bg-fuchsia-400/5 p-4">
-            <p className="text-[10px] font-black uppercase tracking-widest text-fuchsia-300/80">
-              Instant trick
+        {card.kind === "trick" && (
+          <>
+            <Chip className="rotate-[-1deg] text-[#7a4a9e]">
+              <Zap className="h-3.5 w-3.5" /> Speed trick {card.idx + 1}/{chapter.tricks.length}
+            </Chip>
+            <div className="mt-3 rounded-2xl border border-[#e4d0f0] bg-[#faf3fd] p-4">
+              <p className="font-hand text-[13.5px] font-bold uppercase tracking-wide text-[#7a4a9e]">
+                Instant trick
+              </p>
+              <p className="mt-1 font-note text-[14px] font-bold leading-relaxed text-[#16305b]">
+                <Html html={chapter.tricks[card.idx].trick} />
+              </p>
+            </div>
+            <p className="mt-3 font-note text-[13.5px] leading-relaxed text-[#5a6b8c]">
+              <span className="font-bold text-[#3f4d6b]">Kab fire kare: </span>
+              <Html html={chapter.tricks[card.idx].when} />
             </p>
-            <p className="mt-1 text-sm font-bold leading-relaxed text-zinc-100">
-              <Html html={chapter.tricks[card.idx].trick} />
-            </p>
-          </div>
-          <p className="mt-3 text-sm leading-relaxed text-zinc-400">
-            <span className="font-bold text-zinc-300">Kab fire kare: </span>
-            <Html html={chapter.tricks[card.idx].when} />
-          </p>
-        </>
-      )}
-      <div className="mt-5 flex justify-center gap-1">
-        {Array.from({ length: total }).map((_, i) => (
-          <span
-            key={i}
-            className={`h-1 rounded-full transition-all ${
-              i === pos ? "w-4 bg-amber-400" : "w-1 bg-zinc-700"
-            }`}
-          />
-        ))}
+          </>
+        )}
+        <div className="mt-5 flex justify-center gap-1">
+          {Array.from({ length: total }).map((_, i) => (
+            <span
+              key={i}
+              className={`h-1 rounded-full transition-all ${
+                i === pos ? "w-4 bg-[#b0552f]" : "w-1 bg-[#d8cfba]"
+              }`}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
 }
 
-/* ================= IMP QUESTIONS ================= */
+/* ================= IMP QUESTIONS — worksheet style ================= */
 
 function ImpQView({
   q,
@@ -403,96 +409,103 @@ function ImpQView({
   const [show, setShow] = useState(false);
 
   return (
-    <div className="card-in rounded-3xl border border-zinc-800 bg-zinc-900/60 p-5 sm:p-6">
-      <div className="flex flex-wrap items-center gap-2">
-        <Chip className="bg-fuchsia-400/10 text-fuchsia-300">IMP Q {pos + 1}/{total}</Chip>
-        {solved && (
-          <Chip className="bg-emerald-400/10 text-emerald-300">
-            <Check className="h-3 w-3" /> done
-          </Chip>
+    <div className="flip-in relative paper-sheet dog-ear rounded-2xl px-5 py-5 shadow-[0_12px_30px_rgba(16,43,76,0.13)] sm:px-7 sm:py-6">
+      <div className="tape tape-pink right-6 top-[-11px] rotate-[2deg]" aria-hidden />
+      <div className="paper-body">
+        <div className="flex flex-wrap items-center gap-2">
+          <Chip className="text-[#a86bc9]">IMP Q {pos + 1}/{total}</Chip>
+          {solved && (
+            <Chip className="text-[#3e7d4d]">
+              <Check className="h-3.5 w-3.5" /> done
+            </Chip>
+          )}
+          <Chip className="text-[#637c96]">{q.level}</Chip>
+          <span className="truncate font-hand text-[13px] font-bold text-[#8a94a8]">{q.concept}</span>
+        </div>
+
+        <p className="mt-3 font-note text-[15.5px] font-bold leading-relaxed text-[#16305b]">
+          <Html html={q.stem} />
+        </p>
+
+        {q.fig && (
+          <img
+            src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/figs/${q.fig}`}
+            alt="Question figure"
+            className="mt-3 w-full rounded-xl border border-[#e4d9c8] bg-white"
+          />
         )}
-        <Chip className="bg-zinc-800 text-zinc-400">{q.level}</Chip>
-        <span className="truncate text-[11px] font-semibold text-zinc-500">{q.concept}</span>
-      </div>
 
-      <p className="mt-3 text-base font-bold leading-relaxed text-zinc-100">
-        <Html html={q.stem} />
-      </p>
-
-      {q.fig && (
-        <img
-          src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/figs/${q.fig}`}
-          alt="Question figure"
-          className="mt-3 w-full rounded-xl border border-zinc-800 bg-white"
-        />
-      )}
-
-      {!show ? (
-        <button
-          onClick={() => {
-            setShow(true);
-            onSolve();
-          }}
-          className="mt-5 flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl bg-amber-400 text-sm font-black text-zinc-950 transition-colors hover:bg-amber-300"
-        >
-          <Eye className="h-4 w-4" /> Pehle KHUD try karo — phir solution dikhao
-        </button>
-      ) : (
-        <div className="mt-4 space-y-3">
-          <div className="rounded-2xl bg-zinc-950/70 p-4">
-            <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500">
-              Solution
-            </p>
-            <ol className="mt-2 space-y-2">
-              {q.steps.map((s, i) => (
-                <li key={i} className="flex gap-2.5 text-sm leading-relaxed text-zinc-300">
-                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-zinc-800 text-[10px] font-black text-amber-300">
-                    {i + 1}
-                  </span>
-                  <span>
-                    <Html html={s} />
-                  </span>
-                </li>
-              ))}
-            </ol>
-          </div>
-          <div className="rounded-2xl border border-emerald-400/25 bg-emerald-400/10 p-4">
-            <p className="text-[10px] font-black uppercase tracking-widest text-emerald-300">
-              Answer
-            </p>
-            <p className="mt-1 text-sm font-black text-emerald-200">
-              <Html html={q.answer} />
-            </p>
-          </div>
-          {q.why.length > 0 && (
-            <div className="rounded-2xl bg-zinc-950/70 p-4">
-              <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500">
-                Why this works
+        {!show ? (
+          <button
+            type="button"
+            onClick={() => {
+              setShow(true);
+              onSolve();
+            }}
+            className="press mt-5 flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl bg-[#16305b] text-[13.5px] font-extrabold text-white shadow-[0_4px_12px_rgba(22,48,91,0.30)] transition-colors hover:bg-[#214F78]"
+          >
+            <Eye className="h-4 w-4" /> Pehle KHUD try karo — phir solution dikhao
+          </button>
+        ) : (
+          <div className="rise-in mt-4 space-y-3">
+            <div className="paper-lite rounded-2xl p-4">
+              <p className="font-hand text-[14px] font-bold uppercase tracking-wide text-[#2a5298]">
+                Solution
               </p>
-              <ul className="mt-2 space-y-1.5">
-                {q.why.map((w, i) => (
-                  <li key={i} className="text-xs leading-relaxed text-zinc-400">
-                    • <Html html={w} />
+              <ol className="mt-2 space-y-2">
+                {q.steps.map((s, i) => (
+                  <li key={i} className="flex gap-2.5 font-note text-[13.5px] leading-relaxed text-[#3f4d6b]">
+                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-[#eef4fb] font-hand text-[12.5px] font-bold text-[#2a5298]">
+                      {i + 1}
+                    </span>
+                    <span>
+                      <Html html={s} />
+                    </span>
                   </li>
                 ))}
-              </ul>
+              </ol>
             </div>
-          )}
-          <div className="rounded-2xl border border-amber-400/15 bg-amber-400/5 p-4">
-            <p className="text-[10px] font-black uppercase tracking-widest text-amber-300/80">
-              Teacher note
-            </p>
-            <p className="mt-1 text-xs italic leading-relaxed text-zinc-400">
-              <Html html={q.hinglish} />
-            </p>
+            <div className="rounded-2xl border-2 border-[#9fd8a8] bg-[#eef8f0] p-4">
+              <p className="font-hand text-[14px] font-bold uppercase tracking-wide text-[#3e7d4d]">
+                Answer
+              </p>
+              <p className="mt-1 font-hand text-[18px] font-bold leading-relaxed text-[#2e5e38]">
+                <Html html={q.answer} />
+              </p>
+            </div>
+            {q.why.length > 0 && (
+              <div className="paper-lite rounded-2xl p-4">
+                <p className="font-hand text-[14px] font-bold uppercase tracking-wide text-[#2a5298]">
+                  Why this works
+                </p>
+                <ul className="mt-2 space-y-1.5">
+                  {q.why.map((w, i) => (
+                    <li key={i} className="font-note text-[12.5px] leading-relaxed text-[#5a6b8c]">
+                      • <Html html={w} />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            <div className="sticky-note sticky-peach flex gap-2.5 p-4">
+              <Lightbulb className="mt-0.5 h-4 w-4 shrink-0 text-[#b0552f]" />
+              <div>
+                <p className="font-hand text-[14px] font-bold uppercase tracking-wide text-[#b0552f]">
+                  Teacher note
+                </p>
+                <p className="mt-1 font-hand text-[14.5px] italic leading-relaxed text-[#7a4a22]">
+                  <Html html={q.hinglish} />
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
 
-/* ================= MCQ DRILL ================= */
+/* ================= MCQ DRILL — tick the right box ================= */
 
 function McqView({
   chapter,
@@ -528,114 +541,115 @@ function McqView({
   };
 
   return (
-    <div className="card-in rounded-3xl border border-zinc-800 bg-zinc-900/60 p-5 sm:p-6">
-      <div className="flex flex-wrap items-center gap-2">
-        <Chip className="bg-amber-400/15 text-amber-300">MCQ {idx + 1}/{chapter.mcqs.length}</Chip>
-        <Chip className="bg-zinc-800 text-zinc-400">{q.level}</Chip>
-        <span className="truncate text-[11px] font-semibold text-zinc-500">{q.concept}</span>
-        <div className="ml-auto flex items-center gap-2 text-[11px] font-black">
-          <span className="flex items-center gap-1 text-emerald-400">
-            <Check className="h-3.5 w-3.5" /> {c}
-          </span>
-          <span className="flex items-center gap-1 text-rose-400">
-            <X className="h-3.5 w-3.5" /> {w}
+    <div className="flip-in relative paper-sheet dog-ear rounded-2xl px-5 py-5 shadow-[0_12px_30px_rgba(16,43,76,0.13)] sm:px-7 sm:py-6">
+      <div className="tape tape-mint left-6 top-[-11px]" aria-hidden />
+      <div className="paper-body">
+        <div className="flex flex-wrap items-center gap-2">
+          <Chip className="text-[#b0552f]">MCQ {idx + 1}/{chapter.mcqs.length}</Chip>
+          <Chip className="text-[#637c96]">{q.level}</Chip>
+          <span className="truncate font-hand text-[13px] font-bold text-[#8a94a8]">{q.concept}</span>
+          <span className="ml-auto flex items-center gap-2 font-hand text-[13.5px] font-bold">
+            <span className="flex items-center gap-1 text-[#3e7d4d]">
+              <Check className="h-3.5 w-3.5" /> {c}
+            </span>
+            <span className="flex items-center gap-1 text-[#d96a4a]">
+              <X className="h-3.5 w-3.5" /> {w}
+            </span>
           </span>
         </div>
-      </div>
 
-      <p className="mt-3 text-base font-bold leading-relaxed text-zinc-100">
-        <Html html={q.stem} />
-      </p>
+        <p className="mt-3 font-note text-[15.5px] font-bold leading-relaxed text-[#16305b]">
+          <Html html={q.stem} />
+        </p>
 
-      <div className="mt-4 space-y-2">
-        {q.options.map((opt, i) => {
-          const L = LETTERS[i];
-          const isAns = L === q.ans;
-          let cls = "border-zinc-800 bg-zinc-950/60 text-zinc-300 hover:border-amber-400/40";
-          if (answered) {
-            if (isAns) cls = "border-emerald-400/60 bg-emerald-400/10 text-emerald-200";
-            else if (L === picked) cls = "border-rose-400/60 bg-rose-400/10 text-rose-200";
-            else cls = "border-zinc-800/60 bg-zinc-950/40 text-zinc-600";
-          }
-          return (
-            <button
-              key={L}
-              onClick={() => pick(L)}
-              disabled={answered}
-              className={`flex w-full items-start gap-3 rounded-xl border p-3.5 text-left text-sm font-semibold transition-all ${cls} ${
-                answered ? "cursor-default" : "active:scale-[0.99]"
-              }`}
-            >
-              <span
-                className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg text-[11px] font-black ${
-                  answered && isAns
-                    ? "bg-emerald-400 text-zinc-950"
-                    : answered && L === picked
-                    ? "bg-rose-400 text-zinc-950"
-                    : "bg-zinc-800 text-zinc-400"
+        <div className="mt-4 space-y-2">
+          {q.options.map((opt, i) => {
+            const L = LETTERS[i];
+            const isAns = L === q.ans;
+            let cls = "border-[#e4d9c8] bg-white/85 text-[#3f4d6b] hover:-translate-y-px hover:border-[#7fb3ff]";
+            let badge = "bg-[#eef4fb] text-[#2a5298]";
+            if (answered) {
+              if (isAns) { cls = "pop-good border-[#5fae6f] bg-[#eef8f0] text-[#2e5e38]"; badge = "bg-[#5fae6f] text-white"; }
+              else if (L === picked) { cls = "shake border-[#d96a4a] bg-[#fdf0ea] text-[#b0552f]"; badge = "bg-[#d96a4a] text-white"; }
+              else { cls = "border-[#e8e0cf]/60 bg-white/40 text-[#a9a290]"; badge = "bg-[#efe9db] text-[#a9a290]"; }
+            }
+            return (
+              <button
+                key={L}
+                onClick={() => pick(L)}
+                disabled={answered}
+                className={`press flex w-full items-start gap-3 rounded-xl border-2 p-3.5 text-left font-note text-[14px] font-semibold transition-all ${cls} ${
+                  answered ? "cursor-default" : ""
                 }`}
               >
-                {answered && isAns ? <Check className="h-3.5 w-3.5" /> : answered && L === picked ? <X className="h-3.5 w-3.5" /> : L}
-              </span>
-              <span className="leading-relaxed">
-                <Html html={opt} />
-              </span>
-            </button>
-          );
-        })}
-      </div>
+                <span
+                  className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg font-hand text-[13px] font-bold ${badge}`}
+                >
+                  {answered && isAns ? <Check className="h-3.5 w-3.5" /> : answered && L === picked ? <X className="h-3.5 w-3.5" /> : L}
+                </span>
+                <span className="leading-relaxed">
+                  <Html html={opt} />
+                </span>
+              </button>
+            );
+          })}
+        </div>
 
-      {answered && (
-        <div className="card-in mt-4 space-y-3">
-          <div
-            className={`rounded-2xl p-4 ${
-              isRight ? "bg-emerald-400/10" : "bg-rose-400/10"
-            }`}
-          >
-            <p
-              className={`flex items-center gap-1.5 text-sm font-black ${
-                isRight ? "text-emerald-300" : "text-rose-300"
+        {answered && (
+          <div className="rise-in mt-4 space-y-3">
+            <div
+              className={`rounded-2xl border-2 p-4 ${
+                isRight ? "border-[#9fd8a8] bg-[#eef8f0]" : "border-[#f0b4a0] bg-[#fdf0ea]"
               }`}
             >
-              {isRight ? (
-                <>
-                  <Check className="h-4 w-4" /> Sahi! Answer: ({q.ans})
-                </>
-              ) : (
-                <>
-                  <X className="h-4 w-4" /> Galat — correct answer: ({q.ans})
-                </>
-              )}
-            </p>
-            <p className="mt-1.5 text-xs leading-relaxed text-zinc-300">
-              <Html html={q.expl} />
-            </p>
-          </div>
-          {!isRight && Object.keys(q.traps).length > 0 && (
-            <div className="rounded-2xl bg-zinc-950/70 p-4">
-              <p className="text-[10px] font-black uppercase tracking-widest text-rose-300/80">
-                Trap analysis — options ne phansaya kaise
+              <p
+                className={`flex items-center gap-1.5 font-hand text-[16px] font-bold ${
+                  isRight ? "text-[#3e7d4d]" : "text-[#b0552f]"
+                }`}
+              >
+                {isRight ? (
+                  <>
+                    <Check className="h-4 w-4" /> Sahi! Answer: ({q.ans})
+                  </>
+                ) : (
+                  <>
+                    <X className="h-4 w-4" /> Galat — correct answer: ({q.ans})
+                  </>
+                )}
               </p>
-              <ul className="mt-2 space-y-1.5">
-                {Object.entries(q.traps).map(([L, t]) => (
-                  <li key={L} className="text-xs leading-relaxed text-zinc-400">
-                    <span className="font-black text-rose-300">({L})</span>{" "}
-                    <Html html={t} />
-                  </li>
-                ))}
-              </ul>
+              <p className="mt-1.5 font-note text-[13px] leading-relaxed text-[#3f4d6b]">
+                <Html html={q.expl} />
+              </p>
             </div>
-          )}
-          <div className="rounded-2xl border border-amber-400/15 bg-amber-400/5 p-4">
-            <p className="text-[10px] font-black uppercase tracking-widest text-amber-300/80">
-              1-line logic
-            </p>
-            <p className="mt-1 text-xs italic leading-relaxed text-zinc-300">
-              <Html html={q.hinglish} />
-            </p>
+            {!isRight && Object.keys(q.traps).length > 0 && (
+              <div className="paper-lite rounded-2xl p-4">
+                <p className="font-hand text-[14px] font-bold uppercase tracking-wide text-[#d96a4a]">
+                  Trap analysis — options ne phansaya kaise
+                </p>
+                <ul className="mt-2 space-y-1.5">
+                  {Object.entries(q.traps).map(([L, t]) => (
+                    <li key={L} className="font-note text-[12.5px] leading-relaxed text-[#5a6b8c]">
+                      <span className="font-hand font-bold text-[#d96a4a]">({L})</span>{" "}
+                      <Html html={t} />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            <div className="sticky-note sticky-peach flex gap-2.5 p-4">
+              <Lightbulb className="mt-0.5 h-4 w-4 shrink-0 text-[#b0552f]" />
+              <div>
+                <p className="font-hand text-[14px] font-bold uppercase tracking-wide text-[#b0552f]">
+                  1-line logic
+                </p>
+                <p className="mt-1 font-hand text-[14.5px] italic leading-relaxed text-[#7a4a22]">
+                  <Html html={q.hinglish} />
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

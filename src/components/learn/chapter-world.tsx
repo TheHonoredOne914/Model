@@ -43,6 +43,8 @@ export function ChapterWorld({ chapter }: { chapter: ChapterArtifacts }) {
 
   useEffect(() => {
     const p = loadProgress(chapter.book, chapter.chapter);
+    // remember "last opened" for the Learn hub's continue strip
+    try { localStorage.setItem(`saathy.learn.${chapter.book}.${chapter.chapter}.ts`, String(Date.now())); } catch { /* private mode */ }
     // defer hydration to a microtask so the effect doesn't setState synchronously
     let alive = true;
     (async () => { await Promise.resolve(); if (!alive) return; setProg(p); setHydrated(true); if (p.band === null) setOverlay("gate"); })();
@@ -112,16 +114,16 @@ export function ChapterWorld({ chapter }: { chapter: ChapterArtifacts }) {
 
       {/* ======== body ======== */}
       <div className="mx-auto max-w-6xl px-4 py-6">
-        {/* hero flow cards (reference: "How You'll Learn") */}
+        {/* hero flow cards — sticky notes on the desk (reference: "How You'll Learn") */}
         <div className="mb-6 grid grid-cols-2 gap-3 md:grid-cols-4">
-          <HeroCard icon="🎯" title={`Level ${(prog.band ?? 0) + 1}/4`} sub={prog.band !== null ? bandLabel : "level check ho chuka"} />
-          <HeroCard icon="📖" title={`${prog.slidesViewed}/${chapter.slides.length}`} sub="slides dekhi" />
-          <HeroCard icon="✍️" title={prog.quizBest ? `${prog.quizBest}%` : "—"} sub="quiz best score" />
-          <HeroCard icon="⭐" title={`${prog.xp} XP`} sub="game station se" />
+          <HeroCard icon="🎯" title={`Level ${(prog.band ?? 0) + 1}/4`} sub={prog.band !== null ? bandLabel : "level check ho chuka"} mood="sticky-lemon" tilt="-rotate-[1.1deg]" />
+          <HeroCard icon="📖" title={`${prog.slidesViewed}/${chapter.slides.length}`} sub="slides dekhi" mood="sticky-sky" tilt="rotate-[0.8deg]" />
+          <HeroCard icon="✍️" title={prog.quizBest ? `${prog.quizBest}%` : "—"} sub="quiz best score" mood="sticky-peach" tilt="rotate-[1.2deg]" />
+          <HeroCard icon="⭐" title={`${prog.xp} XP`} sub="game station se" mood="sticky-mint" tilt="-rotate-[0.9deg]" />
         </div>
 
         {/* explore: concept map + flowchart — the notebook page */}
-        <div className="rise-in grain rounded-3xl border border-[#e4e9f1] bg-white p-4 shadow-[0_10px_28px_rgba(16,43,76,0.07)] sm:p-6">
+        <div className="rise-in doodle-paper rounded-3xl border border-[#dbe4f0] p-4 shadow-[0_10px_28px_rgba(16,43,76,0.09)] sm:p-6">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
             <div>
               <h2 className="font-hand text-[26px] font-bold leading-tight text-[#16305b]">{chapter.conceptMap ? chapter.conceptMap.center : chapter.title} — ka naksha</h2>
@@ -136,7 +138,7 @@ export function ChapterWorld({ chapter }: { chapter: ChapterArtifacts }) {
           {tab === "flow" && chapter.flowchart && <FlowChartView chart={chapter.flowchart} />}
 
           {/* sections list */}
-          <div className="mt-5 border-t border-[#eef2f7] pt-4">
+          <div className="mt-5 border-t border-[#dbe0d4] pt-4">
             <p className="scribble text-[16px]">is chapter me kya kya hai</p>
             <div className="mt-2 flex flex-wrap gap-2">
               {chapter.sections.map(s => (
@@ -146,7 +148,7 @@ export function ChapterWorld({ chapter }: { chapter: ChapterArtifacts }) {
           </div>
 
           {/* CTA row */}
-          <div className="mt-6 flex flex-wrap items-center gap-2.5 border-t border-[#eef2f7] pt-5">
+          <div className="mt-6 flex flex-wrap items-center gap-2.5 border-t border-[#dbe0d4] pt-5">
             <button type="button" onClick={() => setOverlay("slides")} className="press rounded-full bg-[#16305b] px-6 py-2.5 text-[13.5px] font-extrabold text-white shadow-[0_6px_16px_rgba(22,48,91,0.35)] hover:bg-[#214F78]">📖 Slides se seekho →</button>
             <button type="button" onClick={() => setOverlay("quiz")} className="press rounded-full border-2 border-[#16305b] bg-white px-5 py-2 text-[13px] font-extrabold text-[#16305b] hover:bg-[#f2f7fd]">✍️ Seedha quiz</button>
             <button type="button" onClick={() => setOverlay("flash")} className="press rounded-full border-2 border-[#e4d9c8] bg-white px-5 py-2 text-[13px] font-extrabold text-[#7a5a2e] hover:bg-[#fffaf0]">🔁 Flashcards</button>
@@ -191,12 +193,12 @@ export function ChapterWorld({ chapter }: { chapter: ChapterArtifacts }) {
   );
 }
 
-function HeroCard({ icon, title, sub }: { icon: string; title: string; sub: string }) {
+function HeroCard({ icon, title, sub, mood, tilt }: { icon: string; title: string; sub: string; mood: string; tilt: string }) {
   return (
-    <div className="rise-in relative rounded-2xl border border-[#e4e9f1] bg-white px-4 py-3.5 shadow-[0_4px_14px_rgba(16,43,76,0.06)] transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_22px_rgba(16,43,76,0.12)]">
+    <div className={`sticky-note ${mood} ${tilt} rise-in px-4 py-3.5`}>
       <p className="text-[18px] leading-none">{icon}</p>
       <p className="font-hand mt-1 text-[24px] font-bold leading-none text-[#16305b]">{title}</p>
-      <p className="mt-1 text-[11.5px] font-bold text-[#637c96]">{sub}</p>
+      <p className="mt-1 text-[11.5px] font-bold text-[#5a6b8c]">{sub}</p>
     </div>
   );
 }

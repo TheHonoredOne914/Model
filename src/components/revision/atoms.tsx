@@ -13,7 +13,7 @@ export function Html({ html, className }: { html: string; className?: string }) 
 }
 
 /* ---------------------------------------------------------------
-   LovePopup — sweet notes for babyieee 💖
+   LovePopup — sweet notes, now a tiny sticky note dropped on the desk 💖
    Appears for 2 seconds, then disappears. Repeats every 30 minutes.
    (First one shows ~3s after opening the app.)
    Hidden test hook: append ?love=demo to the URL to see it every 15s.
@@ -68,11 +68,11 @@ export function LovePopup() {
   return (
     <div
       role="status"
-      className={`love-pop ${leaving ? "love-out" : ""} pointer-events-none fixed left-1/2 top-5 z-[100]`}
+      className={`love-pop ${leaving ? "love-out" : ""} pointer-events-none fixed left-1/2 top-5 z-[100] -translate-x-1/2`}
     >
-      <div className="flex items-center gap-2.5 rounded-2xl border border-rose-400/40 bg-gradient-to-r from-rose-950/95 via-rose-900/95 to-rose-950/95 px-5 py-3 shadow-2xl shadow-rose-950/50 backdrop-blur">
-        <span className="animate-pulse text-lg">💖</span>
-        <span className="whitespace-nowrap text-sm font-bold text-rose-100">
+      <div className="sticky-note sticky-lemon sway-in flex -rotate-2 items-center gap-2.5 px-5 py-3">
+        <span aria-hidden className="text-lg">💖</span>
+        <span className="whitespace-nowrap font-hand text-[15px] font-bold text-[#8a4a22]">
           {msg}
         </span>
       </div>
@@ -80,17 +80,20 @@ export function LovePopup() {
   );
 }
 
+/* Paper progress track — a pencil line that fills with colour */
 export function ProgressBar({
   value,
   className = "",
-  barClass = "bg-amber-400",
+  barClass = "bg-[#b0552f]",
+  trackClass = "bg-[#e8e0cf]",
 }: {
   value: number;
   className?: string;
   barClass?: string;
+  trackClass?: string;
 }) {
   return (
-    <div className={`h-1.5 w-full rounded-full bg-zinc-800 ${className}`}>
+    <div className={`h-1.5 w-full overflow-hidden rounded-full ${trackClass} ${className}`}>
       <div
         className={`h-full rounded-full transition-all duration-500 ${barClass}`}
         style={{ width: `${Math.min(100, Math.max(0, value))}%` }}
@@ -99,6 +102,7 @@ export function ProgressBar({
   );
 }
 
+/* Hand-drawn chip — a small label that looks circled in pen */
 export function Chip({
   children,
   className = "",
@@ -108,9 +112,44 @@ export function Chip({
 }) {
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide ${className}`}
+      className={`inline-flex items-center gap-1 rounded-full border border-current/30 px-2.5 py-0.5 font-hand text-[12.5px] font-bold leading-tight ${className}`}
     >
       {children}
     </span>
+  );
+}
+
+/* Screen header shared by revision pages — back + title + progress */
+export function PaperHeader({
+  onBack,
+  eyebrow,
+  title,
+  right,
+}: {
+  onBack?: () => void;
+  eyebrow: string;
+  title: string;
+  right?: React.ReactNode;
+}) {
+  return (
+    <div className="sticky top-0 z-30 border-b border-[#e8e0cf] bg-[#f4efe4]/95 backdrop-blur">
+      <div className="mx-auto flex max-w-2xl items-center gap-3 px-4 py-3">
+        {onBack && (
+          <button
+            type="button"
+            onClick={onBack}
+            className="press flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#d8dde7] bg-white text-[15px] font-extrabold text-[#17324f] hover:bg-[#f2f7fd]"
+            aria-label="Back"
+          >
+            ←
+          </button>
+        )}
+        <div className="min-w-0 flex-1">
+          <p className="truncate font-hand text-[14px] font-bold leading-none text-[#b0552f]">{eyebrow}</p>
+          <p className="truncate text-[15px] font-extrabold leading-tight text-[#16305b]">{title}</p>
+        </div>
+        {right}
+      </div>
+    </div>
   );
 }
