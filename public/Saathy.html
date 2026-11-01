@@ -3293,7 +3293,9 @@ function cleanSentences(text) {
         .replace(/\s+\d{1,3}\s+(?=[A-Z][a-z])/g, " ")
         .replace(/^\d{1,3}\s+/, "")
         .replace(/^[A-Z][A-Za-z ,'&()\u2013\u2014-]*?\b(?=In this (?:section|chapter|unit|activity)\b)/, "");
-      const junky = (s.match(new RegExp("\\b[A-Za-z]*\\d[A-Za-z\\d]*\\b", "g")) || []).length;if (s.length > 30 && s.length < 400 && (/[.!?]$/.test(s) || s.length > 80) && junky < 2 && !/\.indd/.test(s)) out.push(s);
+      const junky = (s.match(new RegExp("\\b[A-Za-z]*\\d[A-Za-z\\d]*\\b", "g")) || []).length;
+      const dirty = /_[A-Za-z]|[=]{2}|⇒|«|»|\.indd/.test(s) || /^[a-z]/.test(s);
+      if (s.length > 30 && s.length < 400 && (/[.!?]$/.test(s) || s.length > 80) && junky < 2 && !dirty) out.push(s);
     }
   }
   return out;
@@ -3355,32 +3357,40 @@ function offlineAnswer(q) {
   const bookName = BOOKS[best.bk].name.split(" (")[0];
   const head = "**" + (best.sec.title || best.ch.title) + "** — from *" + bookName +
     "*, Chapter " + best.ch.number + ": " + best.ch.title + " (§" + best.sec.id + ")";
-  const introSents = cleanSentences(best.sec.content);
-  const ORPHAN = /^(she|he|it|they|we|this|these|those|his|her|their|its|them|him)\b/i;
-  const introPool = introSents.filter(s => !ORPHAN.test(s));
-  const intro = (introPool.length ? introPool : introSents).slice(0, 2).join(" ");
 
+  /* rank sentences from the top sections by question-token coverage;
+     the answer LEADS with the most relevant sentence, not the section's first line */
+  const ORPHAN_RE = /^(she|he|it|they|we|this|these|those|his|her|their|its|them|him)\b/i;
   const scored = [];
   for (const c of cands.slice(0, 5)) {
     if (c.s < best.s * 0.45) break;
     const sameBook = BOOKS[c.bk].name.split(" (")[0];
-    for (const sn of cleanSentences(c.sec.content)) {
-      const sc = words.reduce((a, w) => a + (sn.toLowerCase().includes(w) ? 1 : 0), 0);
-      if (sc > 0) scored.push({ sn, sc, from: c.sec === best.sec ? null : (c.sec.title || "§" + c.sec.id) + " (" + sameBook + ")" });
+    const sents = cleanSentences(c.sec.content);
+    for (let si = 0; si < sents.length; si++) {
+      const sn = sents[si];
+      if (ORPHAN_RE.test(sn) || /^[a-z]/.test(sn)) continue;
+      const sc = words.reduce((a, w) => a + (sn.toLowerCase().includes(w) ? 1 : 0), 0) + (c.sec === best.sec ? 0.2 : 0);
+      if (sc > 0) scored.push({ sn, sc, si, from: c.sec === best.sec ? null : (c.sec.title || "§" + c.sec.id) + " (" + sameBook + ")" });
     }
   }
-  scored.sort((a, b) => b.sc - a.sc);
-  const ORPHAN_RE = /^(she|he|it|they|we|this|these|those|his|her|their|its|them|him)\b/i;
-  const strong = scored.filter(i => !ORPHAN_RE.test(i.sn));
-  const pool = strong.length >= 4 ? strong : scored;
+  scored.sort((a, b) => b.sc - a.sc || a.si - b.si);
+
   const bullets = []; const seen = new Set(); const usedSrcs = [];
-  for (const it of pool) {
-    const k = it.sn.slice(0, 60).toLowerCase();
-    if (seen.has(k) || intro.includes(it.sn)) continue;
-    seen.add(k);
-    bullets.push(it.sn);
-    if (it.from && usedSrcs.length < 2 && !usedSrcs.includes(it.from)) usedSrcs.push(it.from);
-    if (bullets.length >= 4) break;
+  let intro = "";
+  const lead = scored[0];
+  if (lead) {
+    intro = lead.sn;
+    if (lead.from) usedSrcs.push(lead.from);
+    for (const it of scored.slice(1)) {
+      const k = it.sn.slice(0, 60).toLowerCase();
+      if (seen.has(k) || it.sn === intro) continue;
+      seen.add(k);
+      bullets.push(it.sn);
+      if (it.from && usedSrcs.length < 2 && !usedSrcs.includes(it.from)) usedSrcs.push(it.from);
+      if (bullets.length >= 4) break;
+    }
+  } else {
+    intro = cleanSentences(best.sec.content).slice(0, 2).join(" ");
   }
 
   const tips = [];
@@ -3390,7 +3400,7 @@ function offlineAnswer(q) {
       if (hits.length) tips.push("Type `video " + hits[0].concept.split(/\s+/).slice(0, 3).join(" ") + "` and I'll open the verified video kit for this.");
     }
   } catch (e) {}
-  tips.push("Type `test me " + best.ch.title.split(/[:—]/)[0].trim().split(/\s+/).slice(0, 2).join(" ") + "` and I'll start a quick mastery quiz on this chapter.");
+  tips.push("Type `test me " + (best.sec.title || best.ch.title).split(/[:—–]/)[0].trim().split(/\s+/).slice(0, 3).join(" ") + "` and I'll start a quick mastery quiz on this.");
 
   let out = head + "\n\n" + (intro ? intro + "\n\n" : "");
   if (bullets.length) out += "**Key points**\n" + bullets.map(b => "- " + b).join("\n") + "\n\n";
