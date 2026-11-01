@@ -24,8 +24,8 @@ type StepKey = "explore" | "learn" | "solve" | "try" | "fix" | "play" | "master"
 // per-book identity — every module feels like its own subject
 const BOOK_THEME: Record<string, { accent: string; soft: string; tint: string; doodle: string }> = {
   gm: { accent: "#2a5298", soft: "#eef4fb", tint: "#f6fbff", doodle: "π ∑ √ ÷" },
-  sc: { accent: "#2a7a5f", soft: "#eafaf1", tint: "#f4fcf8", doodle: "⚗ ⚛ 🧭" },
-  us: { accent: "#7a4a9e", soft: "#f5effb", tint: "#faf7fd", doodle: "🏛 ⚖ 🌍" },
+  sc: { accent: "#2a7a5f", soft: "#eafaf1", tint: "#f4fcf8", doodle: "⚗ ⚛ ∆" },
+  us: { accent: "#7a4a9e", soft: "#f5effb", tint: "#faf7fd", doodle: "§ ¶ ∇" },
 };
 
 const STEPS: { key: StepKey; label: string; desc: string; icon: React.ComponentType<{ className?: string }> }[] = [

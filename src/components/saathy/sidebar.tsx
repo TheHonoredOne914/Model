@@ -1,7 +1,7 @@
 'use client';
 
-// Sidebar — brand, module shelf (Chat / Learn / Revision, each with its own
-// identity), New chat, searchable history, the concept mastery panel
+// Sidebar — brand, module shelf (Chat / Learn, each with its own identity),
+// New chat, searchable history, the concept mastery panel
 // (heat-map colours: green=secure, peach=mixed, red=stuck — VS-61 semantics,
 // student-friendly labels only), and the student/settings footer.
 import { useMemo, useState } from 'react';

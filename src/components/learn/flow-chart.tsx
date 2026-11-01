@@ -10,7 +10,7 @@ const NODE_W = 190;
 const NODE_H = 62;
 const COLS = 3;
 const GAP_X = 250;
-const ROW_H = 132;
+const ROW_H = 140;
 
 export function FlowChartView({ chart, accent = "#b0552f" }: { chart: FlowChart; accent?: string }) {
   const [open, setOpen] = useState<number | null>(null);
@@ -25,9 +25,17 @@ export function FlowChartView({ chart, accent = "#b0552f" }: { chart: FlowChart;
       return { x: 20 + col * GAP_X, y: 30 + r * ROW_H };
     });
     const w = 20 + (COLS - 1) * GAP_X + NODE_W + 20;
-    const h = 30 + (rows.length - 1) * ROW_H + NODE_H + 74;
+    const h = 30 + (rows.length - 1) * ROW_H + NODE_H + 84;
     return { pos, w, h };
   }, [chart.steps]);
+
+  // auto-sized detail card: enough height for every wrapped line
+  const detailCard = (idx: number) => {
+    const s = chart.steps[idx];
+    if (!s) return null;
+    const lines = Math.max(1, Math.ceil(s.detail.length / 42));
+    return { lines, textH: lines * 15 + 6, cardH: 28 + lines * 15 + 10 };
+  };
 
   // build one smooth path per edge, snake-direction aware
   const edgePath = (a: number, b: number) => {
@@ -51,7 +59,7 @@ export function FlowChartView({ chart, accent = "#b0552f" }: { chart: FlowChart;
   return (
     <div className="w-full">
       <div className="doodle-paper relative overflow-hidden rounded-2xl border border-[#dbe4f0] shadow-[inset_0_1px_0_#fff]">
-        <svg viewBox={`0 0 ${layout.w} ${layout.h}`} className="block h-auto w-full" role="img" aria-label={chart.title}>
+        <svg viewBox={`0 0 ${layout.w} ${open !== null && layout.pos[open] ? Math.max(layout.h, layout.pos[open].y + NODE_H + 8 + (detailCard(open)?.cardH ?? 0) + 14) : layout.h}`} className="block h-auto w-full" role="img" aria-label={chart.title}>
           <defs>
             <marker id="fc-arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
               <path d="M0,0.6 L9,5 L0,9.4 Q2.6,5 0,0.6 Z" fill={accent} />
@@ -112,19 +120,20 @@ export function FlowChartView({ chart, accent = "#b0552f" }: { chart: FlowChart;
             );
           })}
 
-          {/* detail card — springs open under the selected node */}
+          {/* detail card — springs open under the selected node, auto-tall */}
           {open !== null && chart.steps[open] && (() => {
             const p = layout.pos[open];
-            const cw = Math.min(layout.w - 40, Math.max(240, NODE_W + 90));
+            const dim = detailCard(open)!;
+            const cw = Math.min(layout.w - 40, Math.max(300, NODE_W + 130));
             const cx = Math.min(Math.max(p.x + NODE_W / 2 - cw / 2, 14), layout.w - cw - 14);
             const cy = p.y + NODE_H + 8;
             return (
               <g className="fc-detail">
-                <rect x={cx} y={cy} width={cw} height={58} rx="12" fill="#16305b" />
+                <rect x={cx} y={cy} width={cw} height={dim.cardH} rx="12" fill="#16305b" />
                 <polygon points={`${p.x + NODE_W / 2 - 7},${cy - 0.5} ${p.x + NODE_W / 2 + 7},${cy - 0.5} ${p.x + NODE_W / 2},${cy + 7}`} fill="#16305b" />
-                <text x={cx + 14} y={cy + 20} fontSize="11" fontWeight="800" fill="#a9cee8" fontFamily="var(--font-manrope)" letterSpacing="0.6">STEP {open + 1}</text>
-                <foreignObject x={cx + 12} y={cy + 26} width={cw - 24} height={28}>
-                  <div className="text-[11.5px] font-semibold leading-[1.25] text-white" style={{ fontFamily: "var(--font-manrope)" }}>
+                <text x={cx + 14} y={cy + 21} fontSize="11" fontWeight="800" fill="#a9cee8" fontFamily="var(--font-manrope)" letterSpacing="0.6">STEP {open + 1}</text>
+                <foreignObject x={cx + 12} y={cy + 27} width={cw - 24} height={dim.textH}>
+                  <div className="text-[11.5px] font-semibold leading-[1.3] text-white" style={{ fontFamily: "var(--font-manrope)" }}>
                     {chart.steps[open].detail}
                   </div>
                 </foreignObject>

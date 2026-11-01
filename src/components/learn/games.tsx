@@ -3,6 +3,7 @@
 // onto chapter artifacts. Same rules as the v3 standalone: timed rush, memory
 // pairs, true/false streak, tile flips. XP + best scores persist locally.
 import { useEffect, useMemo, useState } from "react";
+import { Zap, Puzzle, Flame, SquareStack } from "lucide-react";
 import type { ChapterArtifacts } from "@/lib/learn/artifacts";
 import { addXp as addGlobalXp } from "@/lib/saathy-progress";
 
@@ -16,11 +17,11 @@ function saveNum(key: string, v: number) { try { localStorage.setItem(key, Strin
 
 type GameKey = "mcq" | "match" | "streak" | "tiles";
 
-const GAMES: { key: GameKey; name: string; desc: string; icon: string }[] = [
-  { key: "mcq", name: "MCQ Rush", desc: "60 seconds. Kitne sahi? Best score save.", icon: "⚡" },
-  { key: "match", name: "Match the Concept", desc: "Term ko uske matlab se milao — kam flips me.", icon: "🧩" },
-  { key: "streak", name: "True / False Streak", desc: "Statement sahi ya galat? Streak banao.", icon: "🔥" },
-  { key: "tiles", name: "Tile Flip", desc: "Cards palat kar jodi dhoondo.", icon: "🎴" },
+const GAMES: { key: GameKey; name: string; desc: string; icon: React.ComponentType<{ className?: string }> }[] = [
+  { key: "mcq", name: "MCQ Rush", desc: "60 seconds. Kitne sahi? Best score save.", icon: Zap },
+  { key: "match", name: "Match the Concept", desc: "Term ko uske matlab se milao — kam flips me.", icon: Puzzle },
+  { key: "streak", name: "True / False Streak", desc: "Statement sahi ya galat? Streak banao.", icon: Flame },
+  { key: "tiles", name: "Tile Flip", desc: "Cards palat kar jodi dhoondo.", icon: SquareStack },
 ];
 
 export function GameHub({ chapter, onExit, onXp, accent = "#b0552f" }: { chapter: ChapterArtifacts; onExit: () => void; onXp: (xp: number) => void; accent?: string }) {
@@ -57,7 +58,9 @@ export function GameHub({ chapter, onExit, onXp, accent = "#b0552f" }: { chapter
               <button key={g.key} type="button" onClick={() => setGame(g.key)}
                 className="press group relative overflow-hidden rounded-2xl border-2 border-[#e4e9f1] bg-white p-5 text-left shadow-[0_10px_24px_rgba(16,43,76,0.10)] transition-all hover:-translate-y-1.5 hover:border-[#f0b490] hover:shadow-[0_18px_36px_rgba(16,43,76,0.18)]">
                 <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-[#fff1e7] transition-transform duration-300 group-hover:scale-125" aria-hidden />
-                <p className="text-[26px] leading-none transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6">{g.icon}</p>
+                <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#f6fbff] text-[#2a5298] shadow-[inset_0_0_0_1.5px_#d7e6f6] transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6">
+                  <g.icon className="h-5.5 w-5.5" />
+                </span>
                 <p className="font-hand mt-2 text-[22px] font-bold text-[#16305b]">{g.name}</p>
                 <p className="mt-0.5 text-[12.5px] font-semibold leading-snug text-[#637c96]">{g.desc}</p>
                 <p className="mt-2 text-[11.5px] font-extrabold" style={{ color: accent }}>best: {best[g.key] ?? 0}</p>
@@ -201,7 +204,7 @@ function StreakGame({ chapter, addXp, bestDone }: { chapter: ChapterArtifacts; a
         </div>
       ) : (
         <div className="mt-4 flex flex-col items-center gap-2.5">
-          <p className={`font-hand text-[22px] font-bold ${feedback.ok ? "text-[#3e7d4d]" : "text-[#b0552f]"}`}>{feedback.ok ? "Shi pakda! 🔥" : "Streak toot gaya"}</p>
+          <p className={`font-hand text-[22px] font-bold ${feedback.ok ? "text-[#3e7d4d]" : "text-[#b0552f]"}`}>{feedback.ok ? "Shi pakda!" : "Streak toot gaya"}</p>
           <p className="text-center font-note text-[14.5px] leading-snug text-[#5a6b8c]">{s.why}</p>
           {feedback.ok && <button type="button" onClick={next} className="rounded-full bg-[#16305b] px-6 py-2 text-[13px] font-extrabold text-white hover:bg-[#214F78]">Agla →</button>}
         </div>
