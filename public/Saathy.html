@@ -3260,7 +3260,8 @@ function cleanSentences(text) {
     for (let s0 of pBody.split(/(?<=[.!?])\s+(?=[A-Z(])/)) {
       let s = s0.trim()
         .replace(/\s+\d{1,3}\s+(?=[A-Z][a-z])/g, " ")
-        .replace(/^\d{1,3}\s+/, "");
+        .replace(/^\d{1,3}\s+/, "")
+        .replace(/^[A-Z][A-Za-z ,'&()\u2013\u2014-]*?\b(?=In this (?:section|chapter|unit|activity)\b)/, "");
       const junky = (s.match(new RegExp("\\b[A-Za-z]*\\d[A-Za-z\\d]*\\b", "g")) || []).length;if (s.length > 30 && s.length < 400 && (/[.!?]$/.test(s) || s.length > 80) && junky < 2 && !/\.indd/.test(s)) out.push(s);
     }
   }
@@ -3324,7 +3325,9 @@ function offlineAnswer(q) {
   const head = "**" + (best.sec.title || best.ch.title) + "** — from *" + bookName +
     "*, Chapter " + best.ch.number + ": " + best.ch.title + " (§" + best.sec.id + ")";
   const introSents = cleanSentences(best.sec.content);
-  const intro = introSents.slice(0, 2).join(" ");
+  const ORPHAN = /^(she|he|it|they|we|this|these|those|his|her|their|its|them|him)\b/i;
+  const introPool = introSents.filter(s => !ORPHAN.test(s));
+  const intro = (introPool.length ? introPool : introSents).slice(0, 2).join(" ");
 
   const scored = [];
   for (const c of cands.slice(0, 5)) {
@@ -3336,12 +3339,16 @@ function offlineAnswer(q) {
     }
   }
   scored.sort((a, b) => b.sc - a.sc);
-  const bullets = []; const seen = new Set();
-  for (const it of scored) {
+  const ORPHAN_RE = /^(she|he|it|they|we|this|these|those|his|her|their|its|them|him)\b/i;
+  const strong = scored.filter(i => !ORPHAN_RE.test(i.sn));
+  const pool = strong.length >= 4 ? strong : scored;
+  const bullets = []; const seen = new Set(); const usedSrcs = [];
+  for (const it of pool) {
     const k = it.sn.slice(0, 60).toLowerCase();
     if (seen.has(k) || intro.includes(it.sn)) continue;
     seen.add(k);
-    bullets.push(it.from ? it.sn + " *(also in " + it.from + ")*" : it.sn);
+    bullets.push(it.sn);
+    if (it.from && usedSrcs.length < 2 && !usedSrcs.includes(it.from)) usedSrcs.push(it.from);
     if (bullets.length >= 4) break;
   }
 
@@ -3356,6 +3363,7 @@ function offlineAnswer(q) {
 
   let out = head + "\n\n" + (intro ? intro + "\n\n" : "");
   if (bullets.length) out += "**Key points**\n" + bullets.map(b => "- " + b).join("\n") + "\n\n";
+  if (usedSrcs.length) out += "*Also in: " + usedSrcs.join(" \u00b7 ") + "*\n\n";
   out += tips.join("  \n");
   return out;
 }
