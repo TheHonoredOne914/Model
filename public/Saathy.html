@@ -1303,7 +1303,7 @@ const MCQ_BANK = [
 const BOOKS = {
   "ganita-manjari":{name:"Ganita Manjari (Maths)",subject:"Maths",icon:"π",chapters:[]},
   "science-exploration":{name:"Science Exploration",subject:"Science",icon:"⚛",chapters:[]},
-  "understanding-society":{name:"Understanding Society (SST)",subject:"SST",icon:"🌍",chapters:[]}
+  "understanding-society":{name:"Understanding Society (SST)",subject:"SST",icon:"§",chapters:[]}
 };
 function loadBooks(){
   try{
@@ -1532,11 +1532,11 @@ function clock(ts) { return new Date(ts).toLocaleTimeString([], { hour: "numeric
 
 /* ---------------- seed conversations (honest demo content) ---------------- */
 const SEED_DEMO_LINEAR_U = "Can you explain linear equations with examples?";
-const SEED_DEMO_LINEAR_A = "Solving these step by step is my favourite thing! 😄\n\nA **linear equation** is an equation in which the highest power of the variable is **1** — its graph is always a straight *line*.\n\n**Example:** solve $2x + 3 = 7$\n\n**Step 1 — Subtract 3 from both sides**\n$$2x = 4$$\n*Why?* Whatever you do to one side of an equation, you must do to the other — that keeps it balanced, like a see-saw.\n\n**Step 2 — Divide both sides by 2**\n$$x = 2$$\n\n✅ **So the solution is $x = 2$.** Always check by substituting back: $2(2) + 3 = 7$ ✔\n\nYour turn — try $3x - 5 = 10$ and tell me what you get!";
+const SEED_DEMO_LINEAR_A = "Solving these step by step is my favourite thing!\n\nA **linear equation** is an equation in which the highest power of the variable is **1** — its graph is always a straight *line*.\n\n**Example:** solve $2x + 3 = 7$\n\n**Step 1 — Subtract 3 from both sides**\n$$2x = 4$$\n*Why?* Whatever you do to one side of an equation, you must do to the other — that keeps it balanced, like a see-saw.\n\n**Step 2 — Divide both sides by 2**\n$$x = 2$$\n\n**So the solution is $x = 2$.** Always check by substituting back: $2(2) + 3 = 7$ — it balances.\n\nYour turn — try $3x - 5 = 10$ and tell me what you get!";
 const SEED_DEMO_SCALAR_U = "What is the difference between scalar and vector quantities? Can you give examples from class 9 physics?";
 const SEED_DEMO_SCALAR_A = "Great question! In Class 9 Physics we learn that physical quantities can be broadly classified into two types: **scalar and vector quantities**. Let me explain the difference with clear examples:\n\n## 1. Scalar Quantities\n\n- Scalars have only **magnitude** (a numerical value) and **no direction**.\n- They are fully described by a single number with a unit.\n- **Examples:** mass, time, temperature, distance, energy, speed.\n\n## 2. Vector Quantities\n\n- Vectors have **both magnitude and direction**.\n- They require at least two pieces of information to be fully described (e.g., *5 m east*).\n- **Examples:** displacement, velocity, acceleration, force, momentum.\n\n## Quick Comparison\n\n| Feature | Scalar | Vector |\n|---|---|---|\n| Magnitude | Yes | Yes |\n| Direction | No | Yes |\n| Example | Mass, Temperature | Displacement, Force |\n\nIf you want, I can also show you a few diagrams to make the difference more visual. Would you like that?";
 const SEED_DEMO_WORK_U = "What is the formula for work and kinetic energy?";
-const SEED_DEMO_WORK_A = "Two formulas every Class 9 student should own 😊\n\n**Work** — force actually moving something:\n$$W = F \\times d$$\nWork is in **joules (J)** — and remember, holding a bag without moving it does *zero* work, no matter how tired you feel!\n\n**Kinetic energy** — energy of motion:\n$$KE = \\tfrac{1}{2} m v^2$$\nNotice the $v^2$: double a car's speed and its kinetic energy becomes **4×**. That's why braking distance grows so fast.\n\nWant a numerical example with real numbers?";
+const SEED_DEMO_WORK_A = "Two formulas every Class 9 student should own\n\n**Work** — force actually moving something:\n$$W = F \\times d$$\nWork is in **joules (J)** — and remember, holding a bag without moving it does *zero* work, no matter how tired you feel!\n\n**Kinetic energy** — energy of motion:\n$$KE = \\tfrac{1}{2} m v^2$$\nNotice the $v^2$: double a car's speed and its kinetic energy becomes **4×**. That's why braking distance grows so fast.\n\nWant a numerical example with real numbers?";
 
 function seedChats() {
   const now = Date.now(), H = 36e5;
@@ -1806,9 +1806,12 @@ function renderHeader() {
   if (f.key) {
     dot.classList.add("ok");
     note.textContent = `${PROVIDERS[f.provider]?.label || f.provider} · ${f.model || "model not set"}`;
+  } else if (window.__brainMode === "cloud") {
+    dot.classList.add("ok");
+    note.textContent = "Saathy Cloud — live, no key needed";
   } else {
     dot.classList.remove("ok");
-    note.textContent = "Demo mode — Founder Settings connects a model";
+    note.textContent = "Book brain — offline NCERT knowledge";
   }
 }
 
@@ -1827,7 +1830,7 @@ const PROVIDERS = {
 
 function systemPrompt() {
   const p = state.prefs, s = state.student;
-  const tone = { friendly: "Warm, encouraging and cheerful — celebrate small wins, sprinkle light emojis where natural.",
+  const tone = { friendly: "Warm, encouraging and cheerful — celebrate small wins.",
                  balanced: "Warm but focused. Friendly without being chatterbox.",
                  formal: "Calm, precise and respectful. No slang, minimal emojis." }[p.tone] || "";
   const style = { simple: "Explain in very simple language a school student instantly gets. Use everyday analogies before formal definitions.",
@@ -1939,7 +1942,7 @@ function historyForAPI(chat) {
   return chat.messages.filter(m => m.role === "user" || m.role === "assistant").slice(-16)
     .map(m => ({ role: m.role, content: m.content }));
 }
-const NOTICE_TEXT = "Add an API key in **Settings → Founder** (protected by PIN) and I'll answer for real — explaining concepts, solving step by step and quizzing you. Until then, open the **Sample** chats in the sidebar to see how I explain things. ☁️";
+const NOTICE_TEXT = "I couldn't find that one in my built-in books, and my live brain isn't reachable right now. Try me on any chapter topic — like **explain photosynthesis**, **what is democracy** or **linear equations** — or type `plan Motion`, `video gravitation`, `test me force`. ☁️";
 
 async function runModelTurn(chat) {
   busy = true; $("#send").classList.add("busy"); $("#send").disabled = true;
@@ -1975,13 +1978,9 @@ async function sendMessage(text) {
   renderList();
   if (!state.founder.key) {
     busy = true; renderThread();
-    const typing = buildTyping(); $("#thread").appendChild(typing);
-    $("#scroller").scrollTop = $("#scroller").scrollHeight;
-    await sleep(650);
-    removeTyping();
-    chat.messages.push({ role: "notice", content: NOTICE_TEXT, ts: Date.now() });
-    chat.updated = Date.now(); busy = false;
-    saveState(); renderList(); renderThread();
+    await smartReply(chat, t);
+    busy = false;
+    saveState(); renderList(); renderThread(); autosize();
     return;
   }
   await runModelTurn(chat);
@@ -2861,7 +2860,7 @@ function artTimeline(b){
 function artMonsoon(b){
   const SEAS={Summer:["Sea → Land","South-west monsoon winds blow FROM the ocean TO land, heavy with moisture — June onwards, the whole country breathes rain.","Rain","low-pressure over land pulls moisture in"],Winter:["Land → Sea","North-east winds blow FROM land TO sea — dry over most of India; Tamil Nadu coast catches rain.","Sun","land cools fast, high pressure over land pushes air seaward"],Retreating:["Oct–Nov shift","Monsoon withdraws; October heat; cyclones hit the eastern coast.","Shift","wind reversal as the sun moves south"]};
   b.innerHTML=`<div class="art-stage"><div class="row">${Object.keys(SEAS).map(s=>`<button class="pill ${s==="Summer"?"on":""}" data-s="${s}">${s}</button>`).join("")}</div>
-  <div style="text-align:center;font-size:40px;margin:14px 0" id="moIco">🌧</div>
+  <div style="text-align:center;font-size:40px;margin:14px 0" id="moIco">Rain</div>
   <div style="text-align:center;font-weight:800;color:var(--ocean)" id="moDir">Sea → Land</div>
   <p class="muted" style="text-align:center;margin-top:8px" id="moWhy"></p></div>`;
   b.querySelectorAll("[data-s]").forEach(x=>x.onclick=()=>{ b.querySelectorAll("[data-s]").forEach(y=>y.classList.remove("on")); x.classList.add("on");
@@ -3034,13 +3033,13 @@ async function handleIntent(t){
       if(/\b(explain|samjha|samjhao|teach|doubt|what|why|how)\b/.test(q)){
         pendingVideoHits=hits;
         if(!state.founder.key){ // demo mode: card now, notice follows
-          addCardMsg({kind:"videos", hits:hits.map(h=>({subject:h.subject,subjectName:h.subjectName,cls:h.cls,concept:h.concept,vids:[h.primary,...h.alternates]}))});
+          addCardMsg({kind:"videos", hits:hits.map(h=>({subject:h.subject,subjectName:h.subjectName,cls:h.cls,concept:h.concept,vids:[h.primary].concat(h.alternates||[])}))});
           pendingVideoHits=null;
         }
         return false;
       }
       addAssistantNote("From your verified video kit — every link checked live, 3 teachers per concept:");
-      addCardMsg({kind:"videos", hits:hits.map(h=>({subject:h.subject,subjectName:h.subjectName,cls:h.cls,concept:h.concept,vids:[h.primary,...h.alternates]}))});
+      addCardMsg({kind:"videos", hits:hits.map(h=>({subject:h.subject,subjectName:h.subjectName,cls:h.cls,concept:h.concept,vids:[h.primary].concat(h.alternates||[])}))});
       return true;
     }
     addAssistantNote("I don't have a verified video for that exact topic in the kit yet — I won't invent a link. Open the full kit to search, or try another keyword:");
@@ -3070,7 +3069,7 @@ async function runModelTurn(chat){
   await _runModelTurnV1(chat);
   if(pendingVideoHits){
     const hits=pendingVideoHits; pendingVideoHits=null;
-    addCardMsg({kind:"videos", hits:hits.map(h=>({subject:h.subject,subjectName:h.subjectName,cls:h.cls,concept:h.concept,vids:[h.primary,...h.alternates]}))});
+    addCardMsg({kind:"videos", hits:hits.map(h=>({subject:h.subject,subjectName:h.subjectName,cls:h.cls,concept:h.concept,vids:[h.primary].concat(h.alternates||[])}))});
   }
 }
 
@@ -3179,6 +3178,190 @@ const Saathy={closeStage,openArtifact,openReportsStage,openVideoKit,openLabPicke
 window.Saathy=Saathy;
 document.addEventListener("DOMContentLoaded", bootV4);
 
+</script>
+<script>
+/* ============================ SAATHY · brain pack (v4.1) ============================
+   Makes the chat genuinely work with zero configuration:
+   1. cloud brain  — POST /api/brain (served by the preview server; z-ai SDK backend)
+   2. book brain   — offline retrieval over the built-in NCERT corpus (KB_gm / KB_sc / KB_us)
+   3. honest fallback — actionable notice, never a dead end                      */
+"use strict";
+
+window.__brainMode = window.__brainMode || "offline";
+
+/* ---------- probe the server brain once per boot ---------- */
+async function probeBrain() {
+  try {
+    const ctl = new AbortController(); const to = setTimeout(() => ctl.abort(), 4000);
+    const r = await fetch("/api/brain", { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ping: true }), signal: ctl.signal });
+    clearTimeout(to);
+    if (!r.ok) throw new Error("bad status " + r.status);
+    const j = await r.json();
+    window.__brainMode = (j && j.brain === "cloud") ? "cloud" : "offline";
+  } catch (e) { window.__brainMode = "offline"; }
+  try { renderHeaderStatus(); } catch (e) {}
+}
+
+/* ---------- cloud reply ---------- */
+async function cloudReply(chat) {
+  const r = await fetch("/api/brain", { method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ system: systemPrompt(), messages: historyForAPI(chat) }) });
+  if (!r.ok) throw new Error("brain " + r.status);
+  const j = await r.json();
+  return (j && j.text) ? j.text : null;
+}
+
+/* ---------- smart reply: cloud -> book -> honest notice ---------- */
+async function smartReply(chat, t) {
+  const typing = buildTyping(); $("#thread").appendChild(typing);
+  $("#scroller").scrollTop = $("#scroller").scrollHeight;
+  let text = null, cloudFailed = false;
+  if (window.__brainMode === "cloud") {
+    try { text = await cloudReply(chat); }
+    catch (e) { cloudFailed = true; window.__brainMode = "offline"; try { renderHeaderStatus(); } catch (e2) {} }
+  }
+  if (!text) { if (!cloudFailed) await sleep(420); text = offlineAnswer(t); }
+  removeTyping();
+  if (text) chat.messages.push({ role: "assistant", content: text, ts: Date.now() });
+  else chat.messages.push({ role: "notice", content: NOTICE_TEXT, ts: Date.now() });
+  chat.updated = Date.now();
+  const av = $("#hdrAva");
+  if (av) { av.classList.remove("wink"); void av.offsetWidth; av.classList.add("wink"); }
+}
+
+/* ---------- offline book brain: real grounded answers from the built-in corpus ---------- */
+const BRAIN_STOP = new Set(["the","a","an","and","or","of","to","in","on","for","with","what","whats","how",
+  "why","when","where","which","who","is","are","was","were","do","does","did","can","could","should","would",
+  "please","me","my","i","you","your","it","its","that","this","these","those","tell","about","explain",
+  "define","definition","describe","give","want","need","know","understand","class","std","grade","chapter",
+  "chap","topic","difference","different","between","example","examples","mean","meaning","means","short",
+  "note","notes","briefly","simply","basic","basics"]);
+function brainTokens(q) {
+  return [...new Set(String(q).toLowerCase().replace(/[^a-z0-9 ]/g, " ").split(/\s+/)
+    .filter(w => w.length > 2 && !BRAIN_STOP.has(w)))];
+}
+function cleanCorpus(text) {
+  return String(text || "")
+    .replace(/(?:Chapter|Page)?\s*\d{1,3}\.indd[\s\S]*?\d{1,2}:\d{2}:\d{2}\s*(?:[AP]M)?/g, " ")
+    .replace(/\s+/g, " ")
+    .replace(/(\d{1,2}\.\d{1,2}(?:\.\d{1,2})?)\s+((?:[A-Z][a-zA-Z]+|of|the|and|to|in|for|with)(?:\s+(?:[A-Z][a-zA-Z]+|of|the|and|to|in|for|with)){1,6})\s+(?=[A-Z])/g, "\n$1 $2\n")
+    .replace(/[\t ]{2,}/g, " ");
+}
+function cleanSentences(text) {
+  const out = [];
+  for (let p0 of cleanCorpus(text).split(/\n+/)) {
+    const p = p0.trim();
+    if (!p) continue;
+    const pBody = p.replace(/^\d{1,2}(?:\.\d+){1,3}\s+/, "");
+    const w = pBody.split(/\s+/);
+    const titleish = w.length <= 8 && w.every(x => /^[A-Z]/.test(x) || /^(of|the|and|to|in|for|with)$/.test(x));
+    if (titleish) continue;
+    for (let s0 of pBody.split(/(?<=[.!?])\s+(?=[A-Z(])/)) {
+      let s = s0.trim()
+        .replace(/\s+\d{1,3}\s+(?=[A-Z][a-z])/g, " ")
+        .replace(/^\d{1,3}\s+/, "");
+      const junky = (s.match(new RegExp("\\b[A-Za-z]*\\d[A-Za-z\\d]*\\b", "g")) || []).length;if (s.length > 30 && s.length < 400 && (/[.!?]$/.test(s) || s.length > 80) && junky < 2 && !/\.indd/.test(s)) out.push(s);
+    }
+  }
+  return out;
+}
+const wordRe = w => new RegExp("\\b" + escRe(w) + "\\b", "g");
+
+function offlineAnswer(q) {
+  const raw = String(q || "").trim();
+  if (!raw) return null;
+  const ql = raw.toLowerCase();
+
+  /* small talk + identity */
+  if (/^(hi+|hello+|hey+|hlo+|namaste|good (morning|afternoon|evening)|yo)\b/.test(ql)) {
+    return "Hello! I'm **Saathy** — your learning companion, trained on NCERT modules and books. My book brain has every chapter of **Ganita Manjari**, **Science Exploration** and **Understanding Society** built right in. Try:\n\n- **explain photosynthesis**\n- **difference between scalar and vector**\n- **what is a linear equation**\n\nOr type `plan Motion` and I'll run the full loop — level check, slides, quiz, game, flashcards and a report.";
+  }
+  if (/who are you|your name|tumhara naam|aap kaun|about yourself|introduce yourself/.test(ql)) {
+    return "I am **Saathy v.1**, trained on NCERT modules and books — the AI companion of VidhyaSaathy (*Learning, with you*).\n\nRight now I'm answering from my **book brain**: every reply is grounded in the actual chapters stored inside this page, with the source shown. When a live model is connected (Settings or the preview server), I get full free-form tutoring on top.";
+  }
+  if (/^(thanks|thank you|thankyou|thx|dhanyavad|shukriya)\b/.test(ql)) {
+    return "Anytime! That's what I'm here for. A tiny next step: ask me to **test you** on the concept you just read — 60 seconds, and your mastery updates honestly.";
+  }
+  if (/^(how are you|kaise ho|kaisa hai|whats up|wassup|sup)\b/.test(ql)) {
+    return "Running warm and fully charged! More importantly — how are *you* doing? Tell me the chapter that's been bothering you and we'll crack it together, one small step at a time.";
+  }
+  if (/^(bye|goodbye|good night|gn|see you)\b/.test(ql)) {
+    return "See you soon! Your streak, mastery and reports stay saved right here. When you're back, just type `plan <chapter>` and we continue exactly where we left off.";
+  }
+  if (/what can you do|^help\b|how do (you|i) (use|work)|features|kya kar sakte/.test(ql)) {
+    return "Here's what I can do right now, with zero setup:\n\n- **Explain any chapter concept** — grounded in your three books, with the exact section cited\n- `plan <chapter>` — full loop: level check, slides, quiz, game, flashcards, report\n- `test me <topic>` — honest ladder quiz (Sure / Unsure / Guess)\n- `video <topic>` — verified teacher videos, 3 per concept, every link checked\n- `game` — five learning games that feed your mastery\n- Paste a **YouTube link** — I build a watch timeline with checkpoints\n- Track **streaks, XP, mastery and weak concepts** in Reports\n\nWhat are we learning today?";
+  }
+  const cmd = offlineBrainSuggest(ql);
+  if (cmd) return cmd;
+
+  /* knowledge retrieval over the corpus */
+  const words = brainTokens(raw);
+  if (!words.length) return null;
+  const cands = [];
+  for (const bk in BOOKS) {
+    for (const ch of BOOKS[bk].chapters) {
+      const chHay = (ch.title + " " + (ch.intro || "")).toLowerCase();
+      const chScore = words.reduce((a, w) => a + (new RegExp("\\b" + escRe(w) + "\\b").test(chHay) ? (w.length >= 5 ? 3 : 1.5) : 0), 0);
+      for (const sec of (ch.sections || [])) {
+        const body = String(sec.content || "").toLowerCase();
+        const st = String(sec.title || "").toLowerCase();
+        let s = chScore;
+        for (const w of words) {
+          if (new RegExp("\\b" + escRe(w) + "\\b").test(st)) s += 4;
+          s += Math.min((body.match(new RegExp("\\b" + escRe(w) + "\\b", "g")) || []).length, 3) * 1.8;
+        }
+        cands.push({ bk, ch, sec, s });
+      }
+    }
+  }
+  if (!cands.length) return null;
+  cands.sort((a, b) => b.s - a.s);
+  const best = cands[0];
+  if (best.s < 3.5) return null;
+
+  const bookName = BOOKS[best.bk].name.split(" (")[0];
+  const head = "**" + (best.sec.title || best.ch.title) + "** — from *" + bookName +
+    "*, Chapter " + best.ch.number + ": " + best.ch.title + " (§" + best.sec.id + ")";
+  const introSents = cleanSentences(best.sec.content);
+  const intro = introSents.slice(0, 2).join(" ");
+
+  const scored = [];
+  for (const c of cands.slice(0, 5)) {
+    if (c.s < best.s * 0.45) break;
+    const sameBook = BOOKS[c.bk].name.split(" (")[0];
+    for (const sn of cleanSentences(c.sec.content)) {
+      const sc = words.reduce((a, w) => a + (sn.toLowerCase().includes(w) ? 1 : 0), 0);
+      if (sc > 0) scored.push({ sn, sc, from: c.sec === best.sec ? null : (c.sec.title || "§" + c.sec.id) + " (" + sameBook + ")" });
+    }
+  }
+  scored.sort((a, b) => b.sc - a.sc);
+  const bullets = []; const seen = new Set();
+  for (const it of scored) {
+    const k = it.sn.slice(0, 60).toLowerCase();
+    if (seen.has(k) || intro.includes(it.sn)) continue;
+    seen.add(k);
+    bullets.push(it.from ? it.sn + " *(also in " + it.from + ")*" : it.sn);
+    if (bullets.length >= 4) break;
+  }
+
+  const tips = [];
+  try {
+    if (typeof matchVideos === "function" && typeof VIDEO_KIT !== "undefined" && VIDEO_KIT.length) {
+      const hits = matchVideos(raw, { limit: 1 });
+      if (hits.length) tips.push("Type `video " + hits[0].concept.split(/\s+/).slice(0, 3).join(" ") + "` and I'll open the verified video kit for this.");
+    }
+  } catch (e) {}
+  tips.push("Type `test me " + best.ch.title.split(/[:—]/)[0].trim().split(/\s+/).slice(0, 2).join(" ") + "` and I'll start a quick mastery quiz on this chapter.");
+
+  let out = head + "\n\n" + (intro ? intro + "\n\n" : "");
+  if (bullets.length) out += "**Key points**\n" + bullets.map(b => "- " + b).join("\n") + "\n\n";
+  out += tips.join("  \n");
+  return out;
+}
+
+/* ---------- boot ---------- */
+document.addEventListener("DOMContentLoaded", () => { probeBrain(); });
 </script>
 </body>
 </html>
