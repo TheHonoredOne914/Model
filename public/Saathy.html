@@ -1605,12 +1605,23 @@ const pose = (name) => { const el = new Image(); el.src = MASCOT[name] || MASCOT
 /* ---------- markdown-lite with school-math support ---------- */
 function mathHtml(s) {
   return s
-    .replace(/\\(t?frac)\{([^{}]+)\}\{([^{}]+)\}/g, (_, __, a, b) => `<span class="mfrac"><i>${a}</i><i>${b}</i></span>`)
-    .replace(/\\(times|div|pm|mp|leq|geq|neq|approx|rightarrow|Rightarrow|pi|theta|alpha|beta|gamma|Delta|omega|mu|degree)/g,
-      (_, k) => ({ times:"×", div:"÷", pm:"±", mp:"∓", leq:"≤", geq:"≥", neq:"≠", approx:"≈", rightarrow:"→", Rightarrow:"⇒",
-        pi:"π", theta:"θ", alpha:"α", beta:"β", gamma:"γ", Delta:"Δ", omega:"ω", mu:"μ", degree:"°" }[k] || k))
-    .replace(/\^\{([^{}]+)\}|\^(\w)/g, (_, a, b) => `<sup>${a || b}</sup>`)
-    .replace(/_\{([^{}]+)\}|_(\w)/g, (_, a, b) => `<sub>${a || b}</sub>`);
+    .replace(/\\(text|mathrm|mathit|mathbf|operatorname|htmlstyle|displaystyle)\s*\{([^{}]*)\}/g, "$2")
+    .replace(/\{?\s*text\s*\\\{([^{}]*)\\\}\s*\}?/g, "$1") /* mangled \text from some models */
+    .replace(/\\left\b|\\right\b/g, "")
+    .replace(/\\(t?frac|dfrac)\s*\{([^{}]+)\}\s*\{([^{}]+)\}/g, (_, __, a, b) => `<span class="mfrac"><i>${a}</i><i>${b}</i></span>`)
+    .replace(/\\sqrt\s*\{([^{}]+)\}/g, "√($1)")
+    .replace(/\\(times|div|pm|mp|leq|le|geq|ge|neq|ne|approx|equiv|propto|rightarrow|to|longrightarrow|Rightarrow|implies|leftarrow|gets|leftrightarrow|pi|theta|alpha|beta|gamma|delta|Delta|omega|lambda|mu|sigma|rho|phi|psi|eta|tau|epsilon|degree|circ|infty|cdot|partial|angle|perp|sum|int)/g,
+      (_, k) => ({ times:"×", div:"÷", pm:"±", mp:"∓", leq:"≤", le:"≤", geq:"≥", ge:"≥", neq:"≠", ne:"≠", approx:"≈", equiv:"≡", propto:"∝",
+        rightarrow:"→", to:"→", longrightarrow:"→", Rightarrow:"⇒", implies:"⇒", leftarrow:"←", gets:"←", longleftarrow:"←", longleftrightarrow:"↔", leftrightarrow:"↔",
+        pi:"π", theta:"θ", alpha:"α", beta:"β", gamma:"γ", delta:"δ", Delta:"Δ", omega:"ω", lambda:"λ", mu:"μ", sigma:"σ", rho:"ρ", phi:"φ", psi:"ψ", eta:"η", tau:"τ", epsilon:"ε",
+        degree:"°", circ:"°", infty:"∞", cdot:"·", partial:"∂", angle:"∠", perp:"⊥", sum:"Σ", int:"∫" }[k] || k))
+    .replace(/\\[,;:! ]/g, " ")
+    .replace(/\\\{/g, "{").replace(/\\\}/g, "}")
+    .replace(/\\\\/g, "&nbsp;")
+    .replace(/\\([a-zA-Z]+)\b/g, "") /* strip unknown latex commands */
+    .replace(/\$/g, "")
+    .replace(/\^\{([^{}]+)\}|\^\(([^()]+)\)|\^(\w)/g, (_, a, b, c) => `<sup>${a || b || c}</sup>`)
+    .replace(/_\{([^{}]+)\}|_\(([^()]+)\)|_(\w)/g, (_, a, b, c) => `<sub>${a || b || c}</sub>`);
 }
 function inlineMd(s) {
   s = esc(s);
@@ -1630,8 +1641,18 @@ function inlineMd(s) {
   s = s.replace(/\u0000C(\d+)\u0000/g, (_, i) => `<code>${codes[+i]}</code>`);
   return s;
 }
+function blockMath(m) { return `<span class="math-block math">${mathHtml(m)}</span>`; }
 function md(src) {
-  const lines = String(src || "").replace(/\r/g, "").split("\n");
+  /* LLMs often emit lists as "1. x\n\n1. y" — merge items split by blank lines into ONE list,
+     so numbering continues (1,2,3…) instead of restarting at 1 in every fragment. */
+  let srcStr = String(src || "").replace(/\r/g, "");
+  let _p;
+  do {
+    _p = srcStr;
+    srcStr = srcStr.replace(/(\n[ \t]*\d+[.)][^\n]*)\n[ \t]*\n(?=[ \t]*\d+[.)])/g, "$1\n");
+    srcStr = srcStr.replace(/(\n[ \t]*[-*•][^\n]*)\n[ \t]*\n(?=[ \t]*[-*•][ \t])/g, "$1\n");
+  } while (srcStr !== _p);
+  const lines = srcStr.split("\n");
   const out = []; let i = 0;
   const flushP = buf => { if (buf.length) out.push(`<p>${buf.join("<br>")}</p>`); buf.length = 0; };
   const p = [];
@@ -1643,6 +1664,15 @@ function md(src) {
       i++; out.push(`<pre><code>${esc(buf.join("\n"))}</code></pre>`); continue;
     }
     if (/^\s*(?:-{3,}|\*{3,}|_{3,})\s*$/.test(L)) { flushP(p); out.push("<hr>"); i++; continue; }
+    /* display math — both on one line, or fenced on its own lines: $$ \n eq \n $$ */
+    if (/^\s*\$\$(.+)\$\$\s*$/.test(L)) { flushP(p); out.push(blockMath(L.replace(/^\s*\$\$|\$\$\s*$/g, "").trim())); i++; continue; }
+    if (/^\s*\$\$\s*$/.test(L)) {
+      flushP(p); const mb = []; i++;
+      while (i < lines.length && !/^\s*\$\$\s*$/.test(lines[i])) { mb.push(lines[i]); i++; }
+      i++; out.push(blockMath(mb.join(" ").trim())); continue;
+    }
+    /* bare latex line (model forgot the $…$): any \command, no backticks/prose risk */
+    if (/\\[a-zA-Z]{2,}/.test(L) && !/[`$]/.test(L)) { flushP(p); out.push(blockMath(L.trim())); i++; continue; }
     if (/^\s*#{1,4}\s+/.test(L)) {
       flushP(p); const h = L.match(/^\s*(#{1,4})\s+(.*)$/);
       out.push(`<h${h[1].length + 1}>${inlineMd(h[2].trim())}</h${h[1].length + 1}>`); i++; continue;
@@ -1664,8 +1694,9 @@ function md(src) {
     }
     if (/^\s*\d+[.)]\s+/.test(L)) {
       flushP(p); const items = [];
+      const startN = parseInt((L.match(/^\s*(\d+)[.)]/) || [0, 1])[1], 10) || 1;
       while (i < lines.length && /^\s*\d+[.)]\s+/.test(lines[i])) { items.push(lines[i].replace(/^\s*\d+[.)]\s+/, "")); i++; }
-      out.push("<ol>" + items.map(x => `<li>${inlineMd(x)}</li>`).join("") + "</ol>"); continue;
+      out.push(`<ol start="${startN}">` + items.map(x => `<li>${inlineMd(x)}</li>`).join("") + "</ol>"); continue;
     }
     if (/^\s*>\s?/.test(L)) {
       flushP(p); const q = [];
