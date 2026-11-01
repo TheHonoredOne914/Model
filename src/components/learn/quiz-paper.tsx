@@ -9,7 +9,7 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-export function QuizPaper({ chapter, onDone, onExit }: { chapter: ChapterArtifacts; onDone: (res: { correct: number; total: number; weak: string[] }) => void; onExit: () => void }) {
+export function QuizPaper({ chapter, onDone, onExit, accent = "#b0552f" }: { chapter: ChapterArtifacts; onDone: (res: { correct: number; total: number; weak: string[] }) => void; onExit: () => void; accent?: string }) {
   const [seed] = useState(0);
   const qs = useMemo(() => shuffle(chapter.quiz).slice(0, Math.min(12, chapter.quiz.length)), [chapter.quiz, seed]);
   const [i, setI] = useState(0);
@@ -46,11 +46,11 @@ export function QuizPaper({ chapter, onDone, onExit }: { chapter: ChapterArtifac
             )}
             <div className="paper-body !pl-0">
               <p className="scribble text-[16px]">checked by Saathy ✎</p>
-              <div className="font-hand text-[64px] font-bold leading-none text-[#16305b]">{pct}%</div>
+              <div className="font-hand text-[64px] font-bold leading-none" style={{ color: accent }}>{pct}%</div>
               <p className="mt-1 text-[14px] font-bold text-[#637c96]">{correct} / {qs.length} sahi · level band {band + 1}/4</p>
               <p className="font-note mt-3 text-[16px] leading-relaxed text-[#2b3a67]">{verdict}</p>
               <div className="mt-6 flex flex-wrap justify-center gap-2.5">
-                <button type="button" onClick={() => onDone({ correct, total: qs.length, weak: [...weak] })} className="rounded-full bg-[#16305b] px-6 py-2.5 text-[13.5px] font-extrabold text-white shadow-[0_6px_16px_rgba(22,48,91,0.35)] hover:bg-[#214F78]">Aage badho →</button>
+                <button type="button" onClick={() => onDone({ correct, total: qs.length, weak: [...weak] })} className="press rounded-full px-6 py-2.5 text-[13.5px] font-extrabold text-white shadow-[0_6px_16px_rgba(22,48,91,0.35)] transition hover:brightness-110" style={{ background: accent }}>Aage badho →</button>
                 <button type="button" onClick={() => { setI(0); setPicked(null); setCorrect(0); setWeak(new Set()); setFinished(false); }} className="rounded-full border border-[#d8dde7] bg-white px-5 py-2.5 text-[13.5px] font-extrabold text-[#17324f] hover:bg-[#f2f7fd]">Dobara try</button>
               </div>
             </div>
@@ -110,7 +110,7 @@ export function QuizPaper({ chapter, onDone, onExit }: { chapter: ChapterArtifac
               {picked !== null && (
                 <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <p className="font-note max-w-md text-[14.5px] leading-snug text-[#5a6b8c]"><span className="scribble text-[15px]">{picked === q.answer ? "Sahi! " : "Dekho — "}</span>{q.why}</p>
-                  <button type="button" onClick={advance} className="shrink-0 rounded-full bg-[#16305b] px-6 py-2 text-[13px] font-extrabold text-white shadow-[0_6px_16px_rgba(22,48,91,0.35)] hover:bg-[#214F78]">{i + 1 >= qs.length ? "Result dekho" : "Agla →"}</button>
+                  <button type="button" onClick={advance} className="shrink-0 press rounded-full px-6 py-2 text-[13px] font-extrabold text-white shadow-[0_6px_16px_rgba(22,48,91,0.35)] transition hover:brightness-110" style={{ background: accent }}>{i + 1 >= qs.length ? "Result dekho" : "Agla →"}</button>
                 </div>
               )}
             </div>

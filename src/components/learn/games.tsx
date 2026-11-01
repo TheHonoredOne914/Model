@@ -23,7 +23,7 @@ const GAMES: { key: GameKey; name: string; desc: string; icon: string }[] = [
   { key: "tiles", name: "Tile Flip", desc: "Cards palat kar jodi dhoondo.", icon: "🎴" },
 ];
 
-export function GameHub({ chapter, onExit, onXp }: { chapter: ChapterArtifacts; onExit: () => void; onXp: (xp: number) => void }) {
+export function GameHub({ chapter, onExit, onXp, accent = "#b0552f" }: { chapter: ChapterArtifacts; onExit: () => void; onXp: (xp: number) => void; accent?: string }) {
   const [game, setGame] = useState<GameKey | null>(null);
   const [xp, setXp] = useState(0);
   const [best, setBest] = useState<Record<string, number>>({});
@@ -47,7 +47,7 @@ export function GameHub({ chapter, onExit, onXp }: { chapter: ChapterArtifacts; 
       <div className="flex items-center justify-between gap-3 border-b border-[#e4e9f1] bg-white/80 px-4 py-2.5 backdrop-blur">
         <button type="button" onClick={() => (game ? setGame(null) : onExit())} className="rounded-full border border-[#d8dde7] bg-white px-3.5 py-1.5 text-[12.5px] font-extrabold text-[#17324f] hover:bg-[#f2f7fd]">← {game ? "Games" : "Exit"}</button>
         <p className="min-w-0 flex-1 truncate text-center text-[12.5px] font-bold text-[#637c96]">{chapter.title} — game station</p>
-        <p className="shrink-0 rounded-full bg-[#fff3ea] px-3 py-1 text-[12px] font-extrabold text-[#b0552f]">★ {xp} XP</p>
+        <p className="shrink-0 rounded-full bg-[#fff3ea] px-3 py-1 text-[12px] font-extrabold" style={{ color: accent }}>★ {xp} XP</p>
       </div>
 
       <div className="flex min-h-0 flex-1 items-start justify-center overflow-y-auto px-4 py-6">
@@ -55,12 +55,12 @@ export function GameHub({ chapter, onExit, onXp }: { chapter: ChapterArtifacts; 
           <div className="grid w-full max-w-3xl grid-cols-1 gap-4 sm:grid-cols-2">
             {GAMES.map(g => (
               <button key={g.key} type="button" onClick={() => setGame(g.key)}
-                className="press group relative overflow-hidden rounded-2xl border-2 border-[#e4e9f1] bg-white p-5 text-left shadow-[0_10px_24px_rgba(16,43,76,0.10)] transition-all hover:-translate-y-1 hover:border-[#f0b490] hover:shadow-[0_16px_34px_rgba(16,43,76,0.16)]">
+                className="press group relative overflow-hidden rounded-2xl border-2 border-[#e4e9f1] bg-white p-5 text-left shadow-[0_10px_24px_rgba(16,43,76,0.10)] transition-all hover:-translate-y-1.5 hover:border-[#f0b490] hover:shadow-[0_18px_36px_rgba(16,43,76,0.18)]">
                 <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-[#fff1e7] transition-transform duration-300 group-hover:scale-125" aria-hidden />
                 <p className="text-[26px] leading-none transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6">{g.icon}</p>
                 <p className="font-hand mt-2 text-[22px] font-bold text-[#16305b]">{g.name}</p>
                 <p className="mt-0.5 text-[12.5px] font-semibold leading-snug text-[#637c96]">{g.desc}</p>
-                <p className="mt-2 text-[11.5px] font-extrabold text-[#b0552f]">best: {best[g.key] ?? 0}</p>
+                <p className="mt-2 text-[11.5px] font-extrabold" style={{ color: accent }}>best: {best[g.key] ?? 0}</p>
               </button>
             ))}
           </div>

@@ -5,7 +5,7 @@
 // (heat-map colours: green=secure, peach=mixed, red=stuck — VS-61 semantics,
 // student-friendly labels only), and the student/settings footer.
 import { useMemo, useState } from 'react';
-import { MessageSquarePlus, Search, Trash2, Settings, Target, BookOpen, NotebookPen, Layers, Flame, Sparkles } from 'lucide-react';
+import { MessageSquarePlus, Search, Trash2, Settings, Target, BookOpen, Layers, Flame, Sparkles } from 'lucide-react';
 import { Mascot } from './mascot';
 import { Button } from '@/components/ui/button';
 import type { ConceptCtx, ProfileCtx, SubjectCtx } from '@/lib/saathy-types';
@@ -75,10 +75,10 @@ export function SidebarContent({
         </div>
       </div>
 
-      {/* Modules shelf — three separate modules, each with its own identity */}
+      {/* Modules shelf — two separate modules, each with its own identity */}
       <div className="px-3 pt-3">
         <p className="px-1 pb-1.5 text-[10px] font-extrabold uppercase tracking-widest text-[#9aa8bf]">Modules</p>
-        <div className="grid grid-cols-3 gap-1.5">
+        <div className="grid grid-cols-2 gap-1.5">
           <a href="/" aria-current="page" className="mod-card mod-chat flex flex-col items-center gap-1 rounded-xl border-2 border-[#7fb3ff] bg-[#eaf3ff] px-1 py-2 text-center">
             <MessageSquarePlus className="h-4 w-4 text-[#2a5298]" />
             <span className="text-[10px] font-extrabold text-[#2a5298]">Chat</span>
@@ -88,11 +88,6 @@ export function SidebarContent({
             <Layers className="h-4 w-4 text-[#3e7d4d]" />
             <span className="text-[10px] font-extrabold text-[#17324f]">Learn</span>
             <span className="text-[8.5px] font-bold leading-none text-[#9aa8bf]">slides · quiz</span>
-          </a>
-          <a href="/revision" className="mod-card mod-revision flex flex-col items-center gap-1 rounded-xl border border-[#e0e8f2] bg-white px-1 py-2 text-center">
-            <NotebookPen className="h-4 w-4 text-[#b0552f]" />
-            <span className="text-[10px] font-extrabold text-[#17324f]">Revision</span>
-            <span className="text-[8.5px] font-bold leading-none text-[#9aa8bf]">80/80</span>
           </a>
         </div>
       </div>

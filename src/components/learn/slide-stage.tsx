@@ -1,10 +1,13 @@
 "use client";
 // Full-screen slide stage — teaches one idea per slide, keyboard + tap nav.
+// v2: book-accent theming, staggered bullet entrances, tap zones + dots.
 import { useCallback, useEffect, useState } from "react";
 import type { ChapterArtifacts } from "@/lib/learn/artifacts";
 import { VisualBoard } from "./visuals";
 
-export function SlideStage({ chapter, onDone, onExit }: { chapter: ChapterArtifacts; onDone: (viewed: number) => void; onExit: () => void }) {
+export function SlideStage({ chapter, onDone, onExit, accent = "#b0552f" }: {
+  chapter: ChapterArtifacts; onDone: (viewed: number) => void; onExit: () => void; accent?: string;
+}) {
   const [i, setI] = useState(0);
   const n = chapter.slides.length;
   const next = useCallback(() => setI(v => Math.min(v + 1, n - 1)), [n]);
@@ -27,16 +30,20 @@ export function SlideStage({ chapter, onDone, onExit }: { chapter: ChapterArtifa
     <div className="fixed inset-0 z-50 flex flex-col slide-stage">
       {/* top bar */}
       <div className="flex items-center justify-between gap-3 border-b border-[#e4e9f1] bg-white/80 px-4 py-2.5 backdrop-blur">
-        <button type="button" onClick={onExit} className="rounded-full border border-[#d8dde7] bg-white px-3.5 py-1.5 text-[12.5px] font-extrabold text-[#17324f] transition hover:bg-[#f2f7fd]">✕ Exit slides</button>
+        <button type="button" onClick={onExit} className="press rounded-full border border-[#d8dde7] bg-white px-3.5 py-1.5 text-[12.5px] font-extrabold text-[#17324f] transition hover:bg-[#f2f7fd]">✕ Exit slides</button>
         <p className="min-w-0 flex-1 truncate text-center text-[12.5px] font-bold text-[#637c96]">
-          <span className="font-hand text-[15px] text-[#b0552f]">Ch {chapter.chapter}</span> · {chapter.title}
+          <span className="font-hand text-[15px]" style={{ color: accent }}>Ch {chapter.chapter}</span> · {chapter.title}
         </p>
-        <p className="hidden shrink-0 rounded-full bg-[#eef4fb] px-3 py-1 text-[12px] font-extrabold text-[#2a5298] sm:block">{i + 1} / {n}</p>
+        <p className="hidden shrink-0 rounded-full px-3 py-1 text-[12px] font-extrabold sm:block" style={{ background: `${accent}14`, color: accent }}>{i + 1} / {n}</p>
       </div>
 
       {/* slide body */}
-      <div className="flex min-h-0 flex-1 items-start justify-center overflow-y-auto px-4 py-5 sm:items-center sm:px-8">
-        <div className="slide-glide w-full max-w-3xl" key={s.id}>
+      <div className="relative flex min-h-0 flex-1 items-start justify-center overflow-y-auto px-4 py-5 sm:items-center sm:px-8">
+        {/* invisible tap zones — tap left/right half to navigate, like a real deck */}
+        <button type="button" aria-label="Previous slide" onClick={prev} disabled={i === 0} className="absolute inset-y-0 left-0 z-0 w-[14%] cursor-w-resize disabled:cursor-default" />
+        <button type="button" aria-label="Next slide" onClick={next} disabled={i === n - 1} className="absolute inset-y-0 right-0 z-0 w-[14%] cursor-e-resize disabled:cursor-default" />
+
+        <div className="slide-glide relative z-10 w-full max-w-3xl" key={s.id}>
           <div className="relative paper-sheet rounded-2xl px-5 py-6 shadow-[0_18px_44px_rgba(16,43,76,0.14)] sm:px-8 sm:py-8">
             <div className="tape left-6 top-[-12px]" aria-hidden />
             <div className="page-curl" aria-hidden />
@@ -45,13 +52,13 @@ export function SlideStage({ chapter, onDone, onExit }: { chapter: ChapterArtifa
               <h2 className="font-hand mt-0.5 text-[30px] font-bold leading-tight text-[#16305b] sm:text-[38px]">{s.title}</h2>
               <ul className="mt-4 space-y-3">
                 {s.bullets.map((b, k) => (
-                  <li key={k} className="font-note flex gap-2.5 text-[16.5px] leading-[1.55] text-[#2b3a67] sm:text-[18px]">
+                  <li key={k} className="bullet-in font-note flex gap-2.5 text-[16.5px] leading-[1.55] text-[#2b3a67] sm:text-[18px]" style={{ animationDelay: `${120 + k * 110}ms` }}>
                     <span className="scribble mt-[1px] shrink-0 text-[19px] leading-none">{["◦", "•", "◦", "•"][k % 4]}</span>
                     <span>{b}</span>
                   </li>
                 ))}
               </ul>
-              {s.visual && <div className="mt-6"><VisualBoard visual={s.visual} /></div>}
+              {s.visual && <div className="mt-6"><VisualBoard visual={s.visual} accent={accent} /></div>}
               {s.note && <p className="mt-5 inline-block rotate-[-1deg] rounded-lg border border-[#f3d9c4] bg-[#fff6ec] px-3.5 py-1.5 font-hand text-[16px] font-semibold text-[#b0552f] shadow-[0_1px_4px_rgba(176,85,47,0.12)]">{s.note}</p>}
             </div>
           </div>
@@ -60,7 +67,7 @@ export function SlideStage({ chapter, onDone, onExit }: { chapter: ChapterArtifa
           <div className="mt-4 flex flex-wrap items-center justify-center gap-1.5">
             {chapter.slides.map((sl, k) => (
               <button key={sl.id} type="button" aria-label={`Go to slide ${k + 1}`} onClick={() => setI(k)}
-                className={`slide-dot h-2 rounded-full ${k === i ? "w-6 bg-[#b0552f]" : k < i ? "w-2 bg-[#8fb6d9]" : "w-2 bg-[#d8dde7]"}`} />
+                className="slide-dot h-2 rounded-full" style={{ width: k === i ? 24 : 8, background: k === i ? accent : k < i ? "#8fb6d9" : "#d8dde7" }} />
             ))}
           </div>
         </div>
@@ -71,8 +78,8 @@ export function SlideStage({ chapter, onDone, onExit }: { chapter: ChapterArtifa
         <button type="button" onClick={prev} disabled={i === 0} className="press rounded-full border border-[#d8dde7] bg-white px-5 py-2 text-[13px] font-extrabold text-[#17324f] transition enabled:hover:bg-[#f2f7fd] disabled:opacity-40">← Pichle</button>
         <p className="hidden text-[11.5px] font-semibold text-[#8a94a8] md:block">keyboard: ← → space · esc to exit</p>
         {i === n - 1
-          ? <button type="button" onClick={finish} className="press rounded-full bg-[#16305b] px-6 py-2 text-[13px] font-extrabold text-white shadow-[0_6px_16px_rgba(22,48,91,0.35)] transition hover:bg-[#214F78]">Quiz pe chalo →</button>
-          : <button type="button" onClick={next} className="press rounded-full bg-[#16305b] px-6 py-2 text-[13px] font-extrabold text-white shadow-[0_6px_16px_rgba(22,48,91,0.35)] transition hover:bg-[#214F78]">Agla →</button>}
+          ? <button type="button" onClick={finish} className="press rounded-full px-6 py-2 text-[13px] font-extrabold text-white shadow-[0_6px_16px_rgba(22,48,91,0.35)] transition hover:brightness-110" style={{ background: accent }}>Solved examples dekho →</button>
+          : <button type="button" onClick={next} className="press rounded-full px-6 py-2 text-[13px] font-extrabold text-white shadow-[0_6px_16px_rgba(22,48,91,0.35)] transition hover:brightness-110" style={{ background: accent }}>Agla →</button>}
       </div>
     </div>
   );

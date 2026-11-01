@@ -17,7 +17,7 @@ const TAG_COLORS: Record<string, string> = {
   trivia: "#7a6a4a",
 };
 
-export function FlashcardDeck({ chapter, onDone, onExit }: { chapter: ChapterArtifacts; onDone: (res: { known: number; total: number }) => void; onExit: () => void }) {
+export function FlashcardDeck({ chapter, onDone, onExit, accent = "#b0552f" }: { chapter: ChapterArtifacts; onDone: (res: { known: number; total: number }) => void; onExit: () => void; accent?: string }) {
   const [seed] = useState(0);
   const cards = useMemo(() => shuffle(chapter.flashcards).slice(0, Math.min(14, chapter.flashcards.length)), [chapter.flashcards, seed]);
   const [i, setI] = useState(0);
@@ -34,13 +34,13 @@ export function FlashcardDeck({ chapter, onDone, onExit }: { chapter: ChapterArt
             <div className="tape left-1/2 top-[-12px]" aria-hidden />
             <div className="paper-body !pl-0">
               <p className="scribble text-[16px]">revision pouch se nikala ✎</p>
-              <div className="font-hand text-[54px] font-bold leading-none text-[#16305b]">{known.length}<span className="text-[26px] text-[#637c96]">/{cards.length || chapter.flashcards.length}</span></div>
+          <div className="font-hand text-[54px] font-bold leading-none" style={{ color: accent }}>{known.length}<span className="text-[26px] text-[#637c96]">/{cards.length || chapter.flashcards.length}</span></div>
               <p className="mt-1 text-[14px] font-bold text-[#637c96]">cards aate hain ab tumhe</p>
               <p className="font-note mt-3 text-[16px] leading-relaxed text-[#2b3a67]">
                 {notYet.length === 0 ? "Poori deck clear — quiz me ab top karoge!" : `${notYet.length} cards abhi "almost" hain — ek baar phir palto, phir games khelo.`}
               </p>
               <div className="mt-6 flex flex-wrap justify-center gap-2.5">
-                <button type="button" onClick={() => onDone({ known: known.length, total: cards.length })} className="rounded-full bg-[#16305b] px-6 py-2.5 text-[13.5px] font-extrabold text-white shadow-[0_6px_16px_rgba(22,48,91,0.35)] hover:bg-[#214F78]">Games pe chalo →</button>
+                <button type="button" onClick={() => onDone({ known: known.length, total: cards.length })} className="press rounded-full px-6 py-2.5 text-[13.5px] font-extrabold text-white shadow-[0_6px_16px_rgba(22,48,91,0.35)] transition hover:brightness-110" style={{ background: accent }}>Games pe chalo →</button>
                 <button type="button" onClick={() => { setI(0); setFlipped(false); setKnown([]); setNotYet([]); setDone(false); }} className="rounded-full border border-[#d8dde7] bg-white px-5 py-2.5 text-[13.5px] font-extrabold text-[#17324f] hover:bg-[#f2f7fd]">Dobara palto</button>
               </div>
             </div>
