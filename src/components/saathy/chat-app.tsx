@@ -614,9 +614,7 @@ export function ChatApp() {
                     { label: 'Samjha do', desc: 'step by step, your book, your pace', act: () => chipPrefill(`Explain ${focusConcept?.name ?? currentChapterInfo?.chapter.name ?? 'a concept'} `) },
                     { label: 'Yeh solve karo', desc: 'guided — no copy-paste answers', act: () => chipPrefill('Solve this: ') },
                     { label: 'Test me', desc: 'quick questions at my level', act: () => chipSend(`Start a practice round on ${currentChapterInfo?.chapter.name ?? 'my current chapter'}`, 'practise') },
-                    { label: 'Video se dekho', desc: 'YouTube plan + watch timeline', act: () => chipSend(`Give me a YouTube video plan for ${currentChapterInfo?.chapter.name ?? focusConcept?.name ?? 'my current topic'} with a watch timeline`, 'explain') },
                     { label: 'Notes bhar do', desc: 'teacher material, compressed', act: () => chipSend(`Summarise my teacher's notes for ${currentChapterInfo?.chapter.name ?? 'the current chapter'}`, 'summarise') },
-                    { label: 'Meri position', desc: 'what to revise, what is strong', act: () => chipSend('Give me my honest position across my chapters — what to revise first', 'chat') },
                   ].map((chip, i) => (
                     <button
                       key={chip.label}
@@ -629,6 +627,20 @@ export function ChatApp() {
                       <p className="mt-0.5 text-[11.5px] font-semibold text-[#8a94a8]">{chip.desc}</p>
                     </button>
                   ))}
+                </div>
+
+                {/* How Saathy works — the one instructions block (features live in the backend, reachable from the chat) */}
+                <div className="mt-5 w-full max-w-xl rounded-2xl border border-[#ece7e0] bg-white/85 px-5 py-4 text-left shadow-[0_1px_6px_rgba(30,58,138,0.05)]">
+                  <p className="flex items-center gap-1.5 text-[10.5px] font-extrabold uppercase tracking-wider text-[#2a5298]">
+                    <Sparkles className="h-3.5 w-3.5" />
+                    How Saathy works
+                  </p>
+                  <ol className="mt-2 list-decimal space-y-1.5 pl-4 text-[12px] font-semibold leading-relaxed text-[#637c96]">
+                    <li><span className="font-extrabold text-[#17324f]">Ask anything</span> from your books — I check your level first, then teach at exactly your depth.</li>
+                    <li>Type <code className="rounded bg-[#e6f0ff] px-1.5 py-0.5 text-[11px] font-extrabold text-[#16305b]">plan &lt;chapter&gt;</code> for the full loop: level check → slides → quiz → game → flashcards → report.</li>
+                    <li>Type <code className="rounded bg-[#e6f0ff] px-1.5 py-0.5 text-[11px] font-extrabold text-[#16305b]">video &lt;topic&gt;</code> for verified direct YouTube links — 3 teachers per concept. <code className="rounded bg-[#e6f0ff] px-1.5 py-0.5 text-[11px] font-extrabold text-[#16305b]">test me</code>, <code className="rounded bg-[#e6f0ff] px-1.5 py-0.5 text-[11px] font-extrabold text-[#16305b]">report</code> work the same way.</li>
+                    <li><span className="font-extrabold text-[#17324f]">Paste a YouTube link</span> — I understand it and build a watch timeline.</li>
+                  </ol>
                 </div>
 
                 {weakestConcept && (weakestConcept.tier ?? 3) <= 1 ? (
