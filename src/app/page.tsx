@@ -1,5 +1,5 @@
-import { ChatApp } from '@/components/saathy/chat-app';
+import { AppShell } from '@/components/platform/app-shell';
 
 export default function Home() {
-  return <ChatApp />;
+  return <AppShell />;
 }

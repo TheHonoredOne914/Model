@@ -24,7 +24,7 @@ const GAMES: { key: GameKey; name: string; desc: string; icon: React.ComponentTy
   { key: "tiles", name: "Tile Flip", desc: "Cards palat kar jodi dhoondo.", icon: SquareStack },
 ];
 
-export function GameHub({ chapter, onExit, onXp, accent = "#b0552f" }: { chapter: ChapterArtifacts; onExit: () => void; onXp: (xp: number) => void; accent?: string }) {
+export function GameHub({ chapter, onExit, onXp, accent = "#b0552f", inline = false }: { chapter: ChapterArtifacts; onExit: () => void; onXp: (xp: number) => void; accent?: string; inline?: boolean }) {
   const [game, setGame] = useState<GameKey | null>(null);
   const [xp, setXp] = useState(0);
   const [best, setBest] = useState<Record<string, number>>({});
@@ -44,7 +44,7 @@ export function GameHub({ chapter, onExit, onXp, accent = "#b0552f" }: { chapter
   const setBestIf = (g: string, v: number) => setBest(b => { if (v > (b[g] ?? 0)) { saveNum(`saathy.games.best.${g}.${chapter.book}${chapter.chapter}`, v); return { ...b, [g]: v }; } return b; });
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col slide-stage">
+    <div className={inline ? "flex min-h-[62vh] flex-col slide-stage" : "fixed inset-0 z-50 flex flex-col slide-stage"}>
       <div className="flex items-center justify-between gap-3 border-b border-[#e4e9f1] bg-white/80 px-4 py-2.5 backdrop-blur">
         <button type="button" onClick={() => (game ? setGame(null) : onExit())} className="rounded-full border border-[#d8dde7] bg-white px-3.5 py-1.5 text-[12.5px] font-extrabold text-[#17324f] hover:bg-[#f2f7fd]">← {game ? "Games" : "Exit"}</button>
         <p className="min-w-0 flex-1 truncate text-center text-[12.5px] font-bold text-[#637c96]">{chapter.title} — game station</p>

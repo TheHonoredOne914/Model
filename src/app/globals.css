@@ -795,3 +795,17 @@
 @media (prefers-reduced-motion: reduce) {
   .sway-in, .flip-in, .draw-check, .shimmer-line, .mod-card, .sticky-note, .mod-goto { animation: none !important; transition: none !important; }
 }
+
+/* ===== Platform shell: the notebook page-turn ========================
+   Switching tabs flips the main sheet like real paper: slight 3D arc
+   from the spine (left), a moving shadow, then it settles flat. */
+@keyframes vsPageTurn {
+  0%   { transform: perspective(1600px) rotateY(-14deg) translateX(10px); opacity: 0.25; filter: drop-shadow(-14px 6px 18px rgba(16, 43, 76, 0.22)); }
+  55%  { transform: perspective(1600px) rotateY(3deg) translateX(0); opacity: 1; filter: drop-shadow(-4px 2px 8px rgba(16, 43, 76, 0.10)); }
+  100% { transform: perspective(1600px) rotateY(0) translateX(0); filter: none; }
+}
+.vs-page-flip { animation: vsPageTurn 430ms cubic-bezier(0.32, 0.72, 0.28, 1) both; transform-origin: left center; will-change: transform, opacity; }
+
+@media (prefers-reduced-motion: reduce) {
+  .vs-page-flip { animation: none !important; }
+}

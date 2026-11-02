@@ -18,7 +18,7 @@ import type { ChatMeta, ChatMode, ConceptCtx, ContextResponse, LearnMeta, Master
 let tempId = 0;
 const nextTempId = () => `temp-${Date.now()}-${tempId++}`;
 
-export function ChatApp() {
+export function ChatApp({ onExit }: { onExit?: () => void }) {
   const { toast } = useToast();
 
   const [ctx, setCtx] = useState<ContextResponse | null>(null);
@@ -517,7 +517,16 @@ export function ChatApp() {
   };
 
   return (
-    <div className="saathy-bg flex h-dvh overflow-hidden">
+    <div className="saathy-bg relative flex h-dvh overflow-hidden">
+      {/* Back-to-desk chip (platform shell embed) — floats over the sidebar */}
+      {onExit && (
+        <button
+          onClick={onExit}
+          className="absolute left-3 top-[74px] z-50 inline-flex items-center gap-1.5 rounded-full border border-[#e4d5c6] bg-white/95 px-3 py-1.5 text-[11px] font-extrabold text-[#214F78] shadow-[0_6px_16px_-8px_rgba(16,43,76,.45)] backdrop-blur transition hover:border-[#A9CEE8]"
+        >
+          &larr; Back to desk
+        </button>
+      )}
       {/* Desktop sidebar */}
       <aside
         className={`hidden shrink-0 overflow-hidden border-r border-[#f0e4d8] transition-[width] duration-300 md:block ${

@@ -15,8 +15,9 @@ export function ExamplesStage({ chapter, onDone, onExit, accent = "#b0552f" }: {
   const [i, setI] = useState(0);
   const [revealed, setRevealed] = useState(1); // steps shown so far
   const [showAns, setShowAns] = useState(false);
-
-  useEffect(() => { setRevealed(1); setShowAns(false); }, [i]);
+  // reset per-example state during render when the index changes (lint-safe)
+  const [prevI, setPrevI] = useState(i);
+  if (prevI !== i) { setPrevI(i); setRevealed(1); setShowAns(false); }
 
   if (exs.length === 0) {
     return (

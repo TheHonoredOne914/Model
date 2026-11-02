@@ -18,6 +18,19 @@ export interface MasterStats {
   weak: string[];
 }
 
+/* stat row — module-level so it isn't re-created every render */
+function Row({ label, val, sub, tint }: { label: string; val: string; sub: string; tint: string }) {
+  return (
+    <div className="flex items-center gap-3 rounded-xl border border-[#e8e2d2] bg-white/80 px-3.5 py-2.5">
+      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-[13px] font-extrabold" style={{ background: `${tint}1f`, color: tint }}>{val}</span>
+      <span className="min-w-0">
+        <span className="block text-[12.5px] font-extrabold text-[#16305b]">{label}</span>
+        <span className="block truncate text-[11px] font-bold text-[#8a94a8]">{sub}</span>
+      </span>
+    </div>
+  );
+}
+
 export function MasterReport({ chapter, stats, onClose }: { chapter: ChapterArtifacts; stats: MasterStats; onClose: () => void }) {
   const info = bookInfo(chapter.book);
   const chapters = useMemo(() => chaptersOf(chapter.book), [chapter.book]);
@@ -39,16 +52,6 @@ export function MasterReport({ chapter, stats, onClose }: { chapter: ChapterArti
   const weakTitles = (stats.weak ?? [])
     .map(sec => chapter.sections.find(s => s.id === sec)?.title)
     .filter(Boolean) as string[];
-
-  const Row = ({ label, val, sub, tint }: { label: string; val: string; sub: string; tint: string }) => (
-    <div className="flex items-center gap-3 rounded-xl border border-[#e8e2d2] bg-white/80 px-3.5 py-2.5">
-      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-[13px] font-extrabold" style={{ background: `${tint}1f`, color: tint }}>{val}</span>
-      <span className="min-w-0">
-        <span className="block text-[12.5px] font-extrabold text-[#16305b]">{label}</span>
-        <span className="block truncate text-[11px] font-bold text-[#8a94a8]">{sub}</span>
-      </span>
-    </div>
-  );
 
   return (
     <div className="fade-in fixed inset-0 z-50 flex items-start justify-center overflow-y-auto slide-stage px-4 py-8 sm:items-center">
