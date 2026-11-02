@@ -3,6 +3,7 @@
 // diagrams: numbered pipelines with arrows, VS comparison columns, tree
 // connectors, labelled chips and gridded plots. Notebook style throughout.
 import type { VisualSpec } from "@/lib/learn/artifacts";
+import { mathText } from "@/lib/learn/math-text";
 
 export function VisualBoard({ visual, accent = "#b0552f" }: { visual: VisualSpec; accent?: string }) {
   if (!visual) return null;
@@ -15,7 +16,7 @@ export function VisualBoard({ visual, accent = "#b0552f" }: { visual: VisualSpec
               <div className="paper-lite flex min-h-[64px] max-w-[220px] items-center rounded-xl border-2 px-3 py-2 text-[13px] font-semibold leading-snug shadow-[0_3px_10px_rgba(16,43,76,0.10)] transition hover:-translate-y-0.5" style={{ borderColor: `${accent}55` }}>
                 <span className="flex items-center gap-2">
                   <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[12px] font-extrabold text-white" style={{ background: accent, fontFamily: "var(--font-manrope)" }}>{i + 1}</span>
-                  <span>{t}</span>
+                  <span dangerouslySetInnerHTML={{ __html: mathText(t) }} />
                 </span>
               </div>
               {i < visual.items.length - 1 && (
@@ -33,12 +34,12 @@ export function VisualBoard({ visual, accent = "#b0552f" }: { visual: VisualSpec
         <div className="relative grid grid-cols-1 gap-3 sm:grid-cols-2">
           {[visual.left, visual.right].map((col, c) => (
             <div key={c} className={`paper-lite relative rounded-xl border-2 p-3 shadow-[0_3px_10px_rgba(16,43,76,0.10)] transition hover:-translate-y-0.5 ${c === 0 ? "border-[#7fa8d0]" : "border-[#dd9a72]"}`}>
-              <p className="font-hand text-lg font-bold" style={{ color: c === 0 ? "#2a5298" : "#b0552f" }}>{col.title}</p>
+              <p className="font-hand text-lg font-bold" style={{ color: c === 0 ? "#2a5298" : "#b0552f" }} dangerouslySetInnerHTML={{ __html: mathText(col.title) }} />
               <ul className="mt-1.5 space-y-1.5">
                 {col.items.map((it, i) => (
                   <li key={i} className="flex gap-1.5 text-[13px] font-semibold leading-snug text-[#2b3a67]">
                     <span className="mt-[3px] inline-block h-2 w-2 shrink-0 rounded-full" style={{ background: c === 0 ? "#7fa8d0" : "#dd9a72" }} />
-                    <span>{it}</span>
+                    <span dangerouslySetInnerHTML={{ __html: mathText(it) }} />
                   </li>
                 ))}
               </ul>
@@ -53,7 +54,7 @@ export function VisualBoard({ visual, accent = "#b0552f" }: { visual: VisualSpec
           <div className="flex flex-wrap items-center gap-1.5">
             {visual.items.map((t, i) => (
               <div key={i} className="flex items-center gap-1.5">
-                <div className="rounded-lg border-2 bg-white px-3 py-2 text-[12.5px] font-bold text-[#17324f] shadow-[0_2px_6px_rgba(16,43,76,0.10)] transition hover:-translate-y-0.5" style={{ borderColor: i === visual.items.length - 1 ? "#9fd8a8" : "#b9d4ea" }}>{t}</div>
+                <div className="rounded-lg border-2 bg-white px-3 py-2 text-[12.5px] font-bold text-[#17324f] shadow-[0_2px_6px_rgba(16,43,76,0.10)] transition hover:-translate-y-0.5" style={{ borderColor: i === visual.items.length - 1 ? "#9fd8a8" : "#b9d4ea" }} dangerouslySetInnerHTML={{ __html: mathText(t) }} />
                 {i < visual.items.length - 1 && <span aria-hidden className="font-hand text-lg" style={{ color: accent }}>→</span>}
               </div>
             ))}
@@ -64,14 +65,14 @@ export function VisualBoard({ visual, accent = "#b0552f" }: { visual: VisualSpec
       return (
         <div className="flex flex-wrap gap-2">
           {visual.items.map((t, i) => (
-            <span key={i} className="rounded-full border border-[#e3d9c6] bg-[#fffaf0] px-3.5 py-2 text-[12.5px] font-bold text-[#7a5a2e] shadow-[0_2px_6px_rgba(16,43,76,0.08)] transition hover:-translate-y-0.5 hover:shadow-[0_5px_12px_rgba(16,43,76,0.14)]" style={{ transform: `rotate(${((i * 37) % 7) - 3}deg)` }}>{t}</span>
+            <span key={i} className="rounded-full border border-[#e3d9c6] bg-[#fffaf0] px-3.5 py-2 text-[12.5px] font-bold text-[#7a5a2e] shadow-[0_2px_6px_rgba(16,43,76,0.08)] transition hover:-translate-y-0.5 hover:shadow-[0_5px_12px_rgba(16,43,76,0.14)]" style={{ transform: `rotate(${((i * 37) % 7) - 3}deg)` }} dangerouslySetInnerHTML={{ __html: mathText(t) }} />
           ))}
         </div>
       );
     case "tree":
       return (
         <div className="flex flex-col items-center">
-          <div className="rounded-xl border-2 bg-white px-4 py-2 text-[13.5px] font-extrabold text-[#16305b] shadow-[0_3px_10px_rgba(16,43,76,0.14)]" style={{ borderColor: accent }}>{visual.root}</div>
+          <div className="rounded-xl border-2 bg-white px-4 py-2 text-[13.5px] font-extrabold text-[#16305b] shadow-[0_3px_10px_rgba(16,43,76,0.14)]" style={{ borderColor: accent }} dangerouslySetInnerHTML={{ __html: mathText(visual.root) }} />
           {/* connector trunk */}
           <svg width="16" height="26" viewBox="0 0 16 26" aria-hidden><path d="M8,2 L8,20" stroke={accent} strokeWidth="2" strokeLinecap="round" className="sketch-line" /></svg>
           <div className="relative flex flex-wrap justify-center gap-2 pt-1.5">
@@ -80,7 +81,7 @@ export function VisualBoard({ visual, accent = "#b0552f" }: { visual: VisualSpec
             {visual.children.map((t, i) => (
               <div key={i} className="flex flex-col items-center">
                 <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden><path d="M6,0 L6,8" stroke={accent} strokeWidth="1.6" strokeLinecap="round" strokeDasharray="2.5 2.5" /></svg>
-                <div className="rounded-lg border border-[#d8dde7] bg-[#f4f9ff] px-3 py-1.5 text-[12.5px] font-semibold text-[#2a5298] transition hover:-translate-y-0.5 hover:shadow-[0_4px_10px_rgba(16,43,76,0.10)]">{t}</div>
+                <div className="rounded-lg border border-[#d8dde7] bg-[#f4f9ff] px-3 py-1.5 text-[12.5px] font-semibold text-[#2a5298] transition hover:-translate-y-0.5 hover:shadow-[0_4px_10px_rgba(16,43,76,0.10)]" dangerouslySetInnerHTML={{ __html: mathText(t) }} />
               </div>
             ))}
           </div>

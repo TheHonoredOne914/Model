@@ -2,6 +2,7 @@
 // QuizPaper — a real worksheet on school paper: pick an answer, instant honest feedback.
 import { useEffect, useMemo, useState } from "react";
 import type { ChapterArtifacts, QuizQ } from "@/lib/learn/artifacts";
+import { mathText } from "@/lib/learn/math-text";
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -89,7 +90,7 @@ export function QuizPaper({ chapter, onDone, onExit, accent = "#b0552f" }: { cha
                 <p className="scribble text-[15px]">Q{i + 1}. <span className="ml-1 rounded-full bg-[#eef4fb] px-2 py-0.5 text-[11px] font-extrabold uppercase tracking-wide text-[#2a5298]" style={{ fontFamily: "var(--font-manrope)" }}>{q.difficulty}</span></p>
                 <p className="font-hand text-[15px] text-[#637c96]">sec {q.sec}</p>
               </div>
-              <h2 className="font-note mt-2 text-[19px] font-bold leading-snug text-[#16305b] sm:text-[21px]">{q.q}</h2>
+              <h2 className="font-note mt-2 text-[19px] font-bold leading-snug text-[#16305b] sm:text-[21px]" dangerouslySetInnerHTML={{ __html: mathText(q.q) }} />
               <div className="mt-4 space-y-2.5">
                 {q.options.map((o, k) => {
                   const isPicked = picked === k;
@@ -100,7 +101,7 @@ export function QuizPaper({ chapter, onDone, onExit, accent = "#b0552f" }: { cha
                       className={`flex w-full items-start gap-2.5 rounded-xl border-2 px-3.5 py-2.5 text-left transition-all
                         ${show && isRight ? "pop-good border-[#5fae6f] bg-[#eef8f0]" : show && isPicked ? "shake border-[#d96a4a] bg-[#fdf0ea]" : "border-[#e4d9c8] bg-white/85 hover:border-[#7fb3ff] hover:bg-[#f6fbff] hover:-translate-y-px"} ${show ? "cursor-default" : "cursor-pointer"}`}>
                       <span className={`font-hand mt-[1px] flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 text-[15px] font-bold ${show && isRight ? "border-[#5fae6f] text-[#3e7d4d]" : show && isPicked ? "border-[#d96a4a] text-[#b0552f]" : "border-[#c9bfa8] text-[#7a6a4a]"}`}>{"ABCD"[k]}</span>
-                      <span className="font-note text-[15.5px] leading-snug text-[#2b3a67]">{o}</span>
+                      <span className="font-note text-[15.5px] leading-snug text-[#2b3a67]" dangerouslySetInnerHTML={{ __html: mathText(o) }} />
                       {show && isRight && <span className="scribble ml-auto shrink-0 text-[17px]">✓</span>}
                       {show && isPicked && !isRight && <span className="scribble ml-auto shrink-0 text-[17px]">✗</span>}
                     </button>
@@ -109,7 +110,7 @@ export function QuizPaper({ chapter, onDone, onExit, accent = "#b0552f" }: { cha
               </div>
               {picked !== null && (
                 <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <p className="font-note max-w-md text-[14.5px] leading-snug text-[#5a6b8c]"><span className="scribble text-[15px]">{picked === q.answer ? "Sahi! " : "Dekho — "}</span>{q.why}</p>
+                  <p className="font-note max-w-md text-[14.5px] leading-snug text-[#5a6b8c]"><span className="scribble text-[15px]">{picked === q.answer ? "Sahi! " : "Dekho — "}</span><span dangerouslySetInnerHTML={{ __html: mathText(q.why) }} /></p>
                   <button type="button" onClick={advance} className="shrink-0 press rounded-full px-6 py-2 text-[13px] font-extrabold text-white shadow-[0_6px_16px_rgba(22,48,91,0.35)] transition hover:brightness-110" style={{ background: accent }}>{i + 1 >= qs.length ? "Result dekho" : "Agla →"}</button>
                 </div>
               )}

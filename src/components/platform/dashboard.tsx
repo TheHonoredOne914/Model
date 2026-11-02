@@ -131,7 +131,7 @@ export function Dashboard({ go, openChapter }: {
                   </button>
                 </div>
               </div>
-              {/* formula doodle panel */}
+              {/* formula doodle panel — follows the book you're learning */}
               <div className="relative hidden sm:block border-l border-[#D8DDE7] bg-[#FFF9F5]">
                 <div
                   className="absolute inset-0 opacity-[0.5]"
@@ -139,8 +139,12 @@ export function Dashboard({ go, openChapter }: {
                   aria-hidden
                 />
                 <div className="relative flex h-full flex-col items-center justify-center p-4">
-                  <div className="font-[family-name:var(--font-hand)] text-3xl text-[#102B4C]">a = Δv / Δt</div>
-                  <div className="mt-1 font-[family-name:var(--font-hand)] text-base text-[#637C96]">acceleration — ch. {card.chapter}</div>
+                  <div className="font-[family-name:var(--font-hand)] text-3xl text-[#102B4C]">
+                    {card.book === "gm" ? "d² = (x₂−x₁)² + (y₂−y₁)²" : card.book === "us" ? "past → present → future" : "a = Δv / Δt"}
+                  </div>
+                  <div className="mt-1 font-[family-name:var(--font-hand)] text-base text-[#637C96]">
+                    {card.book === "gm" ? `coordinate geometry — ch. ${card.chapter}` : card.book === "us" ? "history ka naksha — ch. " + card.chapter : `acceleration — ch. ${card.chapter}`}
+                  </div>
                 </div>
               </div>
             </div>

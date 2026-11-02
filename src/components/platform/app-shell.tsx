@@ -115,6 +115,15 @@ export function AppShell() {
     return () => window.clearTimeout(id);
   }, []);
 
+  // in-app navigation events fired by embedded screens (chapter module links)
+  useEffect(() => {
+    const goto = (e: Event) => { const s = (e as CustomEvent).detail as Screen; go(s); };
+    const gotoChapter = (e: Event) => { const d = (e as CustomEvent).detail as ChapterRef; openChapter(d.book, d.chapter); };
+    window.addEventListener("vs.goto", goto);
+    window.addEventListener("vs.goto.chapter", gotoChapter);
+    return () => { window.removeEventListener("vs.goto", goto); window.removeEventListener("vs.goto.chapter", gotoChapter); };
+  }, [go, openChapter]);
+
   useEffect(() => {
     if (first.current) { first.current = false; return; }
     const url = new URL(window.location.href);
@@ -292,7 +301,9 @@ export function AppShell() {
   );
 }
 
-/* chapter module opened from the shell — the real ChapterWorld in focus mode */
+/* chapter module opened from the shell — the real ChapterWorld in focus mode.
+   Link clicks inside the module (← to /learn, "Saathy chat" to /, prev/next
+   chapter) are re-routed into the shell so the platform never breaks flow. */
 function ChapterModuleHost({ ref_, onBack }: { ref_: ChapterRef; onBack: () => void }) {
   const [Comp, setComp] = useState<null | React.ComponentType<{ chapter: import("@/lib/learn/artifacts").ChapterArtifacts }>>(null);
   const [chapter, setChapter] = useState<import("@/lib/learn/artifacts").ChapterArtifacts | null>(null);
@@ -311,8 +322,19 @@ function ChapterModuleHost({ ref_, onBack }: { ref_: ChapterRef; onBack: () => v
     return () => { alive = false; };
   }, [ref_.book, ref_.chapter]);
 
+  // route the module's internal links back into the platform shell
+  const intercept = useCallback((e: React.MouseEvent) => {
+    const a = (e.target as HTMLElement).closest("a");
+    if (!a) return;
+    const href = a.getAttribute("href") ?? "";
+    const ch = href.match(/^\/learn\/(gm|sc|us)\/(\d+)$/);
+    if (ch) { e.preventDefault(); window.dispatchEvent(new CustomEvent("vs.goto.chapter", { detail: { book: ch[1], chapter: Number(ch[2]) } })); }
+    else if (href === "/learn") { e.preventDefault(); onBack(); }
+    else if (href === "/") { e.preventDefault(); window.dispatchEvent(new CustomEvent("vs.goto", { detail: "saathy" })); }
+  }, [onBack]);
+
   return (
-    <div>
+    <div onClickCapture={intercept}>
       <button onClick={onBack} className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-[#D8DDE7] bg-white px-3.5 py-1.5 text-xs font-extrabold text-[#214F78] transition hover:border-[#A9CEE8]">
         &larr; Back to Learn sessions
       </button>

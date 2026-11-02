@@ -809,3 +809,8 @@
 @media (prefers-reduced-motion: reduce) {
   .vs-page-flip { animation: none !important; }
 }
+
+/* ===== mathText: pretty sqrt with overline (slides/quiz/cards/examples) ===== */
+.mth-sqrt { white-space: nowrap; }
+.mth-sqrt > span { border-top: 1.6px solid currentColor; padding: 0 2px; }
+sup, sub { line-height: 0; }

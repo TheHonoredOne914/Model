@@ -4,6 +4,7 @@
 // final answer gets circled in red pen. Fully interactive, zero boredom.
 import { useEffect, useMemo, useState } from "react";
 import type { ChapterArtifacts } from "@/lib/learn/artifacts";
+import { mathText } from "@/lib/learn/math-text";
 
 export function ExamplesStage({ chapter, onDone, onExit, accent = "#b0552f" }: {
   chapter: ChapterArtifacts;
@@ -49,9 +50,9 @@ export function ExamplesStage({ chapter, onDone, onExit, accent = "#b0552f" }: {
           <div className="page-curl" aria-hidden />
           <div className="paper-body">
             <p className="scribble text-[15px]">dekh, aise solve hota hai</p>
-            <h2 className="font-hand mt-0.5 text-[26px] font-bold leading-tight text-[#16305b] sm:text-[30px]">{ex.title}</h2>
+            <h2 className="font-hand mt-0.5 text-[26px] font-bold leading-tight text-[#16305b] sm:text-[30px]" dangerouslySetInnerHTML={{ __html: mathText(ex.title) }} />
             <p className="mt-2.5 rounded-xl border border-[#e4d9c8] bg-[#fffaf0] px-4 py-3 font-note text-[16.5px] font-semibold leading-relaxed text-[#2b3a67]">
-              {ex.problem}
+              <span dangerouslySetInnerHTML={{ __html: mathText(ex.problem) }} />
             </p>
 
             {/* steps — each one "written" on the paper as you tap */}
@@ -59,7 +60,7 @@ export function ExamplesStage({ chapter, onDone, onExit, accent = "#b0552f" }: {
               {ex.steps.slice(0, revealed).map((st, k) => (
                 <li key={k} className="step-write flex items-start gap-2.5 font-note text-[15.5px] leading-[1.55] text-[#2b3a67]">
                   <span className="mt-[2px] flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 text-[12.5px] font-extrabold" style={{ borderColor: accent, color: accent, fontFamily: "var(--font-manrope)" }}>{k + 1}</span>
-                  <span>{st}</span>
+                  <span dangerouslySetInnerHTML={{ __html: mathText(st) }} />
                 </li>
               ))}
             </ol>
@@ -67,7 +68,7 @@ export function ExamplesStage({ chapter, onDone, onExit, accent = "#b0552f" }: {
             {/* final answer — circled in red pen */}
             {showAns && (
               <div className="rise-in mt-5 inline-flex items-center gap-2">
-                <span className="rounded-lg px-4 py-2 font-hand text-[20px] font-bold text-[#16305b] ans-circle">Answer: {ex.answer}</span>
+                <span className="rounded-lg px-4 py-2 font-hand text-[20px] font-bold text-[#16305b] ans-circle" dangerouslySetInnerHTML={{ __html: "Answer: " + mathText(ex.answer) }} />
               </div>
             )}
 

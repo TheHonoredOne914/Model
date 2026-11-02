@@ -1,17 +1,23 @@
 "use client";
 // Full-screen slide stage — teaches one idea per slide, keyboard + tap nav.
 // v2: book-accent theming, staggered bullet entrances, tap zones + dots.
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { ChapterArtifacts } from "@/lib/learn/artifacts";
 import { VisualBoard } from "./visuals";
+import { mathText } from "@/lib/learn/math-text";
 
-export function SlideStage({ chapter, onDone, onExit, accent = "#b0552f" }: {
-  chapter: ChapterArtifacts; onDone: (viewed: number) => void; onExit: () => void; accent?: string;
+export function SlideStage({ chapter, onDone, onProgress, onExit, accent = "#b0552f" }: {
+  chapter: ChapterArtifacts; onDone: (viewed: number) => void; onProgress?: (viewed: number) => void; onExit: () => void; accent?: string;
 }) {
   const [i, setI] = useState(0);
   const n = chapter.slides.length;
   const next = useCallback(() => setI(v => Math.min(v + 1, n - 1)), [n]);
   const prev = useCallback(() => setI(v => Math.max(v - 1, 0)), []);
+  const onProgressRef = useRef(onProgress);
+  onProgressRef.current = onProgress;
+
+  // progress saves live as you flip — exiting mid-deck keeps what you saw
+  useEffect(() => { onProgressRef.current?.(i + 1); }, [i]);
 
   useEffect(() => {
     const h = (e: KeyboardEvent) => {
@@ -49,17 +55,17 @@ export function SlideStage({ chapter, onDone, onExit, accent = "#b0552f" }: {
             <div className="page-curl" aria-hidden />
             <div className="paper-body">
               <p className="scribble text-[15px] font-semibold">{s.kicker}</p>
-              <h2 className="font-hand mt-0.5 text-[30px] font-bold leading-tight text-[#16305b] sm:text-[38px]">{s.title}</h2>
+              <h2 className="font-hand mt-0.5 text-[30px] font-bold leading-tight text-[#16305b] sm:text-[38px]" dangerouslySetInnerHTML={{ __html: mathText(s.title) }} />
               <ul className="mt-4 space-y-3">
                 {s.bullets.map((b, k) => (
                   <li key={k} className="bullet-in font-note flex gap-2.5 text-[16.5px] leading-[1.55] text-[#2b3a67] sm:text-[18px]" style={{ animationDelay: `${120 + k * 110}ms` }}>
                     <span className="scribble mt-[1px] shrink-0 text-[19px] leading-none">{["◦", "•", "◦", "•"][k % 4]}</span>
-                    <span>{b}</span>
+                    <span dangerouslySetInnerHTML={{ __html: mathText(b) }} />
                   </li>
                 ))}
               </ul>
               {s.visual && <div className="mt-6"><VisualBoard visual={s.visual} accent={accent} /></div>}
-              {s.note && <p className="mt-5 inline-block rotate-[-1deg] rounded-lg border border-[#f3d9c4] bg-[#fff6ec] px-3.5 py-1.5 font-hand text-[16px] font-semibold text-[#b0552f] shadow-[0_1px_4px_rgba(176,85,47,0.12)]">{s.note}</p>}
+              {s.note && <p className="mt-5 inline-block rotate-[-1deg] rounded-lg border border-[#f3d9c4] bg-[#fff6ec] px-3.5 py-1.5 font-hand text-[16px] font-semibold text-[#b0552f] shadow-[0_1px_4px_rgba(176,85,47,0.12)]" dangerouslySetInnerHTML={{ __html: mathText(s.note) }} />}
             </div>
           </div>
 

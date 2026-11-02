@@ -211,6 +211,7 @@ export function ChapterWorld({ chapter }: { chapter: ChapterArtifacts }) {
       {/* ======== full-screen overlays ======== */}
       {overlay === "slides" && (
         <SlideStage chapter={chapter} accent={theme.accent}
+          onProgress={viewed => { if (viewed > prog.slidesViewed) upd({ slidesViewed: viewed }); }}
           onDone={viewed => { upd({ slidesViewed: Math.max(prog.slidesViewed, viewed) }); markDone("learn"); markDone("explore"); markDone("solve"); setOverlay("examples"); }}
           onExit={() => { markDone("explore"); if (prog.slidesViewed > 0) markDone("learn"); setOverlay(null); }} />
       )}

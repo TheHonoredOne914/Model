@@ -2,6 +2,7 @@
 // Flashcards — real flip cards on notebook paper, taped to the desk.
 import { useMemo, useState } from "react";
 import type { ChapterArtifacts } from "@/lib/learn/artifacts";
+import { mathText } from "@/lib/learn/math-text";
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -88,7 +89,7 @@ export function FlashcardDeck({ chapter, onDone, onExit, accent = "#b0552f" }: {
                   <span className="rounded-full px-2.5 py-0.5 text-[10.5px] font-extrabold uppercase tracking-widest text-white" style={{ background: TAG_COLORS[c.tag] ?? "#2a5298", fontFamily: "var(--font-manrope)" }}>{c.tag}</span>
                   <span className="font-hand text-[15px] text-[#637c96]">card {i + 1}</span>
                 </div>
-                <p className="font-hand mt-4 text-[26px] font-bold leading-snug text-[#16305b] sm:text-[30px]">{c.front}</p>
+                <p className="font-hand mt-4 text-[26px] font-bold leading-snug text-[#16305b] sm:text-[30px]" dangerouslySetInnerHTML={{ __html: mathText(c.front) }} />
                 <p className="scribble mt-auto text-[15px]">tap to flip →</p>
               </div>
             </div>
@@ -97,7 +98,7 @@ export function FlashcardDeck({ chapter, onDone, onExit, accent = "#b0552f" }: {
               <div className="tape right-8 top-[-12px] rotate-[3deg]" aria-hidden />
               <div className="paper-body flex h-full flex-col">
                 <p className="scribble text-[15px]">answer</p>
-                <p className="font-note mt-2 text-[17.5px] leading-relaxed text-[#2b3a67] sm:text-[19px]">{c.back}</p>
+                <p className="font-note mt-2 text-[17.5px] leading-relaxed text-[#2b3a67] sm:text-[19px]" dangerouslySetInnerHTML={{ __html: mathText(c.back) }} />
                 <p className="scribble mt-auto text-[15px]">yaad hai? neeche batao ↓</p>
               </div>
             </div>
