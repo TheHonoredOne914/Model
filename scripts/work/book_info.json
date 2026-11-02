@@ -1,0 +1,195 @@
+{
+ "counts": {
+  "iemh101": 15,
+  "iemh102": 25,
+  "iemh103": 27,
+  "iemh104": 24,
+  "iemh105": 26,
+  "iemh106": 37,
+  "iemh107": 19,
+  "iemh108": 27,
+  "iemh201": 7,
+  "iemh202": 29,
+  "iemh203": 14,
+  "iemh204": 34,
+  "iemh205": 38,
+  "iemh206": 42,
+  "iest103": 22,
+  "iest108": 12,
+  "iest109": 26,
+  "iest201": 20,
+  "iest202": 24,
+  "iest203": 36,
+  "iest204": 26,
+  "iest205": 18,
+  "iest206": 28
+ },
+ "starts": {
+  "iemh101": 3,
+  "iemh102": 18,
+  "iemh103": 43,
+  "iemh104": 70,
+  "iemh105": 94,
+  "iemh106": 120,
+  "iemh107": 157,
+  "iemh108": 176,
+  "iemh201": 203,
+  "iemh202": 210,
+  "iemh203": 239,
+  "iemh204": 253,
+  "iemh205": 287,
+  "iemh206": 325,
+  "iest103": 367,
+  "iest108": 389,
+  "iest109": 401,
+  "iest201": 427,
+  "iest202": 447,
+  "iest203": 471,
+  "iest204": 507,
+  "iest205": 533,
+  "iest206": 551
+ },
+ "total": 578,
+ "order": [
+  "iemh101",
+  "iemh102",
+  "iemh103",
+  "iemh104",
+  "iemh105",
+  "iemh106",
+  "iemh107",
+  "iemh108",
+  "iemh201",
+  "iemh202",
+  "iemh203",
+  "iemh204",
+  "iemh205",
+  "iemh206",
+  "iest103",
+  "iest108",
+  "iest109",
+  "iest201",
+  "iest202",
+  "iest203",
+  "iest204",
+  "iest205",
+  "iest206"
+ ],
+ "meta": {
+  "iemh101": [
+   "Ganita Manjari \u00b7 Part 1",
+   1,
+   "Orienting Yourself: The Use of Coordinates"
+  ],
+  "iemh102": [
+   "Ganita Manjari \u00b7 Part 1",
+   2,
+   "Introduction to Linear Polynomials"
+  ],
+  "iemh103": [
+   "Ganita Manjari \u00b7 Part 1",
+   3,
+   "The World of Numbers"
+  ],
+  "iemh104": [
+   "Ganita Manjari \u00b7 Part 1",
+   4,
+   "Exploring Algebraic Identities"
+  ],
+  "iemh105": [
+   "Ganita Manjari \u00b7 Part 1",
+   5,
+   "I'm Up and Down, and Round and Round"
+  ],
+  "iemh106": [
+   "Ganita Manjari \u00b7 Part 1",
+   6,
+   "Measuring Space: Perimeter and Area"
+  ],
+  "iemh107": [
+   "Ganita Manjari \u00b7 Part 1",
+   7,
+   "The Mathematics of Maybe: Introduction to Probability"
+  ],
+  "iemh108": [
+   "Ganita Manjari \u00b7 Part 1",
+   8,
+   "Predicting What Comes Next: Sequences and Progressions"
+  ],
+  "iemh201": [
+   "Ganita Manjari \u00b7 Part 2",
+   9,
+   "Propositions and their Converses"
+  ],
+  "iemh202": [
+   "Ganita Manjari \u00b7 Part 2",
+   10,
+   "How Quantities Combine: Understanding Data"
+  ],
+  "iemh203": [
+   "Ganita Manjari \u00b7 Part 2",
+   11,
+   "The World of Algorithms"
+  ],
+  "iemh204": [
+   "Ganita Manjari \u00b7 Part 2",
+   12,
+   "Quadrilaterals"
+  ],
+  "iemh205": [
+   "Ganita Manjari \u00b7 Part 2",
+   13,
+   "Two Variables, One Line"
+  ],
+  "iemh206": [
+   "Ganita Manjari \u00b7 Part 2",
+   14,
+   "Math of Space: Surface Area and Volume"
+  ],
+  "iest103": [
+   "Social Science \u00b7 Part 1",
+   3,
+   "Atmosphere and Climate"
+  ],
+  "iest108": [
+   "Social Science \u00b7 Part 1",
+   8,
+   "Building Blocks in Economics: The Problem of Choice"
+  ],
+  "iest109": [
+   "Social Science \u00b7 Part 1",
+   9,
+   "The Price Puzzle: What Drives the Market"
+  ],
+  "iest201": [
+   "Social Science \u00b7 Part 2",
+   1,
+   "Oceans and Life"
+  ],
+  "iest202": [
+   "Social Science \u00b7 Part 2",
+   2,
+   "Life on Earth"
+  ],
+  "iest203": [
+   "Social Science \u00b7 Part 2",
+   3,
+   "Resistance and Resilience (1000\u20131700 CE)"
+  ],
+  "iest204": [
+   "Social Science \u00b7 Part 2",
+   4,
+   "Governance and Public Policy"
+  ],
+  "iest205": [
+   "Social Science \u00b7 Part 2",
+   5,
+   "Managing Your Personal Finances"
+  ],
+  "iest206": [
+   "Social Science \u00b7 Part 2",
+   6,
+   "From Ideas to Startups"
+  ]
+ }
+}

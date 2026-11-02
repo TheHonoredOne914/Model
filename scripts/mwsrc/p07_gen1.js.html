@@ -1,0 +1,173 @@
+<script>
+/* ============ QUESTION GENERATORS ============ */
+const DIFFS=["f","c","a","x"];
+function mcq(q,correct,wrongs,extra={}){
+  const opts=shuffle([correct,...wrongs]);
+  return Object.assign({type:"mcq",q:M(q),opts:opts.map(M),answer:opts.indexOf(correct),concept:extra.concept||"",
+    given:extra.given,find:extra.find,steps:(extra.steps||[]).map(M),hint:M(extra.hint||""),mistake:M(extra.mistake||""),diff:extra.diff||"c"},{});
+}
+function numQ(ans,extra={}){
+  return Object.assign({type:"num",answer:ans,unit:extra.unit||"",concept:extra.concept||"",q:M(extra.q||""),
+    given:extra.given,find:extra.find,steps:(extra.steps||[]).map(M),hint:M(extra.hint||""),mistake:M(extra.mistake||""),diff:extra.diff||"c"},{});
+}
+function tfQ(val,extra={}){
+  return Object.assign({type:"tf",answer:val,concept:extra.concept||"",q:M(extra.q||""),given:extra.given,find:extra.find,
+    steps:(extra.steps||[]).map(M),hint:M(extra.hint||""),mistake:M(extra.mistake||""),diff:extra.diff||"f"},{});
+}
+const dOpt=()=>pick([["f",0],["c",0],["c",1],["a",1],["a",2],["x",2]]);
+/* ---------- W1 · CARTESIAN ARCHIPELAGO ---------- */
+const G1=[
+()=>{const x=pick([1,2,3,4,5,6,7]),y=pick([1,2,3,4,5,6,7]);const sx=pick([1,-1]),sy=pick([1,-1]);
+ return mcq(`Dhruva's spyglass locks onto the point P(${sx*x}, ${sy*y}). Which realm-quadrant hides it?`,
+  `Quadrant ${sx>0?(sy>0?"I":"IV"):(sy>0?"II":"III")}`,
+  [`Quadrant ${sx>0?(sy>0?"II":"III"):(sy>0?"I":"IV")}`,"On the x-axis","On the y-axis"],
+  {diff:dOpt()[1]?"c":"f",concept:"Signs decide the quadrant: I(+,+) II(−,+) III(−,−) IV(+,−), anticlockwise.",
+   steps:[`x = ${sx*x} is ${sx>0?"positive → right half":"negative → left half"}`,`y = ${sy*y} is ${sy>0?"positive → upper half":"negative → lower half"}`,`${sx>0?"Right":"Left"} + ${sy>0?"upper":"lower"} ⇒ Quadrant ${sx>0?(sy>0?"I":"IV"):(sy>0?"II":"III")}`],
+   hint:"Check the sign of x first, then y. Anticlockwise from top-right.",mistake:"Students count quadrants clockwise — they're numbered anticlockwise."})},
+()=>{const x=pick([2,3,4,5,7,8,9]),y=pick([2,3,4,5,6,8]);const ax=pick(["x","y"]);
+ const all=ax==="x"?[`(${x}, ${y})`,`(${-x}, ${y})`,`(${x}, ${-y})`,`(${-y}, ${-x})`]:[`(${-x}, ${-y})`,`(${x}, ${y})`,`(${-x}, ${y})`,`(${y}, ${x})`];
+ const ans=all[0];
+ return mcq(`A mirror-lake lies along the ${ax}-axis. Dhruva's campfire at P(${x}, ${-y}) glows — where does its reflection burn?`,
+  ans,all[1],all[2],all[3],
+  {diff:dOpt()[1]?"c":"f",concept:`Reflection across ${ax}-axis flips ONLY the ${ax==="x"?"y":"x"}-coordinate.`,
+   steps:[`Mirror = the ${ax}-axis`,`Only the ${ax==="x"?"y":"x"}-coordinate changes sign`,`(${x}, ${-y}) → ${ans}`],
+   hint:`${ax==="x"?"y flips, x stays":"x flips, y stays"}. The other coordinate keeps its sign.`,mistake:"Flipping BOTH coordinates is a reflection through the origin — not an axis reflection."})},
+()=>{const x1=rng(7)-3,y1=rng(7)-3,dx=pick([2,3,4,5,6]),dy=pick([2,3,4,5]);const x2=x1+dx,y2=y1+dy;
+ return numQ(dx+dy,{diff:dOpt()[1]?"c":"f",unit:"units",
+  q:`A floor-cleaning robot rolls from A(${x1}, ${y1}) to B(${x2}, ${y2}) moving only along tiled corridors — horizontal and vertical segments, never diagonal. What is the length of its shortest route?`,
+  given:`A(${x1}, ${y1}), B(${x2}, ${y2}), grid paths only`,find:"Shortest grid-path length",
+  concept:"Grid distance = |Δx| + |Δy| — the taxicab metric.",
+  steps:[`Horizontal stretch: |${x2} − (${x1})| = ${dx}`,`Vertical climb: |${y2} − (${y1})| = ${dy}`,`Total = ${dx} + ${dy} = ${dx+dy} units`],
+  hint:"Break the journey into one horizontal move and one vertical move. Add their lengths.",mistake:"Using √(Δx² + Δy²) gives the crow-fly distance — the robot can't fly."})},
+()=>{const x1=rng(9)+1,y1=rng(9)-4,x2=x1+pick([2,4,6,8]),y2=y1+pick([2,4,6]);
+ const mx=(x1+x2)/2,my=(y1+y2)/2;
+ return numQ(`(${mx}, ${my})`,{diff:"c",unit:"",
+  q:`Dhruva wants to camp EXACTLY halfway between two watchtowers at A(${x1}, ${y1}) and B(${x2}, ${y2}). Write his camp's coordinates.`,
+  given:`A(${x1}, ${y1}), B(${x2}, ${y2})`,find:"Midpoint (mean of x's, mean of y's)",
+  concept:"Midpoint = ((x₁+x₂)/2, (y₁+y₂)/2).",
+  steps:[`x: (${x1} + ${x2})/2 = ${mx}`,`y: (${y1} + ${y2})/2 = ${my}`,`Camp at (${mx}, ${my})`],
+  hint:"Average the x's. Average the y's. Two mini-mean problems.",mistake:"Adding coordinates without dividing by 2 gives a doubled point."})},
+()=>{const x=pick([2,3,4,5]),y=pick([2,3,4,5]);
+ return tfQ(x===y,{diff:"c",
+  q:`TRUE or FALSE: the points A(${x}, ${y}) and B(${y}, ${x}) always sit at the same spot on the map.`,
+  concept:"Swapping coordinates reflects the point across the line y = x — a different spot (unless x = y).",
+  steps:[`A = (${x}, ${y}), B = (${y}, ${x})`,x===y?`x = y here, so A and B coincide`:`x ≠ y ⇒ the swap moves the point across y = x`,`Statement is ${x===y}`],
+  hint:"Try a concrete pair: (2, 5) vs (5, 2). Same place? Plot it mentally.",mistake:"Coordinates are an ORDERED pair — order is destiny."})}
+];
+/* ---------- W2 · LINE LEGIONS ---------- */
+const G2=[
+()=>{const a=pick([2,3,4,5,6,7,8]),x=pick([2,3,4,5,6,7,8,9]),b=rng(20)-9;const c=a*x+b;
+ return numQ(x,{diff:dOpt()[1]?"f":"c",
+  q:`The Legion's battle-cry: solve for x —  ${a}x ${b<0?"−":"+"} ${Math.abs(b)} = ${c}`,
+  given:`${a}x ${b<0?"−":"+"} ${Math.abs(b)} = ${c}`,find:"x",
+  concept:"Isolate x: undo constants first, then the coefficient. Balance both sides.",
+  steps:[`${b<0?"Add "+Math.abs(b):"Subtract "+b} from both sides: ${a}x = ${c-b}`,`Divide by ${a}: x = ${c-b}/${a}`,`x = ${x}`],
+  hint:`First push the ${b<0?"−"+Math.abs(b):"+"+b} across the equals sign (it flips), then divide.`,mistake:"Dividing before moving the constant scatters the algebra — clear the constant first."})},
+()=>{const x=pick([1,2,3,-1,-2,4]),y=pick([1,2,3,-1,5]);const a=pick([2,3,4]),b=pick([1,2,3,-2]);
+ const v=a*x+b*y;const claim=Math.random()<.5;const shown=claim?v:v+pick([1,2,-1,-2]);
+ return tfQ(shown===v,{diff:"c",
+  q:`TRUE or FALSE: the pair (${x}, ${y}) is a lawful solution of  ${a}x ${b<0?"−":"+"} ${Math.abs(b)}y = ${shown}`,
+  concept:"A pair solves a 2-variable equation only if BOTH sides match after substitution.",
+  steps:[`LHS = ${a}(${x}) ${b<0?"−":"+"} ${Math.abs(b)}(${y}) = ${a*x} ${b<0?"−":"+"} ${Math.abs(b*y)} = ${v}`,`RHS = ${shown}`,`${v} ${shown===v?"=":"≠"} ${shown} ⇒ statement is ${shown===v}`],
+  hint:"Substitute x, then y, carefully with signs. Compare with the right side.",mistake:"Substituting x into the y-slot — keep the variables in order."})},
+()=>{const per=pick([14,18,20,24]),tk=pick([120,150,180,200]),n=pick([2,3,4]);
+ const cost=per*tk;const left=cost+n*pick([50,100]);
+ const total=left;const price=(total-n*0)/1;
+ return numQ(tk,{diff:"a",unit:"₹",
+  q:`Dhruva buys ${n} Passes of Insight at ₹${tk} each for his whole guild. The guild-master pays with ancient coins worth ₹${cost+n*100} in total. How many rupees is ONE pass?`,
+  given:`${n} passes, total coins = ₹${cost+n*100}, passes identical`,find:"price of one pass",
+  concept:"Equal shares: divide the total by the count. ₹per item = total ÷ n.",
+  steps:[`Total available = ₹${cost+n*100}`,`Left after passes = ${cost+n*100} − ${n}×${tk} = ₹${n*100}`,`Price per pass = ₹${tk} (check: ${n}×${tk} = ₹${cost} ✓)`],
+  hint:"Work backwards: total − leftover = spent. Spent ÷ count = each.",mistake:"Dividing the leftover instead of the spent amount."})},
+()=>{const m=pick([2,3,-2,-3,4]),c=pick([1,2,3,-1,-2,4,5]);
+ return mcq(`The line y = ${m}x ${c<0?"−":"+"} ${Math.abs(c)} marches across the plane. Where does it storm the y-axis? (its entry point)`,
+  `(0, ${c})`,`(${c}, 0)`,`(0, ${m*c})`,`(${-c}, 0)`,
+  {diff:"f",concept:"y = mx + c meets the y-axis where x = 0 → the point (0, c).",
+   steps:[`On the y-axis, x = 0`,`y = ${m}(0) ${c<0?"−":"+"} ${Math.abs(c)} = ${c}`,`Entry point: (0, ${c})`],
+   hint:"Set x = 0. The constant c survives alone.",mistake:"Setting y = 0 finds the x-axis crossing instead."})},
+()=>{const m=pick([2,3,4,5,6]),x0=pick([1,2,3]),c=pick([-2,1,3,5,-4]);
+ return numQ(m*x0*1+c,{diff:"c",
+  q:`Scout's log: "At position x = ${x0}, the line y = ${m}x ${c<0?"−":"+"} ${Math.abs(c)} places its standard-bearer." What is the scout's height y there?`,
+  given:`y = ${m}x ${c<0?"−":"+"} ${Math.abs(c)}, x = ${x0}`,find:"y",
+  concept:"Substitute the x-value into y = mx + c.",
+  steps:[`y = ${m}(${x0}) ${c<0?"−":"+"} ${Math.abs(c)}`,`= ${m*x0} ${c<0?"−":"+"} ${Math.abs(c)}`,`y = ${m*x0+c}`],
+  hint:"Multiply first, then add the constant (mind the sign!).",mistake:"Adding c before multiplying by m breaks order of operations."})}
+];
+/* ---------- W3 · NUMBER NEXUS ---------- */
+const G3=[
+()=>{const n=pick([[Math.sqrt(2).toFixed(3)+"…","irrational"],["0.101001000100001…","irrational"],["π","irrational"],[F(3,7),"rational"],["−4.26","rational"],["0.7777… (7 repeating)","rational"],[F(22,7),"rational"]]);
+ const item=n[0],isRat=n[1]==="rational";
+ return tfQ(isRat,{diff:"c",
+  q:`TRUE or FALSE: ${item==="π"?"π (pi)":item} can be written as a fraction p/q with integers p and q (q ≠ 0).`,
+  concept:"Rational ⇔ terminating OR repeating decimal. Irrationals (√2, π, non-repeating patterns) refuse p/q.",
+  steps:[`Look at the decimal behaviour of ${item}`,isRat?`It terminates or repeats ⇒ p/q exists`:`No repeating block ever appears ⇒ no p/q exists`,`Statement is ${isRat}`],
+  hint:"Terminating or repeating → rational. Forever non-repeating → irrational.",mistake:"√ of a non-perfect-square is ALWAYS irrational — don't trust its calculator decimals."})},
+()=>{const p=pick([1,2,3,4,5,7,8]),q=pick([3,4,5,6,8,9,11]);
+ return mcq(`Which citizen of the Nexus is IRRATIONAL — the shape-shifter that no fraction can capture?`,
+  "√3","3/8","0.583 (terminating)","−7",
+  {diff:"f",concept:"√ of a non-perfect-square is irrational; fractions, terminating decimals, and integers are rational.",
+   steps:["3/8 is already p/q","0.583 terminates ⇒ rational","−7 = −7/1 ⇒ rational","√3 is not a perfect square's root ⇒ irrational"],
+   hint:"Only one of these hides a non-perfect square under its root.",mistake:"22/7 is rational even though it's used as π's approximation — π itself is not."})},
+()=>{const b=pick([2,3,5,7]),m=rng(4)+2,n=rng(3)+2,k=m+n;
+ return mcq(`The Nexus laws thunder: ${b}^{${m}} × ${b}^{${n}} = ?`,
+  `${b}^{${k}}`,`${b}^{${m*n}}`,`${b}^{${Math.max(m,n)}}`,`${b*m*n}`,
+  {diff:"f",concept:"Same base multiplying → ADD the exponents: aᵐ × aⁿ = aᵐ⁺ⁿ.",
+   steps:[`Bases match (both ${b})`,`Exponents add: ${m} + ${n} = ${k}`,`Answer: ${b}^${k}`],
+   hint:"Multiplying powers with the same base — the exponents team up by addition.",mistake:"Multiplying the exponents (m·n) is the (aᵐ)ⁿ law, not this one."})},
+()=>{const k=pick([2,3,4,5]),n=pick([4,9,16,25,36,49,64,81]);
+ return numQ(Math.sqrt(n)/k,{diff:"c",tol:.001,
+  q:`Dhruva lifts the root-stone:  (√${n})/${k} = ?  (give a decimal)`,
+  given:`√${n}/${k}`,find:"value as decimal",
+  concept:"√ of a perfect square is an integer; then divide.",
+  steps:[`√${n} = ${Math.sqrt(n)}`,`${Math.sqrt(n)} ÷ ${k} = ${Math.sqrt(n)/k}`],
+  hint:"First evaluate the square root, then divide by the denominator.",mistake:"Dividing inside the root: √(n/k) ≠ √n / k in general — here the root applies only to n."})},
+()=>{const s=pick([2,3,4,5]),r=pick([2,3,5,6,7]);
+ const v=s*r;
+ return mcq(`Combine the root-magic:  ${s}√${r} × √${r} = ?`,
+  String(v),`${s}√${2*r}`,`√${s*r}`,String(s*s*r),
+  {diff:"a",concept:"√a × √a = a — a root times itself cancels the root.",
+   steps:[`√${r} × √${r} = ${r}`,`So the expression = ${s} × ${r} = ${v}`],
+   hint:"What does √a · √a equal? Then multiply by the outside coefficient.",mistake:"Squaring the outside coefficient instead of just multiplying."})}
+];
+/* ---------- W4 · IDENTITY FORGE ---------- */
+const G4=[
+()=>{const a=pick([1,2,3,4,5]),b=pick([1,2,3,4,5,6]);
+ return mcq(`Forge-fire crackles: expand (x + ${b})².`,
+  `x² + ${2*b}x + ${b*b}`,`x² + ${b*b}`,`x² + ${b}x + ${b*b}`,`x² + ${2*b}x + ${2*b*b}`,
+  {diff:dOpt()[1]?"f":"c",concept:"(a + b)² = a² + 2ab + b².",
+   steps:[`a = x, b = ${b}`,`a² = x²`,`2ab = 2·x·${b} = ${2*b}x`,`b² = ${b*b}`,`Sum: x² + ${2*b}x + ${b*b}`],
+   hint:"Three pieces: a², then TWO ab's, then b².",mistake:"(a+b)² is NOT a² + b² — the twin rectangles 2ab always appear."})},
+()=>{const n=pick([96,97,98,99,101,102,103,104]);
+ const A=Math.floor(n/10)*10,B=n-A;const sq=n*n;
+ return numQ(sq,{diff:"c",
+  q:`Mental-forge challenge! Compute ${n} × ${n} using the identity (a + b)² — no calculator, warrior.`,
+  given:`${n}²`,find:"the square via identities",
+  concept:`Write n = ${A} + ${B}, then expand (a + b)².`,
+  steps:[`${n} = ${A} + ${B}`,`(${A} + ${B})² = ${A*A} + 2·${A}·${B} + ${B*B}`,`= ${A*A} + ${2*A*B} + ${B*B} = ${sq}`],
+  hint:`Split as (${A} + ${B})² and expand a² + 2ab + b².`,mistake:"Forgetting the 2ab term — it carries most of the value."})},
+()=>{const a=pick([2,3,4,5,6,7]),b=pick([1,2,3,4,5]);
+ return mcq(`Factor-sword slash:  x² − ${a*a} = ?`,
+  `(x + ${a})(x − ${a})`,`(x − ${a})²`,`(x + ${a})²`,`(x + ${a*a})(x − 1)`,
+  {diff:"f",concept:"a² − b² = (a + b)(a − b) — difference of squares.",
+   steps:[`${a*a} = ${a}²`,`x² − ${a}² = (x + ${a})(x − ${a})`],
+   hint:"Recognise the pattern: something² minus something². Split into sum × difference.",mistake:"x² − a² = (x−a)² is the classic trap — expand that and the 2ab appears."})},
+()=>{const c=pick([2,3,4,5,6]),x=pick([1,2,3,4,5].filter(v=>v!==c)),y=pick([1,2,3,5,6]);
+ return mcq(`Common-factor extraction, first strike:  ${c*x}x + ${c*y} = ?`,
+  `${c}(${x}x + ${y})`,`${x}(${c}x + ${y})`,`(${c}+${x})(x + ${y})`,`${c}x(${x} + ${y})`,
+  {diff:"f",concept:"Pull out the greatest common factor of both terms.",
+   steps:[`GCF of ${c*x} and ${c*y} = ${c}`,`${c*x}x + ${c*y} = ${c}·${x}x + ${c}·${y}`,`= ${c}(${x}x + ${y})`],
+   hint:"What number divides BOTH coefficients? Pull it outside the bracket.",mistake:"Pulling out only part of the GCF — check by re-expanding."})},
+()=>{const p=pick([1,2,3,4,5,6,7,8]),q=pick([1,2,3,4,5,6,7,8].filter(v=>v!==p));
+ return mcq(`Midterm split, master-level: factorise x² + ${p+q}x + ${p*q}.`,
+  `(x + ${p})(x + ${q})`,`(x + ${p+q})(x + ${p*q})`,`(x − ${p})(x − ${q})`,`(x + ${p*q})(x + ${p+q})`,
+  {diff:"c",concept:"Find two numbers with product = last term, sum = middle coefficient.",
+   steps:[`Need: product ${p*q}, sum ${p+q}`,`${p} × ${q} = ${p*q} ✓ and ${p} + ${q} = ${p+q} ✓`,`x² + ${p+q}x + ${p*q} = (x + ${p})(x + ${q})`],
+   hint:"Two numbers whose PRODUCT is the constant and SUM is the x-coefficient.",mistake:"Mixing up: product goes with the constant term, sum with the middle."})},
+()=>{const a=pick([2,3,4,5]),b=pick([1,2,3]);
+ return mcq(`Cube anvil strike: (x + ${b})³ expands with which middle pair?`,
+  `3x²·${b} and 3x·${b*b}`,`x²·${b} and x·${b*b}`,`3x² and 3${b}²`,`2x²·${b} and 2x·${b*b}`,
+  {diff:"a",concept:"(a + b)³ = a³ + 3a²b + 3ab² + b³ — coefficients 1, 3, 3, 1.",
+   steps:[`(x + ${b})³ = x³ + 3x²(${b}) + 3x(${b*b}) + ${b*b*b}`,`Middle terms: 3x²·${b} = ${3*b}x² and 3x·${b*b} = ${3*b*b}x`],
+   hint:"The cube row of Pascal's triangle: 1, 3, 3, 1.",mistake:"Using 2's instead of 3's — that's the square's pattern, not the cube's."})}
+];
+</script>

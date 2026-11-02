@@ -1,0 +1,158 @@
+<script>
+/* ---------- W5 · CIRCLE SANCTUM ---------- */
+const G5=[
+()=>{const central=pick([40,60,80,100,120,140]);
+ return numQ(central/2,{diff:"f",unit:"°",
+  q:`Orbweaver's Law: an arc of her web subtends ∠AOB = ${central}° at the centre O. The same arc glances off a fly C on the rim — what angle does the fly feel (∠ACB)?`,
+  given:`∠AOB = ${central}°, C on the circle`,find:"∠ACB",
+  concept:"Angle at the centre = 2 × angle at the rim (same arc).",
+  steps:[`Centre angle = ${central}°`,`Rim angle = centre ÷ 2`,`∠ACB = ${central}° ÷ 2 = ${central/2}°`],
+  hint:"Rim sees HALF of what the centre sees on the same arc.",mistake:"Doubling instead of halving — the centre has the bigger view."})},
+()=>{return numQ(90,{diff:"f",unit:"°",
+  q:`AB is a diameter of the Sanctum's great window. C is any point on the circle (C ≠ A, B). What is ∠ACB — always, eternally?`,
+  given:"AB = diameter, C on circle",find:"∠ACB",
+  concept:"Angle in a semicircle = 90° (Thales' theorem).",
+  steps:[`Diameter subtends 180° at the centre`,`Rim angle = 180° ÷ 2`,`∠ACB = 90° — always`],
+  hint:"The diameter is a straight line through the centre: central angle = 180°.",mistake:"Thinking the angle depends on where C sits — it never does."})},
+()=>{const r=pick([7,10,14,21]);const usePi=Math.random()<.5;const C=usePi?2*(22/7)*r:2*Math.PI*r;
+ return numQ(Math.round(C*10)/10,{diff:"c",tol:.6,unit:"cm",
+  q:`The Silver Chord (circumference) of Orbweaver's web has radius ${r} cm. Measure it. ${usePi?"(use π = 22/7)":"(use π = 3.14)"} Round to 1 decimal.`,
+  given:`r = ${r} cm, π = ${usePi?"22/7":"3.14"}`,find:"circumference",
+  concept:"C = 2πr.",
+  steps:[`C = 2πr`,`= 2 × ${usePi?"22/7":"3.14"} × ${r}`,`= ${C.toFixed(2)} cm`],
+  hint:"Circumference = 2 × π × radius. Keep units!",mistake:"Using πr² (area formula) when the question asks for the rim length."})},
+()=>{const a=pick([50,60,70,80,90,100,110,120]);
+ return mcq(`Two golden chords AB and CD of her web are EQUAL in length. If ∠AOB = ${a}°, what does ∠COD whisper?`,
+  `${a}°`,`${a/2}°`,`${180-a}°`,`${2*a}°`,
+  {diff:"f",concept:"Equal chords subtend equal angles at the centre.",
+   steps:[`Chords AB = CD`,`Equal chords ⇒ equal central angles`,`∠COD = ${a}°`],
+   hint:"Equal chords get identical treatment from the centre.",mistake:"Halving the angle — that's the rim rule, not the chord rule."})},
+()=>{const r=pick([7,10,14]);const A=r*r*(22/7);
+ return numQ(Math.round(A),{diff:"c",unit:"cm²",
+  q:`Orbweaver guards a circular sanctum of radius ${r} cm (π = 22/7). How much floor does her web cover?`,
+  given:`r = ${r} cm`,find:"area of circle",
+  concept:"A = πr².",
+  steps:[`A = πr² = (22/7) × ${r} × ${r}`,`= ${A} cm²`],
+  hint:"Area needs the radius SQUARED — then × π.",mistake:"Forgetting to square r, or squaring 2r (that's diameter)."})}
+];
+/* ---------- W6 · MEASURELANDS ---------- */
+const G6=[
+()=>{const l=pick([12,15,18,20,24]),b=pick([8,10,12,16]);const cost=pick([5,8,10,12]);
+ return numQ(2*(l+b)*cost,{diff:"c",unit:"₹",
+  q:`Dhruva must fence a rectangular royal field of ${l} m × ${b} m. Fencing costs ₹${cost} per metre. What will the border treasury demand?`,
+  given:`l = ${l} m, b = ${b} m, rate = ₹${cost}/m`,find:"total fencing cost",
+  concept:"Fencing = perimeter × rate.",
+  steps:[`Perimeter = 2(${l} + ${b}) = ${2*(l+b)} m`,`Cost = ${2*(l+b)} × ${cost}`,`= ₹${2*(l+b)*cost}`],
+  hint:"Fence traces the boundary — that's perimeter, not area.",mistake:"Multiplying area by rate — grass/paint use area, fences use perimeter."})},
+()=>{const t=pick([[3,4,5],[6,8,10],[5,12,13],[13,14,15],[9,12,15],[10,24,26]]);
+ const[a,b,c]=t;const s=t.reduce((x,y)=>x+y)/2;const A=Math.sqrt(s*(s-a)*(s-b)*(s-c));
+ return numQ(Math.round(A*100)/100,{diff:"a",tol:.51,
+  q:`A triangular survey plot has sides ${a}, ${b}, ${c}. No height is marked — summon Heron: compute the area. (round to 2 decimals if needed)`,
+  given:`sides ${a}, ${b}, ${c}`,find:"area via Heron's formula",
+  concept:"s = (a+b+c)/2, A = √(s(s−a)(s−b)(s−c)).",
+  steps:[`s = (${a}+${b}+${c})/2 = ${s}`,`s−a = ${s-a}, s−b = ${s-b}, s−c = ${s-c}`,`A = √(${s}×${s-a}×${s-b}×${s-c}) = √${(s*(s-a)*(s-b)*(s-c)).toFixed(2)}`,`= ${+A.toFixed(2)}`],
+  hint:"Half-perimeter first. Then multiply s by each (s − side) and square-root the product.",mistake:"Forgetting s is HALF the perimeter, or adding the (s−side) terms instead of multiplying."})},
+()=>{const A=pick([48,60,72,84,96,120]),b=pick([8,10,12,15,16]);const h=2*A/b;
+ return numQ(h,{diff:"c",unit:"cm",
+  q:`A triangular banner of the Measurelands flies with area ${A} cm² on a base of ${b} cm. How tall does the pole-mount (height) stand?`,
+  given:`A = ${A} cm², base = ${b} cm`,find:"height",
+  concept:"A = ½ × base × height ⇒ height = 2A ÷ base.",
+  steps:[`A = ½ × b × h`,`${A} = ½ × ${b} × h`,`h = (2 × ${A})/${b} = ${h} cm`],
+  hint:"Rearrange: double the area, then divide by the base.",mistake:"Dividing area by base without doubling — the ½ must be undone."})},
+()=>{const s=pick([2,3,4]);
+ return mcq(`Twin plots, one law: a square of side ${2*s} m and a rectangle ${3*s} m × ${s} m have EQUAL perimeters (${8*s} m). Whose soil feeds more? (larger area)`,
+  `The square (${4*s*s} m²)`,`The rectangle (${3*s*s} m²)`,"Equal areas","Cannot be determined",
+  {diff:"c",concept:"At equal perimeter, the square encloses the maximum area.",
+   steps:[`Square: P = 4×${2*s} = ${8*s} m, A = ${2*s}×${2*s} = ${4*s*s} m²`,`Rectangle: P = 2(${3*s} + ${s}) = ${8*s} m ✓, A = ${3*s}×${s} = ${3*s*s} m²`,`${4*s*s} > ${3*s*s} → the square feeds more`],
+   hint:"Compute both areas. Same fence, different wealth.",mistake:"Assuming equal perimeters ⇒ equal areas — the Measurelands' oldest con."})}
+];
+/* ---------- W7 · KINGDOM OF MAYBE ---------- */
+const G7=[
+()=>{const ev=pick([
+ ["rolling a 5 on a fair die",1,6],
+ ["rolling an even number on a fair die",3,6],
+ ["drawing a red card from a standard deck",26,52],
+ ["getting heads on one fair coin toss",1,2],
+ ["rolling a number > 2 on a fair die",4,6]]);
+ const[desc,fav,tot]=ev;const g=gcd(fav,tot);
+ return mcq(`The Kingdom asks: what is P(${desc})?`,
+  F(fav,tot),F(fav+1,tot),F(tot,tot+fav),F(fav-g,tot),
+  {diff:"f",concept:"P(E) = favourable ÷ total (equally likely outcomes).",
+   steps:[`Favourable outcomes = ${fav}`,`Total outcomes = ${tot}`,`P = ${fav}/${tot} = ${F(fav,tot)}`],
+   hint:"Count the favourable outcomes, then divide by ALL outcomes.",mistake:"Putting totals upside down — probability is fav/total, never total/fav."})},
+()=>{const r=pick([2,3,4,5]),b=pick([3,4,5,6,7].filter(v=>v!==r)),g2=pick([1,2,4,5].filter(v=>v!==r&&v!==b));
+ const tot=r+b+g2,fav=r;const gg=gcd(fav,tot);
+ return mcq(`Fatespinner's pouch holds ${r} ruby, ${b} azure and ${g2} emerald marbles — identical to touch. One marble flees. P(ruby)?`,
+  F(fav,tot),F(b,tot),F(g2,tot),F(fav+1,tot+1),
+  {diff:"c",concept:"P(colour) = marbles of that colour ÷ total marbles.",
+   steps:[`Total = ${r} + ${b} + ${g2} = ${tot}`,`Favourable (ruby) = ${r}`,`P = ${fav}/${tot}`],
+   hint:"First count the WHOLE pouch. Then the ruby share.",mistake:"Forgetting a colour in the total — count every marble."})},
+()=>{return mcq(`Two silver coins spin through the Maybe-sky. What is P(exactly one head)?`,
+  "1/2","1/4","3/4","2/3",
+  {diff:"c",concept:"Sample space of two coins: HH, HT, TH, TT — four equal worlds.",
+   steps:["Sample space = {HH, HT, TH, TT}","Exactly one head: HT, TH → 2 worlds","P = 2/4 = 1/2"],
+   hint:"Write all four outcomes first. HT and TH are different worlds!",mistake:"Treating HT and TH as one outcome (then P = 1/3 — a cheat the Fatespinner loves)."})},
+()=>{const n=pick([1,2,3,4,5,6]);
+ return numQ((6-n)/6,{diff:"f",tol:.001,
+  q:`One throw of a fair die. What is P(NOT rolling a ${n})? (decimal)`,
+  given:"fair die, one throw",find:`P(not ${n})`,
+  concept:"P(not E) = 1 − P(E) — the complement spell.",
+  steps:[`P(${n}) = 1/6`,`P(not ${n}) = 1 − 1/6`,`= 5/6 = ${(5/6).toFixed(3)}…`],
+  hint:"Complement = everything except. 1 minus the event's probability.",mistake:"Answering 6−n as a probability instead of (6−n)/6."});
+},
+()=>{const p=pick([[1,6],[1,2],[1,4],[3,4],[2,5],[1,3]]);
+ const[pn,pd]=p;
+ return tfQ(true,{diff:"c",
+  q:`TRUE or FALSE: it is possible for an event in the Kingdom to have probability exactly ${F(pn,pd)}, while its complement has probability ${F(pd-pn,pd)}.`,
+  concept:"P(E) + P(not E) = 1 — complements always complete the whole.",
+  steps:[`P(E) = ${F(pn,pd)}`,`P(not E) = 1 − ${F(pn,pd)} = ${F(pd-pn,pd)}`,`The pair ${F(pn,pd)} + ${F(pd-pn,pd)} = 1 ✓ TRUE`],
+  hint:"Complements must sum to exactly 1. Check the arithmetic.",mistake:"Complement of 1/6 is 5/6, not 6/1 or 1/5."})}
+];
+/* ---------- W8 · PATTERN SPIRES ---------- */
+const G8=[
+()=>{const a=rng(12)+1,d=pick([2,3,4,5,6,7,8,9,11]);const n=pick([10,11,12,15,20,25]);
+ return numQ(a+(n-1)*d,{diff:"c",
+  q:`The AP Staircase of the Spires begins ${a}, ${a+d}, ${a+2*d}, … Each floor adds ${d}. What is floor number ${n}?`,
+  given:`a = ${a}, d = ${d}`,find:`a₍${n}₎ — the ${n}th term`,
+  concept:"aₙ = a + (n − 1)d.",
+  steps:[`aₙ = a + (n−1)d`,`= ${a} + (${n}−1)×${d}`,`= ${a} + ${(n-1)*d} = ${a+(n-1)*d}`],
+  hint:"n terms make n−1 jumps. Multiply the jumps by d.",mistake:"Using n instead of n−1 — the 10th term makes only 9 jumps."})},
+()=>{const a=pick([1,2,3,4,5]),r=pick([2,3,4,5]);
+ return numQ(a*Math.pow(r,4),{diff:"c",
+  q:`The GP Ladder multiplies as it climbs: ${a}, ${a*r}, ${a*r*r}, … What is the 5th rung?`,
+  given:`a = ${a}, r = ${r}`,find:"5th term",
+  concept:"aₙ = a·rⁿ⁻¹ — the 5th term carries r⁴.",
+  steps:[`a₅ = a·r⁴`,`= ${a} × ${r}⁴ = ${a} × ${Math.pow(r,4)}`,`= ${a*Math.pow(r,4)}`],
+  hint:"5th term = a × r⁴. Count the exponents: term number minus one.",mistake:"Using r⁵ for the 5th term — off by one, the Phantom giggles."})},
+()=>{const a=rng(10)+1,d=rng(8)+1,n=pick([10,12,15,20]);
+ const last=a+(n-1)*d;const S=n*(a+last)/2;
+ return numQ(S,{diff:"a",
+  q:`Gauss-games on the stairs: sum the first ${n} terms of ${a}, ${a+d}, ${a+2*d}, …`,
+  given:`a = ${a}, d = ${d}, n = ${n}`,find:"Sₙ",
+  concept:"Sₙ = n/2 × (first + last).",
+  steps:[`Last term = ${a} + ${n-1}×${d} = ${last}`,`Sₙ = ${n}/2 × (${a} + ${last})`,`= ${n/2} × ${a+last} = ${S}`],
+  hint:"Find the last term first, then pair up: n/2 × (first + last).",mistake:"Adding a + d as the 'last term' — find the nth term before summing."})},
+()=>{const seqs=[
+ [[1,1,2,3,5],[8],"each term = sum of previous two (Fibonacci!)"],
+ [[2,4,8,16],[32],"each term doubles (×2)"],
+ [[1,4,9,16],[25],"perfect squares: 1²,2²,3²,4²…"],
+ [[1,3,6,10],[15],"triangular numbers: add 2,3,4,5…"],
+ [[100,95,90,85],[80],"subtract 5 each step"]];
+ const[sq,next,rule]=pick(seqs);
+ return mcq(`The Phantom writes: ${sq.join(", ")}, … What number hides behind the veil?`,
+  String(next),String(next+1),String(sq[sq.length-1]*2),String(next*next),
+  {diff:"c",concept:`Spot the rule: ${rule}.`,
+   steps:[`Sequence: ${sq.join(", ")}`,`Rule: ${rule}`,`Next = ${next}`],
+   hint:"Check differences first, then ratios, then famous families (squares, triangulars, Fibonacci).",mistake:"Assuming every pattern is +same — test subtraction and multiplication too."})},
+()=>{const a=rng(9)+2,d=rng(9)+2,n=pick([3,4,5,6]);
+ const terms=Array.from({length:n},(_,i)=>a+i*d);const miss=terms[1];
+ return numQ(miss,{diff:"f",
+  q:`A stair-crack swallows one number: ${terms[0]}, ___ , ${terms[2]}${n>3?", "+terms.slice(3).join(", "):""}, … What fell in?`,
+  given:`AP with common difference d`,find:"the missing term",
+  concept:"In an AP, consecutive differences are equal.",
+  steps:[`Difference between later terms: ${terms[3]?terms[3]-terms[2]:terms[2]-terms[0]}÷2 or spot d`,terms[3]?`d = ${terms[3]-terms[2]} (from later pair)`:`2d = ${terms[2]-terms[0]} ⇒ d = ${d}`,`Missing = ${terms[0]} + ${d} = ${miss}`],
+  hint:"Use two KNOWN neighbours to find d, then step once from a known term.",mistake:"Averaging the visible terms carelessly — verify with d from a clean pair."})}
+];
+/* ---------- REGISTRY ---------- */
+const GENS={coord:G1,linear:G2,number:G3,identity:G4,circle:G5,measure:G6,chance:G7,pattern:G8};
+</script>

@@ -1,0 +1,159 @@
+<script>
+/* ============ MONSTER ART (hand-drawn SVG) ============ */
+const MON={
+nullbeard:`<svg viewBox="0 0 200 200"><defs>
+ <radialGradient id="k1" cx="50%" cy="35%"><stop offset="0%" stop-color="#3d857a"/><stop offset="100%" stop-color="#1e4a43"/></radialGradient>
+ <linearGradient id="k2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#223c37"/><stop offset="100%" stop-color="#122521"/></linearGradient></defs>
+ <path d="M60 195 C40 175 52 150 70 148 C60 130 80 118 92 132" fill="none" stroke="#25544c" stroke-width="13" stroke-linecap="round"/>
+ <path d="M140 195 C160 175 148 150 130 148 C140 130 120 118 108 132" fill="none" stroke="#25544c" stroke-width="13" stroke-linecap="round"/>
+ <path d="M75 190 C70 168 82 158 95 165 M125 190 C130 168 118 158 105 165" fill="none" stroke="#1d423b" stroke-width="10" stroke-linecap="round"/>
+ <ellipse cx="100" cy="105" rx="52" ry="46" fill="url(#k1)"/>
+ <path d="M62 122 C74 148 126 148 138 122 C128 140 72 140 62 122Z" fill="#7fd4c4" opacity=".85"/>
+ <path d="M55 88 Q100 66 145 88 L140 74 Q100 56 60 74 Z" fill="url(#k2)"/>
+ <path d="M48 78 Q100 52 152 78 L148 70 Q100 46 52 70 Z" fill="#16211e"/>
+ <rect x="46" y="70" width="108" height="7" rx="3.5" fill="#e3b04f"/>
+ <circle cx="100" cy="42" r="6" fill="#e3b04f"/>
+ <circle cx="80" cy="100" r="11" fill="#0c1614"/><circle cx="80" cy="100" r="5.5" fill="#ffd98a"/><circle cx="82" cy="98" r="2" fill="#fff"/>
+ <path d="M96 92 L122 92 L122 106 L96 106 Z" fill="#0c1614"/>
+ <path d="M96 92 L122 106 M96 106 L122 92" stroke="#3d857a" stroke-width="3"/>
+ <path d="M84 132 Q100 144 116 132" fill="none" stroke="#0c1614" stroke-width="4" stroke-linecap="round"/>
+ <circle cx="152" cy="120" r="4" fill="#7fd4c4"/><circle cx="48" cy="120" r="4" fill="#7fd4c4"/></svg>`,
+serpent:`<svg viewBox="0 0 200 200"><defs>
+ <linearGradient id="s1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#e07856"/><stop offset="100%" stop-color="#8f3b26"/></linearGradient></defs>
+ <path d="M40 170 L70 170 L70 140 L100 140 L100 110 L130 110 L130 80 L160 80 L160 50" fill="none" stroke="url(#s1)" stroke-width="17" stroke-linecap="square"/>
+ <path d="M40 170 L70 170 L70 140 L100 140 L100 110 L130 110 L130 80 L160 80 L160 50" fill="none" stroke="#ffb59c" stroke-width="4" stroke-linecap="square" opacity=".4" transform="translate(-3,-3)"/>
+ <rect x="42" y="168" width="26" height="7" fill="#5c2417" opacity=".6"/><rect x="102" y="138" width="26" height="7" fill="#5c2417" opacity=".6"/>
+ <path d="M148 58 L184 22 L188 40 L196 30 L192 56 L170 66 Z" fill="url(#s1)"/>
+ <path d="M148 58 L184 22 L188 40 Z" fill="#ff9d7c"/>
+ <circle cx="176" cy="38" r="5" fill="#0e0a08"/><circle cx="177.5" cy="36.5" r="1.6" fill="#ffe1a8"/>
+ <path d="M188 40 L200 44 M188 40 L194 52" stroke="#ff6b4a" stroke-width="3" stroke-linecap="round"/>
+ <path d="M60 148 L74 162 M120 118 L134 132" stroke="#ff9d7c" stroke-width="3" opacity=".55"/>
+ <path d="M30 185 L170 185" stroke="#3a2a24" stroke-width="3" stroke-dasharray="2 7" opacity=".5"/></svg>`,
+hydra:`<svg viewBox="0 0 200 200"><defs>
+ <linearGradient id="h1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#79a35e"/><stop offset="100%" stop-color="#3f5c2f"/></linearGradient></defs>
+ <ellipse cx="100" cy="172" rx="62" ry="22" fill="#2c421f"/>
+ <path d="M100 168 C70 150 78 120 66 96 C60 82 48 84 46 72" fill="none" stroke="url(#h1)" stroke-width="15" stroke-linecap="round"/>
+ <path d="M100 168 C100 140 108 118 100 92 C96 78 86 76 88 62" fill="none" stroke="url(#h1)" stroke-width="15" stroke-linecap="round"/>
+ <path d="M100 168 C130 150 122 120 134 96 C140 82 152 84 154 72" fill="none" stroke="url(#h1)" stroke-width="15" stroke-linecap="round"/>
+ <circle cx="46" cy="64" r="17" fill="#547d3e"/><circle cx="88" cy="54" r="18" fill="#5f8a46"/><circle cx="154" cy="64" r="17" fill="#547d3e"/>
+ <path d="M32 58 L46 50 L60 58 M74 48 L88 40 L102 48 M140 58 L154 50 L168 58" fill="#3f5c2f"/>
+ <circle cx="41" cy="66" r="4.5" fill="#ffd35e"/><circle cx="93" cy="56" r="4.5" fill="#ffd35e"/><circle cx="149" cy="66" r="4.5" fill="#ffd35e"/>
+ <text x="46" y="86" font-size="13" font-weight="800" fill="#d8efc4" text-anchor="middle" font-family="monospace">√2</text>
+ <text x="88" y="76" font-size="13" font-weight="800" fill="#d8efc4" text-anchor="middle" font-family="monospace">√3</text>
+ <text x="154" y="86" font-size="13" font-weight="800" fill="#d8efc4" text-anchor="middle" font-family="monospace">√5</text>
+ <path d="M52 74 L58 84 L68 70" fill="none" stroke="#ffd35e" stroke-width="2" opacity=".7"/>
+ <ellipse cx="100" cy="150" rx="30" ry="12" fill="#436329"/><text x="100" y="155" font-size="11" font-weight="800" fill="#cfe8b8" text-anchor="middle" font-family="monospace">π? no.</text></svg>`,
+golem:`<svg viewBox="0 0 200 200"><defs>
+ <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6b5a52"/><stop offset="100%" stop-color="#3c322d"/></linearGradient>
+ <radialGradient id="g2" cx="50%" cy="50%"><stop offset="0%" stop-color="#ffd98a"/><stop offset="100%" stop-color="#e07040"/></radialGradient></defs>
+ <ellipse cx="100" cy="184" rx="58" ry="12" fill="#241d19"/>
+ <rect x="55" y="80" width="90" height="90" rx="18" fill="url(#g1)"/>
+ <rect x="40" y="95" width="26" height="62" rx="12" fill="#4a3e37"/><rect x="134" y="95" width="26" height="62" rx="12" fill="#4a3e37"/>
+ <rect x="52" y="150" width="30" height="26" rx="9" fill="#443931"/><rect x="118" y="150" width="30" height="26" rx="9" fill="#443931"/>
+ <rect x="68" y="52" width="64" height="44" rx="14" fill="#55463f"/>
+ <path d="M74 84 L88 84 M112 84 L126 84" stroke="#241d19" stroke-width="4"/>
+ <circle cx="83" cy="72" r="6.5" fill="#ffb35e"/><circle cx="117" cy="72" r="6.5" fill="#ffb35e"/>
+ <circle cx="83" cy="72" r="2.4" fill="#fff2d8"/><circle cx="117" cy="72" r="2.4" fill="#fff2d8"/>
+ <path d="M100 98 L112 122 L100 146 L88 122 Z" fill="url(#g2)"/>
+ <path d="M62 120 L74 128 M138 120 L126 128 M100 160 L100 170 M70 100 L80 106 M130 100 L120 106" stroke="#ff9d55" stroke-width="3.4" stroke-linecap="round" opacity=".85"/>
+ <path d="M74 96 L80 108 M126 96 L120 108" stroke="#5c4a3d" stroke-width="4" stroke-linecap="round"/>
+ <rect x="86" y="34" width="28" height="12" rx="6" fill="#3c322d"/><rect x="92" y="22" width="16" height="14" rx="6" fill="#e3b04f"/></svg>`,
+orbweaver:`<svg viewBox="0 0 200 200"><defs>
+ <radialGradient id="o1" cx="45%" cy="40%"><stop offset="0%" stop-color="#9a86c4"/><stop offset="100%" stop-color="#57487e"/></radialGradient></defs>
+ <g stroke="#4a3d6b" stroke-width="5" fill="none" stroke-linecap="round">
+  <path d="M78 92 C48 74 40 52 28 42"/><path d="M78 104 C44 100 30 88 16 86"/>
+  <path d="M80 116 C50 126 38 142 28 154"/><path d="M122 92 C152 74 160 52 172 42"/>
+  <path d="M122 104 C156 100 170 88 184 86"/><path d="M120 116 C150 126 162 142 172 154"/></g>
+ <circle cx="100" cy="104" r="46" fill="url(#o1)"/>
+ <g fill="none" stroke="#c9bce8" stroke-width="1.6" opacity=".8">
+  <circle cx="100" cy="104" r="38"/><circle cx="100" cy="104" r="28"/><circle cx="100" cy="104" r="18"/><circle cx="100" cy="104" r="8"/></g>
+ <path d="M100 58 L142 104 L100 150 L58 104 Z" fill="none" stroke="#c9bce8" stroke-width="1.6" opacity=".8"/>
+ <circle cx="86" cy="94" r="8" fill="#120e1c"/><circle cx="86" cy="94" r="3.6" fill="#ffd98a"/>
+ <circle cx="114" cy="94" r="8" fill="#120e1c"/><circle cx="114" cy="94" r="3.6" fill="#ffd98a"/>
+ <path d="M92 116 Q100 122 108 116" stroke="#120e1c" stroke-width="3" fill="none" stroke-linecap="round"/>
+ <path d="M84 54 L88 40 L96 50 L100 34 L104 50 L112 40 L116 54 Z" fill="#e3b04f"/>
+ <circle cx="100" cy="58" r="5" fill="#e3b04f"/>
+ <text x="100" y="142" font-size="12" font-weight="800" fill="#e6ddf6" text-anchor="middle">π</text></svg>`,
+tessellator:`<svg viewBox="0 0 200 200"><defs>
+ <linearGradient id="t1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c9a86a"/><stop offset="100%" stop-color="#7d6238"/></linearGradient></defs>
+ <ellipse cx="100" cy="186" rx="56" ry="10" fill="#241d10"/>
+ <rect x="50" y="76" width="100" height="100" rx="10" fill="url(#t1)"/>
+ <g opacity=".5"><rect x="58" y="84" width="24" height="24" fill="#a8853f"/><rect x="86" y="84" width="24" height="24" fill="#8a6c34"/><rect x="114" y="84" width="28" height="24" fill="#a8853f"/>
+ <rect x="58" y="112" width="24" height="24" fill="#8a6c34"/><rect x="86" y="112" width="24" height="24" fill="#a8853f"/><rect x="114" y="112" width="28" height="24" fill="#8a6c34"/>
+ <rect x="58" y="140" width="24" height="28" fill="#a8853f"/><rect x="86" y="140" width="24" height="28" fill="#8a6c34"/><rect x="114" y="140" width="28" height="28" fill="#a8853f"/></g>
+ <path d="M50 76 L36 46 L66 60 Z" fill="#8a6c34"/><path d="M150 76 L164 46 L134 60 Z" fill="#8a6c34"/>
+ <circle cx="52" cy="52" r="4" fill="#ffd35e"/><circle cx="148" cy="52" r="4" fill="#ffd35e"/>
+ <rect x="70" y="112" width="26" height="20" rx="4" fill="#241d10"/><rect x="104" y="112" width="26" height="20" rx="4" fill="#241d10"/>
+ <circle cx="83" cy="122" r="5" fill="#ffd35e"/><circle cx="117" cy="122" r="5" fill="#ffd35e"/>
+ <circle cx="84.5" cy="120.5" r="1.6" fill="#fff"/><circle cx="118.5" cy="120.5" r="1.6" fill="#fff"/>
+ <path d="M78 156 Q100 168 122 156" stroke="#241d10" stroke-width="5" fill="none" stroke-linecap="round"/>
+ <rect x="92" y="90" width="16" height="14" rx="3" fill="#5c4a26" transform="rotate(8 100 97)"/>
+ <path d="M64 148 L74 160" stroke="#ff9d55" stroke-width="3" stroke-linecap="round"/></svg>`,
+fatespinner:`<svg viewBox="0 0 200 200"><defs>
+ <linearGradient id="f1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c96a86"/><stop offset="100%" stop-color="#6e2f44"/></linearGradient></defs>
+ <path d="M100 40 C60 40 44 78 48 120 C51 152 66 172 100 172 C134 172 149 152 152 120 C156 78 140 40 100 40Z" fill="url(#f1)"/>
+ <path d="M100 40 C82 40 70 52 68 68 C80 60 120 60 132 68 C130 52 118 40 100 40Z" fill="#8f3d56"/>
+ <rect x="76" y="70" width="48" height="48" rx="10" fill="#f7f1e6" transform="rotate(6 100 94)"/>
+ <g transform="rotate(6 100 94)" fill="#3d2030">
+  <circle cx="89" cy="83" r="5"/><circle cx="111" cy="83" r="5"/><circle cx="100" cy="94" r="5"/><circle cx="89" cy="105" r="5"/><circle cx="111" cy="105" r="5"/></g>
+ <path d="M30 96 L48 88 L44 106 Z" fill="#f7f1e6" opacity=".9"/><path d="M170 96 L152 88 L156 106 Z" fill="#f7f1e6" opacity=".9"/>
+ <text x="36" y="96" font-size="9" font-weight="800" fill="#3d2030" text-anchor="middle">½</text><text x="164" y="96" font-size="9" font-weight="800" fill="#3d2030" text-anchor="middle">⅙</text>
+ <circle cx="70" cy="130" r="3" fill="#ffd35e"/><circle cx="130" cy="130" r="3" fill="#ffd35e"/>
+ <path d="M84 146 Q100 156 116 146" stroke="#3d2030" stroke-width="4" fill="none" stroke-linecap="round"/>
+ <path d="M56 172 C76 182 124 182 144 172" stroke="#ffd35e" stroke-width="3" fill="none" opacity=".6"/></svg>`,
+phantom:`<svg viewBox="0 0 200 200"><defs>
+ <linearGradient id="p1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7fa8c9" stop-opacity=".95"/><stop offset="100%" stop-color="#3d5c78" stop-opacity=".9"/></linearGradient></defs>
+ <path d="M100 26 C58 26 42 62 46 108 C48 136 42 160 34 176 C56 170 62 178 70 186 C80 176 92 182 100 190 C108 182 120 176 130 186 C138 178 144 170 166 176 C158 160 152 136 154 108 C158 62 142 26 100 26Z" fill="url(#p1)"/>
+ <path d="M100 26 C74 26 58 44 56 70 C68 58 82 52 100 52 C118 52 132 58 144 70 C142 44 126 26 100 26Z" fill="#2c4358"/>
+ <path d="M76 88 C92 76 108 76 124 88 C124 108 112 124 100 124 C88 124 76 108 76 88Z" fill="#0d1720"/>
+ <path d="M100 112 C100 96 112 96 112 84 M100 112 C100 128 84 128 84 142 M100 112 C100 128 116 128 116 142" fill="none" stroke="#ffd35e" stroke-width="2.6" stroke-linecap="round"/>
+ <circle cx="100" cy="112" r="3.4" fill="#ffd35e"/>
+ <circle cx="84" cy="80" r="3.4" fill="#ffd98a" opacity=".9"/><circle cx="116" cy="80" r="3.4" fill="#ffd98a" opacity=".9"/>
+ <g fill="#bcd8ec" font-family="monospace" font-weight="700" opacity=".85">
+  <text x="40" y="60" font-size="10">1</text><text x="58" y="44" font-size="10">1</text><text x="146" y="52" font-size="10">2</text><text x="156" y="72" font-size="10">3</text><text x="150" y="94" font-size="10">5</text><text x="34" y="86" font-size="10">8</text></g></svg>`
+};
+/* ============ WORLD META ============ */
+const WORLDS=[
+{id:"coord",num:1,name:"The Cartesian Archipelago",epithet:"Coordinate Islands",color:"#4fb8a8",
+ lore:"A thousand emerald isles drift on a grid-bound sea. Captain Nullbeard has torn the charts apart — Dhruva must learn that every point in creation answers to two honest numbers.",
+ boss:"Captain Nullbeard",bossTitle:"Terror of the Grid Sea",mon:"nullbeard",
+ sig:"M62 12a50 50 0 1 0 76 0M62 12 100 62 76 96m24-34 24 34M100 62V96",
+ sigil:"🧭"},
+{id:"linear",num:2,name:"The Line Legions",epithet:"Linear Equations",color:"#e07856",
+ lore:"West of the archipelago marches the Line Legion — infinite soldiers on a perfect straight path. The Graphite Serpent sways them, ax + b whispered in its fangs. Dhruva must bend every line to his will.",
+ boss:"The Graphite Serpent",bossTitle:"Marshal of Infinite Lines",mon:"serpent",
+ sig:"M20 100h160M100 20v160M40 160 160 40",
+ sigil:"📐"},
+{id:"number",num:3,name:"The Number Nexus",epithet:"Number Systems & Exponents",color:"#8fb573",
+ lore:"At the world's heart grows the Number Tree — rationals on its branches, irrationals coiling in its roots. The Root Hydra guards them, hissing that some numbers cannot be written as p/q. Prove it wrong. Or don't. It bites either way.",
+ boss:"Root Hydra",bossTitle:"Keeper of the Irrational",mon:"hydra",
+ sig:"M100 20v160M40 60h120M55 95h90M70 130h60",
+ sigil:"🔢"},
+{id:"identity",num:4,name:"The Identity Forge",epithet:"Algebraic Identities & Factorisation",color:"#d96c4f",
+ lore:"Beneath a mountain of broken expressions burns the Molten Core Golem, beating raw algebra into shape on his anvil. (a+b)² rings like a bell. Dhruva learns the smith's secret: every expansion is a picture, every factorisation its reverse.",
+ boss:"The Molten Core Golem",bossTitle:"Smith of Unbroken Laws",mon:"golem",
+ sig:"M60 30h80v40H60zM80 70v60h40V70M70 130h60v40H70z",
+ sigil:"🔨"},
+{id:"circle",num:5,name:"The Circle Sanctum",epithet:"Circles & Their Secrets",color:"#a08bc0",
+ lore:"A cathedral with no corners. Orbweaver spins her perfect webs from chords and arcs, keeping the oldest law: the angle at the centre is always twice the angle at the rim. Touch nothing. Measure everything.",
+ boss:"Orbweaver",bossTitle:"Keeper of π",mon:"orbweaver",
+ sig:"M100 30a70 70 0 1 0 .1 0M100 30v140M30 100h140",
+ sigil:"⭕"},
+{id:"measure",num:6,name:"The Measurelands",epithet:"Perimeter & Area",color:"#c9a86a",
+ lore:"A patchwork kingdom where land is law. The Tessellator guards its fences and fields — every triangle surveyed by Heron himself, every field taxed by the square metre. Bring a ruler. Bring courage.",
+ boss:"The Tessellator",bossTitle:"Warden of Fields",mon:"tessellator",
+ sig:"M40 40h48v48H40zM112 40l48 48h-48zM40 112l48 48H40zM112 112h48v48h-48z",
+ sigil:"📏"},
+{id:"chance",num:7,name:"The Kingdom of Maybe",epithet:"Probability",color:"#d4788f",
+ lore:"Nothing here is certain — and that is the law. Fatespinner rolls her silver die beneath a sky of possible worlds. Count them all fairly, and she cannot cheat you. Miss one, and she will.",
+ boss:"Fatespinner",bossTitle:"Oracle of Odds",mon:"fatespinner",
+ sig:"M60 40h80v80H60zM75 60a4 4 0 1 0 .1 0M125 60a4 4 0 1 0 .1 0M100 80a4 4 0 1 0 .1 0M75 100a4 4 0 1 0 .1 0M125 100a4 4 0 1 0 .1 0",
+ sigil:"🎲"},
+{id:"pattern",num:8,name:"The Pattern Spires",epithet:"Sequences & Progressions",color:"#7fa8c9",
+ lore:"Towers rise forever, each floor a step of the same rule — +d up the arithmetic stairs, ×r up the geometric ladders. At the top, the Fibonacci Phantom waits, folding the sky into a spiral. Climb smart. The sum of the climb matters.",
+ boss:"The Fibonacci Phantom",bossTitle:"Ghost of the Infinite Stair",mon:"phantom",
+ sig:"M40 160h120M60 160V80h80v80M85 160V110h30v50",
+ sigil:"📈"}
+];
+const worldById=id=>WORLDS.find(w=>w.id===id);
+</script>

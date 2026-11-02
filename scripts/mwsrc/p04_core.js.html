@@ -1,0 +1,92 @@
+<script>
+/* ============ CORE ============ */
+"use strict";
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+const rng=n=>Math.floor(Math.random()*n);
+const pick=a=>a[rng(a.length)];
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=rng(i+1);[a[i],a[j]]=[a[j],a[i]]}return a};
+const gcd=(a,b)=>{a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b]}return a||1};
+const F=(n,d)=>{const g=gcd(n,d);let s=(n<0)!==(d<0)?"−":"";n=Math.abs(n)/g;d=Math.abs(d)/g;return d===1?s+n:s+n+"/"+d};
+const store={
+  get(){try{return JSON.parse(localStorage.getItem("mathswar.v2")||"{}")}catch(e){return{}}},
+  set(s){try{localStorage.setItem("mathswar.v2",JSON.stringify(s))}catch(e){}}
+};
+let S=Object.assign({xp:0,theme:"ember",sound:true,answered:0,correct:0,streak:0,bestStreak:0,badges:[],bosses:[],worlds:{}},store.get());
+const save=()=>store.set(S);
+const worldStat=id=>S.worlds[id]||(S.worlds[id]={correct:0,answered:0,best:0});
+/* ---------- ranks ---------- */
+const RANKS=[[0,"Seeker of Signs"],[120,"Pathfinder"],[320,"Sigil Duelist"],[700,"Realm Champion"],[1200,"Equation Warlord"],[1900,"Grandmaster of Eight"],[2800,"Living Legend: DHRUVA"]];
+const LVLXP=80;
+const level=()=>Math.floor(S.xp/LVLXP)+1;
+const rank=()=>{let r=RANKS[0][1];for(const[x,n]of RANKS){if(S.xp>=x)r=n}return r};
+/* ---------- math renderer: frac{a}{b}, ^{}, _{}, sqrt{}, deg, pm ---------- */
+function M(s){
+  s=String(s);
+  s=s.replace(/\\frac\{([^{}]+)\}\{([^{}]+)\}/g,(_,n,d)=>`<span class="mfrac"><span class="fn">${n}</span><span class="fd">${d}</span></span>`);
+  s=s.replace(/\\sqrt\{([^{}]+)\}/g,(_,x)=>`√<span class="sqrt">${x}</span>`);
+  s=s.replace(/\^\{([^{}]+)\}/g,(_,x)=>`<sup>${x}</sup>`);
+  s=s.replace(/_\{([^{}]+)\}/g,(_,x)=>`<sub>${x}</sub>`);
+  s=s.replace(/\\deg/g,'<span class="deg">°</span>');
+  s=s.replace(/\\pm/g,"±").replace(/\\times/g,"×").replace(/\\div/g,"÷").replace(/\\pi/g,"π");
+  s=s.replace(/->/g,"→");
+  return s;
+}
+/* ---------- sound (WebAudio synth, soft) ---------- */
+let AC=null;
+function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}return AC}
+function tone(f,t0,dur,type="sine",vol=.08,slide=0){
+  const c=ac();if(!c||!S.sound)return;
+  const o=c.createOscillator(),g=c.createGain();
+  o.type=type;o.frequency.setValueAtTime(f,c.currentTime+t0);
+  if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(30,f+slide),c.currentTime+t0+dur);
+  g.gain.setValueAtTime(0,c.currentTime+t0);
+  g.gain.linearRampToValueAtTime(vol,c.currentTime+t0+.015);
+  g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+t0+dur);
+  o.connect(g).connect(c.destination);o.start(c.currentTime+t0);o.stop(c.currentTime+t0+dur+.05);
+}
+const SFX={
+  tap(){tone(520,0,.07,"sine",.05)},
+  good(){tone(523,0,.12,"sine",.07);tone(659,.08,.12,"sine",.07);tone(784,.16,.2,"sine",.07)},
+  great(){[523,659,784,1047].forEach((f,i)=>tone(f,i*.07,.16,"sine",.07))},
+  bad(){tone(180,0,.22,"triangle",.07,-60)},
+  hint(){tone(880,0,.09,"sine",.05)},
+  boss(){tone(90,0,.5,"sawtooth",.06,-30);tone(120,.05,.5,"sawtooth",.05,-40)},
+  hit(){tone(300,0,.1,"square",.05,-120);tone(150,.03,.15,"triangle",.06)},
+  victory(){[523,659,784,1047,1319].forEach((f,i)=>tone(f,i*.11,.28,"sine",.08))},
+  defeat(){[400,340,280,200].forEach((f,i)=>tone(f,i*.14,.24,"triangle",.06))},
+  fanfare(){[392,523,659,784,659,784,1047].forEach((f,i)=>tone(f,i*.1,.22,"sine",.08))}
+};
+/* ---------- confetti ---------- */
+const cvs=$("#confetti"),ctx=cvs.getContext("2d");let parts=[],confAnim=null;
+function sizeCvs(){cvs.width=innerWidth*devicePixelRatio;cvs.height=innerHeight*devicePixelRatio;ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0)}
+sizeCvs();addEventListener("resize",sizeCvs);
+function burst(x,y,n=42,colors=["#e3b04f","#f2cd82","#63c78f","#8fb7cf","#e0707f"]){
+  for(let i=0;i<n;i++)parts.push({x,y,vx:(Math.random()-.5)*9,vy:-Math.random()*8-2,g:.22+Math.random()*.1,
+    s:3+Math.random()*5,r:Math.random()*6.28,vr:(Math.random()-.5)*.3,c:pick(colors),life:60+rng(40)});
+  if(!confAnim)confAnim=requestAnimationFrame(tick);
+}
+function tick(){
+  ctx.clearRect(0,0,innerWidth,innerHeight);
+  parts=parts.filter(p=>p.life>0);
+  for(const p of parts){p.x+=p.vx;p.y+=p.vy;p.vy+=p.g;p.r+=p.vr;p.life--;
+    ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.r);ctx.globalAlpha=Math.min(1,p.life/28);ctx.fillStyle=p.c;
+    ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*.62);ctx.restore()}
+  if(parts.length)confAnim=requestAnimationFrame(tick);else{confAnim=null;ctx.clearRect(0,0,innerWidth,innerHeight)}
+}
+/* ---------- toast ---------- */
+function toast(msg){const t=el("div","toast",msg);$("#layers").appendChild(t);setTimeout(()=>{t.style.opacity="0";t.style.transition="opacity .4s";setTimeout(()=>t.remove(),400)},1900)}
+/* ---------- xp ---------- */
+function gainXP(n,x,y){
+  S.xp+=n;save();
+  const p=el("div","xp-pop",`+${n} XP`);p.style.left=(x||innerWidth/2)+"px";p.style.top=(y||innerHeight*.3)+"px";
+  $("#layers").appendChild(p);setTimeout(()=>p.remove(),1300);
+  const before=level();if(level()>before)toast(`⬆️ Level ${level()} — ${rank()}`);
+}
+/* ---------- router ---------- */
+function show(id){
+  $$(".screen").forEach(s=>s.classList.remove("active"));
+  $("#scr-"+id).classList.add("active");
+  scrollTo(0,0);
+}
+</script>

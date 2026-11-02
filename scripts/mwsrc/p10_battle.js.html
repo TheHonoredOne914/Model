@@ -1,0 +1,343 @@
+<script>
+/* ============ BATTLE ENGINE ============ */
+let B=null;
+const DIFF_XP={f:8,c:12,a:18,x:25};
+const DIFF_NAME={f:"Foundation",c:"Core",a:"Advanced",x:"Challenge"};
+function nextQ(){
+  const gens=GENS[CUR.id];
+  let g;
+  if(B.mode==="train"&&B.session.done<2){g=gens.find(x=>{const q=x();return q.diff==="f"})||gens[0];g=g()}
+  else g=pick(gens)();
+  B.q=g;B.status="idle";B.hints=0;
+  renderQ();
+}
+function qMeta(){
+  const n=B.mode==="boss"?`Round ${B.round} of 6`:`Scroll ${B.session.done+1}${B.session.done>=3?" · "+B.session.right+" won":""}`;
+  return `<div class="q-meta">
+    <span class="chip" style="color:${CUR.color};border-color:${CUR.color}55;background:${CUR.color}14">${CUR.sigil} ${CUR.epithet}</span>
+    <span class="chip diff-${B.q.diff}">${DIFF_NAME[B.q.diff]}</span>
+    <span class="chip">${B.q.type==="mcq"?"multiple choice":B.q.type==="tf"?"true / false":"numeric"}</span>
+    <span class="qcount">${n}</span></div>`;
+}
+function renderQ(){
+  const q=B.q;let body="";
+  if(q.type==="mcq"){
+    body=`<div class="opts">${q.opts.map((o,i)=>`<button class="opt" data-i="${i}"><span class="key">${"ABCD"[i]}</span><span>${o}</span></button>`).join("")}</div>`;
+  }else if(q.type==="tf"){
+    body=`<div class="tf"><button class="opt" data-tf="1">✔ True</button><button class="opt" data-tf="0">✘ False</button></div>`;
+  }else{
+    body=`<div class="ansrow"><input type="text" inputmode="decimal" placeholder="Your final answer…" aria-label="Your answer"><button class="btn btn-primary checkbtn">Strike ⚔</button></div>`;
+  }
+  $("#battle-root").innerHTML=`
+   <div class="qcard" style="--wc:${CUR.color};--wc-soft:${CUR.color}1f">
+     <svg class="q-sigil" viewBox="0 0 200 200" fill="none"><path d="${CUR.sig}" stroke="${CUR.color}" stroke-width="6" stroke-linecap="round"/></svg>
+     ${qMeta()}
+     <div class="paper-note"><span class="pn-ico">📝</span><span><b>Paper time!</b> Copy this scroll into your notebook and solve it with pen first — like the real exam. Then strike your answer here.</span></div>
+     <div class="qtext">${q.q}</div>
+     ${q.given?`<div style="margin-top:10px;font-size:.82rem;color:var(--muted)"><b style="color:var(--text2)">Given:</b> ${M(q.given)} ${q.find?`· <b style="color:var(--text2)">Find:</b> ${M(q.find)}`:""}</div>`:""}
+     ${body}
+     <div class="q-foot" id="q-foot">
+       <button class="btn btn-ghost btn-sm" id="btn-hint">💡 Hint</button>
+       <button class="btn btn-ghost btn-sm" id="btn-story">📖 Story of the solution</button>
+       <span class="spacer" style="flex:1"></span>
+       <button class="btn btn-ghost btn-sm" id="btn-skip">Skip →</button>
+     </div>
+     <div id="q-extra"></div>
+   </div>`;
+  wireQ();
+}
+function wireQ(){
+  const q=B.q;
+  if(q.type==="mcq")$$(".qcard .opt").forEach(o=>o.onclick=()=>judge(q.answer===+o.dataset.i,o));
+  else if(q.type==="tf")$$(".qcard .opt").forEach(o=>o.onclick=()=>judge(q.answer===(o.dataset.tf==="1"),o));
+  else{
+    const inp=$(".qcard input");
+    const go=()=>{
+      const raw=inp.value.trim();if(!raw)return;
+      let ok;
+      if(q.type==="num"){
+        let raw2=raw.replace(/,/g,"");const fm=raw2.match(/^(-?\d+)\s*\/\s*(\d+)$/);if(fm)raw2=String(+fm[1]/+fm[2]);
+        const v=parseFloat(raw2);
+        const tol=q.tol!=null?q.tol:Math.abs(q.answer)>20?0.55:0.005;
+        ok=!isNaN(v)&&Math.abs(v-q.answer)<=tol;
+      }else ok=norm(raw)===norm(String(q.answer));
+      judge(ok,null,raw);
+    };
+    $(".checkbtn").onclick=go;
+    inp.addEventListener("keydown",e=>{if(e.key==="Enter")go()});
+    inp.focus();
+  }
+  $("#btn-hint").onclick=()=>{
+    if(B.hints===0){B.hints=1;$("#q-extra").insertAdjacentHTML("beforeend",`<div class="hintbox"><b>💡 Hint 1:</b> ${q.hint||"Re-read the Given and Find lines — half the answer hides there."}</div>`);SFX.hint();$("#btn-hint").textContent="💡 Bigger hint"}
+    else{B.hints=2;$("#q-extra").insertAdjacentHTML("beforeend",`<div class="hintbox"><b>💡 Deeper:</b> Open the <b>Story of the solution</b> — the concept line alone teaches the move.</div>`);SFX.hint();$("#btn-hint").disabled=true}
+  };
+  $("#btn-story").onclick=()=>openDeck();
+  $("#btn-skip").onclick=()=>{SFX.tap();nextQ()};
+}
+const norm=s=>s.toLowerCase().replace(/\s+/g,"").replace(/[₹,%°]/g,"");
+function judge(ok,optEl,raw){
+  if(B.status!=="idle")return;
+  B.status="done";
+  const q=B.q,extra=$("#q-extra");
+  $$(".qcard .opt").forEach(o=>{o.disabled=true;
+    if(o===optEl)o.classList.add(ok?"correct":"wrong");
+    if(!ok&&q.type==="mcq"&&+o.dataset.i===q.answer)o.classList.add("reveal");
+  });
+  $$(".qcard .checkbtn,.qcard input").forEach(x=>x&&(x.disabled=true));
+  const st=worldStat(CUR.id);st.answered++;S.answered++;
+  if(ok){
+    st.correct++;S.correct++;S.streak++;S.bestStreak=Math.max(S.bestStreak,S.streak);
+    st.best=Math.max(st.best,S.streak);
+    const xp=B.mode==="boss"?30:(DIFF_XP[q.diff]||12);
+    gainXP(xp,innerWidth/2-20,innerHeight*.25);
+    SFX[ok&&(q.diff==="a"||q.diff==="x")?"great":"good"]();
+    const r=optEl?optEl.getBoundingClientRect():$(".qcard").getBoundingClientRect();
+    burst(r.left+r.width/2,r.top+r.height/2,q.diff==="x"?70:40);
+    if(S.streak>=3&&S.streak%3===0){const c=el("div","combo",pick(["COMBO ×"+S.streak+"!","UNSTOPPABLE!","REALM SLAYER!","MATH MAGIC!","DHRUVA STRIKES!"]));$("#layers").appendChild(c);setTimeout(()=>c.remove(),950);SFX.great()}
+    extra.insertAdjacentHTML("beforeend",`
+     <div class="feedback ok"><div class="fb-head">✅ ${pick(["A clean strike!","The realm bows.","Sharpened like a true warrior.","Flawless, Dhruva!","The maths approves."])} ${S.streak>=3?`· 🔥 ${S.streak} streak`:""}</div>
+      <div class="fb-actions">
+        <button class="btn btn-primary btn-sm" id="fb-next">${B.mode==="boss"?"Continue the duel →":"Next scroll →"}</button>
+        <button class="btn btn-ghost btn-sm" id="fb-story">📖 See the steps</button>
+      </div></div>`);
+  }else{
+    S.streak=0;SFX.bad();
+    $(".qcard").classList.add("qcard");const card=$(".qcard");card.style.animation="shake .4s";
+    extra.insertAdjacentHTML("beforeend",`
+     <div class="feedback no"><div class="fb-head">${pick(["Not yet — this is where learning happens.","The realm resists. Recalculate, warrior.","Close? Check the signs and try again."])}</div>
+      <div class="fb-actions">
+        ${q.type==="num"||q.type==="tf"?`<button class="btn btn-ghost btn-sm" id="fb-retry">🔄 Try again</button>`:""}
+        <button class="btn btn-primary btn-sm" id="fb-story">📖 Show me the story</button>
+        <button class="btn btn-ghost btn-sm" id="fb-next">${B.mode==="boss"?"Concede the round →":"Next scroll →"}</button>
+      </div></div>`);
+  }
+  save();renderHUD();
+  $("#fb-next").onclick=()=>{SFX.tap();advance()};
+  $("#fb-story").onclick=()=>openDeck();
+  const rt=$("#fb-retry");if(rt)rt.onclick=()=>{B.status="idle";extra.innerHTML="";renderQ()};
+  if(B.mode==="boss")advanceBoss(ok);
+  else{B.session.done++;if(ok)B.session.right++;}
+}
+/* ---------- story deck ---------- */
+function openDeck(){
+  const q=B.q,d=$(".deck");if(d){d.remove();return}
+  const steps=q.steps&&q.steps.length?q.steps:["The identity applies directly — re-read the concept line and substitute."];
+  let revealed=0;
+  const deck=el("div","deck");
+  deck.innerHTML=`
+   <div class="dk-head">📖 Story of the solution<button class="dk-close" aria-label="Close">✕</button></div>
+   <div class="dk-body">
+     ${q.given?`<div class="givfind"><div class="gf"><small>Given</small><div class="gv">${M(q.given)}</div></div>${q.find?`<div class="gf"><small>Find</small><div class="gv">${M(q.find)}</div></div>`:""}</div>`:""}
+     ${q.concept?`<div class="concept-chip"><small>Concept</small>${M(q.concept)}</div>`:""}
+     <div style="font-size:.66rem;font-weight:800;letter-spacing:1.6px;color:var(--muted);text-transform:uppercase;margin-bottom:8px">Step by step</div>
+     <div class="steps">${steps.map((s,i)=>`<div class="step" data-s="${i}" style="display:none"><span class="sn">${i+1}</span><span class="st">${s}</span></div>`).join("")}</div>
+     <div class="finalans" id="dk-final" style="display:none"><small>🏆 Final answer</small><div class="fa">${q.type==="mcq"?q.opts[q.answer]:q.type==="tf"?(q.answer?"TRUE":"FALSE"):M(String(q.answer))+(q.unit||"")}</div></div>
+     ${q.mistake?`<div class="mistake"><b>Common trap:</b> ${q.mistake}</div>`:""}
+     <div class="dk-ctrl">
+       <button class="btn btn-soft btn-sm" id="dk-reveal">Reveal step 1 of ${steps.length} →</button>
+       <button class="btn btn-ghost btn-sm" id="dk-all">All ⏭</button>
+       <span class="dk-count" id="dk-count">0/${steps.length}</span>
+     </div>
+   </div>`;
+  $(".qcard").insertBefore(deck,$("#q-extra"));
+  SFX.hint();
+  const upd=()=>{
+    $$(".step",deck).forEach((s,i)=>s.style.display=i<revealed?"flex":"none");
+    $("#dk-final",deck).style.display=revealed>=steps.length?"block":"none";
+    $("#dk-count",deck).textContent=revealed+"/"+steps.length;
+    const rb=$("#dk-reveal",deck);
+    if(revealed>=steps.length){rb.textContent="📖 Fully revealed";rb.disabled=true}
+    else rb.textContent=`Reveal step ${revealed+1} of ${steps.length} →`;
+  };
+  $("#dk-reveal",deck).onclick=()=>{if(revealed<steps.length){revealed++;upd();SFX.tap()}};
+  $("#dk-all",deck).onclick=()=>{revealed=steps.length;upd();SFX.tap()};
+  $(".dk-close",deck).onclick=()=>deck.remove();
+  upd();
+}
+/* ---------- BOSS ---------- */
+function bossReady(){const st=worldStat(CUR.id);return st.answered>=6&&st.correct/st.answered>=.4}
+function renderBossGate(){
+  const ready=bossReady(),m=masteryOf(CUR),st=worldStat(CUR.id);
+  const need=ready?`<p>The ${CUR.bossTitle} awaits your sharpest six rounds. Win <b>5 of 6</b> to claim the crown.</p><button class="btn btn-primary" id="btn-fight" style="margin-top:16px;width:min(320px,100%)">⚔️ Challenge ${CUR.boss}</button>`
+   :`<p style="margin-top:10px">The seal holds. ${CUR.boss} only respects warriors with <b>40% training</b> in this realm.</p>
+     <div class="gatebar"><b style="width:${Math.min(100,m)}%"></b></div>
+     <div style="font-size:.76rem;color:var(--muted);font-weight:600">${m}% trained · need 40% · ${Math.max(0,6-st.answered)} more scrolls minimum</div>
+     <button class="btn btn-soft" id="btn-go-train2" style="margin-top:16px;width:min(320px,100%)">⚔️ Back to training</button>`;
+  $("#pane-boss").innerHTML=`
+   <div class="boss-gate">
+     <div class="bg-sigil">${MON[CUR.mon]}</div>
+     <h3>${CUR.boss}</h3>
+     <div class="bg-name">${CUR.bossTitle}</div>
+     ${S.bosses.includes(CUR.id)?'<div style="margin-top:10px"><span class="chip diff-f">👑 Already conquered — fight again for glory</span></div>':""}
+     ${need}
+   </div>`;
+  const f=$("#btn-fight");if(f)f.onclick=()=>{SFX.boss();startBattle("boss")};
+  const t=$("#btn-go-train2");if(t)t.onclick=()=>{setTab("train");startBattle("train")};
+}
+function startBattle(mode){
+  B={mode,session:{done:0,right:0},round:1,wins:0};
+  if(mode==="boss")renderBossRound();else nextQ();
+}
+function renderBossRound(){
+  $("#pane-boss").innerHTML="";
+  setTab("boss");
+  $("#battle-root").innerHTML="";
+  const arena=el("div");
+  arena.innerHTML=`
+   <div class="arena" style="--wc:${CUR.color};--wc-soft:${CUR.color}1f">
+     <div class="rounds" id="b-rounds">${Array.from({length:6},(_,i)=>`<span class="rd"></span>`).join("")}</div>
+     <div class="monster-stage" id="m-stage"><div class="mshadow"></div><div class="mwrap" id="m-wrap">${MON[CUR.mon]}</div></div>
+     <div class="boss-nameplate"><small>${CUR.bossTitle}</small>${CUR.boss}</div>
+     <div class="boss-hp"><div class="hp-num"><span>BOSS VITALITY</span><span id="hp-num">${6-B.wins}/6</span></div><div class="hp-bar"><b id="hp-bar" style="width:${(6-B.wins)/6*100}%"></b></div></div>
+     <div class="vs-line">Round ${B.round} — strike true, Dhruva</div>
+   </div>
+   <div class="boss-q" id="boss-q-root" style="margin-top:14px"></div>`;
+  $("#pane-boss").appendChild(arena);
+  const root=$("#boss-q-root");
+  const old=$("#battle-root");old.innerHTML="";
+  // reuse standard question card inside boss pane
+  const gens=GENS[CUR.id];B.q=pick(gens)();B.status="idle";B.hints=0;
+  const q=B.q;let body="";
+  if(q.type==="mcq")body=`<div class="opts">${q.opts.map((o,i)=>`<button class="opt" data-i="${i}"><span class="key">${"ABCD"[i]}</span><span>${o}</span></button>`).join("")}</div>`;
+  else if(q.type==="tf")body=`<div class="tf"><button class="opt" data-tf="1">✔ True</button><button class="opt" data-tf="0">✘ False</button></div>`;
+  else body=`<div class="ansrow"><input type="text" inputmode="decimal" placeholder="Your final answer…" aria-label="Your answer"><button class="btn btn-primary checkbtn">Strike ⚔</button></div>`;
+  root.innerHTML=`<div class="qcard" style="--wc:${CUR.color};--wc-soft:${CUR.color}1f">
+    ${qMeta()}
+    <div class="qtext">${q.q}</div>
+    ${q.given?`<div style="margin-top:10px;font-size:.82rem;color:var(--muted)"><b style="color:var(--text2)">Given:</b> ${M(q.given)}</div>`:""}
+    ${body}
+    <div class="q-foot">
+      <button class="btn btn-ghost btn-sm" id="btn-hint">💡 Hint</button>
+      <button class="btn btn-ghost btn-sm" id="btn-story">📖 Story</button>
+    </div>
+    <div id="q-extra"></div></div>`;
+  const prevWire=wireQ;wireQ();
+  $$(".rd").forEach((r,i)=>{if(i<B.wins)r.classList.add("won");if(i<B.round-1-B.wins)r.classList.add("lost")});
+}
+function advanceBoss(ok){
+  if(ok){B.wins++;SFX.hit();const m=$("#m-stage");if(m){m.classList.add("hit");setTimeout(()=>m.classList.remove("hit"),500)}
+    const bar=$("#hp-bar"),num=$("#hp-num");if(bar){bar.style.width=(6-B.wins)/6*100+"%";num.textContent=(6-B.wins)+"/6";bar.parentElement.classList.add("boss-hurt");setTimeout(()=>bar.parentElement.classList.remove("boss-hurt"),400)}}
+  else{const rds=$$(".rd");if(rds[B.round-1])rds[B.round-1].classList.add("lost");SFX.boss()}
+}
+function advance(){
+  if(B.mode==="boss"){
+    if(B.wins>=5||B.round>6)endBoss();
+    else{B.round++;setTimeout(renderBossRound,350)}
+  }else nextQ();
+}
+function endBoss(){
+  if(B.wins>=5){
+    const first=!S.bosses.includes(CUR.id);
+    if(first)S.bosses.push(CUR.id);
+    gainXP(first?150:60,innerWidth/2,innerHeight*.3);
+    SFX.fanfare();
+    for(let i=0;i<5;i++)setTimeout(()=>burst(innerWidth*(0.2+0.15*i),innerHeight*(0.25+0.1*(i%2)),60),i*260);
+    $("#pane-boss").innerHTML=`
+     <div class="victory">
+       <div class="v-crest">${MON[CUR.mon]}</div>
+       <h2 style="color:var(--gold2)">👑 ${CUR.boss} kneels!</h2>
+       <div class="v-sub">Realm ${CUR.num} — ${CUR.epithet} — is Dhruva's. ${pick(["The map glows brighter.","Another sigil joins your banner.","The chroniclers sing of this one."])}</div>
+       <div class="loot">
+         ${first?'<span class="chip diff-a">🏆 Crown claimed</span>':""}
+         <span class="chip diff-f">+${first?150:60} XP</span>
+         <span class="chip">${B.wins}/6 rounds won</span>
+       </div>
+       <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+         <button class="btn btn-primary" onclick="renderMap();renderHUD();show('map')">Return to the Great Map</button>
+         <button class="btn btn-ghost" onclick='startBattle("boss")'>Rematch for glory</button>
+       </div>
+     </div>`;
+  }else{
+    SFX.defeat();
+    $("#pane-boss").innerHTML=`
+     <div class="victory defeat">
+       <div class="v-crest" style="filter:grayscale(.7)">${MON[CUR.mon]}</div>
+       <h2 style="color:var(--bad)">${CUR.boss} stands… this time</h2>
+       <div class="v-sub">You took ${B.wins} of 6 rounds. Five wins crown the champion — you're close. Train two more scrolls, then return sharper.</div>
+       <div class="loot"><span class="chip">${B.wins}/6 rounds</span><span class="chip diff-c">XP earned is yours to keep</span></div>
+       <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+         <button class="btn btn-primary" onclick='startBattle("boss")'>⚔️ Rematch</button>
+         <button class="btn btn-ghost" onclick="setTab('train');startBattle('train')">📜 Train first</button>
+       </div>
+     </div>`;
+  }
+  save();renderHUD();
+}
+/* ---------- PROGRESS ---------- */
+function renderProgress(){
+  const acc=S.answered?Math.round(S.correct/S.answered*100):0;
+  const rings=WORLDS.map(w=>{const m=masteryOf(w);
+    return `<div class="ringcell"><svg viewBox="0 0 60 60">
+      <circle cx="30" cy="30" r="24" fill="none" stroke="var(--raise)" stroke-width="6"/>
+      <circle cx="30" cy="30" r="24" fill="none" stroke="${w.color}" stroke-width="6" stroke-linecap="round"
+        stroke-dasharray="${m*1.508} 151" transform="rotate(-90 30 30)"/>
+      <text x="30" y="34" text-anchor="middle" font-size="12" font-weight="800" fill="var(--text)">${m}%</text></svg>
+      <div class="rl">${w.sigil} ${w.epithet.split(" ")[0]}</div></div>`}).join("");
+  const allBadges=[
+   ...WORLDS.map(w=>({i:"👑",n:w.boss,d:"Defeat "+w.boss.split(" ")[0],got:S.bosses.includes(w.id)})),
+   {i:"🔥",n:"Streak ×7",d:"Win 7 in a row",got:S.bestStreak>=7},
+   {i:"📖",n:"Scholar",d:"Answer 50 scrolls",got:S.answered>=50},
+   {i:"⚔️",n:"Centurion",d:"Answer 100 scrolls",got:S.answered>=100},
+   {i:"🧠",n:"Sharpshooter",d:"75% accuracy (30+)",got:S.answered>=30&&S.correct/S.answered>=.75}];
+  $("#progress-body").innerHTML=`
+   <div class="hud" style="margin-bottom:14px">${hudInner()}</div>
+   <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
+     <span class="chip diff-c">${S.answered} scrolls answered</span>
+     <span class="chip diff-f">${acc}% accuracy</span>
+     <span class="chip diff-a">🔥 best streak ${S.bestStreak}</span>
+     <span class="chip">👑 ${S.bosses.length}/8 crowns</span>
+   </div>
+   <div style="font-size:.72rem;font-weight:800;letter-spacing:1.6px;color:var(--muted);text-transform:uppercase;margin-bottom:8px">Realm mastery</div>
+   <div class="ringrow">${rings}</div>
+   <div style="font-size:.72rem;font-weight:800;letter-spacing:1.6px;color:var(--muted);text-transform:uppercase;margin:14px 0 8px">Hall of badges</div>
+   <div class="badge-grid">${allBadges.map(b=>`<div class="badge ${b.got?"got":"locked"}"><div class="bi">${b.i}</div><div class="bn">${b.n}</div><div class="bd">${b.got?b.d:"🔒 "+b.d}</div></div>`).join("")}</div>
+   <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap">
+     <button class="btn btn-primary" style="flex:1" onclick="renderMap();renderHUD();show('map')">🗺️ Back to the Map</button>
+   </div>`;
+  show("progress");
+}
+function hudInner(){
+  const lv=level(),pct=Math.round((S.xp%LVLXP)/LVLXP*100);
+  return `<div class="avatar"><svg viewBox="0 0 48 48" width="34" height="34"><path d="M24 4 30 12 27 20h-6L18 12Z" fill="var(--gold)"/><circle cx="24" cy="26" r="9" fill="none" stroke="var(--gold2)" stroke-width="2.6"/><path d="M13 44c1.5-7 5.5-10 11-10s9.5 3 11 10" fill="var(--gold2)" opacity=".85"/></svg></div>
+   <div style="flex:1;min-width:0"><div class="pname">Dhruva <span class="chip" style="padding:2px 8px;font-size:.6rem">LV ${lv}</span></div>
+   <div class="prank">${rank()}</div><div class="xpbar"><b style="width:${pct}%"></b></div>
+   <div style="font-size:.68rem;color:var(--muted);margin-top:4px;font-weight:600">${S.xp} XP total</div></div>`;
+}
+/* ---------- SETTINGS / THEMES ---------- */
+const THEMES=[
+ {id:"ember",n:"Obsidian Ember",d:"Warm gold on midnight stone",sw:["#0d0f14","#1a1f2a","#e3b04f","#f2cd82"]},
+ {id:"emerald",n:"Royal Emerald",d:"Deep forest, minted gold",sw:["#0b1210","#16211c","#5fc48e","#93e0b8"]},
+ {id:"frost",n:"Nebula Frost",d:"Cool ice over still waters",sw:["#0b0f16","#161e2c","#7fb6d9","#b0d9f2"]},
+ {id:"sakura",n:"Sakura Dusk",d:"Rose petals at evening gate",sw:["#131017","#221c2b","#dd8fa6","#efbccb"]},
+ {id:"sands",n:"Solar Sands",d:"Daylight parchment, antique gold",sw:["#f3efe6","#faf7f0","#b58324","#d9a94e"]}];
+function renderThemes(){
+  $("#theme-row").innerHTML=THEMES.map(t=>`
+   <button class="theme-card ${S.theme===t.id?"sel":""}" data-t="${t.id}">
+     <span class="tick">✓</span>
+     <span class="sw">${t.sw.map(c=>`<i style="background:${c}"></i>`).join("")}</span>
+     <span class="tn">${t.n}</span><span class="td">${t.d}</span>
+   </button>`).join("");
+  $$(".theme-card").forEach(c=>c.onclick=()=>{S.theme=c.dataset.t;save();
+    document.documentElement.dataset.theme=S.theme;renderThemes();SFX.good()});
+}
+function openSheet(){renderThemes();$("#sw-sound").classList.toggle("on",S.sound);$("#veil").classList.add("open")}
+$("#btn-settings").onclick=openSheet;
+$("#btn-close-sheet").onclick=()=>$("#veil").classList.remove("open");
+$("#veil").addEventListener("click",e=>{if(e.target===$("#veil"))$("#veil").classList.remove("open")});
+$("#sw-sound").onclick=function(){S.sound=!S.sound;this.classList.toggle("on",S.sound);save();SFX.tap()};
+let resetArmed=false;
+$("#btn-reset").onclick=function(){
+  if(!resetArmed){resetArmed=true;this.textContent="Sure? Tap again";setTimeout(()=>{resetArmed=false;this.textContent="Reset"},2500);return}
+  localStorage.removeItem("mathswar.v2");location.reload();
+};
+/* ---------- INIT ---------- */
+$("#btn-begin").onclick=()=>{ac();SFX.fanfare();renderHUD();renderMap();show("map")};
+$("#btn-world-back").onclick=()=>{SFX.tap();renderMap();renderHUD();show("map")};
+$("#btn-progress").onclick=()=>{SFX.tap();renderProgress()};
+$("#btn-progress-back").onclick=()=>{renderHUD();show("map")};
+document.documentElement.dataset.theme=S.theme;
+document.addEventListener("click",()=>ac(),{once:true});
+renderHUD();
+</script>
+</body>
+</html>

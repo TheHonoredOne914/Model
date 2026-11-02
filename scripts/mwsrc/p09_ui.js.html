@@ -1,0 +1,118 @@
+<script>
+/* ============ RENDER: HUD / MAP / WORLD / LEARN ============ */
+function renderHUD(){
+  const lv=level(),pct=Math.round((S.xp%LVLXP)/LVLXP*100);
+  $("#hud").innerHTML=`
+   <div class="avatar"><svg viewBox="0 0 48 48" width="34" height="34"><path d="M24 4 30 12 27 20h-6L18 12Z" fill="var(--gold)"/><circle cx="24" cy="26" r="9" fill="none" stroke="var(--gold2)" stroke-width="2.6"/><path d="M13 44c1.5-7 5.5-10 11-10s9.5 3 11 10" fill="var(--gold2)" opacity=".85"/><path d="M19 26h10M24 21v10" stroke="var(--gold)" stroke-width="1.6"/></svg></div>
+   <div style="flex:1;min-width:0">
+     <div class="pname">Dhruva <span class="chip" style="padding:2px 8px;font-size:.6rem">LV ${lv}</span></div>
+     <div class="prank">${rank()}</div>
+     <div class="xpbar"><b style="width:${pct}%"></b></div>
+     <div style="font-size:.68rem;color:var(--muted);margin-top:4px;font-weight:600">${S.xp} XP · ${LVLXP-(S.xp%LVLXP)} to next level</div>
+   </div>
+   <div style="text-align:right">
+     <div style="font-size:1.05rem;font-weight:800">🔥 ${S.streak}</div>
+     <div style="font-size:.62rem;color:var(--muted);font-weight:700;letter-spacing:.6px">STREAK</div>
+   </div>`;
+}
+function masteryOf(w){const st=worldStat(w.id);return st.answered?Math.round(st.correct/st.answered*100):0}
+function renderMap(){
+  const pos=[[350,84],[128,168],[572,168],[128,300],[572,300],[128,432],[572,432],[350,512]];
+  let nodes="";
+  WORLDS.forEach((w,i)=>{
+    const[x,y]=pos[i],m=masteryOf(w),bossed=S.bosses.includes(w.id);
+    nodes+=`
+    <g class="wnode ${bossed?"done":""}" transform="translate(${x},${y})" tabindex="0" role="button" aria-label="${w.name}" data-w="${w.id}">
+      <title>${w.name}</title>
+      <ellipse cx="0" cy="26" rx="52" ry="12" fill="rgba(0,0,0,.4)"/>
+      <ellipse class="wn-ring" cx="0" cy="0" rx="46" ry="34" fill="${w.color}22" stroke="${w.color}" stroke-width="2" style="transform-origin:0 0;transform-box:fill-box"/>
+      <ellipse cx="0" cy="-4" rx="38" ry="25" fill="${w.color}33"/>
+      <g transform="translate(-16,-20) scale(.13)"><path d="${w.sig}" fill="none" stroke="${w.color}" stroke-width="7" stroke-linecap="round"/></g>
+      ${bossed?`<circle cx="26" cy="-22" r="9" fill="var(--gold)"/><text x="26" y="-18.5" font-size="11" text-anchor="middle">👑</text>`:""}
+      <text class="wn-label" x="0" y="48" text-anchor="middle">Realm ${w.num}</text>
+      <text class="wn-name" x="0" y="63" text-anchor="middle">${w.epithet}</text>
+      <text class="wn-lock" x="0" y="77" text-anchor="middle">${bossed?"conquered 👑":m>0?m+"% trained":"uncharted"}</text>
+      <rect x="-24" y="84" width="48" height="4.5" rx="2.2" fill="rgba(255,255,255,.12)"/>
+      <rect x="-24" y="84" width="${48*m/100}" height="4.5" rx="2.2" fill="${w.color}"/>
+    </g>`;
+  });
+  $("#map").innerHTML=`
+  <svg class="map-scene" viewBox="0 0 700 620">
+    <defs>
+      <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--bg2)"/><stop offset="100%" stop-color="var(--bg1)"/></linearGradient>
+      <radialGradient id="seaGlow" cx="50%" cy="42%"><stop offset="0%" stop-color="${"var(--goldsoft)"}"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+    </defs>
+    <rect width="700" height="620" fill="url(#sea)"/>
+    <rect width="700" height="620" fill="url(#seaGlow)"/>
+    <g stroke="var(--line)" stroke-width="1">
+      ${Array.from({length:15},(_,i)=>`<line x1="${i*50}" y1="0" x2="${i*50}" y2="580"/>`).join("")}
+      ${Array.from({length:12},(_,i)=>`<line x1="0" y1="${i*50}" x2="700" y2="${i*50}"/>`).join("")}
+    </g>
+    <path d="M350 84 C 180 120 128 130 128 168 C 128 220 572 240 572 300 C 572 360 128 370 128 432 C 128 480 260 490 350 512"
+      fill="none" stroke="var(--line2)" stroke-width="3" stroke-dasharray="1 10" stroke-linecap="round"/>
+    ${nodes}
+  </svg>`;
+  $$(".wnode").forEach(n=>{
+    const go=()=>{SFX.tap();openWorld(n.dataset.w)};
+    n.addEventListener("click",go);
+    n.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go()}});
+  });
+}
+let CUR=null;
+function openWorld(id){
+  CUR=worldById(id);
+  $("#w-kick").textContent=`Realm ${CUR.num} · ${CUR.epithet}`;
+  $("#w-name").textContent=CUR.epithet;
+  document.documentElement.style.setProperty("--wc",CUR.color);
+  document.documentElement.style.setProperty("--wc-soft",CUR.color+"1f");
+  const m=masteryOf(CUR);
+  $("#world-hero").innerHTML=`
+   <svg class="wh-sigil" viewBox="0 0 200 200" fill="none"><path d="${CUR.sig}" stroke="${CUR.color}" stroke-width="7" stroke-linecap="round"/></svg>
+   <div class="wh-kick">Realm ${CUR.num} of VIII</div>
+   <h2>${CUR.name}</h2>
+   <div class="wh-lore">${CUR.lore}</div>
+   <div class="wh-boss">👹 Lord of this realm: <b>${CUR.boss}</b> — <span style="color:var(--muted)">${CUR.bossTitle}</span></div>
+   <div style="margin-top:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+     <span class="chip">${m}% trained</span>
+     ${S.bosses.includes(CUR.id)?'<span class="chip diff-f">👑 conquered</span>':""}
+     <span class="chip">${GENS[CUR.id].length}×∞ battle patterns</span>
+   </div>`;
+  renderLearn();
+  renderTrainIntro();
+  renderBossGate();
+  setTab("learn");
+  show("world");
+}
+function renderLearn(){
+  const items=LEARN[CUR.id].map((c,i)=>`
+   <div class="scroll-card">
+     <h4><span class="num">${i+1}</span>${c.t}</h4>
+     <div class="body">${c.b.replace(/<span class="fx">([\s\S]*?)<\/span>/g,(m,x)=>`<span class="fx">${M(x)}</span>`).replace(/√([0-9a-z]+)/g,"√$1")}</div>
+     <div class="ex">${c.ex}</div>
+     <div class="rem">⚡ Remember: ${c.rem}</div>
+   </div>`).join("");
+  $("#pane-learn").innerHTML=`${items}
+   <div class="widget" id="widget-box"></div>
+   <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+     <button class="btn btn-primary" id="btn-go-train" style="flex:1">⚔️ Train in ${CUR.epithet}</button>
+     <button class="btn btn-ghost" id="btn-go-boss">👑 Face ${CUR.boss}</button>
+   </div>`;
+  WIDGETS[CUR.id]($("#widget-box"),CUR);
+  $("#btn-go-train").onclick=()=>{setTab("train");startBattle("train")};
+  $("#btn-go-boss").onclick=()=>{setTab("boss");renderBossGate()};
+}
+function renderTrainIntro(){
+  const st=worldStat(CUR.id);
+  $("#train-intro").innerHTML=`
+   <div class="scroll-card" style="border-style:dashed;margin-bottom:16px">
+     <div class="body" style="font-size:.88rem">📋 <b style="color:var(--text)">How training works:</b> a scroll appears → <b>copy it into your notebook</b> and solve with pen first, like the real exam → then strike your answer here. Every battle scroll is freshly generated — ${CUR.epithet} will never ask you the same question twice.</div>
+     ${st.answered?`<div class="rem" style="margin-top:10px">Your record here: ${st.correct}/${st.answered} correct (${masteryOf(CUR)}%) · best streak ${st.best}</div>`:""}
+   </div>`;
+}
+function setTab(t){
+  $$(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===t));
+  $$(".pane").forEach(p=>p.classList.remove("active"));
+  $("#pane-"+t).classList.add("active");
+}
+$$(".tab").forEach(b=>b.onclick=()=>{SFX.tap();setTab(b.dataset.tab);if(b.dataset.tab==="train"&&!$("#battle-root .qcard"))startBattle("train");if(b.dataset.tab==="boss")renderBossGate()});
+</script>

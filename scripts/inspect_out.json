@@ -1,0 +1,232 @@
+[
+ {
+  "file": "iemh101.pdf",
+  "pages": 15,
+  "w": 487.7,
+  "h": 685.7,
+  "text_chars_first3": 6295,
+  "size_mb": 1.43,
+  "kb_per_page": 97.5,
+  "images": 68
+ },
+ {
+  "file": "iemh102.pdf",
+  "pages": 25,
+  "w": 487.7,
+  "h": 685.7,
+  "text_chars_first3": 4852,
+  "size_mb": 2.74,
+  "kb_per_page": 112.3,
+  "images": 105
+ },
+ {
+  "file": "iemh103.pdf",
+  "pages": 27,
+  "w": 487.7,
+  "h": 685.7,
+  "text_chars_first3": 5709,
+  "size_mb": 2.37,
+  "kb_per_page": 90.1,
+  "images": 115
+ },
+ {
+  "file": "iemh104.pdf",
+  "pages": 24,
+  "w": 487.7,
+  "h": 685.7,
+  "text_chars_first3": 3888,
+  "size_mb": 2.15,
+  "kb_per_page": 91.7,
+  "images": 119
+ },
+ {
+  "file": "iemh105.pdf",
+  "pages": 26,
+  "w": 487.7,
+  "h": 685.7,
+  "text_chars_first3": 4699,
+  "size_mb": 2.09,
+  "kb_per_page": 82.3,
+  "images": 113
+ },
+ {
+  "file": "iemh106.pdf",
+  "pages": 37,
+  "w": 487.7,
+  "h": 685.7,
+  "text_chars_first3": 4418,
+  "size_mb": 3.17,
+  "kb_per_page": 87.8,
+  "images": 181
+ },
+ {
+  "file": "iemh107.pdf",
+  "pages": 19,
+  "w": 487.7,
+  "h": 685.7,
+  "text_chars_first3": 6361,
+  "size_mb": 1.72,
+  "kb_per_page": 92.5,
+  "images": 92
+ },
+ {
+  "file": "iemh108.pdf",
+  "pages": 27,
+  "w": 487.7,
+  "h": 685.7,
+  "text_chars_first3": 5661,
+  "size_mb": 2.6,
+  "kb_per_page": 98.6,
+  "images": 133
+ },
+ {
+  "file": "iemh201.pdf",
+  "pages": 7,
+  "w": 492.0,
+  "h": 690.0,
+  "text_chars_first3": 5059,
+  "size_mb": 0.86,
+  "kb_per_page": 125.1,
+  "images": 31
+ },
+ {
+  "file": "iemh202.pdf",
+  "pages": 29,
+  "w": 492.0,
+  "h": 690.0,
+  "text_chars_first3": 4616,
+  "size_mb": 2.38,
+  "kb_per_page": 83.9,
+  "images": 155
+ },
+ {
+  "file": "iemh203.pdf",
+  "pages": 14,
+  "w": 492.0,
+  "h": 690.0,
+  "text_chars_first3": 5541,
+  "size_mb": 1.52,
+  "kb_per_page": 111.4,
+  "images": 58
+ },
+ {
+  "file": "iemh204.pdf",
+  "pages": 34,
+  "w": 492.0,
+  "h": 690.0,
+  "text_chars_first3": 4607,
+  "size_mb": 3.45,
+  "kb_per_page": 103.9,
+  "images": 168
+ },
+ {
+  "file": "iemh205.pdf",
+  "pages": 38,
+  "w": 492.0,
+  "h": 690.0,
+  "text_chars_first3": 4050,
+  "size_mb": 3.05,
+  "kb_per_page": 82.1,
+  "images": 170
+ },
+ {
+  "file": "iemh206.pdf",
+  "pages": 42,
+  "w": 492.0,
+  "h": 690.0,
+  "text_chars_first3": 4561,
+  "size_mb": 3.54,
+  "kb_per_page": 86.4,
+  "images": 264
+ },
+ {
+  "file": "iest103.pdf",
+  "pages": 22,
+  "w": 592.8,
+  "h": 783.6,
+  "text_chars_first3": 3941,
+  "size_mb": 15.25,
+  "kb_per_page": 709.6,
+  "images": 133
+ },
+ {
+  "file": "iest108.pdf",
+  "pages": 12,
+  "w": 592.8,
+  "h": 783.6,
+  "text_chars_first3": 4463,
+  "size_mb": 1.47,
+  "kb_per_page": 125.4,
+  "images": 86
+ },
+ {
+  "file": "iest109.pdf",
+  "pages": 26,
+  "w": 592.8,
+  "h": 783.6,
+  "text_chars_first3": 5453,
+  "size_mb": 7.22,
+  "kb_per_page": 284.3,
+  "images": 148
+ },
+ {
+  "file": "iest201.pdf",
+  "pages": 20,
+  "w": 600.0,
+  "h": 790.8,
+  "text_chars_first3": 4017,
+  "size_mb": 13.84,
+  "kb_per_page": 708.7,
+  "images": 478
+ },
+ {
+  "file": "iest202.pdf",
+  "pages": 24,
+  "w": 600.0,
+  "h": 790.8,
+  "text_chars_first3": 4677,
+  "size_mb": 17.43,
+  "kb_per_page": 743.7,
+  "images": 249
+ },
+ {
+  "file": "iest203.pdf",
+  "pages": 36,
+  "w": 600.0,
+  "h": 790.8,
+  "text_chars_first3": 5650,
+  "size_mb": 6.25,
+  "kb_per_page": 177.7,
+  "images": 258
+ },
+ {
+  "file": "iest204.pdf",
+  "pages": 26,
+  "w": 600.0,
+  "h": 790.8,
+  "text_chars_first3": 4698,
+  "size_mb": 3.31,
+  "kb_per_page": 130.2,
+  "images": 211
+ },
+ {
+  "file": "iest205.pdf",
+  "pages": 18,
+  "w": 600.0,
+  "h": 790.8,
+  "text_chars_first3": 5105,
+  "size_mb": 1.91,
+  "kb_per_page": 108.6,
+  "images": 116
+ },
+ {
+  "file": "iest206.pdf",
+  "pages": 28,
+  "w": 600.0,
+  "h": 790.8,
+  "text_chars_first3": 5416,
+  "size_mb": 7.11,
+  "kb_per_page": 259.9,
+  "images": 204
+ }
+]
