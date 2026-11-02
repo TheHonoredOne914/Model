@@ -33,7 +33,7 @@ const BIG_GAMES: (BigGame & { icon: React.ComponentType<{ className?: string }>;
     tagline: "Grade 9 arena",
     src: "/wars/play",
     accent: "#ffc76b",
-    chip: "12 worlds",
+    chip: "Grade 9",
     meta: "12 worlds · 38 concepts · 20 interactive labs",
     blurb: "Seekho → practice → boss arena. Streak banao, level up karo, hero warrior ko har world ka boss karao.",
     icon: Wand2,
