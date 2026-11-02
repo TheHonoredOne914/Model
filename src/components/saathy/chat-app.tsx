@@ -271,7 +271,10 @@ export function ChatApp({ onExit }: { onExit?: () => void }) {
       }
 
       const userMsg: UiMessage = { id: nextTempId(), role: 'user', content, meta: null };
-      const streamMsg: UiMessage = { id: 'streaming', role: 'assistant', content: '', meta: null, streaming: true };
+      // unique id per stream — a literal 'streaming' id collided when two
+      // replies raced, and React dropped children (duplicate-key error)
+      const streamId = nextTempId();
+      const streamMsg: UiMessage = { id: streamId, role: 'assistant', content: '', meta: null, streaming: true };
       setMessages((prev) => [...prev, userMsg, streamMsg]);
       setStreaming(true);
 
@@ -303,7 +306,6 @@ export function ChatApp({ onExit }: { onExit?: () => void }) {
         let buffer = '';
         let acc = '';
         let finalMeta: ChatMeta = {};
-        let streamId = 'streaming';
 
         const flushEvent = (raw: string) => {
           for (const line of raw.split('\n')) {
@@ -314,7 +316,6 @@ export function ChatApp({ onExit }: { onExit?: () => void }) {
               if (ev.type === 'meta') {
                 if (ev.conversationId) {
                   const convId = ev.conversationId;
-                  streamId = 'streaming';
                   setActiveId((prevActive) => {
                     if (prevActive !== convId) {
                       // refresh history list (new conversation created server-side)
@@ -379,7 +380,7 @@ export function ChatApp({ onExit }: { onExit?: () => void }) {
             : 'Saathy could not be reached. Check the connection and try again.';
         setMessages((prev) =>
           prev.map((m) =>
-            m.id === 'streaming'
+            m.id === streamId
               ? { ...m, id: nextTempId(), streaming: false, error: msg, content: m.content }
               : m
           )
