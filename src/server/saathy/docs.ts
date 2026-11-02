@@ -202,6 +202,17 @@ export async function processDoc(docId: string, file: string, kind: string): Pro
 // ---------- retrieval ----------
 
 export async function searchFounderDocs(query: string, limit = 3): Promise<DocChunk[]> {
+  // Fail-safe: the Founder Library is optional grounding — a missing table,
+  // locked DB or any storage hiccup must never break a student's chat reply.
+  try {
+    return await searchFounderDocsInner(query, limit);
+  } catch (err) {
+    console.error('[docs] searchFounderDocs degraded to empty:', err instanceof Error ? err.message : err);
+    return [];
+  }
+}
+
+async function searchFounderDocsInner(query: string, limit = 3): Promise<DocChunk[]> {
   const terms = Array.from(new Set(tokenize(query))).slice(0, 6);
   if (terms.length === 0) return [];
   const docs = await db.dataDoc.findMany({ where: { status: 'ready' }, select: { id: true, title: true } });
